@@ -155,6 +155,13 @@ angular.module("app.directives", [])
   }
 })
 
+.directive('apiList', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/views/apilist.html'
+    }
+})
+
 }())
 
 

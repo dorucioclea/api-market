@@ -1,10 +1,10 @@
-<ul class="list-unstyled left-elems">
-	<!-- nav trigger/collapse -->
-	<li>
-		<a href class="nav-trigger ion ion-drag" ng-click="toggleNav()"></a>
-		<!-- <md-switch class="nav-trigger" ng-model="navHorizontal" style="margin: 0" ng-change="toggleNav()"> -->
-	</li>
-	<!-- #end nav-trigger -->
+<ul class="list-unstyled ml10 left-elems">
+	<!--&lt;!&ndash; nav trigger/collapse &ndash;&gt;-->
+	<!--<li>-->
+		<!--<a href class="nav-trigger ion ion-drag" ng-click="toggleNav()"></a>-->
+		<!--&lt;!&ndash; <md-switch class="nav-trigger" ng-model="navHorizontal" style="margin: 0" ng-change="toggleNav()"> &ndash;&gt;-->
+	<!--</li>-->
+	<!--&lt;!&ndash; #end nav-trigger &ndash;&gt;-->
 
 	<!-- Search box -->
 	<li>
@@ -26,11 +26,11 @@
 	</li> <!-- #end site-logo -->
 
   <li class="hidden-sm hidden-xs">
-    <button type="button" class="btn btn-tag-primary btn-icon-inline" md-ink-ripple=""><i class="ion ion-map"></i>Explore APIs</button>
+    <button type="button" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
   </li>
 
   <li class="hidden-sm hidden-xs">
-    <button type="button" class="btn btn-tag-primary btn-icon-inline" md-ink-ripple=""><i class="ion ion-document"></i>Documentation</button>
+    <button type="button" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-document"></i>Documentation</button>
   </li>
 
 	<!--&lt;!&ndash; notification drop &ndash;&gt;-->
@@ -88,6 +88,7 @@
 	<li class="profile-drop hidden-xs dropdown" dropdown>
 		<a href dropdown-toggle>
 			<img src="images/admin.jpg" alt="admin-pic">
+      <span class="caret text-info"></span>
 		</a>
 		<ul class="dropdown-menu dropdown-menu-right">
 			<li><a href="javascript:;"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
@@ -98,171 +99,5 @@
 		</ul>
 	</li>
 	<!-- #end profile-drop -->
-
-	<!-- sidebar contact -->
-	<li class="floating-sidebar"  ng-class="{'open': floatingSidebar}">
-		<a href ng-click="toggleFloatingSidebar()">
-			<i class="ion ion-grid"></i>
-		</a>
-		<div class="sidebar-wrap" custom-scrollbar>
-			<tabset justified="true">
-				<tab>
-					<tab-heading>Chat</tab-heading>
-					<div class="chat-tab tab clearfix">
-						<h5 class="title mt0 mb30">Online</h5>
-						<div class="user-container mb15">
-							<img src="images/sample/1.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">John Wick</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;San Franciso, USA</p>
-
-							</div>
-							<span class="ion ion-record avail right on"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/2.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">George K.</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;California, USA</p>
-							</div>
-							<span class="ion ion-record avail right on"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/3.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Shello Dse.</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;Berlin, Germany</p>
-							</div>
-							<span class="ion ion-record avail right away"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/4.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Lucas Tower</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;Paris, France</p>
-							</div>
-							<span class="ion ion-record avail right away"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/5.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Hey Win</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;Hongkong, China</p>
-							</div>
-							<span class="ion ion-record avail right on"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/6.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Kelvin L.</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;Moscow, Russia</p>
-							</div>
-							<span class="ion ion-record avail right on"></span>
-						</div>
-
-						<h5 class="title mt0 mb30">Offline</h5>
-
-						<div class="user-container mb15">
-							<img src="images/sample/7.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Martin Xx.</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;xxx, yyy</p>
-							</div>
-							<span class="ion ion-record avail right off"></span>
-						</div>
-
-						<div class="user-container mb15">
-							<img src="images/sample/2.jpg" alt="">
-							<div class="desc">
-								<p class="mb0">Lorem Ipsum</p>
-								<p class="xsmall"><span class="ion ion-location"></span>&nbsp;Virginia, USA</p>
-							</div>
-							<span class="ion ion-record avail right off"></span>
-						</div>
-					</div>
-				</tab>
-				<tab heading="Info">
-					<div class="info-tab tab clearfix">
-						<h5 class="title mt0 mb30">Work in Progress</h5>
-						<ul class="list-unstyled mb15 clearfix">
-							<li>
-								<div class="clearfix mb10">
-									<small class="left">App Upload</small>
-									<small class="right">80%</small>
-								</div>
-								<progressbar value="80" class="progress-xs" type="primary"></progressbar>
-							</li>
-							<li>
-								<div class="clearfix mb10">
-									<small class="left">Creating Assets</small>
-									<small class="right">50%</small>
-								</div>
-								<progressbar value="50" class="progress-xs" type="danger"></progressbar>
-							</li>
-							<li>
-								<div class="clearfix mb10">
-									<small class="left">New UI 2.0</small>
-									<small class="right">90%</small>
-								</div>
-								<progressbar value="90" class="progress-xs" type="success"></progressbar>
-							</li>
-						</ul>
-
-						<h5 class="title mt0 mb30">Settings</h5>
-						<div class="clearfix mb15">
-							<div class="left">
-								<p>Show me online</p>
-							</div>
-
-							<div class="right">
-								<div class="ui-toggle ui-toggle-success ui-toggle-xs">
-									<label>
-										<input type="checkbox" checked>
-										<span></span>
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div class="clearfix mb15">
-							<div class="left">
-								<p>Notifications</p>
-							</div>
-
-							<div class="right">
-								<div class="ui-toggle ui-toggle-success ui-toggle-xs">
-									<label>
-										<input type="checkbox">
-										<span></span>
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div class="clearfix mb15">
-							<div class="left">
-								<p>Enable History</p>
-							</div>
-
-							<div class="right">
-								<div class="ui-toggle ui-toggle-success ui-toggle-xs">
-									<label>
-										<input type="checkbox" checked>
-										<span></span>
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
-				</tab>
-			</tabset>
-
-		</div>
-	</li>
 </ul>
 

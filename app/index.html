@@ -51,7 +51,7 @@
 	<div class="main-container clearfix" ng-class="{'nav-expand': navFull, 'nav-horizontal': navHorizontal}">
 		<aside class="nav-wrap" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}"
 			id="site-nav" custom-scrollbar
-			ng-include=" 'views/nav.html' ">
+			ng-include=" 'views/categorybar.html' ">
 
 		</aside>
 
@@ -63,48 +63,6 @@
 		</div>
 
 	</div> <!-- #end main-container -->
-
-
-	<!-- settings -->
-	<div class="site-settings clearfix hidden-xs" ng-class="{'open': isSettingsOpen}">
-		<div class="settings clearfix">
-			<div class="trigger ion ion-settings left" ng-click="toggleSettingsBox()"></div>
-			<div class="wrapper left">
-				<ul class="list-unstyled other-settings">
-					<li class="clearfix mb10">
-						<div class="left small">Nav Horizontal</div>
-						<md-switch class="right" ng-model="navHorizontal" style="margin: 0" ng-change="onNavHorizontal()">
-						</md-switch>
-					</li>
-					<li class="clearfix mb10">
-						<div class="left small">Fixed Header</div>
-						<md-switch class="right" ng-model="fixedHeader" style="margin: 0" ng-change="onFixedHeader()">
-						</md-switch>
-					</li>
-					<li class="clearfix mb10">
-						<div class="left small">Nav Full</div>
-						<md-switch class="right" ng-model="navFull" style="margin: 0" ng-change="onNavFull()">
-						</md-switch>
-					</li>
-				</ul>
-				<hr/>
-				<ul class="themes list-unstyled">
-					<li ng-class="{active: theme-zero}" ng-model="themeModel" btn-radio="'theme-zero'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-one}" ng-model="themeModel" btn-radio="'theme-one'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-two}" ng-model="themeModel" btn-radio="'theme-two'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-three}" ng-model="themeModel" btn-radio="'theme-three'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-four}" ng-model="themeModel" btn-radio="'theme-four'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-five}" ng-model="themeModel" btn-radio="'theme-five'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-six}" ng-model="themeModel" btn-radio="'theme-six'" ng-change="onThemeChange(themeModel)"></li>
-					<li ng-class="{active: theme-seven}" ng-model="themeModel" btn-radio="'theme-seven'" ng-change="onThemeChange(themeModel)"></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<!-- #settings -->
-
-
-
 
 	<!-- Dev only -->
 	<!-- build:remove -->
