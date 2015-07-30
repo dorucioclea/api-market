@@ -7,48 +7,51 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="dash-head clearfix mt10 mb20">
           <div class="group left col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a href class="nav-trigger" ng-click="toggleNav()">
-              <i class="ion ion-eye"></i>
-             <span class="text">Show categories</span>
-            </a>
+            <button href class="mt5 mb5 btn btn-primary" ng-click="toggleNav()">
+              <i class="ion ion-eye" ng-hide="navFull"></i>
+              <i class="ion ion-eye-disabled" ng-show="navFull"></i>
+              <span class="text">{{navFull? 'Hide' : 'Show' }} categories</span>
+            </button>
           </div>
           <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12 right">
-            <div class="mt5 mb5 right col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 btn-group" ng-init="displayModel='Grid'">
-              <label class="btn btn-primary fa fa-th-large" ng-model="displayModel" btn-radio="'Grid'" uncheckable></label>
-              <label class="btn btn-primary fa fa-bars" ng-model="displayModel" btn-radio="'List'" uncheckable></label>
+            <div class="mt5 mb5 right col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 btn-group" ng-init="displayMode='Grid'">
+              <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" uncheckable></label>
+              <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" uncheckable></label>
             </div>
+          </div>
+          <div>
             <!--<ul class="list-unstyled right-elems">-->
-              <!--<li class="drop-info dropdown" dropdown>-->
-                <!--<a href dropdown-toggle>-->
-                  <!--<span class="mt10">Pricing: </span>-->
-                  <!--<button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                    <!--All-->
-                    <!--<span class="caret"></span>-->
-                  <!--</button>-->
-                <!--</a>-->
-                <!--<ul class="dropdown-menu">-->
-                  <!--<li><a href="javascript:;">All</a></li>-->
-                  <!--<li><a href="javascript:;">Free</a></li>-->
-                  <!--<li><a href="javascript:;">Freemium</a></li>-->
-                  <!--<li><a href="javascript:;">Paid</a></li>-->
-                <!--</ul>-->
-              <!--</li>-->
-              <!--<li class="drop-info dropdown" dropdown>-->
-                <!--<a href dropdown-toggle>-->
-                  <!--<span class="mt10">Sort by: </span>-->
-                  <!--<button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                    <!--Popular-->
-                    <!--<span class="caret"></span>-->
-                  <!--</button>-->
-                <!--</a>-->
-                <!--<ul class="dropdown-menu">-->
-                  <!--<li><a href="javascript:;">Popular</a></li>-->
-                  <!--<li><a href="javascript:;">Relevant</a></li>-->
-                  <!--<li><a href="javascript:;">Newest</a></li>-->
-                  <!--<li class="divider"></li>-->
-                  <!--<li><a href="javascript:;">My APIs</a></li>-->
-                <!--</ul>-->
-              <!--</li>-->
+            <!--<li class="drop-info dropdown" dropdown>-->
+            <!--<a href dropdown-toggle>-->
+            <!--<span class="mt10">Pricing: </span>-->
+            <!--<button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+            <!--All-->
+            <!--<span class="caret"></span>-->
+            <!--</button>-->
+            <!--</a>-->
+            <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="javascript:;">All</a></li>-->
+            <!--<li><a href="javascript:;">Free</a></li>-->
+            <!--<li><a href="javascript:;">Freemium</a></li>-->
+            <!--<li><a href="javascript:;">Paid</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="drop-info dropdown" dropdown>-->
+            <!--<a href dropdown-toggle>-->
+            <!--<span class="mt10">Sort by: </span>-->
+            <!--<button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+            <!--Popular-->
+            <!--<span class="caret"></span>-->
+            <!--</button>-->
+            <!--</a>-->
+            <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="javascript:;">Popular</a></li>-->
+            <!--<li><a href="javascript:;">Relevant</a></li>-->
+            <!--<li><a href="javascript:;">Newest</a></li>-->
+            <!--<li class="divider"></li>-->
+            <!--<li><a href="javascript:;">My APIs</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
             <!--</ul>-->
           </div>
         </div>
@@ -56,7 +59,7 @@
     </div> <!-- #end row -->
 
     <!-- API List/Grid switcher -->
-    <div class="row" ng-switch="displayModel">
+    <div class="row" ng-switch="displayMode">
       <div ng-switch-when="Grid"><div ng-include="'views/partials/grid.html'"></div></div>
       <div ng-switch-when="List"><div ng-include="'views/partials/list.html'"></div></div>
       <div ng-switch-default><div ng-include="'views/partials/grid.html'"></div></div>

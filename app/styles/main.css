@@ -2680,7 +2680,7 @@ fieldset[disabled] .btn-header.active {
 @media (min-width: 768px) {
   .app.nav-min .toast.toast-topLeft,
   .app.nav-min .toast.toast-bottomLeft {
-    left: 70px;
+    left: 5px;
   }
 }
 .alert {
@@ -3737,9 +3737,9 @@ fieldset[disabled] .btn-header.active {
 }
 .site-head {
   position: relative;
-  width: calc(100% - 65px);
+  width: calc(100% - 0px);
   height: 55px;
-  margin-left: 65px;
+  margin-left: 0px;
 }
 .site-head.fixedHeader {
   position: fixed;
@@ -3762,7 +3762,7 @@ fieldset[disabled] .btn-header.active {
   margin-top: 55px;
 }
 .main-container .nav-wrap {
-  width: 65px;
+  width: 0px;
   position: fixed;
   overflow-y: auto;
   top: 0;
@@ -3790,8 +3790,8 @@ fieldset[disabled] .btn-header.active {
   width: 220px;
 }
 .main-container .content-container {
-  margin-left: 65px;
-  width: calc(100% - 65px);
+  margin-left: 0px;
+  width: calc(100% - 0px);
 }
 .main-container .content-container.nav-expand {
   width: calc(100% - 220px);
@@ -4105,7 +4105,7 @@ fieldset[disabled] .btn-header.active {
   height: 55px;
   display: table;
   overflow: hidden;
-  width: 65px;
+  width: 0px;
   position: fixed;
   -webkit-transition: 0.25s ease-in;
   -o-transition: 0.25s ease-in;
