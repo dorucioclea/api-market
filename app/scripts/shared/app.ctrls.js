@@ -19,14 +19,14 @@ angular.module("app.ctrls", [])
 			this.$apply(fn);
 		}
 	};
-	
+
 	mm.addListener(function(m) {
 		$rs.safeApply(function() {
 			$rs.isMobile = (m.matches) ? true : false;
-		});	
+		});
 	});
 
-	
+
 	$scope.navFull = true;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;
@@ -45,10 +45,10 @@ angular.module("app.ctrls", [])
 	};
 
 	$scope.themeActive = "theme-zero";	// first theme
-	
+
 	$scope.fixedHeader = true;
 	$scope.navHorizontal = false;	// this will access by other directive, so in rootScope.
-	
+
 
 	// === saving states
 	var SETTINGS_STATES = "_setting-states";
@@ -75,7 +75,7 @@ angular.module("app.ctrls", [])
 		$scope.navFull = sQuery.navFull;
 		$scope.themeActive = sQuery.themeActive;
 	}
-	
+
 
 
 
@@ -91,8 +91,8 @@ angular.module("app.ctrls", [])
 
 		$timeout(function() {
 			$rs.$broadcast("c3.resize");
-		}, 260);	
-		
+		}, 260);
+
 	};
 
 	$scope.onFixedHeader = function() {
@@ -128,13 +128,15 @@ angular.module("app.ctrls", [])
          	Fullscreen.all()
 	};
 
-	
+
 }])
 
 
 /// ==== Dashboard Controller
 .controller("DashboardCtrl", ["$scope", function($scope) {
 
+  $scope.sorting = 'Popular';
+  $scope.pricingFilter = 'All';
 
 	$scope.analyticsconfig = {
 		data: {
