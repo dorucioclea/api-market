@@ -26,6 +26,9 @@ angular.module("app.ctrls", [])
 		});
 	});
 
+  $scope.availableCategories = [{ id: 0, name: "Location" }, { id: 1, name: "Business" }, { id: 2, name: "Social" },
+    { id: 3, name: "Communication" }, { id: 4, name: "Data" }, { id: 5, name: "Other" } ];
+
 
 	$scope.navFull = true;
 	$scope.toggleNav = function() {

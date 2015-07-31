@@ -144,6 +144,10 @@ a.text-pink:hover {
 a.text-purple:hover {
   color: #512e90;
 }
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .list-unstyled {
   margin-bottom: 0;
 }
