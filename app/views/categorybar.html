@@ -12,23 +12,11 @@
 <nav class="site-nav clearfix" role="navigation">
   <!-- categories -->
   <ul class="list-unstyled clearfix col-sm-offset-1 mt30 mb30">
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
+    <li ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
+      <a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
     </li>
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
-    </li>
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
-    </li>
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
-    </li>
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
-    </li>
-    <li ng-repeat="category in availableCategories">
-      <a class="btn-tag btn-tag-primary btn-w170" href="javascript:;" md-ink-ripple>{{category.name}}</a>
+    <li class="btn btn-xs" ng-hide="currentCategories.length == 0">
+      <a href="" ng-click="clearSelectedCategories()"><h5>Enable all</h5></a>
     </li>
   </ul> <!-- #end navigation -->
 </nav>

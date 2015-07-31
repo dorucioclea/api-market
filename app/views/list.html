@@ -2,7 +2,7 @@
 <div class="col-md-12">
   <div class="panel panel-lined mb20 table-responsive">
     <table class="table table-bordered text-center">
-      <tr ng-repeat="api in availableAPIs | pricing:currentPricing">
+      <tr ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing">
         <td>
           <div class="media media-middle">
             <img src={{api.logoUrl}}>
