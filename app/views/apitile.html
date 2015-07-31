@@ -1,31 +1,31 @@
 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
   <div class="panel panel-primary mb20 text-center">
     <div class="panel-heading">
-      <h4>API Name</h4>
+      <h4>{{api.name}}</h4>
     </div>
     <div class="panel-body">
       <div class="clearfix">
         <div class="info">
           <a href="">
-            <img class="img img-circle publisher-img" src="images/admin.jpg">
-            <span class="mt0 text-primary publisher-text text-uppercase">Publisher</span>
+            <img class="img img-circle publisher-img" src={{api.ownerLogoUrl}}>
+            <span class="mt0 text-primary publisher-text text-uppercase">{{api.owner}}</span>
           </a>
         </div>
         <div class="media media-middle">
-          <img src="images/yeoman.png">
-        </div>
+          <img src={{api.logoUrl}}>
+        </div>test
         <div class="info">
-          <p class="description text-light">API Description goes here</p>
+          <p class="description text-light">{{api.description}}</p>
         </div>
       </div>
     </div>
     <div class="panel-footer clearfix">
-      <div class="text-uppercase">FREE</div>
+      <div class="text-uppercase">{{api.pricing}}</div>
     </div>
     <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-      <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> 999</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> 222</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> 100%</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> {{api.users}}</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> {{api.followers}}</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> {{api.uptimePercent}}%</div>
     </div>
   </div>
 </div>
