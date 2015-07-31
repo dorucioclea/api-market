@@ -5,12 +5,12 @@
       <tr ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing">
         <td>
           <div class="media media-middle">
-            <img src={{api.logoUrl}}>
+            <a href=""><img src={{api.logoUrl}}></a>
           </div>
         </td>
         <td class="text-left">
           <div class="text-primary">
-            <a href="#" >{{api.name}}</a><span class="text-default text-light"> by </span><a href="#" >{{api.owner}}</a>
+            <a href="" >{{api.name}}</a><span class="text-default text-light"> by </span><a href="" >{{api.owner}}</a>
           </div>
           <div class="description">
             {{api.description}}
@@ -25,7 +25,7 @@
           <div class="fa-hover col-xs-4"><b>{{api.uptimePercent}}%</b><br>uptime</div>
         </td>
         <td>
-          <div class="fa-hover"><i class="text-primary fa fa-star-o"></i></div>
+          <div class="fa-hover"><a href=""><i class="text-primary follow-icon fa fa-star-o"></i></a></div>
         </td>
       </tr>
     </table>

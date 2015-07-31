@@ -5324,6 +5324,10 @@ md-input-container {
 .page-dashboard .bg-red {
   background: red;
 }
+.page-dashboard .follow-icon {
+  font-weight: bolder;
+  font-size: 22px;
+}
 /*
  * angular-loading-bar v0.6.0
  * https://chieffancypants.github.io/angular-loading-bar

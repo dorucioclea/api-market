@@ -148,20 +148,6 @@ angular.module("app.directives", [])
 
 }])
 
-.directive('apiTile', function() {
-  return {
-    restrict: 'E',
-    templateUrl: '/views/apitile.html'
-  }
-})
-
-.directive('apiList', function() {
-    return {
-      restrict: 'E',
-      templateUrl: '/views/apilist.html'
-    }
-})
-
 }())
 
 
