@@ -1579,6 +1579,18 @@ fieldset[disabled] .btn-header.active {
 .btn-w140 {
   width: 140px;
 }
+.btn-w150 {
+  width: 150px;
+}
+.btn-w160 {
+  width: 160px;
+}
+.btn-w170 {
+  width: 170px;
+}
+.btn-w180 {
+  width: 180px;
+}
 .btn-w200 {
   width: 200px;
 }

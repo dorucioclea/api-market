@@ -19,43 +19,43 @@
               <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" uncheckable></label>
             </div>
             <div class="mt5 mb5 col-lg-4 col-md-4 hidden-sm">
-            <ul class="list-unstyled right-elems">
-              <li dropdown>
-                <a href dropdown-toggle>
-                  <span class="mt10">Pricing:</span>
-                  <button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    {{pricingFilter}}
-                    <span class="caret"></span>
-                  </button>
-                </a>
-                <ul class="dropdown-menu">
-                  <li ng-click="pricingFilter = 'All'"><a href="javascript:;">All</a></li>
-                  <li ng-click="pricingFilter = 'Free'"><a href="javascript:;">Free</a></li>
-                  <li ng-click="pricingFilter = 'Freemium'"><a href="javascript:;">Freemium</a></li>
-                  <li ng-click="pricingFilter = 'Paid'"><a href="javascript:;">Paid</a></li>
-                </ul>
-              </li>
+              <ul class="list-unstyled right-elems">
+                <li dropdown>
+                  <a href dropdown-toggle>
+                    <span class="mt10">Sort by:</span>
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      {{sorting}}
+                      <span class="caret"></span>
+                    </button>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li ng-click="sorting = 'Popular'"><a href="javascript:;">Popular</a></li>
+                    <li ng-click="sorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>
+                    <li ng-click="sorting = 'Newest'"><a href="javascript:;">Newest</a></li>
+                    <li class="divider"></li>
+                    <li ng-click="sorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>
+                  </ul>
+                </li>
               </ul>
-              </div>
+            </div>
             <div class="mt5 mb5 col-lg-4 col-md-4 hidden-sm">
               <ul class="list-unstyled right-elems">
-              <li dropdown>
-                <a href dropdown-toggle>
-                  <span class="mt10">Sort by:</span>
-                  <button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    {{sorting}}
-                    <span class="caret"></span>
-                  </button>
-                </a>
-                <ul class="dropdown-menu">
-                  <li ng-click="sorting = 'Popular'"><a href="javascript:;">Popular</a></li>
-                  <li ng-click="sorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>
-                  <li ng-click="sorting = 'Newest'"><a href="javascript:;">Newest</a></li>
-                  <li class="divider"></li>
-                  <li ng-click="sorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>
-                </ul>
-              </li>
-            </ul>
+                <li dropdown>
+                  <a href dropdown-toggle>
+                    <span class="mt10">Pricing:</span>
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      {{pricingFilter}}
+                      <span class="caret"></span>
+                    </button>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li ng-click="pricingFilter = 'All'"><a href="javascript:;">All</a></li>
+                    <li ng-click="pricingFilter = 'Free'"><a href="javascript:;">Free</a></li>
+                    <li ng-click="pricingFilter = 'Freemium'"><a href="javascript:;">Freemium</a></li>
+                    <li ng-click="pricingFilter = 'Paid'"><a href="javascript:;">Paid</a></li>
+                  </ul>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
