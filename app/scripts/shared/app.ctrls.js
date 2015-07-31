@@ -134,18 +134,36 @@ angular.module("app.ctrls", [])
 
 }])
 
+.filter('pricing', function () {
+    return function(apis, currentPricingFilter) {
+      var out = [];
+      for (var i = 0; i < apis.length; i++) {
+        var api = apis[i];
+        if (currentPricingFilter.toLowerCase() == 'all') {
+          out.push(api)
+        } else {
+          if (currentPricingFilter.toLowerCase() == api.pricing.toLowerCase()) {
+            out.push(api)
+          }
+        }
+      }
+      return out;
+    }
+  })
+
 
 /// ==== Dashboard Controller
 .controller("DashboardCtrl", ["$scope", function($scope) {
 
-  $scope.sorting = 'Popular';
-  $scope.pricingFilter = 'All';
+  $scope.currentSorting = 'Popular';
+  $scope.currentPricing = 'All';
 
-  $scope.availableAPIs = [{ name: "Petstore", logoUrl: "images/yeoman.png", owner: "Swagger Team", ownerLogoUrl: "images/admin.jpg", pricing: "FREE", users: 3234, followers: 232, uptimePercent: 100, description: 'Petstore swagger test API'},
-    { name: "WeatherAPI", logoUrl: "images/yeoman.png", owner: "KMI", ownerLogoUrl: "images/sample/1.jpg", pricing: "PAID", users: 496, followers: 128, uptimePercent: 96, description: 'Returns weather forecasts for requested zip code'},
-    { name: "Test API 1", logoUrl: "images/yeoman.png", owner: "Trust1Team", ownerLogoUrl: "images/sample/2.jpg", pricing: "FREEMIUM", users: 3234, followers: 232, uptimePercent: 50, description: 'Test Description'},
+
+  $scope.availableAPIs = [{ name: "Petstore", logoUrl: "images/yeoman.png", owner: "Swagger Team", ownerLogoUrl: "images/admin.jpg", pricing: "Free", users: 3234, followers: 232, uptimePercent: 100, description: 'Petstore swagger test API', tags: [1,4]},
+    { name: "WeatherAPI", logoUrl: "images/yeoman.png", owner: "KMI", ownerLogoUrl: "images/sample/1.jpg", pricing: "Paid", users: 496, followers: 128, uptimePercent: 96, description: 'Returns weather forecasts for requested zip code'},
+    { name: "Test API 1", logoUrl: "images/yeoman.png", owner: "Trust1Team", ownerLogoUrl: "images/sample/2.jpg", pricing: "Freemium", users: 3234, followers: 232, uptimePercent: 50, description: 'Test Description'},
     { name: "Google Experimental API with very long name", logoUrl: "images/yeoman.png", owner: "Google",  ownerLogoUrl: "images/sample/3.jpg", pricing: "FREE", users: 22, followers: 8, uptimePercent: 5, description: 'Google API'},
-    { name: "Facebook Profile API", logoUrl: "images/yeoman.png", owner: "Facebook", ownerLogoUrl: "images/sample/4.jpg", pricing: "FREEMIUM", users: 119320, followers: 9999, uptimePercent: 88, description: 'Test Description'}];
+    { name: "Facebook Profile API", logoUrl: "images/yeoman.png", owner: "Facebook", ownerLogoUrl: "images/sample/4.jpg", pricing: "Freemium", users: 119320, followers: 9999, uptimePercent: 88, description: 'Test Description'}];
 
 	$scope.analyticsconfig = {
 		data: {

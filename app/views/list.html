@@ -2,7 +2,7 @@
 <div class="col-md-12">
   <div class="panel panel-lined mb20 table-responsive">
     <table class="table table-bordered text-center">
-      <tr ng-repeat="api in availableAPIs">
+      <tr ng-repeat="api in availableAPIs | pricing:currentPricing">
         <td>
           <div class="media media-middle">
             <img src={{api.logoUrl}}>
@@ -17,7 +17,7 @@
           </div>
         </td>
         <td>
-          <div class="text-bold">{{api.pricing}}</div>
+          <div class="text-bold text-uppercase">{{api.pricing}}</div>
         </td>
         <td>
           <div class="fa-hover col-xs-4"><b>{{api.users}}</b><br>developers</div>
