@@ -4167,13 +4167,6 @@ fieldset[disabled] .btn-danger.active {
     overflow: hidden;
   }
 }
-.main-container .nav-wrap:hover {
-  width: 220px;
-}
-.main-container .nav-wrap:hover .nav-head {
-  width: 220px;
-  position: absolute;
-}
 .site-head.nav-expand {
   width: calc(100% - 220px);
   margin-left: 220px;
@@ -4501,7 +4494,7 @@ fieldset[disabled] .btn-danger.active {
   display: table;
   overflow: hidden;
   width: 0px;
-  position: fixed;
+  position: absolute;
   -webkit-transition: 0.25s ease-in;
   -o-transition: 0.25s ease-in;
   transition: 0.25s ease-in;

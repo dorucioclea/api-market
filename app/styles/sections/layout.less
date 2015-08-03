@@ -43,18 +43,10 @@
 	@media (min-width: @screen-sm-min) {
 		overflow: hidden;	// it's must for custom scrollbar
 	}
-	&:hover {
-		width: @site-nav-width;
-		.nav-head {
-			width: @site-nav-width;
-      position: absolute;
-		}
-	}
 }
 .site-head.nav-expand {
 	width: calc(~'100% - @{site-nav-width}');
 	margin-left: @site-nav-width;
-
 }
 .main-container .nav-wrap.nav-expand {
 	width: @site-nav-width;
