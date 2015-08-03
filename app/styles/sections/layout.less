@@ -37,7 +37,7 @@
 // ======================
 .main-container .nav-wrap {
 	width: @site-nav-min-width;
-	position: fixed; 
+	position: fixed;
 	overflow-y: auto;
 	top: 0; bottom: 0;
 	@media (min-width: @screen-sm-min) {
@@ -47,13 +47,14 @@
 		width: @site-nav-width;
 		.nav-head {
 			width: @site-nav-width;
+      position: absolute;
 		}
 	}
 }
 .site-head.nav-expand {
 	width: calc(~'100% - @{site-nav-width}');
 	margin-left: @site-nav-width;
-	
+
 }
 .main-container .nav-wrap.nav-expand {
 	width: @site-nav-width;
@@ -66,7 +67,7 @@
 .main-container .content-container {
 	margin-left: @site-nav-min-width;
 	// border: 1px solid red;
-	width: calc(~'100% - @{site-nav-min-width}'); 
+	width: calc(~'100% - @{site-nav-min-width}');
 	// .transition(.25s ease-in);	// don't do this, otherwise something wrong happen.
 	&.nav-expand {
 		width: calc(~'100% - @{site-nav-width}');
