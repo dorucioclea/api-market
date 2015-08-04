@@ -2481,6 +2481,10 @@ fieldset[disabled] .btn-danger.active {
 .panel-pink > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #f8bbd0;
 }
+.api-grid {
+  height: 420px;
+  width: 320px;
+}
 .dropdown-menu {
   box-shadow: none;
   padding: 4px 0;

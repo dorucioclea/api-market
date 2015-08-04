@@ -2481,6 +2481,10 @@ fieldset[disabled] .btn-danger.active {
 .panel-pink > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #f8bbd0;
 }
+.api-grid {
+  height: 420px;
+  width: 320px;
+}
 .dropdown-menu {
   box-shadow: none;
   padding: 4px 0;
@@ -5457,6 +5461,9 @@ md-input-container {
     text-align: left;
   }
 }
+.page-dashboard {
+  /* centered columns styles */
+}
 .page-dashboard .dash-head {
   background: #fff;
   border: 1px solid #f7f7f7;
@@ -5699,6 +5706,15 @@ md-input-container {
 .page-dashboard .follow-icon {
   font-weight: bolder;
   font-size: 22px;
+}
+.page-dashboard .row-centered {
+  text-align: center;
+}
+.page-dashboard .col-centered {
+  display: inline-block;
+  float: none;
+  /* reset the text-align */
+  text-align: left;
 }
 /*
  * angular-loading-bar v0.6.0
