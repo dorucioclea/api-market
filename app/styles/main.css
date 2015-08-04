@@ -5240,6 +5240,20 @@ md-input-container {
   font-size: 26.4px;
   font-weight: bold;
 }
+.follow-icon {
+  font-weight: bolder;
+  font-size: 22px;
+}
+/* centered columns styles */
+.row-centered {
+  text-align: center;
+}
+.col-centered {
+  display: inline-block;
+  float: none;
+  /* reset the text-align */
+  text-align: left;
+}
 .page-err .err-container {
   text-align: center;
 }
@@ -5460,9 +5474,6 @@ md-input-container {
     float: left;
     text-align: left;
   }
-}
-.page-dashboard {
-  /* centered columns styles */
 }
 .page-dashboard .dash-head {
   background: #fff;
@@ -5696,25 +5707,6 @@ md-input-container {
 .page-dashboard .publisher-img {
   height: 25px;
   width: 25px;
-}
-.page-dashboard .bg-blue {
-  background: blue;
-}
-.page-dashboard .bg-red {
-  background: red;
-}
-.page-dashboard .follow-icon {
-  font-weight: bolder;
-  font-size: 22px;
-}
-.page-dashboard .row-centered {
-  text-align: center;
-}
-.page-dashboard .col-centered {
-  display: inline-block;
-  float: none;
-  /* reset the text-align */
-  text-align: left;
 }
 /*
  * angular-loading-bar v0.6.0
