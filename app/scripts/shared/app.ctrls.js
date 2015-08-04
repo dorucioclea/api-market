@@ -302,14 +302,10 @@ angular.module("app.ctrls", [])
 
     $scope.navFull = false;
 
-    var url = "http://petstore.swagger.io/v2/swagger.json";
-
-    $scope.definitionStatus = 'loading';
-    var swaggerOptions = {
-      url: url,
+    var swaggerUi = new SwaggerUi({
+      url:"http://petstore.swagger.io/v2/swagger.json",
       dom_id:"swagger-ui-container",
-      validatorUrl:null,
-      sorter : "alpha",
+      sorter: "alpha",
       onComplete: function() {
         $('#swagger-ui-container').find('a').each(function(idx, elem) {
           var href = $(elem).attr('href');
@@ -317,13 +313,13 @@ angular.module("app.ctrls", [])
             $(elem).removeAttr('href');
           }
         })
-          .find('div.sandbox_header').each(function(idx, elem) {
+        .find('div.sandbox_header').each(function(idx, elem) {
           $(elem).remove();
         })
-          .find('li.operation div.auth').each(function(idx, elem) {
+        .find("li.operation div.auth").each(function(idx, elem) {
           $(elem).remove();
         })
-          .find('li.operation div.access').each(function(idx, elem) {
+        .find("li.operation div.access").each(function(idx, elem) {
           $(elem).remove();
         });
         $scope.$apply(function(error) {
@@ -337,15 +333,11 @@ angular.module("app.ctrls", [])
           $scope.error = error;
         });
       }
-    };
-    $window.swaggerUi = new SwaggerUi(swaggerOptions);
-    $window.swaggerUi.load();
-    $scope.hasDefinition = true;
+    });
+
+    swaggerUi.load();
 
   }]);
-
-
-
-
+  
 // #end
 })();

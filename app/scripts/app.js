@@ -167,10 +167,11 @@
 
 				}]
 			}
-		})
-      .when("/api-doc", {
-        templateUrl: "views/api-doc.html",
-      });
+		});
+
+    $routeProvider.when("/api-doc", {
+      templateUrl: "views/api-doc.html"
+    });
 
 		// text angular loaded in email/inbox
 		$routeProvider.when("/email/inbox", {
