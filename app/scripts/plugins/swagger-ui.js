@@ -30586,7 +30586,7 @@ Emitter.prototype.hasListeners = function(event){
  * TODO: combatible error handling?
  */
 
-module.exports = function(arr, fn, initial){  
+module.exports = function(arr, fn, initial){
   var idx = 0;
   var len = arr.length;
   var curr = arguments.length == 3
@@ -30596,7 +30596,7 @@ module.exports = function(arr, fn, initial){
   while (idx < len) {
     curr = fn.call(null, curr, arr[idx], ++idx, arr);
   }
-  
+
   return curr;
 };
 },{}]},{},[1])(1)
@@ -31847,7 +31847,8 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     var elem = $('#' + Docs.escapeResourceName(this.parentId + '_' + this.nickname + '_content'));
     if (elem.is(':visible')){
       event.preventDefault();
-      $.bbq.pushState('#/', 2);
+      //$.bbq.pushState('#/', 2);
+      //Disabled, breaks collapsing of operations
       Docs.collapseOperation(elem);
     } else {
       Docs.expandOperation(elem);
