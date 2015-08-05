@@ -298,7 +298,7 @@ angular.module("app.ctrls", [])
 }])
 
 /// ==== API Documentation Controller
-.controller("ApiDocCtrl", ["$scope", function($scope, $window) {
+.controller("ApiDocCtrl", ["$scope", function($scope) {
 
     $scope.apiUrl = "";
     $scope.apiEnvironment = "dev";
@@ -344,7 +344,6 @@ angular.module("app.ctrls", [])
         });
       }
     });
-
     swaggerUi.load();
 
   }]);
