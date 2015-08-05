@@ -36,7 +36,7 @@ angular.module("app.ctrls", [])
     { id: 5, name: "Other" } ];
 
 
-	$scope.navFull = true;
+	$scope.navFull = false;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;
 		$rs.navOffCanvas = $rs.navOffCanvas ? false : true;
@@ -105,14 +105,14 @@ angular.module("app.ctrls", [])
 	var sQuery = statesQuery.get() || {
 		navHorizontal: $scope.navHorizontal,
 		fixedHeader: $scope.fixedHeader,
-		navFull: $scope.navFull,
+		//navFull: $scope.navFull,
 		themeActive: $scope.themeActive
 	};
 	// console.log(savedStates);
 	if(sQuery) {
 		$scope.navHorizontal = sQuery.navHorizontal;
 		$scope.fixedHeader = sQuery.fixedHeader;
-		$scope.navFull = sQuery.navFull;
+		//$scope.navFull = sQuery.navFull;
 		$scope.themeActive = sQuery.themeActive;
 	}
 
@@ -300,11 +300,10 @@ angular.module("app.ctrls", [])
 /// ==== API Documentation Controller
 .controller("ApiDocCtrl", ["$scope", function($scope, $window) {
 
-    $scope.navFull = false;
-
     var swaggerUi = new SwaggerUi({
       url:"http://petstore.swagger.io/v2/swagger.json",
       dom_id:"swagger-ui-container",
+      validatorUrl: null,
       sorter: "alpha",
       onComplete: function() {
         $('#swagger-ui-container').find('a').each(function(idx, elem) {
@@ -338,6 +337,6 @@ angular.module("app.ctrls", [])
     swaggerUi.load();
 
   }]);
-  
+
 // #end
 })();

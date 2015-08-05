@@ -5556,6 +5556,10 @@ fieldset[disabled] .btn-danger.active {
     color: #fff;
   }
 }
+.site-head ul.left-elems > li > .logo {
+  width: 55px;
+  height: 55px;
+}
 .site-head ul.left-elems > li > .form-search {
   position: relative;
   width: 240px;
