@@ -186,7 +186,7 @@ extend ' .btn-sm' has no matches
   line-height: 1.3em;
 }
 .swagger-section .swagger-ui-wrap ol {
-  margin: 0 0 10px;
+  margin: 0px 0 10px;
   padding: 0 0 0 18px;
   list-style-type: decimal;
 }
@@ -330,7 +330,7 @@ extend ' .btn-sm' has no matches
   font-size: 1.3em;
 }
 .swagger-section .swagger-ui-wrap table.fullwidth {
-  width: 90%;
+  width: 100%;
 }
 .swagger-section .swagger-ui-wrap .model-signature {
   font-family: "Droid Sans", sans-serif;
