@@ -300,6 +300,17 @@ angular.module("app.ctrls", [])
 /// ==== API Documentation Controller
 .controller("ApiDocCtrl", ["$scope", function($scope, $window) {
 
+    $scope.apiUrl = "";
+    $scope.apiEnvironment = "dev";
+    $scope.apiBaseUrl = "http://petstore.swagger.io";
+    $scope.apiVersion = "v2";
+
+    $scope.updateUrl = function() {
+      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion
+    };
+
+    $scope.updateUrl();
+
     var swaggerUi = new SwaggerUi({
       url:"http://petstore.swagger.io/v2/swagger.json",
       dom_id:"swagger-ui-container",
