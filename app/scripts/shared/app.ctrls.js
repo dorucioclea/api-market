@@ -363,7 +363,63 @@ angular.module("app.ctrls", [])
     };
 
     $scope.updateUrl();
+  }])
+
+
+/// ==== Contract Controller
+.controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {
+
+    $scope.selectedApp = {};
+
+    $scope.applications = [
+      { name: 'App1',      versions: ['v1', 'v2']},
+      { name: 'App3',      versions: ['v1']},
+      { name: 'App5',      versions: ['v2', 'v2.2']},
+      { name: 'App7',      versions: ['v36', 'v40']},
+      { name: 'App8',      versions: ['v2']}
+    ];
+
+    // Make sure first application is selected
+    $scope.selected = {name: $scope.applications[0].name};
+
+    // Watch for changes to the application select box and update selectedApp accordingly
+    $scope.$watch('selected.name', function(name){
+      delete $scope.selected.value;
+      angular.forEach($scope.applications, function(attr){
+        if(attr.name === name){
+          $scope.selectedApp = attr;
+        }
+      });
+    });
+
+    $scope.plans = [
+      "Unlimited",
+      "Bronze",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ];
+
+    $scope.modalAnim = "default";
+
+    $scope.modalOpen = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalServiceSelect.html",
+        size: "md",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
+
+    $scope.modalClose = function() {
+      $scope.$close();	// this method is associated with $modal scope which is this.
+    }
+
+
   }]);
+
 
 // #end
 })();
