@@ -141,7 +141,7 @@
 		});
 
 		$routeProvider
-			.when("/", {redirectTo: "/dashboard"})
+			.when("/", {redirectTo: "/contract"})
 			.when("/404", {templateUrl: "views/pages/404.html"})
 			.otherwise({redirectTo: "/404"});
 
@@ -168,6 +168,14 @@
 				}]
 			}
 		});
+
+    $routeProvider.when("/api-doc", {
+      templateUrl: "views/api-doc.html"
+    });
+
+    $routeProvider.when("/contract", {
+      templateUrl: "views/contract.html"
+    });
 
 		// text angular loaded in email/inbox
 		$routeProvider.when("/email/inbox", {
@@ -359,6 +367,6 @@
 
 
 
-}())
+}());
 
 

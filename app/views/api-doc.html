@@ -1,0 +1,164 @@
+<div class="page" ng-controller="ApiDocCtrl">
+  <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+
+  <div class="page-wrap">
+
+    <div class="row">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <!-- Main API info panel -->
+              <div class="api-logo col col-lg-1">
+                <img class="media center-block" src="images/yeoman.png">
+              </div>
+              <div class="ml20 col col-lg-10">
+                <h2>Swagger Petstore<a href=""> <i class="text-primary follow-icon fa fa-star-o"></i></a></h2>
+                <div class="api-info">
+                  <i class="text-primary fa fa-globe"> Online documentation</i>
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel lacus neque. In tempus, libero cursus pellentesque vehicula, urna quam faucibus velit, sed tempus nulla.
+                </div>
+          </div><!-- end main info panel -->
+        </div>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Documentation
+      </div>
+      <div class="panel-body">
+
+        <!-- Swagger API documentation panel -->
+        <div class="col-lg-9">
+          <div class="panel panel-default mb15">
+            <div class="panel-heading">
+              Swagger specification
+            </div>
+            <div class="panel-body">
+              <div class="swagger-section">
+                <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
+              </div>
+            </div>
+          </div>
+        </div><!-- end Swagger Documentation panel -->
+
+        <!-- Sidebar panels -->
+        <div class="col-lg-3">
+
+          <!-- Environments panel -->
+          <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+              Environments
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form mb20">
+                <div class="form-group">
+                  <div class="btn-group btn-group-justified" ng-click="isDisabled || updateUrl()">
+                    <label class="btn btn-primary " ng-model="apiEnvironment" btn-radio="'dev'">DEV</label>
+                    <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'acc'">ACC</label>
+                    <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'prod'">PROD</label>
+                  </div>
+                </div>
+              </form>
+              <button class="btn btn-default btn-block">REPORT BROKEN</button>
+            </div>
+          </div><!-- end Environments panel-->
+
+
+          <!-- Version panel -->
+          <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+              Version
+            </div>
+            <div class="panel-body text-center">
+              <form role="form" class="form-inline">
+                <div class="form-group">
+                  <select class="form-control" ng-model="apiVersion" ng-change="updateUrl()">
+                    <option value="v2" selected>v2</option>
+                    <option value="v1">v1</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+          <!-- API URL panel -->
+          <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+              API URL
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <input type="text" class="form-control" value="{{apiUrl}}">
+                </div>
+              </form>
+            </div>
+          </div><!-- end API URL panel -->
+
+          <!-- API Subscription panel -->
+          <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+              API Subscription
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form mb20">
+                <div class="form-group">
+                  <select class="form-control">
+                    <option value="0" selected disabled>Select Application</option>
+                    <option value="1">App1</option>
+                    <option value="2">Some other application</option>
+                    <option value="3">Third_Application</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+              </form>
+              <button class="btn btn-success btn-block">Subscribe</button>
+            </div>
+          </div><!-- end API Subscription panel -->
+
+          <!-- Authorization panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading text-center">
+              Additional Authorization Required
+            </div>
+            <div class="panel-body">
+              <p class="text-warning text-center">OAuth 2.0 Authentication</p> <button class="btn btn-warning btn-block">Authenticate</button>
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form">
+                <div class="form-group mb30">
+                  <div class="input-group mb5">
+                    <span class="input-group-addon ion ion-person"></span>
+                    <input type="text" class="form-control" placeholder="Client ID">
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon ion ion-locked"></span>
+                    <input type="text" class="form-control" placeholder="Client Secret">
+                  </div>
+                </div>
+                <div class="ui-checkbox ui-checkbox-circle">
+                  <p class="small text-muted text-uppercase mb5">Scopes</p>
+                  <label>
+                    <input type="checkbox" checked>
+                    <span>r_write</span>
+                  </label>
+                </div>
+              </form>
+            </div>
+          </div><!-- end authorization panel -->
+
+        </div> <!-- end sidebar panels -->
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>

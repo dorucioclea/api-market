@@ -1,5 +1,6 @@
 // Don't edit bootstrap folder, instead override it in `ui` folder.
 /// Import UI Style, import first (override bootstrap)
+@import (less) "plugins/swagger/screen.css";
 @import "ui/ui.less";	 // include overrided variables, colors etc...
 
 
@@ -27,6 +28,7 @@
 
 /// @import pages styles
 @import "pages/auth.less";
+@import "pages/page-common.less";
 @import "pages/err.less";
 @import "pages/invoice.less";
 @import "pages/timeline.less";
@@ -37,5 +39,4 @@
 /// Other plugins styles are load via lazyload
 @import "plugins/loading-bar.less";
 @import "plugins/perfect-scrollbar.less";
-
 

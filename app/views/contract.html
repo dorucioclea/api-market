@@ -1,0 +1,86 @@
+<div class="page" ng-controller="ContractCtrl">
+
+  <div class="col col-lg-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        Create new contract
+      </div>
+      <div class="panel-body">
+        <div class="row">
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="text-primary fa fa-cogs"></span> From Application
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form-inline">
+                <div class="form-group">
+                  <select class="form-control" ng-model="selected.name" ng-options="app.name as app.name for app in applications"></select>
+                </div>
+                <span class="fa fa-long-arrow-right"></span>
+                <div class="form-group">
+                  <select class="form-control">
+                    <option ng-repeat="version in selectedApp.versions" value="0">{{version}}</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+          <div class="row text-center text-primary">
+            <i class="fa fa-arrow-down fa-lg"></i>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="text-primary fa fa-bar-chart"></span> Using Plan
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form-inline">
+                <div class="form-group">
+                  <select class="form-control">
+                    <option value="0" selected disabled>Select plan</option>
+                    <option ng-repeat="plan in plans" value="1">{{plan}}</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+          <div class="row text-center text-primary">
+            <i class="fa fa-arrow-down fa-lg"></i>
+          </div>
+
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="text-primary fa fa-puzzle-piece"></span> To Service
+            </div>
+            <div class="panel-body">
+              <form role="form" class="form-inline">
+                <div class="form-group">
+                  <button class="btn btn-default form-control" ng-click="modalOpen()">Test Service</button>
+                  <p class="text-primary text-right xsmall">click to change</p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row text-center">
+          <div class="col-sm-6 col-sm-offset-3 mt20">
+            <button class="btn btn-default">Cancel</button>
+            <button class="btn btn-success" disabled>Create contract</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

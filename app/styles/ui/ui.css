@@ -71,7 +71,7 @@ code {
   background-color: #76b9f4 !important;
 }
 .bg-warning {
-  background-color: #fff176 !important;
+  background-color: #ff8d00 !important;
 }
 .bg-danger {
   background-color: #e60038 !important;
@@ -109,10 +109,10 @@ a.text-primary:hover {
   color: #28617f;
 }
 .text-warning {
-  color: #fff176;
+  color: #ff8d00;
 }
 a.text-warning:hover {
-  color: #ffec43;
+  color: #cc7100;
 }
 .text-success {
   color: #4a921f;
@@ -517,7 +517,7 @@ fieldset[disabled] .btn-purple.active {
 .btn-line-warning {
   color: #464646;
   background-color: transparent;
-  border-color: #fff071;
+  border-color: #fa8a00;
 }
 .btn-line-warning:hover,
 .btn-line-warning:focus,
@@ -525,7 +525,7 @@ fieldset[disabled] .btn-purple.active {
 .btn-line-warning.active,
 .open > .dropdown-toggle.btn-line-warning {
   color: #ffffff;
-  background-color: #fff176;
+  background-color: #ff8d00;
 }
 .btn-line-danger {
   color: #464646;
@@ -1676,7 +1676,7 @@ fieldset[disabled] .btn-header.active {
 .btn-icon-inline.btn-warning > i,
 .btn-icon-inline.btn-line-warning > span,
 .btn-icon-inline.btn-warning > span {
-  background: #ffee57;
+  background: #e07c00;
   color: #ffffff;
 }
 .btn-icon-inline.btn-line-danger > i,
@@ -1813,23 +1813,23 @@ fieldset[disabled] .btn-header.active {
 }
 .btn-tag-warning {
   color: #ffffff;
-  background: #fff176;
+  background: #ff8d00;
 }
 .btn-tag-warning:before {
-  border-left-color: #fff176;
+  border-left-color: #ff8d00;
 }
 .btn-tag-warning:hover,
 .btn-tag-warning:focus,
 .btn-tag-warning:active,
 .btn-tag-warning.active {
   color: #fff;
-  background: #ffec43;
+  background: #cc7100;
 }
 .btn-tag-warning:hover:before,
 .btn-tag-warning:focus:before,
 .btn-tag-warning:active:before,
 .btn-tag-warning.active:before {
-  border-left-color: #ffec43;
+  border-left-color: #cc7100;
 }
 .btn-tag-info {
   color: #ffffff;
@@ -2073,8 +2073,8 @@ fieldset[disabled] .btn-info.active {
 }
 .btn-warning {
   color: #ffffff;
-  background-color: #fff176;
-  border-color: #fff071;
+  background-color: #ff8d00;
+  border-color: #fa8a00;
 }
 .btn-warning:hover,
 .btn-warning:focus,
@@ -2083,8 +2083,8 @@ fieldset[disabled] .btn-info.active {
 .btn-warning.active,
 .open > .dropdown-toggle.btn-warning {
   color: #ffffff;
-  background-color: #ffec43;
-  border-color: #ffea34;
+  background-color: #cc7100;
+  border-color: #bd6800;
 }
 .btn-warning:active,
 .btn-warning.active,
@@ -2109,11 +2109,11 @@ fieldset[disabled] .btn-warning:active,
 .btn-warning.disabled.active,
 .btn-warning[disabled].active,
 fieldset[disabled] .btn-warning.active {
-  background-color: #fff176;
-  border-color: #fff071;
+  background-color: #ff8d00;
+  border-color: #fa8a00;
 }
 .btn-warning .badge {
-  color: #fff176;
+  color: #ff8d00;
   background-color: #ffffff;
 }
 .btn-danger {
@@ -2250,7 +2250,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #76b9f4;
 }
 .badge-warning {
-  background-color: #fff176;
+  background-color: #ff8d00;
 }
 .badge-danger {
   background-color: #e60038;
@@ -2354,22 +2354,22 @@ fieldset[disabled] .btn-danger.active {
   border-bottom-color: #76b9f4;
 }
 .panel-warning {
-  border-color: #fff176;
+  border-color: #ff8d00;
 }
 .panel-warning > .panel-heading {
   color: #ffffff;
-  background-color: #fff176;
-  border-color: #fff176;
+  background-color: #ff8d00;
+  border-color: #ff8d00;
 }
 .panel-warning > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #fff176;
+  border-top-color: #ff8d00;
 }
 .panel-warning > .panel-heading .badge {
-  color: #fff176;
+  color: #ff8d00;
   background-color: #ffffff;
 }
 .panel-warning > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #fff176;
+  border-bottom-color: #ff8d00;
 }
 .panel-danger {
   border-color: #e60038;
@@ -2452,7 +2452,7 @@ fieldset[disabled] .btn-danger.active {
   background: #4a921f;
 }
 .panel-footer-warning {
-  background: #fff176;
+  background: #ff8d00;
 }
 .panel-footer-danger {
   background: #e60038;
@@ -3552,8 +3552,8 @@ fieldset[disabled] .btn-danger.active {
 .ui-radio-warning label > input:checked + span:before,
 .ui-checkbox-warning label > input:checked + i:before,
 .ui-radio-warning label > input:checked + i:before {
-  background-color: #fff176;
-  border: 1px solid #fff069;
+  background-color: #ff8d00;
+  border: 1px solid #f28600;
 }
 .ui-checkbox-danger label > input:checked + span:after,
 .ui-radio-danger label > input:checked + span:after,
@@ -3741,7 +3741,7 @@ fieldset[disabled] .btn-danger.active {
 }
 .ui-toggle-warning label > input + span,
 .ui-toggle-warning label > input + i {
-  background-color: #fff176;
+  background-color: #ff8d00;
 }
 .ui-toggle-info label > input + span,
 .ui-toggle-info label > input + i {

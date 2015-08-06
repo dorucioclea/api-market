@@ -36,7 +36,7 @@ angular.module("app.ctrls", [])
     { id: 5, name: "Other" } ];
 
 
-	$scope.navFull = true;
+	$scope.navFull = false;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;
 		$rs.navOffCanvas = $rs.navOffCanvas ? false : true;
@@ -105,14 +105,14 @@ angular.module("app.ctrls", [])
 	var sQuery = statesQuery.get() || {
 		navHorizontal: $scope.navHorizontal,
 		fixedHeader: $scope.fixedHeader,
-		navFull: $scope.navFull,
+		//navFull: $scope.navFull,
 		themeActive: $scope.themeActive
 	};
 	// console.log(savedStates);
 	if(sQuery) {
 		$scope.navHorizontal = sQuery.navHorizontal;
 		$scope.fixedHeader = sQuery.fixedHeader;
-		$scope.navFull = sQuery.navFull;
+		//$scope.navFull = sQuery.navFull;
 		$scope.themeActive = sQuery.themeActive;
 	}
 
@@ -282,7 +282,7 @@ angular.module("app.ctrls", [])
 			["IE", 17.1],
 			["Other",7]
 			],
-			type: "donut",
+			type: "donut"
 		},
 		size: {
 			width: 260,
@@ -297,11 +297,129 @@ angular.module("app.ctrls", [])
 	}
 }])
 
+/// ==== API Documentation Controller
+.controller("ApiDocCtrl", ["$scope", function($scope) {
+
+    // Test API object
+
+    $scope.apiUrl = "";
+    $scope.apiEnvironment = "dev";
+    $scope.apiBaseUrl = "http://petstore.swagger.io";
+    $scope.apiVersion = "v2";
+    $scope.swaggerUi = null;
+
+    $scope.loadSwaggerUi = function(url) {
+      $scope.swaggerUi = new SwaggerUi({
+        url:url,
+        dom_id:"swagger-ui-container",
+        validatorUrl: null,
+        apisSorter: "alpha",
+        operationsSorter: "alpha",
+        onComplete: function() {
+          $('#swagger-ui-container').find('a').each(function(idx, elem) {
+            var href = $(elem).attr('href');
+            if (href[0] == '#') {
+              $(elem).removeAttr('href');
+            }
+          })
+            .find('div.sandbox_header').each(function(idx, elem) {
+              $(elem).remove();
+            })
+            .find("li.operation div.auth").each(function(idx, elem) {
+              $(elem).remove();
+            })
+            .find("li.operation div.access").each(function(idx, elem) {
+              $(elem).remove();
+            });
+          $scope.$apply(function(error) {
+            $scope.definitionStatus = 'complete';
+          });
+        },
+        onFailure: function() {
+          $scope.$apply(function(error) {
+            $scope.definitionStatus = 'error';
+            $scope.hasError = true;
+            $scope.error = error;
+          });
+        }
+      });
+      $scope.swaggerUi.load();
+    };
+
+    $scope.updateUrl = function() {
+      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
+      switch ($scope.apiEnvironment) {
+        case 'dev':
+              $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
+              break;
+        case 'acc':
+              $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
+              break;
+        case 'prod':
+              $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
+              break;
+      }
+      $scope.loadSwaggerUi($scope.swaggerUrl);
+    };
+
+    $scope.updateUrl();
+  }])
 
 
+/// ==== Contract Controller
+.controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {
+
+    $scope.selectedApp = {};
+
+    $scope.applications = [
+      { name: 'App1',      versions: ['v1', 'v2']},
+      { name: 'App3',      versions: ['v1']},
+      { name: 'App5',      versions: ['v2', 'v2.2']},
+      { name: 'App7',      versions: ['v36', 'v40']},
+      { name: 'App8',      versions: ['v2']}
+    ];
+
+    // Make sure first application is selected
+    $scope.selected = {name: $scope.applications[0].name};
+
+    // Watch for changes to the application select box and update selectedApp accordingly
+    $scope.$watch('selected.name', function(name){
+      delete $scope.selected.value;
+      angular.forEach($scope.applications, function(attr){
+        if(attr.name === name){
+          $scope.selectedApp = attr;
+        }
+      });
+    });
+
+    $scope.plans = [
+      "Unlimited",
+      "Bronze",
+      "Silver",
+      "Gold",
+      "Platinum"
+    ];
+
+    $scope.modalAnim = "default";
+
+    $scope.modalOpen = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalServiceSelect.html",
+        size: "md",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
+
+    $scope.modalClose = function() {
+      $scope.$close();	// this method is associated with $modal scope which is this.
+    }
 
 
+  }]);
 
 
 // #end
-})()
+})();

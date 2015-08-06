@@ -19,7 +19,7 @@
 		];
 
 		$scope.state = {};
-		$scope.timezone = [ 
+		$scope.timezone = [
 			{tag: 1, name: "Alaska"},
 			{tag: 1, name: "Hawaii"},
 			{tag: 2, name: "California"},
@@ -44,7 +44,7 @@
 			{tag: 4, name: "Louisiana"},
 			{tag: 4, name: "Minnesota"},
 			{tag: 4, name: "Mississippi"},
-			{tag: 4, name: "Missouri"},
+			{tag: 4, name: "Missouri"}
 		];
 
 		$scope.timezoneFn = function (item){
