@@ -300,52 +300,69 @@ angular.module("app.ctrls", [])
 /// ==== API Documentation Controller
 .controller("ApiDocCtrl", ["$scope", function($scope) {
 
+    // Test API object
+
     $scope.apiUrl = "";
     $scope.apiEnvironment = "dev";
     $scope.apiBaseUrl = "http://petstore.swagger.io";
     $scope.apiVersion = "v2";
+    $scope.swaggerUi = null;
+
+    $scope.loadSwaggerUi = function(url) {
+      $scope.swaggerUi = new SwaggerUi({
+        url:url,
+        dom_id:"swagger-ui-container",
+        validatorUrl: null,
+        apisSorter: "alpha",
+        operationsSorter: "alpha",
+        onComplete: function() {
+          $('#swagger-ui-container').find('a').each(function(idx, elem) {
+            var href = $(elem).attr('href');
+            if (href[0] == '#') {
+              $(elem).removeAttr('href');
+            }
+          })
+            .find('div.sandbox_header').each(function(idx, elem) {
+              $(elem).remove();
+            })
+            .find("li.operation div.auth").each(function(idx, elem) {
+              $(elem).remove();
+            })
+            .find("li.operation div.access").each(function(idx, elem) {
+              $(elem).remove();
+            });
+          $scope.$apply(function(error) {
+            $scope.definitionStatus = 'complete';
+          });
+        },
+        onFailure: function() {
+          $scope.$apply(function(error) {
+            $scope.definitionStatus = 'error';
+            $scope.hasError = true;
+            $scope.error = error;
+          });
+        }
+      });
+      $scope.swaggerUi.load();
+    };
 
     $scope.updateUrl = function() {
-      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion
+      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
+      switch ($scope.apiEnvironment) {
+        case 'dev':
+              $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
+              break;
+        case 'acc':
+              $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
+              break;
+        case 'prod':
+              $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
+              break;
+      }
+      $scope.loadSwaggerUi($scope.swaggerUrl);
     };
 
     $scope.updateUrl();
-
-    var swaggerUi = new SwaggerUi({
-      url:"http://petstore.swagger.io/v2/swagger.json",
-      dom_id:"swagger-ui-container",
-      validatorUrl: null,
-      sorter: "alpha",
-      onComplete: function() {
-        $('#swagger-ui-container').find('a').each(function(idx, elem) {
-          var href = $(elem).attr('href');
-          if (href[0] == '#') {
-            $(elem).removeAttr('href');
-          }
-        })
-        .find('div.sandbox_header').each(function(idx, elem) {
-          $(elem).remove();
-        })
-        .find("li.operation div.auth").each(function(idx, elem) {
-          $(elem).remove();
-        })
-        .find("li.operation div.access").each(function(idx, elem) {
-          $(elem).remove();
-        });
-        $scope.$apply(function(error) {
-          $scope.definitionStatus = 'complete';
-        });
-      },
-      onFailure: function() {
-        $scope.$apply(function(error) {
-          $scope.definitionStatus = 'error';
-          $scope.hasError = true;
-          $scope.error = error;
-        });
-      }
-    });
-    swaggerUi.load();
-
   }]);
 
 // #end
