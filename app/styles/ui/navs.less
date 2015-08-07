@@ -7,11 +7,11 @@
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	// border-top: none;
 	> .tab-pane {
-		// tab body 
+		// tab body
 	}
 }
 
-// === tabs 
+// === tabs
 .nav {
 	cursor: inherit;
 	> li {position: relative}
@@ -41,7 +41,7 @@
 			}
 		}
 		> a:hover {
-			color: @brand-pink;
+			color: @brand-primary;
 			border-color: transparent;
 		}
 
@@ -68,9 +68,9 @@
 			.square(100%);
 			background: transparent;
 			border: 1px solid @nav-tabs-border-color;
-			border-top: 2px solid @brand-pink;
+			border-top: 2px solid @brand-primary;
 			border-bottom-color: transparent;
-			z-index: -1; 
+			z-index: -1;
 			box-shadow: -1px 0 0 rgba(0, 0, 0, .015), 1px 0 0 rgba(0, 0, 0, .015);
 			top: 1px; left: -1px;
 			-webkit-transition: -webkit-transform 0.3s, background 0.3s;
@@ -110,7 +110,7 @@
 			width: 100%;
 			height: 0;
 			background: transparent;
-			z-index: -1; 
+			z-index: -1;
 			box-shadow: -1px 0 0 rgba(0, 0, 0, .015), 1px 0 0 rgba(0, 0, 0, .015);
 			bottom: 0; left: -1px;
 			.transition(.25s ease-in);
@@ -160,7 +160,7 @@
 		}
 		&.active > a:before { height: 3px }
 	}
-	
+
 	.tab-content {
 		border: none;
 	}
@@ -182,8 +182,8 @@
 	.nav-tabs {
 		// border: 1px solid red;
 		float: left;
-		display: inline-block;
-		width: 23%;
+		display: block;
+		width: 100%;
 	}
 	.nav-tabs > li {
 		width: 100%;
@@ -193,12 +193,12 @@
 			background: @gray-lightest;
 			border-bottom-color: @nav-tabs-border-color;
 		}
-		
+
 	}
 	.tab-content {
 		float: left;
-		display: inline-block;
-		width: 77%;
+		display: block;
+		width: 100%;
 	}
 }
 
@@ -218,7 +218,7 @@
 			background: @gray-lightest;
 			border-bottom-color: @nav-tabs-border-color;
 		}
-		
+
 	}
 	.tab-content {
 		float: right;
@@ -248,7 +248,7 @@
 	}
 	.tab-content > .tab-pane.active-remove{
 		visibility: hidden;
-	}	
+	}
 	.tab-content > .tab-pane.active-add {
 		.translate(20%; 0);
 		opacity: 0;
@@ -269,5 +269,5 @@
 			border-bottom: none!important
 		}
 	}
-	
+
 }

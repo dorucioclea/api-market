@@ -1,0 +1,108 @@
+<div class="page" ng-controller="OrganizationCtrl">
+  <div class="row">
+
+    <!-- Organization Basic Settings panel -->
+    <div class="col col-md-4 col-md-offset-1 mb30">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Organization Name
+        </div>
+        <div class="panel-body">
+          <div class="panel">
+            <div class="panel-body">
+              <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
+                  <textarea rows="5" class="form-control resize-v">Current Description goes here</textarea>
+                </div>
+              </form>
+              <button class="btn btn-default mt30">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end Organization Basic Settings panel -->
+
+    <!-- Organization Actions panels -->
+    <div class="col-md-6 mb20" ng-init="$scope.activeTab = 1">
+      <tabset class="hidden-xs tabs-flip">
+        <tab heading="Plans" active="$scope.activeTab === 1" ng-click="$scope.activeTab = 1">
+          <div class="clearfix">
+            <p class="filler w100"></p>
+            <p class="filler w90"></p>
+            <p class="filler w80"></p>
+            <p class="filler w70"></p>
+            <p class="filler w100"></p>
+            <p class="filler w90"></p>
+            <p class="filler w80"></p>
+            <p class="filler w70"></p>
+          </div>
+        </tab>
+        <tab heading="Services" active="$scope.activeTab === 2" ng-click="$scope.activeTab = 2">
+          <address class="mb0">
+            <strong>Minty, Pvt Ltd.</strong><br>
+            334 - Bahadur Chowk, Near Country Club<br>
+            New Delhi, ND 111001<br>
+            <abbr title="Phone">Ph:</abbr> (123) 456-7890
+          </address>
+        </tab>
+        <tab heading="Applications" active="$scope.activeTab === 3" ng-click="$scope.activeTab = 3">
+          <p class="filler w100"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+          <p class="filler w100"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+        </tab>
+        <tab heading="Members" active="$scope.activeTab === 4" ng-click="$scope.activeTab = 4">
+          <p class="filler w90"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+          <p class="filler w100"></p>
+          <p class="filler w90"></p>
+          <p class="filler w70"></p>
+        </tab>
+      </tabset>
+      <!-- TODO implement single tabset with dynamic class? -->
+      <tabset class="visible-xs tabs-vertical">
+        <tab heading="Plans" active="$scope.activeTab === 1" ng-click="$scope.activeTab = 1">
+          <div class="clearfix">
+            <p class="filler w100"></p>
+            <p class="filler w90"></p>
+            <p class="filler w80"></p>
+            <p class="filler w70"></p>
+            <p class="filler w100"></p>
+            <p class="filler w90"></p>
+            <p class="filler w80"></p>
+            <p class="filler w70"></p>
+          </div>
+        </tab>
+        <tab heading="Services" active="$scope.activeTab === 2" ng-click="$scope.activeTab = 2">
+          <address class="mb0">
+            <strong>Minty, Pvt Ltd.</strong><br>
+            334 - Bahadur Chowk, Near Country Club<br>
+            New Delhi, ND 111001<br>
+            <abbr title="Phone">Ph:</abbr> (123) 456-7890
+          </address>
+        </tab>
+        <tab heading="Applications" active="$scope.activeTab === 3" ng-click="$scope.activeTab = 3">
+          <p class="filler w100"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+          <p class="filler w100"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+        </tab>
+        <tab heading="Members" active="$scope.activeTab === 4" ng-click="$scope.activeTab = 4">
+          <p class="filler w90"></p>
+          <p class="filler w80"></p>
+          <p class="filler w70"></p>
+          <p class="filler w100"></p>
+          <p class="filler w90"></p>
+          <p class="filler w70"></p>
+        </tab>
+      </tabset>
+    </div>
+
+  </div>
+</div>

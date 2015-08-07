@@ -1,0 +1,49 @@
+<div class="page" ng-controller="ApplicationCtrl">
+  <div class="row">
+
+    <!-- Application Basic Settings panel -->
+    <div class="col-md-7 col-md-offset-1 col-sm-9 mb15">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Application Basic Settings
+        </div>
+        <div class="panel-body">
+          <div class="panel">
+            <div class="panel-body">
+              <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="control-label text-primary"><i class="fa fa-cogs"></i> Application Name</label>
+                  <input type="text" class="form-control" value="Current Application Name">
+                </div>
+
+                <div class="form-group mt30">
+                  <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
+                  <textarea rows="5" class="form-control resize-v">Current Description goes here</textarea>
+                </div>
+              </form>
+              <button class="btn btn-default mt30">Save</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- end Application Basic Settings panel -->
+    </div>
+
+
+    <!-- Application Actions panels -->
+    <div class="col-md-3 col-sm-3 col-xs-8 col-sm-offset-0 col-xs-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Actions
+        </div>
+        <div class="panel-body">
+          <button class="btn btn-block btn-primary">New Version</button>
+          <button class="btn btn-block btn-warning">Regenerate Keys</button>
+          <div class="mt30">
+            <button class="btn btn-block btn-danger">Delete Application</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

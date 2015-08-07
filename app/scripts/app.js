@@ -173,8 +173,24 @@
       templateUrl: "views/api-doc.html"
     });
 
+    $routeProvider.when("/application", {
+      templateUrl: "views/application.html"
+    });
+
     $routeProvider.when("/contract", {
       templateUrl: "views/contract.html"
+    });
+
+    $routeProvider.when("/new-application", {
+      templateUrl: "views/new-application.html"
+    });
+
+    $routeProvider.when("/new-organization", {
+      templateUrl: "views/new-organization.html"
+    });
+
+    $routeProvider.when("/organization", {
+      templateUrl: "views/organization.html"
     });
 
 		// text angular loaded in email/inbox

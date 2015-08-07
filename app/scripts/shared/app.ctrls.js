@@ -389,6 +389,15 @@ angular.module("app.ctrls", [])
     };
   })
 
+/// ==== Application Controller
+.controller("ApplicationCtrl", function () {
+
+  })
+
+/// ==== Organization Controller
+.controller("OrganizationCtrl", function () {
+
+  })
 
 /// ==== Contract Controller
 .controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {
