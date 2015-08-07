@@ -365,6 +365,30 @@ angular.module("app.ctrls", [])
     $scope.updateUrl();
   }])
 
+  .directive('oauth2', function() {
+    return {
+      templateUrl: "/views/templates/auth/oauth2.html"
+    };
+  })
+
+  .directive('basicAuth', function() {
+    return {
+      templateUrl: "/views/templates/auth/basic.html"
+    };
+  })
+
+  .directive('keyAuth', function() {
+    return {
+      templateUrl: "/views/templates/auth/key.html"
+    };
+  })
+
+  .directive('queryAuth', function() {
+    return {
+      templateUrl: "/views/templates/auth/query.html"
+    };
+  })
+
 
 /// ==== Contract Controller
 .controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {

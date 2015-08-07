@@ -63,9 +63,9 @@
 
     <!-- API List/Grid switcher -->
     <div class="row row-centered" ng-switch="displayMode">
-      <div ng-switch-when="Grid"><div ng-include="'views/grid.html'"></div></div>
-      <div ng-switch-when="List"><div ng-include="'views/list.html'"></div></div>
-      <div ng-switch-default><div ng-include="'views/grid.html'"></div></div>
+      <div ng-switch-when="Grid"><div ng-include="'views/templates/apigrid.html'"></div></div>
+      <div ng-switch-when="List"><div ng-include="'views/templates/apilist.html'"></div></div>
+      <div ng-switch-default><div ng-include="'views/templates/apigrid.html'"></div></div>
     </div>
 	</div> <!-- #end page-wrap -->
 </div>
