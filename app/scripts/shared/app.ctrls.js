@@ -410,28 +410,7 @@ angular.module("app.ctrls", [])
 /// ==== Contract Controller
 .controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {
 
-    $scope.selectedApp = {};
-
-    $scope.applications = [
-      { name: 'App1',      versions: ['v1', 'v2']},
-      { name: 'App3',      versions: ['v1']},
-      { name: 'App5',      versions: ['v2', 'v2.2']},
-      { name: 'App7',      versions: ['v36', 'v40']},
-      { name: 'App8',      versions: ['v2']}
-    ];
-
-    // Make sure first application is selected
-    $scope.selected = {name: $scope.applications[0].name};
-
-    // Watch for changes to the application select box and update selectedApp accordingly
-    $scope.$watch('selected.name', function(name){
-      delete $scope.selected.value;
-      angular.forEach($scope.applications, function(attr){
-        if(attr.name === name){
-          $scope.selectedApp = attr;
-        }
-      });
-    });
+    $scope.selectedApp =       { name: 'App1', versions: ['v1', 'v2'], environments: [{id: 1, name: "Development"}, {id: 2, name: "Acceptance"}, {id: 3, name: "Production"}]};
 
     $scope.plans = [
       "Unlimited",

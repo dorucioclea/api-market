@@ -1,6 +1,6 @@
 <div class="page" ng-controller="ContractCtrl">
 
-  <div class="col col-lg-8">
+  <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
     <div class="panel panel-primary">
       <div class="panel-heading">
         Create new contract
@@ -13,17 +13,19 @@
               <span class="text-primary fa fa-cogs"></span> From Application
             </div>
             <div class="panel-body">
-              <form role="form" class="form-inline">
-                <div class="form-group">
-                  <select class="form-control" ng-model="selected.name" ng-options="app.name as app.name for app in applications"></select>
-                </div>
-                <span class="fa fa-long-arrow-right"></span>
-                <div class="form-group">
-                  <select class="form-control">
-                    <option ng-repeat="version in selectedApp.versions" value="0">{{version}}</option>
-                  </select>
-                </div>
-              </form>
+              <div class="col-sm-offset-1 col-sm-5">
+                <button class="btn btn-light form-control" disabled>{{selectedApp.name}}</button>
+              </div>
+              <div class="col-sm-5 col-sm-offset-1 col-sm-pull-1">
+                <select class="form-control">
+                  <option ng-repeat="version in selectedApp.versions" value="0">{{version}}</option>
+                </select>
+              </div>
+              <div class="col-sm-10 col-sm-offset-1">
+                <select class="form-control">
+                  <option ng-repeat="environment in selectedApp.environments" value="{{environment.id}}">{{environment.name}}</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -37,14 +39,12 @@
               <span class="text-primary fa fa-bar-chart"></span> Using Plan
             </div>
             <div class="panel-body">
-              <form role="form" class="form-inline">
-                <div class="form-group">
-                  <select class="form-control">
-                    <option value="0" selected disabled>Select plan</option>
-                    <option ng-repeat="plan in plans" value="1">{{plan}}</option>
-                  </select>
-                </div>
-              </form>
+              <div class="col-sm-10 col-sm-offset-1">
+                <select class="form-control">
+                  <option value="0" selected disabled>Select plan</option>
+                  <option ng-repeat="plan in plans" value="1">{{plan}}</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -59,12 +59,9 @@
               <span class="text-primary fa fa-puzzle-piece"></span> To Service
             </div>
             <div class="panel-body">
-              <form role="form" class="form-inline">
-                <div class="form-group">
-                  <button class="btn btn-default form-control" ng-click="modalOpen()">Test Service</button>
-                  <p class="text-primary text-right xsmall">click to change</p>
-                </div>
-              </form>
+              <div class="col-sm-10 col-sm-offset-1">
+                <button class="btn btn-light form-control" disabled>Test Service</button>
+              </div>
             </div>
           </div>
 
@@ -72,7 +69,7 @@
         </div>
 
         <div class="row text-center">
-          <div class="col-sm-6 col-sm-offset-3 mt20">
+          <div class="col-sm-12 mt20">
             <button class="btn btn-default">Cancel</button>
             <button class="btn btn-success" disabled>Create contract</button>
           </div>
