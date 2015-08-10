@@ -130,10 +130,14 @@
                 Additional Authorization Required
               </div>
               <div class="panel-body">
-                <oauth2></oauth2>
-                <basic-auth></basic-auth>
-                <key-auth></key-auth>
-                <query-auth></query-auth>
+                <!-- #start accordion -->
+                <accordion class="accordion-panel">
+                  <auth-accordion-group heading="'OAuth 2.0'"><oauth2></oauth2></auth-accordion-group>
+                  <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
+                  <auth-accordion-group heading="'Key'"><key-auth></key-auth></auth-accordion-group>
+                  <auth-accordion-group heading="'Query'"><query-auth></query-auth></auth-accordion-group>
+                </accordion>
+                <!-- #end accordion -->
               </div>
             </div><!-- end authorization panel -->
 

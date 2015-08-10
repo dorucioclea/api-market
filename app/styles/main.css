@@ -3778,6 +3778,12 @@ fieldset[disabled] .btn-danger.active {
   height: 420px;
   width: 320px;
 }
+.small-warning {
+  font-size: 75%;
+  font-weight: normal;
+  line-height: 1;
+  color: inherit;
+}
 .dropdown-menu {
   box-shadow: none;
   padding: 4px 0;

@@ -365,6 +365,14 @@ angular.module("app.ctrls", [])
     $scope.updateUrl();
   }])
 
+  .directive('authAccordionGroup', function () {
+    return {
+      scope: { title: '=heading'},
+      transclude: true,
+      templateUrl: "/views/templates/auth/accordion-group.html",
+    }
+  })
+
   .directive('oauth2', function() {
     return {
       templateUrl: "/views/templates/auth/oauth2.html"
