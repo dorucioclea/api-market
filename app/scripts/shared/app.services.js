@@ -6,7 +6,6 @@
 
     .service("apiService", function() {
       var selectedApi = {};
-      var selectedEnvironment = null;
       var selectedVersion = null;
 
       var setSelectedApi = function(api) {
@@ -15,17 +14,6 @@
 
       var getSelectedApi = function() {
         return selectedApi;
-      };
-
-      var setSelectedEnvironment = function(environment) {
-        selectedEnvironment = environment;
-      };
-
-      var getSelectedEnvironment = function() {
-        if (selectedEnvironment === null) {
-          setSelectedEnvironment('dev');
-        }
-        return selectedEnvironment;
       };
 
       var selectVersion = function(version) {
@@ -42,8 +30,6 @@
       return {
         selectApi: setSelectedApi,
         getSelectedApi: getSelectedApi,
-        selectEnvironment: setSelectedEnvironment,
-        getSelectedEnvironment: getSelectedEnvironment,
         selectVersion: selectVersion,
         getSelectedVersion: getSelectedVersion
       };

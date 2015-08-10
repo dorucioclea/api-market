@@ -242,7 +242,7 @@ angular.module("app.ctrls", [])
 
 
     $scope.apiUrl = "";
-    $scope.apiEnvironment = apiService.getSelectedEnvironment();
+    $scope.apiEnvironment = 'dev';
     $scope.apiBaseUrl = "http://petstore.swagger.io";
     $scope.apiVersion = apiService.getSelectedVersion();
     $scope.swaggerUi = null;
@@ -299,7 +299,6 @@ angular.module("app.ctrls", [])
               $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
               break;
       }
-      apiService.selectEnvironment($scope.apiEnvironment);
       apiService.selectVersion($scope.apiVersion);
       $scope.loadSwaggerUi($scope.swaggerUrl);
     };
@@ -378,7 +377,6 @@ angular.module("app.ctrls", [])
 
     $scope.api = apiService.getSelectedApi();
     $scope.apiVersion = apiService.getSelectedVersion();
-    $scope.apiEnvironment = apiService.getSelectedEnvironment();
     $scope.application = applicationService.getSelectedApplication();
 
   }]);
