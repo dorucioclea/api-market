@@ -18,6 +18,7 @@
 		/* custom modules */
 		"app.ctrls",
 		"app.directives",
+    "app.services",
 		"app.ui.ctrls",
 		"app.ui.directives",
 		"app.form.ctrls",

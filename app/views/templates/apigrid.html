@@ -1,4 +1,4 @@
-<div ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing" class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12">
+<div ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing" class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-click="goToApi(api)">
   <div class="panel panel-primary mb20 text-center">
     <div class="panel-heading">
       <h4 class="text-nowrap text-ellipsis">{{api.name}}</h4>

@@ -211,7 +211,7 @@ angular.module("app.ctrls", [])
 
 
 /// ==== Dashboard Controller
-.controller("DashboardCtrl", ["$scope", function($scope) {
+.controller("DashboardCtrl", ["$scope", "$location", "apiService", function($scope, $location, apiService) {
 
   $scope.currentSorting = 'Popular';
   $scope.currentPricing = 'All';
@@ -223,89 +223,28 @@ angular.module("app.ctrls", [])
     { name: "Google Experimental API with very long name", logoUrl: "images/yeoman.png", owner: "Google",  ownerLogoUrl: "images/sample/3.jpg", pricing: "FREE", users: 22, followers: 8, uptimePercent: 5, description: 'Google API', tags: [0,2]},
     { name: "Facebook Profile API", logoUrl: "images/yeoman.png", owner: "Facebook", ownerLogoUrl: "images/sample/4.jpg", pricing: "Freemium", users: 119320, followers: 9999, uptimePercent: 88, description: 'Test Description', tags: [0,2]}];
 
-	$scope.analyticsconfig = {
-		data: {
-			columns: [
-				['Network Load', 30, 100, 80, 140, 150, 200],
-				['CPU Load', 90, 100, 170, 140, 150, 50]
-			],
-			type: 'spline',
-			types: {
-				'Network Load': 'bar'
-			}
-		},
-		color: {
-			pattern: ["#3F51B5",  "#38B4EE", "#4CAF50", "#E91E63"]
-		},
-		legend: {
-			position: "inset"
-		},
-		size: {
-			height: 330
-		}
-	};
 
-
-	// ==== Usage Stats
-	$scope.storageOpts = {
-			size: 100,
-			lineWidth: 2,
-			lineCap: "square",
-			barColor: "#E91E63"
-		};
-	$scope.storagePercent = 80;
-
-	$scope.serverOpts = {
-			size: 100,
-			lineWidth: 2,
-			lineCap: "square",
-			barColor: "#4CAF50"
-		};
-	$scope.serverPercent = 35;
-
-	$scope.clientOpts = {
-			size: 100,
-			lineWidth: 2,
-			lineCap: "square",
-			barColor: "#FDD835"
-		};
-	$scope.clientPercent = 54;
-
-
-	// === browser share
-	$scope.browserconfig = {
-		data: {
-			columns: [
-			["Chrome", 48.9],
-			["Firefox", 16.1],
-			["Safari", 10.9],
-			["IE", 17.1],
-			["Other",7]
-			],
-			type: "donut"
-		},
-		size: {
-			width: 260,
-			height: 260
-		},
-		donut: {
-			width: 50
-		},
-		color: {
-			pattern: ["#3F51B5", "#4CAF50", "#f44336", "#E91E63", "#38B4EE"]
-		}
-	}
+  $scope.goToApi = function(api) {
+    apiService.selectApi(api);
+    $location.path('api-doc');
+  };
 }])
 
 /// ==== API Documentation Controller
-.controller("ApiDocCtrl", ["$scope", function($scope) {
+.controller("ApiDocCtrl", ["$scope", "$location", "apiService", "applicationService", function($scope, $location, apiService, applicationService) {
 
     // Test API object
+    $scope.api = {name: "Test API", versions: ['v1', 'v2']};
+    $scope.application = { name: 'App1', versions: ['v1', 'v2'], environments: [{id: 'dev', name: "Development"}, {id: 'acc', name: "Acceptance"}, {id: 'prod', name: "Production"}]};
+
+    apiService.selectApi($scope.api);
+    applicationService.selectApplication($scope.application);
+
 
     $scope.apiUrl = "";
-    $scope.apiEnvironment = "dev";
+    $scope.apiEnvironment = apiService.getSelectedEnvironment();
     $scope.apiBaseUrl = "http://petstore.swagger.io";
-    $scope.apiVersion = "v2";
+    $scope.apiVersion = apiService.getSelectedVersion();
     $scope.swaggerUi = null;
 
     $scope.loadSwaggerUi = function(url) {
@@ -315,6 +254,7 @@ angular.module("app.ctrls", [])
         validatorUrl: null,
         apisSorter: "alpha",
         operationsSorter: "alpha",
+        docExpansion: "list",
         onComplete: function() {
           $('#swagger-ui-container').find('a').each(function(idx, elem) {
             var href = $(elem).attr('href');
@@ -359,17 +299,23 @@ angular.module("app.ctrls", [])
               $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
               break;
       }
+      apiService.selectEnvironment($scope.apiEnvironment);
+      apiService.selectVersion($scope.apiVersion);
       $scope.loadSwaggerUi($scope.swaggerUrl);
     };
 
     $scope.updateUrl();
+
+    $scope.subscribe = function() {
+      $location.path('contract');
+    };
   }])
 
   .directive('authAccordionGroup', function () {
     return {
       scope: { title: '=heading'},
       transclude: true,
-      templateUrl: "/views/templates/auth/accordion-group.html",
+      templateUrl: "/views/templates/auth/accordion-group.html"
     }
   })
 
@@ -408,9 +354,7 @@ angular.module("app.ctrls", [])
   })
 
 /// ==== Contract Controller
-.controller("ContractCtrl", ["$scope", "$modal", function($scope, $modal) {
-
-    $scope.selectedApp =       { name: 'App1', versions: ['v1', 'v2'], environments: [{id: 1, name: "Development"}, {id: 2, name: "Acceptance"}, {id: 3, name: "Production"}]};
+.controller("ContractCtrl", ["$scope", "$modal", "$location", "apiService", "applicationService", function($scope, $modal, $location, apiService, applicationService) {
 
     $scope.plans = [
       "Unlimited",
@@ -420,23 +364,22 @@ angular.module("app.ctrls", [])
       "Platinum"
     ];
 
-    $scope.modalAnim = "default";
-
-    $scope.modalOpen = function() {
-      $modal.open({
-        templateUrl: "views/modals/modalServiceSelect.html",
-        size: "md",
-        controller: "ModalDemoCtrl",
-        resolve: function() {},
-        windowClass: $scope.modalAnim	// Animation Class put here.
-      });
-
+    $scope.updateApplicationVersion = function() {
+      applicationService.selectVersion($scope.apiVersion);
     };
 
-    $scope.modalClose = function() {
-      $scope.$close();	// this method is associated with $modal scope which is this.
-    }
+    $scope.updateEnvironment = function() {
+      apiService.selectEnvironment($scope.apiEnvironment);
+    };
 
+    $scope.cancel = function() {
+      $location.path('api-doc');
+    };
+
+    $scope.api = apiService.getSelectedApi();
+    $scope.apiVersion = apiService.getSelectedVersion();
+    $scope.apiEnvironment = apiService.getSelectedEnvironment();
+    $scope.application = applicationService.getSelectedApplication();
 
   }]);
 

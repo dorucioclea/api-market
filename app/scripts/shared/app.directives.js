@@ -148,7 +148,7 @@ angular.module("app.directives", [])
 
 }])
 
-}())
+}());
 
 
 
