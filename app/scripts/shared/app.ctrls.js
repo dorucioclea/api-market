@@ -324,7 +324,17 @@ angular.module("app.ctrls", [])
 
     $scope.modalClose = function() {
       $scope.$close();	// this method is associated with $modal scope which is this.
-    }
+    };
+
+    $scope.openTicket = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalViewTicket.html",
+        size: "lg",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim
+      });
+    };
   }])
 
   .directive('authAccordionGroup', function () {
