@@ -170,8 +170,8 @@
 			}
 		});
 
-    $routeProvider.when("/api-doc", {
-      templateUrl: "views/api-doc.html"
+    $routeProvider.when("/api", {
+      templateUrl: "../views/api.html"
     });
 
     $routeProvider.when("/application", {

@@ -226,7 +226,7 @@ angular.module("app.ctrls", [])
 
   $scope.goToApi = function(api) {
     apiService.selectApi(api);
-    $location.path('api-doc');
+    $location.path('api');
   };
 }])
 
@@ -372,7 +372,7 @@ angular.module("app.ctrls", [])
     };
 
     $scope.cancel = function() {
-      $location.path('api-doc');
+      $location.path('api');
     };
 
     $scope.api = apiService.getSelectedApi();
