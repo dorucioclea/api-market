@@ -231,7 +231,7 @@ angular.module("app.ctrls", [])
 }])
 
 /// ==== API Documentation Controller
-.controller("ApiDocCtrl", ["$scope", "$location", "apiService", "applicationService", function($scope, $location, apiService, applicationService) {
+.controller("ApiDocCtrl", ["$scope", "$location", "$modal", "apiService", "applicationService", function($scope, $location, $modal, apiService, applicationService) {
 
     // Test API object
     $scope.api = {name: "Test API", versions: ['v1', 'v2']};
@@ -308,6 +308,23 @@ angular.module("app.ctrls", [])
     $scope.subscribe = function() {
       $location.path('contract');
     };
+
+    $scope.modalAnim = "default";
+
+    $scope.modalNewTicketOpen = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalCreateTicket.html",
+        size: "lg",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
+
+    $scope.modalClose = function() {
+      $scope.$close();	// this method is associated with $modal scope which is this.
+    }
   }])
 
   .directive('authAccordionGroup', function () {

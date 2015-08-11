@@ -1,4 +1,4 @@
-<div class="page" ng-controller="ApiDocCtrl">
+<div class="page page-api" ng-controller="ApiDocCtrl">
   <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
   <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
   <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
@@ -27,7 +27,7 @@
 
     <div class="row">
       <!-- tabs style -->
-      <tabset class="tabs-linearrow">
+      <tabset class="tabs-linearrow-api">
         <tab heading="Documentation">
           <ng-include src="'views/templates/api/documentation.html'"></ng-include>
         </tab>
@@ -41,7 +41,7 @@
           <tab-heading>
             Support <span class="badge text-bold badge-xs">22</span>
           </tab-heading>
-          <ng-include src="'views/templates/api/support.html'"></ng-include>
+          <ng-include class="ticket-tabs" src="'views/templates/api/support.html'"></ng-include>
         </tab>
         <tab heading="Api Terms">
           <ng-include src="'views/templates/api/terms.html'"></ng-include>

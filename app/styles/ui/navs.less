@@ -125,9 +125,48 @@
 	}
 }
 
-
 /// ==== linearrow tabs
 .tabs-linearrow {
+  border: 1px solid @nav-tabs-border-color;
+
+  .nav-tabs > li {
+    &.active > a { border-color: transparent; }
+    > a {
+      position: relative;
+      &, &:hover, &:focus {
+        box-shadow: none;
+        background: transparent;
+      }
+      &:before, &:after {
+        position: absolute;
+        content: "";
+      }
+    }
+    > a:before {
+      width: 100%; height: 0;
+      background: @brand-pink;
+      left: -1px; bottom: 0;
+      .transition(.2s ease);
+    }
+    &.active > a:after {
+      border-style: solid;
+      border-color: transparent;
+      border-top-color: @brand-pink;
+      border-width: 5px;
+      bottom: -10px;
+      .translate(-50%; 0);
+      left: 50%;
+    }
+    &.active > a:before { height: 3px }
+  }
+
+  .tab-content {
+    border: none;
+  }
+}
+
+/// ==== linearrow tabs for api screen
+.tabs-linearrow-api {
 	border: 1px solid @brand-primary;
   background: @brand-primary;
 

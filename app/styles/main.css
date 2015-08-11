@@ -3980,15 +3980,12 @@ fieldset[disabled] .btn-danger.active {
   color: #fff;
 }
 .tabs-linearrow {
-  border: 1px solid #347ea6;
-  background: #347ea6;
+  border: 1px solid #e4e4e4;
 }
 .tabs-linearrow .nav-tabs > li.active > a {
-  color: #ffffff;
   border-color: transparent;
 }
 .tabs-linearrow .nav-tabs > li > a {
-  color: #eaeaea;
   position: relative;
 }
 .tabs-linearrow .nav-tabs > li > a,
@@ -4005,7 +4002,7 @@ fieldset[disabled] .btn-danger.active {
 .tabs-linearrow .nav-tabs > li > a:before {
   width: 100%;
   height: 0;
-  background: #5fb1d6;
+  background: #f8bbd0;
   left: -1px;
   bottom: 0;
   -webkit-transition: 0.2s ease;
@@ -4013,8 +4010,10 @@ fieldset[disabled] .btn-danger.active {
   transition: 0.2s ease;
 }
 .tabs-linearrow .nav-tabs > li.active > a:after {
-  border: 5px solid transparent;
-  border-top-color: #5fb1d6;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: #f8bbd0;
+  border-width: 5px;
   bottom: -10px;
   -webkit-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
@@ -4026,6 +4025,55 @@ fieldset[disabled] .btn-danger.active {
   height: 3px;
 }
 .tabs-linearrow .tab-content {
+  border: none;
+}
+.tabs-linearrow-api {
+  border: 1px solid #347ea6;
+  background: #347ea6;
+}
+.tabs-linearrow-api .nav-tabs > li.active > a {
+  color: #ffffff;
+  border-color: transparent;
+}
+.tabs-linearrow-api .nav-tabs > li > a {
+  color: #eaeaea;
+  position: relative;
+}
+.tabs-linearrow-api .nav-tabs > li > a,
+.tabs-linearrow-api .nav-tabs > li > a:hover,
+.tabs-linearrow-api .nav-tabs > li > a:focus {
+  box-shadow: none;
+  background: transparent;
+}
+.tabs-linearrow-api .nav-tabs > li > a:before,
+.tabs-linearrow-api .nav-tabs > li > a:after {
+  position: absolute;
+  content: "";
+}
+.tabs-linearrow-api .nav-tabs > li > a:before {
+  width: 100%;
+  height: 0;
+  background: #5fb1d6;
+  left: -1px;
+  bottom: 0;
+  -webkit-transition: 0.2s ease;
+  -o-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+.tabs-linearrow-api .nav-tabs > li.active > a:after {
+  border: 5px solid transparent;
+  border-top-color: #5fb1d6;
+  bottom: -10px;
+  -webkit-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+.tabs-linearrow-api .nav-tabs > li.active > a:before {
+  height: 3px;
+}
+.tabs-linearrow-api .tab-content {
   border: none;
 }
 .tabs-right .nav-tabs > li {
@@ -4626,6 +4674,13 @@ fieldset[disabled] .btn-danger.active {
 .label-purple[href]:hover,
 .label-purple[href]:focus {
   background-color: #bd6eca;
+}
+.label-success {
+  background-color: #4a921f;
+}
+.label-success[href]:hover,
+.label-success[href]:focus {
+  background-color: #356816;
 }
 .pagination {
   margin-top: 0;
@@ -7011,6 +7066,13 @@ md-input-container {
 .page-dashboard .publisher-img {
   height: 25px;
   width: 25px;
+}
+.page-api .img-ticket-user {
+  width: 20px;
+  height: 20px;
+}
+.page-api .ticket-tabs .tab-content {
+  padding: 0;
 }
 /*
  * angular-loading-bar v0.6.0
