@@ -2695,7 +2695,7 @@ fieldset[disabled] .btn-danger.active {
   border-color: transparent;
 }
 .tabs-linearrow .nav-tabs > li > a {
-  color: #ffffff;
+  color: #eaeaea;
   position: relative;
 }
 .tabs-linearrow .nav-tabs > li > a,
