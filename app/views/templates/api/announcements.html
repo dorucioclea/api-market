@@ -3,19 +3,17 @@
   <div class="col-sm-12">
 
     <div class="panel panel-default">
-      <div class="panel-heading">Announcements</div>
+      <div class="panel-heading">Announcements for Swagger Petstore</div>
       <div class="panel-body">
 
 
-        <div class="col-sm-3">
-          <div class="list-group">
-            <a href="javascript:;" class="list-group-item" ng-repeat="announcement in announcements" ng-click="switchNotification(announcement.id)" ng-class="{'list-group-item-info': selectedAnnouncement === announcement.id}">
-              <h5 class="list-group-item-heading">{{announcement.content.short}}</h5>
-              <p class="list-group-item-text">{{announcement.timestring}}</p>
-            </a>
-          </div>
+        <div class="col-sm-3 list-group">
+          <a href="javascript:;" class="list-group-item" ng-repeat="announcement in announcements" ng-click="switchNotification(announcement.id)" ng-class="{'list-group-item-info': selectedAnnouncement === announcement.id}">
+            <h5 class="list-group-item-heading">{{announcement.content.short}}</h5>
+            <p class="list-group-item-text">{{announcement.timestring}}</p>
+          </a>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 list-group-item">
           <h3>{{announcements[selectedAnnouncement].content.short}}</h3>
           <p class="text-light small mb20">Published {{announcements[selectedAnnouncement].timestring}} by
             <img class="ml5 mr5 media-middle img-ticket-user img-circle" src="images/admin.jpg">{{announcements[selectedAnnouncement].username}}</p>
