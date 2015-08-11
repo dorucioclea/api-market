@@ -25,125 +25,29 @@
       </div>
     </div>
 
-
-
     <div class="row">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          Documentation
-        </div>
-        <div class="panel-body">
-
-          <!-- Swagger API documentation panel -->
-          <div class="col-lg-9">
-            <div class="panel panel-default mb15">
-              <div class="panel-heading">
-                Swagger specification
-              </div>
-              <div class="panel-body">
-                <div class="swagger-section">
-                  <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
-                </div>
-              </div>
-            </div>
-          </div><!-- end Swagger Documentation panel -->
-
-          <!-- Sidebar panels -->
-          <div class="col-lg-3">
-
-            <!-- Environments panel -->
-            <div class="panel panel-default mb15">
-              <div class="panel-heading text-center">
-                Environments
-              </div>
-              <div class="panel-body">
-                <form role="form" class="form mb20">
-                  <div class="form-group">
-                    <div class="btn-group btn-group-justified" ng-click="isDisabled || updateUrl()">
-                      <label class="btn btn-primary " ng-model="apiEnvironment" btn-radio="'dev'">DEV</label>
-                      <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'acc'">ACC</label>
-                      <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'prod'">PROD</label>
-                    </div>
-                  </div>
-                </form>
-                <button class="btn btn-default btn-block">REPORT BROKEN</button>
-              </div>
-            </div><!-- end Environments panel-->
-
-
-            <!-- Version panel -->
-            <div class="panel panel-default mb15">
-              <div class="panel-heading text-center">
-                Version
-              </div>
-              <div class="panel-body text-center">
-                <form role="form" class="form-inline">
-                  <div class="form-group">
-                    <select class="form-control" ng-model="apiVersion" ng-change="updateUrl()">
-                      <option value="v2" selected>v2</option>
-                      <option value="v1">v1</option>
-                    </select>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-
-            <!-- API URL panel -->
-            <div class="panel panel-default mb15">
-              <div class="panel-heading text-center">
-                API URL
-              </div>
-              <div class="panel-body">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <input type="text" class="form-control" value="{{apiUrl}}">
-                  </div>
-                </form>
-              </div>
-            </div><!-- end API URL panel -->
-
-            <!-- API Subscription panel -->
-            <div class="panel panel-default mb15">
-              <div class="panel-heading text-center">
-                API Subscription
-              </div>
-              <div class="panel-body">
-                <form role="form" class="form mb20">
-                  <div class="form-group">
-                    <select class="form-control">
-                      <option value="0" selected disabled>Select Application</option>
-                      <option value="1">App1</option>
-                      <option value="2">Some other application</option>
-                      <option value="3">Third_Application</option>
-                      <option value="4">4</option>
-                    </select>
-                  </div>
-                </form>
-                  <button class="btn btn-success btn-block" ng-click="subscribe()">Subscribe</button>
-              </div>
-            </div><!-- end API Subscription panel -->
-
-            <!-- Authorization panel -->
-            <div class="panel panel-default">
-              <div class="panel-heading text-center">
-                Additional Authorization Required
-              </div>
-              <div class="panel-body">
-                <!-- #start accordion -->
-                <accordion class="accordion-panel">
-                  <auth-accordion-group heading="'OAuth 2.0'"><oauth2></oauth2></auth-accordion-group>
-                  <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
-                  <auth-accordion-group heading="'Key'"><key-auth></key-auth></auth-accordion-group>
-                  <auth-accordion-group heading="'Query'"><query-auth></query-auth></auth-accordion-group>
-                </accordion>
-                <!-- #end accordion -->
-              </div>
-            </div><!-- end authorization panel -->
-
-          </div> <!-- end sidebar panels -->
-        </div>
-      </div>
+      <!-- tabs style -->
+      <tabset class="tabs-linearrow">
+        <tab heading="Documentation">
+          <ng-include src="'views/templates/api-doc/documentation.html'"></ng-include>
+        </tab>
+        <tab heading="Plans">
+          Plan overview here
+        </tab>
+        <tab heading="Announcements">
+          Announcement page here
+        </tab>
+        <tab>
+          <tab-heading>
+            Support <span class="badge text-bold badge-xs">22</span>
+          </tab-heading>
+          Support page here
+        </tab>
+        <tab heading="Api Terms">
+          Legal mumbo jumbo here
+        </tab>
+      </tabset>
+      <!-- #end tab styles -->
     </div>
 
   </div>

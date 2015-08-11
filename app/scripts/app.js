@@ -142,7 +142,7 @@
 		});
 
 		$routeProvider
-			.when("/", {redirectTo: "/contract"})
+			.when("/", {redirectTo: "/dashboard"})
 			.when("/404", {templateUrl: "views/pages/404.html"})
 			.otherwise({redirectTo: "/404"});
 

@@ -3980,12 +3980,15 @@ fieldset[disabled] .btn-danger.active {
   color: #fff;
 }
 .tabs-linearrow {
-  border: 1px solid #e4e4e4;
+  border: 1px solid #347ea6;
+  background: #347ea6;
 }
 .tabs-linearrow .nav-tabs > li.active > a {
+  color: #ffffff;
   border-color: transparent;
 }
 .tabs-linearrow .nav-tabs > li > a {
+  color: #ffffff;
   position: relative;
 }
 .tabs-linearrow .nav-tabs > li > a,
@@ -4002,7 +4005,7 @@ fieldset[disabled] .btn-danger.active {
 .tabs-linearrow .nav-tabs > li > a:before {
   width: 100%;
   height: 0;
-  background: #f8bbd0;
+  background: #5fb1d6;
   left: -1px;
   bottom: 0;
   -webkit-transition: 0.2s ease;
@@ -4010,10 +4013,8 @@ fieldset[disabled] .btn-danger.active {
   transition: 0.2s ease;
 }
 .tabs-linearrow .nav-tabs > li.active > a:after {
-  border-style: solid;
-  border-color: transparent;
-  border-top-color: #f8bbd0;
-  border-width: 5px;
+  border: 5px solid transparent;
+  border-top-color: #5fb1d6;
   bottom: -10px;
   -webkit-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
