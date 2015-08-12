@@ -6,11 +6,16 @@
   <div class="page-wrap">
 
     <div class="row">
-      <div class="panel panel-primary">
+      <div class="panel panel-primary ">
         <div class="panel-body">
           <!-- Main API info panel -->
-          <div class="api-logo col col-lg-1">
+          <div class="col col-lg-1">
             <img class="media center-block" src="images/yeoman.png">
+
+              <select class="form-control text-center mt20" ng-model="apiVersion" ng-change="updateUrl()">
+                <option value="v2" selected>Version v2</option>
+                <option value="v1">Version v1</option>
+              </select>
           </div>
           <div class="ml20 col col-lg-10">
             <h2>Swagger Petstore<a href=""> <i class="text-primary follow-icon fa fa-star-o"></i></a></h2>
@@ -21,7 +26,8 @@
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel lacus neque. In tempus, libero cursus pellentesque vehicula, urna quam faucibus velit, sed tempus nulla.
             </div>
           </div><!-- end main info panel -->
-        </div>
+          </div>
+
       </div>
     </div>
 
@@ -29,22 +35,22 @@
       <!-- tabs style -->
       <tabset class="tabs-linearrow-api">
         <tab heading="Documentation">
-          <ng-include src="'views/templates/api/documentation.html'"></ng-include>
+          <ng-include src="'views/partials/api/documentation.html'"></ng-include>
         </tab>
         <tab heading="Plans">
-          <ng-include src="'views/templates/api/plans.html'"></ng-include>
+          <ng-include src="'views/partials/api/plans.html'"></ng-include>
         </tab>
         <tab heading="Announcements">
-          <ng-include src="'views/templates/api/announcements.html'"></ng-include>
+          <ng-include src="'views/partials/api/announcements.html'"></ng-include>
         </tab>
         <tab>
           <tab-heading>
             Support <span class="badge text-bold badge-xs">22</span>
           </tab-heading>
-          <ng-include class="ticket-tabs" src="'views/templates/api/support.html'"></ng-include>
+          <ng-include class="ticket-tabs" src="'views/partials/api/support.html'"></ng-include>
         </tab>
         <tab heading="Api Terms">
-          <ng-include src="'views/templates/api/terms.html'"></ng-include>
+          <ng-include src="'views/partials/api/terms.html'"></ng-include>
         </tab>
       </tabset>
       <!-- #end tab styles -->

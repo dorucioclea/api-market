@@ -1,4 +1,4 @@
-<div class="row" ng-controller="ApiDocCtrl">
+<div class="row">
 
       <!-- Swagger API documentation panel -->
       <div class="col-lg-9">
@@ -16,58 +16,6 @@
 
       <!-- Sidebar panels -->
       <div class="col-lg-3">
-
-        <!-- Environments panel -->
-        <div class="panel panel-default mb15">
-          <div class="panel-heading text-center">
-            Environments
-          </div>
-          <div class="panel-body">
-            <form role="form" class="form mb20">
-              <div class="form-group">
-                <div class="btn-group btn-group-justified" ng-click="isDisabled || updateUrl()">
-                  <label class="btn btn-primary " ng-model="apiEnvironment" btn-radio="'dev'">DEV</label>
-                  <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'acc'">ACC</label>
-                  <label class="btn btn-primary" ng-model="apiEnvironment" btn-radio="'prod'">PROD</label>
-                </div>
-              </div>
-            </form>
-            <button class="btn btn-default btn-block">REPORT BROKEN</button>
-          </div>
-        </div><!-- end Environments panel-->
-
-
-        <!-- Version panel -->
-        <div class="panel panel-default mb15">
-          <div class="panel-heading text-center">
-            Version
-          </div>
-          <div class="panel-body text-center">
-            <form role="form" class="form-inline">
-              <div class="form-group">
-                <select class="form-control" ng-model="apiVersion" ng-change="updateUrl()">
-                  <option value="v2" selected>v2</option>
-                  <option value="v1">v1</option>
-                </select>
-              </div>
-            </form>
-          </div>
-        </div>
-
-
-        <!-- API URL panel -->
-        <div class="panel panel-default mb15">
-          <div class="panel-heading text-center">
-            API URL
-          </div>
-          <div class="panel-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <input type="text" class="form-control" value="{{apiUrl}}">
-              </div>
-            </form>
-          </div>
-        </div><!-- end API URL panel -->
 
         <!-- API Subscription panel -->
         <div class="panel panel-default mb15">
@@ -89,6 +37,20 @@
             <button class="btn btn-success btn-block" ng-click="subscribe()">Subscribe</button>
           </div>
         </div><!-- end API Subscription panel -->
+
+        <!-- API URL panel -->
+        <div class="panel panel-default mb15">
+          <div class="panel-heading text-center">
+            API URL
+          </div>
+          <div class="panel-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <input type="text" class="form-control" value="{{apiUrl}}">
+              </div>
+            </form>
+          </div>
+        </div><!-- end API URL panel -->
 
         <!-- Authorization panel -->
         <div class="panel panel-default">
