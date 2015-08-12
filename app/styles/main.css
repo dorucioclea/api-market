@@ -4682,6 +4682,20 @@ fieldset[disabled] .btn-danger.active {
 .label-success[href]:focus {
   background-color: #356816;
 }
+.label-warning {
+  background-color: #ff8d00;
+}
+.label-warning[href]:hover,
+.label-warning[href]:focus {
+  background-color: #cc7100;
+}
+.label-danger {
+  background-color: #e60038;
+}
+.label-danger[href]:hover,
+.label-danger[href]:focus {
+  background-color: #b3002c;
+}
 .pagination {
   margin-top: 0;
   display: block;

@@ -1,49 +1,58 @@
 <div class="page" ng-controller="ApplicationCtrl">
   <div class="row">
 
-    <!-- Application Basic Settings panel -->
-    <div class="col-md-7 col-md-offset-1 col-sm-9 mb15">
-      <div class="panel panel-default">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="panel panel-primary">
         <div class="panel-heading">
-          Application Basic Settings
+          <span class="fa fa-cogs"></span>  Application Name
         </div>
         <div class="panel-body">
-          <div class="panel">
-            <div class="panel-body">
-              <form role="form" class="form-horizontal">
-                <div class="form-group">
-                  <label class="control-label text-primary"><i class="fa fa-cogs"></i> Application Name</label>
-                  <input type="text" class="form-control" value="Current Application Name">
-                </div>
+          <div class="col-sm-9 mb15">
+            <p>Test App description</p>
+            <span class="text-light small fa fa-clock-o"> Created on 2015-08-12</span> <br>
+            <span class="text-light small fa fa-user"> Created by admin</span>
+            <p class="mt15">Status: <label class="label text-uppercase label-warning">Created</label></p>
+          </div>
 
-                <div class="form-group mt30">
-                  <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-                  <textarea rows="5" class="form-control resize-v">Current Description goes here</textarea>
-                </div>
-              </form>
-              <button class="btn btn-default mt30">Save</button>
+
+          <div class="col-sm-3 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+            <div class="right">
+              <button class="btn btn-block btn-primary">New Version</button>
+              <button class="btn btn-block btn-warning">Regenerate Keys</button>
+              <div class="mt30">
+                <button class="btn btn-block btn-danger">Delete Application</button>
+              </div>
             </div>
           </div>
         </div>
-      </div><!-- end Application Basic Settings panel -->
-    </div>
 
-
-    <!-- Application Actions panels -->
-    <div class="col-md-3 col-sm-3 col-xs-8 col-sm-offset-0 col-xs-offset-2">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Actions
-        </div>
+      </div>
+      <div class="panel">
         <div class="panel-body">
-          <button class="btn btn-block btn-primary">New Version</button>
-          <button class="btn btn-block btn-warning">Regenerate Keys</button>
-          <div class="mt30">
-            <button class="btn btn-block btn-danger">Delete Application</button>
-          </div>
+          <tabset>
+            <tab heading="Overview">
+              <h3>Application Details</h3>
+              <p>This is the application details page. Here you can find a summary of the Application's meta-data and contracts. Please note that you will need to fill out a minimum amount of data before the Application can be registered with the Gateway. In particular, the Application must have at least one Service Contract (see the "Contracts" tab).</p><br>
+              <h4>Contracts</h4>
+              <p>The 'Contracts' tab provides a list of all the Service Contracts for this Application. A Service Contract is simply a link between this Application and a provided Service the the Application consumes.</p>
+              <h4>APIs</h4>
+              <p>The 'APIs' tab lists all of the Services consumed by this Application, including showing the API Key and live endpoint for each. Go here if you want to figure out how to invoke a Service once you have a Contract for it.</p>
+              <h4>Activity</h4>
+              <p>The 'Activity' tab shows a history of all the changes made to the Application. Essentially it is an audit log.</p>
+            </tab>
+            <tab heading="Contracts">
+              <ng-include src="'views/partials/application/contracts.html'"></ng-include>
+            </tab>
+            <tab heading="APIs">
+              <ng-include src="'views/partials/application/apis.html'"></ng-include>
+            </tab>
+            <tab heading="Activity">
+              <ng-include src="'views/partials/application/activity.html'"></ng-include>
+            </tab>
+
+          </tabset>
         </div>
       </div>
     </div>
-
   </div>
 </div>
