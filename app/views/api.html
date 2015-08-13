@@ -9,20 +9,26 @@
       <div class="panel panel-primary ">
         <div class="panel-body">
           <!-- Main API info panel -->
-          <div class="col col-lg-1">
+          <div class="col col-sm-1">
             <img class="media center-block" src="images/yeoman.png">
-
-              <select class="form-control text-center mt20" ng-model="apiVersion" ng-change="updateUrl()">
-                <option value="v2" selected>Version v2</option>
-                <option value="v1">Version v1</option>
-              </select>
           </div>
-          <div class="ml20 col col-lg-10">
-            <h2>Swagger Petstore<a href=""> <i class="text-primary follow-icon fa fa-star-o"></i></a></h2>
-            <div class="api-info">
-              <i class="text-primary fa fa-globe"> Online documentation</i>
+          <div class="pl30 col col-sm-11">
+            <div class="col-sm-8">
+              <h3 class="text-primary text-uppercase text-bold">Swagger Petstore<a href=""> <i class="text-info follow-icon fa fa-star-o"></i></a></h3>
             </div>
-            <div>
+            <div class="col-sm-4 text-bold">
+              <form role="form" class="form-inline right">
+                <select dir="rtl" class="form-control" ng-model="apiVersion" ng-change="updateUrl()">
+                  <option value="v2" selected>Version v2</option>
+                  <option value="v1">Version v1</option>
+                </select>
+              </form>
+            </div>
+            <div class="col-sm-12">
+              <i class="text-primary fa fa-globe"> Online documentation</i>
+              <hr>
+            </div>
+            <div class="col-sm-12">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel lacus neque. In tempus, libero cursus pellentesque vehicula, urna quam faucibus velit, sed tempus nulla.
             </div>
           </div><!-- end main info panel -->
