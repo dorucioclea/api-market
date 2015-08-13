@@ -1,0 +1,47 @@
+<div class="row">
+  <!-- Applications Tab Content -->
+  <div class="col-sm-12">
+    <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
+    <button id="apps-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
+    <a class="btn btn-primary pull-right">New App</a>
+    <hr>
+  </div>
+  <!-- The list of applications in the org -->
+
+  <div class="col-sm-12" ng-hide="apps.length > 0">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-1 well">
+        It looks like there aren't (yet) any applications in this organization! Now might be a good time to click the New App button up above...
+      </div>
+      <div class="col-sm-3">
+        <div class="no-entities-arrow"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12" ng-show="apps.length > 0 && filteredApps.length == 0">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 well">
+        No applications found matching your filter criteria - please try searching for something different.
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="col-sm-12">
+      <span class="title"><a>TestApp</a></span>
+    </div>
+    <div class="col-sm-12">
+      <span class="description ng-binding">Test description</span>
+      <hr>
+    </div>
+    <div class="col-sm-12">
+      <span class="title"><a>TestApp</a></span>
+    </div>
+    <div class="col-sm-12">
+      <span class="description ng-binding">Test description</span>
+    </div>
+  </div>
+</div>
+
+</div>
