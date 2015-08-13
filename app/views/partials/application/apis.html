@@ -24,12 +24,12 @@
       </thead>
       <tbody>
       <tr>
-        <td><span class="caret"></span> </td>
+        <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': apiExpanded, 'fa-chevron-right': !apiExpanded}" ng-click="toggle()"></i></td>
         <td>Test</td>
         <td>v1</td>
         <td>Test Plan</td>
       </tr>
-      <tr>
+      <tr ng-show="apiExpanded">
         <td colspan="4">
           <form role="form">
             <div class="form-group">

@@ -385,9 +385,15 @@ angular.module("app.ctrls", [])
   })
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", function () {
+.controller("ApplicationCtrl", ["$scope", function ($scope) {
 
-  })
+    $scope.apiExpanded = false;
+
+    $scope.toggle = function() {
+      $scope.apiExpanded = !$scope.apiExpanded;
+    };
+
+  }])
 
 /// ==== Organization Controller
 .controller("OrganizationCtrl", function () {
