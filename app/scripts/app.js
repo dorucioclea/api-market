@@ -198,6 +198,10 @@
       templateUrl: "views/organizations.html"
     });
 
+    $routeProvider.when("/user", {
+      templateUrl: "views/user.html"
+    });
+
 		// text angular loaded in email/inbox
 		$routeProvider.when("/email/inbox", {
 			templateUrl: "views/email/inbox.html",
