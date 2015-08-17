@@ -1,4 +1,4 @@
-<div class="page" ng-controller="OrganizationCtrl">
+<div class="page" ng-controller="NewOrganizationCtrl as ctrl">
 
     <!-- Organization Create panel -->
     <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
@@ -20,19 +20,19 @@
                       <label class="control-label text-primary">Organization Name</label>
                     </div>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" placeholder="Enter organization name..." ng-model="organizationName" required>
+                      <input type="text" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required>
                     </div>
                   </div>
 
                   <div class="form-group mt30">
                     <div class="col-md-12">
                       <label class="control-label text-primary">Organization Description</label>
-                      <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="organizationDescription"></textarea>
+                      <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="ctrl.organization.description"></textarea>
                     </div>
                   </div>
                 </form>
                 <div class="mt30">
-                  <button class="btn btn-primary" ng-click="createOrganization()">Create Organization</button>
+                  <button class="btn btn-primary" ng-click="createOrganization(ctrl.organization)">Create Organization</button>
                   <button class="btn btn-default ml15">Cancel</button>
                 </div>
               </div>

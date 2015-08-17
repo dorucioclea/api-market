@@ -5,6 +5,7 @@
 		/* Angular modules */
 		"ngRoute",
 		"ngAnimate",
+    "ngResource",
 		"ngSanitize",
 		"ngAria",
 		"ngMaterial",
@@ -101,7 +102,7 @@
 				files: ["scripts/lazyload/ng-map.min.js"]
 			}
 			]
-		})
+		});
 	}])
 
 
@@ -157,14 +158,14 @@
 						return a.load({
 							name: "app.directives",
 							files: ["scripts/lazyload/directives/sparkline.directive.js"]
-						})
+						});
 					})
 					.then(function() {
 						return a.load("angular-c3");
 					})
 					.then(function() {
 						return a.load("easypiechart");
-					})
+					});
 
 				}]
 			}
@@ -225,7 +226,7 @@
 						return a.load({
 							name: "app.ctrls",
 							files: ["scripts/lazyload/controllers/calendarCtrl.js"]
-						})
+						});
 					});
 				}]
 			}
@@ -240,7 +241,7 @@
 					return a.load({
 						name: "app.ctrls",
 						files: ["scripts/lazyload/controllers/materialCtrl.js"]
-					})
+					});
 				}]
 			}
 		});
@@ -255,8 +256,8 @@
 						return a.load({
 							name: "app.ctrls",
 							files: ["scripts/lazyload/controllers/treeviewCtrl.js"]
-						})
-					})
+						});
+					});
 				}]
 			}
 		});
@@ -281,11 +282,11 @@
 						return a.load({
 							name: "app.ctrls",
 							files: ["scripts/lazyload/controllers/selectCtrl.js", "scripts/lazyload/controllers/tagsInputCtrl.js"]
-						})
+						});
 					})
 					.then(function() {
 						return a.load("textAngular");
-					})
+					});
 
 				}]
 			}
@@ -312,8 +313,8 @@
 						return a.load({
 							name: "app.ctrls",
 							files: ["scripts/lazyload/controllers/imageCropCtrl.js"]
-						})
-					})
+						});
+					});
 				}]
 			}
 		});
@@ -338,8 +339,8 @@
 						return a.load({
 							name: "app.directives",
 							files: ["scripts/lazyload/directives/sparkline.directive.js"]
-						})
-					})
+						});
+					});
 				}]
 			}
 		});
@@ -357,7 +358,7 @@
 						return a.load({
 							name: "app.ctrls",
 							files: ["scripts/lazyload/controllers/c3ChartCtrl.js"]
-						})
+						});
 					})
 					.then(function() {
 						return a.load("easypiechart");
@@ -366,7 +367,7 @@
 						$timeout(function() {
 							$rootScope.$broadcast("c3.resize");
 						}, 100);
-					})
+					});
 
 				}]
 			}
@@ -387,7 +388,7 @@
 
 
 
-	}])
+	}]);
 
 
 

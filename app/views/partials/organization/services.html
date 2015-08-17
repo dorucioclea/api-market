@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="ServicesCtrl">
   <!-- Services Tab Content -->
   <div class="col-sm-12">
     <input id="services-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by service name..." class="ng-pristine ng-untouched ng-valid">
@@ -27,31 +27,21 @@
     </div>
   </div>
 
-  <!-- ngRepeat: service in filteredServices -->
-  <div class="col-sm-12">
+  <div class="col-sm-12" ng-repeat="service in services">
     <div class="col-sm-12">
-      <span class="title"><a>First Service</a></span>
+      <span class="title"><a>{{service.name}}</a></span>
       <a class="apiman-summaryrow-icon pull-right">
         <i class="fa fa-clock-o fa-fw"></i>
         <span class="title-summary-item">Created on</span>
-        <span class="title-summary-item">2015-08-02</span>
+        <span class="title-summary-item">{{service.createdOn | date}}</span>
       </a>
     </div>
     <div class="col-sm-12">
-      <span class="description"></span>
+      <span class="description">{{service.description}}</span>
+    </div>
+    <div class="col-sm-12">
       <hr>
     </div>
-    <div class="col-sm-12">
-      <span class="title"><a>Second Service</a></span>
-      <a class="apiman-summaryrow-icon pull-right">
-        <i class="fa fa-clock-o fa-fw"></i>
-        <span class="title-summary-item">Created on</span>
-        <span class="title-summary-item">2015-08-07</span>
-      </a>
-    </div>
-    <div class="col-sm-12">
-      <span class="description"></span>
-    </div>
-  </div><!-- end ngRepeat: service in filteredServices -->
+  </div>
 
 </div>

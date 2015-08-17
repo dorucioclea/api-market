@@ -385,29 +385,94 @@ angular.module("app.ctrls", [])
   })
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", function ($scope) {
+.controller("ApplicationCtrl", ["$scope", "Application", function ($scope, Application) {
 
-    $scope.apiExpanded = false;
+    Application.get({orgId: 'Hooli', appId: 'HooliCompressionEngine'}, function (data) {
+      $scope.organization = data.organization;
+      $scope.application = data;
+    })
 
-    $scope.toggle = function() {
-      $scope.apiExpanded = !$scope.apiExpanded;
+
+  }])
+
+  /// ==== NewApplication Controller
+.controller("NewApplicationCtrl", ["$scope", "Organization", "Application", function ($scope, Organization, Application) {
+
+    Organization.get({id: 'Hooli'}, function (data) {
+      $scope.organization = data;
+    });
+
+
+    $scope.createApplication = function (application) {
+      Application.save({ orgId: $scope.organization.id }, application);
+    };
+
+
+  }])
+
+  /// ==== Organization Controller
+.controller("OrganizationCtrl", ["$scope", "Organization", "organizationService", function ($scope, Organization) {
+
+
+    Organization.get({id: 'Hooli'}, function (data) {
+      $scope.organization = data;
+    });
+
+    $scope.updateOrgDescription = function () {
+      var updatedOrg = new Organization();
+      updatedOrg.description = $scope.organization.description;
+      updatedOrg.$update({id: $scope.organization.id});
+    }
+
+  }])
+
+/// ==== NewOrganization Controller
+.controller("NewOrganizationCtrl", ["$scope", "Organization", function ($scope, Organization) {
+
+    $scope.createOrganization = function (org) {
+      Organization.save(org);
     };
 
   }])
 
-/// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "apiEngine", function ($scope, apiEngine) {
 
-    $scope.organizationName = '';
-    $scope.organizationDescription = '';
+  // +++ Organization Screen Subcontrollers +++
+  /// ==== Plans Controller
+    .controller("PlansCtrl", ["$scope", "Plan", function ($scope, Plan) {
 
-    $scope.createOrganization = function () {
-      $scope.org = { name: $scope.organizationName,
-                    description: $scope.organizationDescription};
-      apiEngine.createNewOrganization($scope.org);
-    };
+      Plan.query({orgId: 'Hooli'}, function (data) {
+        $scope.plans = data;
+      });
+
+    }])
+
+  /// ==== Services Controller
+  .controller("ServicesCtrl", ["$scope", "Service", function ($scope, Service) {
+
+    Service.query({orgId: 'Hooli'}, function (data) {
+      $scope.services = data;
+    });
 
   }])
+
+  /// ==== Applications Controller
+  .controller("ApplicationsCtrl", ["$scope", "Application", function ($scope, Application) {
+
+    Application.query({orgId: 'Hooli'}, function (data) {
+      $scope.applications = data;
+    });
+
+  }])
+
+  /// ==== Members Controller
+  .controller("MembersCtrl", ["$scope", "Member", function ($scope, Member) {
+
+    Member.query({orgId: 'Hooli'}, function (data) {
+      $scope.members = data;
+    });
+
+  }])
+  // +++ End Organization Screen Subcontrollers +++
 
 /// ==== User Controller
 .controller("UserCtrl", ["$scope", function ($scope) {

@@ -6,7 +6,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">Organization Name</h4>
+            <h4 class="text-primary text-uppercase text-bold">{{organization.name}}</h4>
             <hr>
           </div>
           <div class="col-sm-12">
@@ -29,9 +29,9 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-              <textarea rows="2" class="form-control resize-v">Current Description goes here</textarea>
+              <textarea rows="2" class="form-control resize-v" ng-model="organization.description">{{organization.description}}</textarea>
             </div>
-            <button class="btn btn-default mt30">Save</button>
+            <button class="btn btn-default mt30" ng-click="updateOrgDescription()">Save</button>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="PlansCtrl">
   <!-- Plans Tab Content -->
   <div class="col-sm-12">
     <input id="plans-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by plan name...">
@@ -27,20 +27,9 @@
   </div>
 
   <div class="col-sm-12">
-    <div class="col-sm-12">
-      <span class="title"><a>Unlimited</a></span>
+    <div class="col-sm-12" ng-repeat="plan in plans">
+      <span class="title"><a>{{plan.name}}</a></span>
       <hr>
-    </div>
-    <div class="col-sm-12">
-      <span class="title"><a>Bronze</a></span>
-      <hr>
-    </div>
-    <div class="col-sm-12">
-      <span class="title"><a>Silver</a></span>
-      <hr>
-    </div>
-    <div class="col-sm-12">
-      <span class="title"><a>Gold</a></span>
     </div>
   </div>
 </div>

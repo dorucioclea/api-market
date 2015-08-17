@@ -2,28 +2,32 @@
   "use strict";
 
 
-  angular.module("app.services", [])
+  angular.module("app.services", ["ngResource"])
 
-    .service('apiEngine', function($http, $q) {
 
-      // API Root URL
-      var baseUrl = 'http://localhost:8080/API-Engine-web/v1/';
 
-      this.createNewOrganization = function(org) {
-        $http.post(baseUrl + 'organizations', org)
-          .then( function (response) {
-            return {
-              id: response.data.id,
-              name: response.data.name,
-              description: response.data.description,
-              createdBy: response.data.createdBy,
-              createdOn: response.data.createdOn,
-              modifiedBy: response.data.modifiedBy,
-              modifiedOn: response.data.modifiedOn
-            };
-          });
-      };
-    })
+    .factory('Organization', ['$resource', function ($resource) {
+      return $resource('http://localhost:8080/API-Engine-web/v1/organizations/:id', { id: '@id' }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
+
+    .factory('Plan', ['$resource', function ($resource) {
+      return $resource('http://localhost:8080/API-Engine-web/v1/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' });
+    }])
+    .factory('Service', ['$resource', function ($resource) {
+      return $resource('http://localhost:8080/API-Engine-web/v1/organizations/:orgId/services/:serviceId', { orgId: '@organizationId', serviceId: '@id' });
+    }])
+    .factory('Application', ['$resource', function ($resource) {
+      return $resource('http://localhost:8080/API-Engine-web/v1/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' });
+    }])
+    .factory('Member', ['$resource', function ($resource) {
+      return $resource('http://localhost:8080/API-Engine-web/v1/organizations/:orgId/members');
+    }])
+
+
 
     .service("apiService", function() {
       var selectedApi = {};
@@ -53,6 +57,23 @@
         getSelectedApi: getSelectedApi,
         selectVersion: selectVersion,
         getSelectedVersion: getSelectedVersion
+      };
+    })
+
+    .service("organizationService", function() {
+      var selectedOrganization = {};
+
+      var setSelectedOrganization = function(organizationId) {
+        selectedOrganization = organizationId;
+      };
+
+      var getSelectedOrganization = function() {
+        return selectedOrganization;
+      };
+
+      return {
+        selectOrganization: setSelectedOrganization,
+        getSelectedOrganization: getSelectedOrganization
       };
     })
 
