@@ -396,9 +396,18 @@ angular.module("app.ctrls", [])
   }])
 
 /// ==== Organization Controller
-.controller("OrganizationCtrl", function () {
+.controller("OrganizationCtrl", ["$scope", "apiEngine", function ($scope, apiEngine) {
 
-  })
+    $scope.organizationName = '';
+    $scope.organizationDescription = '';
+
+    $scope.createOrganization = function () {
+      $scope.org = { name: $scope.organizationName,
+                    description: $scope.organizationDescription};
+      apiEngine.createNewOrganization($scope.org);
+    };
+
+  }])
 
 /// ==== User Controller
 .controller("UserCtrl", ["$scope", function ($scope) {
