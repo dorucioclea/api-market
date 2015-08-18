@@ -211,7 +211,7 @@ angular.module("app.ctrls", [])
 
 
 /// ==== Dashboard Controller
-.controller("DashboardCtrl", ["$scope", "$location", "apiService", function($scope, $location, apiService) {
+.controller("DashboardCtrl", ["$scope", "$location", "svcModel", function($scope, $location, svcModel) {
 
   $scope.currentSorting = 'Popular';
   $scope.currentPricing = 'All';
@@ -225,7 +225,7 @@ angular.module("app.ctrls", [])
 
 
   $scope.goToApi = function(api) {
-    apiService.selectApi(api);
+    //svcModel.setSelectedSvcId(api.id);
     $location.path('api');
   };
 }])
@@ -245,22 +245,68 @@ angular.module("app.ctrls", [])
 
   }])
 
-/// ==== API Documentation Controller
-.controller("ApiDocCtrl", ["$scope", "$location", "$modal", "apiService", "applicationService", function($scope, $location, $modal, apiService, applicationService) {
+  /// ==== API Doc Main Controller
+  .controller("ApiDocCtrl", ["$scope", "$location", "$modal", "Application", "orgModel", "svcModel", "appModel", function($scope, $location, $modal, Application, orgModel, svcModel, appModel) {
 
-    // Test API object
-    $scope.api = {name: "Test API", versions: ['v1', 'v2']};
-    $scope.application = { name: 'App1', versions: ['v1', 'v2'], environments: [{id: 'dev', name: "Development"}, {id: 'acc', name: "Acceptance"}, {id: 'prod', name: "Production"}]};
+    $scope.updateUrl = function() {
+      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
+      switch ($scope.apiEnvironment) {
+        case 'dev':
+          $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
+          break;
+        case 'acc':
+          $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
+          break;
+        case 'prod':
+          $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
+          break;
+      }
+    };
 
-    apiService.selectApi($scope.api);
-    applicationService.selectApplication($scope.application);
+    $scope.updateUrl();
+
+    $scope.modalAnim = "default";
+
+    $scope.modalNewTicketOpen = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalCreateTicket.html",
+        size: "lg",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
+
+    $scope.modalClose = function() {
+      $scope.$close();	// this method is associated with $modal scope which is this.
+    };
+
+    $scope.openTicket = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalViewTicket.html",
+        size: "lg",
+        controller: "ModalDemoCtrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim
+      });
+    };
+  }])
 
 
-    $scope.apiUrl = "";
-    $scope.apiEnvironment = 'dev';
-    $scope.apiBaseUrl = "http://petstore.swagger.io";
-    $scope.apiVersion = apiService.getSelectedVersion();
-    $scope.swaggerUi = null;
+/// ==== API Swagger Documentation Controller
+.controller("DocumentationCtrl", ["$scope", "$location", "$modal", "Application", "orgModel", "svcModel", "appModel", function($scope, $location, $modal, Application, orgModel, svcModel, appModel) {
+
+    $scope.selectedApp = appModel.selectedApp;
+    console.log($scope.selectedApp);
+
+    Application.query({orgId: orgModel.selectedOrgId}, function (apps) {
+      $scope.applications = apps;
+    });
+
+    $scope.updateSelectedApp = function() {
+      appModel.setSelectedApp(this.selectedApp);
+    };
 
     $scope.loadSwaggerUi = function(url) {
       $scope.swaggerUi = new SwaggerUi({
@@ -300,55 +346,11 @@ angular.module("app.ctrls", [])
       });
       $scope.swaggerUi.load();
     };
+    $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
 
-    $scope.updateUrl = function() {
-      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
-      switch ($scope.apiEnvironment) {
-        case 'dev':
-              $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
-              break;
-        case 'acc':
-              $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
-              break;
-        case 'prod':
-              $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
-              break;
-      }
-      apiService.selectVersion($scope.apiVersion);
-      $scope.loadSwaggerUi($scope.swaggerUrl);
-    };
-
-    $scope.updateUrl();
 
     $scope.subscribe = function() {
       $location.path('contract');
-    };
-
-    $scope.modalAnim = "default";
-
-    $scope.modalNewTicketOpen = function() {
-      $modal.open({
-        templateUrl: "views/modals/modalCreateTicket.html",
-        size: "lg",
-        controller: "ModalDemoCtrl",
-        resolve: function() {},
-        windowClass: $scope.modalAnim	// Animation Class put here.
-      });
-
-    };
-
-    $scope.modalClose = function() {
-      $scope.$close();	// this method is associated with $modal scope which is this.
-    };
-
-    $scope.openTicket = function() {
-      $modal.open({
-        templateUrl: "views/modals/modalViewTicket.html",
-        size: "lg",
-        controller: "ModalDemoCtrl",
-        resolve: function() {},
-        windowClass: $scope.modalAnim
-      });
     };
   }])
 
@@ -395,28 +397,15 @@ angular.module("app.ctrls", [])
 
   }])
 
-  /// ==== NewApplication Controller
-.controller("NewApplicationCtrl", ["$scope", "Organization", "Application", function ($scope, Organization, Application) {
-
-    Organization.get({id: 'Hooli'}, function (data) {
-      $scope.organization = data;
-    });
-
-
-    $scope.createApplication = function (application) {
-      Application.save({ orgId: $scope.organization.id }, application);
-    };
-
-
-  }])
-
   /// ==== Organization Controller
 .controller("OrganizationCtrl", ["$scope", "Organization", "orgModel", function ($scope, Organization, orgModel) {
 
     var orgId = orgModel.selectedOrgId;
 
+    //TODO Remove manual init of selected org
     Organization.get({id: orgId}, function (data) {
-      $scope.organization = data;
+      orgModel.setSelectedOrg(data);
+      $scope.organization = orgModel.selectedOrg;
     });
 
     $scope.updateOrgDescription = function () {
@@ -427,12 +416,34 @@ angular.module("app.ctrls", [])
 
   }])
 
+  /// ==== NewApplication Controller
+.controller("NewApplicationCtrl", ["$scope", "$location", "Organization", "Application", "orgModel", "appModel",
+    function ($scope, $location, Organization, Application, orgModel, appModel) {
+
+      Organization.get({id: orgModel.selectedOrgId}, function (data) {
+        $scope.organization = data;
+      });
+
+
+      $scope.createApplication = function (application) {
+        Application.save({ orgId: $scope.organization.id }, application, function (app) {
+          appModel.setSelectedApp(app);
+        });
+      };
+
+      $scope.$on('appModel::selectedAppUpdated', function (event) {
+        $location.path('organization')
+      })
+
+    }])
+
 /// ==== NewOrganization Controller
 .controller("NewOrganizationCtrl", ["$scope", "$location", "Organization", "orgModel", function ($scope, $location, Organization, orgModel) {
 
     $scope.createOrganization = function (org) {
       Organization.save(org, function (organization) {
         orgModel.setSelectedOrgId(organization.id);
+        orgModel.setSelectedOrg(organization);
       });
     };
 
@@ -445,11 +456,15 @@ angular.module("app.ctrls", [])
 
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-    .controller("PlansCtrl", ["$scope", "Plan", "orgModel", function ($scope, Plan, orgModel) {
+    .controller("PlansCtrl", ["$scope", "$location", "Plan", "orgModel", function ($scope, $location, Plan, orgModel) {
 
       Plan.query({orgId: orgModel.selectedOrgId}, function (data) {
         $scope.plans = data;
       });
+
+      $scope.newPlan = function() {
+        $location.path('new-plan');
+      }
 
     }])
 
@@ -463,11 +478,15 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "Application", "orgModel", function ($scope, Application, orgModel) {
+  .controller("ApplicationsCtrl", ["$scope", "$location", "Application", "orgModel", function ($scope, $location, Application, orgModel) {
 
     Application.query({orgId: orgModel.selectedOrgId}, function (data) {
       $scope.applications = data;
     });
+
+    $scope.newApplication = function() {
+      $location.path('new-application');
+    }
 
   }])
 
@@ -506,31 +525,49 @@ angular.module("app.ctrls", [])
   }])
 
 /// ==== Contract Controller
-.controller("ContractCtrl", ["$scope", "$modal", "$location", "apiService", "applicationService", function($scope, $modal, $location, apiService, applicationService) {
+.controller("ContractCtrl", ["$scope", "$modal", "$location", "ApplicationVersion", "Contract", "ServicePlans", "orgModel", "svcModel", "appModel",
+    function($scope, $modal, $location, ApplicationVersion, Contract, ServicePlans, orgModel, svcModel, appModel) {
 
-    $scope.plans = [
-      "Unlimited",
-      "Bronze",
-      "Silver",
-      "Gold",
-      "Platinum"
-    ];
+    $scope.organization = orgModel.selectedOrg;
+    $scope.application = appModel.selectedApp;
+    $scope.service = svcModel.selectedService;
+
+    ApplicationVersion.query({orgId: $scope.organization.id, appId: $scope.application.id}, function (data) {
+      $scope.versions = data;
+    });
+
+    ServicePlans.query({orgId: $scope.service.organizationId, svcId: $scope.service.id, versionId: 'v1'}, function (data) {
+      $scope.plans = data;
+    });
+
+    //$scope.plans = [
+    //  "Unlimited",
+    //  "Bronze",
+    //  "Silver",
+    //  "Gold",
+    //  "Platinum"
+    //];
 
     $scope.updateApplicationVersion = function() {
-      applicationService.selectVersion($scope.apiVersion);
-    };
-
-    $scope.updateEnvironment = function() {
-      apiService.selectEnvironment($scope.apiEnvironment);
+      appModel.setSelectedAppVersion($scope.apiVersion);
     };
 
     $scope.cancel = function() {
       $location.path('api');
     };
 
-    $scope.api = apiService.getSelectedApi();
-    $scope.apiVersion = apiService.getSelectedVersion();
-    $scope.application = applicationService.getSelectedApplication();
+    $scope.createContract = function () {
+      var contract = {
+        serviceOrgId: $scope.service.organizationId,
+        serviceId: $scope.service.id,
+        serviceVersion: svcModel.selectedVersion,
+        planId: $scope.selectedPlan
+      };
+
+      Contract.save({orgId: $scope.organization.id, appId: $scope.application.id, versionId: $scope.selectedVersion}, contract, function (data) {
+        $location.path('application');
+      });
+    };
 
   }]);
 
