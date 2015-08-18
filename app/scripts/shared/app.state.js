@@ -83,12 +83,42 @@
 
     .service("appModel", [ '$rootScope', function($rootScope) {
 
-      this.selectedApp = null;
+      this.selectedApp = {
+        organization: {
+          id: "FedEx",
+          name: "FedEx",
+          description: "Shipping company",
+          createdBy: "admin",
+          createdOn: 1439894816000,
+          modifiedBy: "admin",
+          modifiedOn: 1439894816000
+        },
+        id: "PackageTracker",
+        name: "Package Tracker",
+        description: "Will allow users to track packages and automatically receive shipping updates",
+        createdBy: "admin",
+        createdOn: 1439896404000
+      };
+      this.selectedAppVersion =   {
+        organizationId: "FedEx",
+        organizationName: "FedEx",
+        id: "PackageTracker",
+        name: "Package Tracker",
+        description: "Will allow users to track packages and automatically receive shipping updates",
+        status: "Created",
+        version: "v1"
+      };
 
       this.setSelectedApp = function (app) {
         this.selectedApp = app;
         console.log('Selected application with id: ' + app.id);
         $rootScope.$broadcast('appModel::selectedAppUpdated');
+      };
+
+      this.setSelectedAppVersion = function (version) {
+        this.selectedAppVersion = version;
+        console.log('Selected version ' + version.version + ' for ' + this.selectedApp.id);
+        $rootScope.$broadcast('appModel::selectedAppVersionUpdated');
       }
 
     }]);

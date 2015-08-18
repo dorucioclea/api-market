@@ -17,8 +17,7 @@
                 <button class="btn btn-light form-control" disabled>{{application.name}}</button>
               </div>
               <div class="col-sm-5 col-sm-offset-1 col-sm-pull-1">
-                <select class="form-control">
-                  <option ng-repeat="version in versions" value="0">{{version.version}}</option>
+                <select class="form-control" ng-change="updateSelectedAppVersion()" ng-model="selectedVersion" ng-options="version as version.version for version in versions track by version.version">
                 </select>
               </div>
             </div>

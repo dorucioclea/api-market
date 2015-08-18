@@ -298,8 +298,6 @@ angular.module("app.ctrls", [])
 .controller("DocumentationCtrl", ["$scope", "$location", "$modal", "Application", "orgModel", "svcModel", "appModel", function($scope, $location, $modal, Application, orgModel, svcModel, appModel) {
 
     $scope.selectedApp = appModel.selectedApp;
-    console.log($scope.selectedApp);
-
     Application.query({orgId: orgModel.selectedOrgId}, function (apps) {
       $scope.applications = apps;
     });
@@ -531,8 +529,10 @@ angular.module("app.ctrls", [])
     $scope.organization = orgModel.selectedOrg;
     $scope.application = appModel.selectedApp;
     $scope.service = svcModel.selectedService;
+    $scope.selectedVersion = appModel.selectedAppVersion;
 
-    ApplicationVersion.query({orgId: $scope.organization.id, appId: $scope.application.id}, function (data) {
+
+      ApplicationVersion.query({orgId: $scope.organization.id, appId: $scope.application.id}, function (data) {
       $scope.versions = data;
     });
 
@@ -554,6 +554,10 @@ angular.module("app.ctrls", [])
 
     $scope.cancel = function() {
       $location.path('api');
+    };
+
+    $scope.updateSelectedAppVersion = function() {
+      appModel.setSelectedAppVersion(this.selectedVersion);
     };
 
     $scope.createContract = function () {
