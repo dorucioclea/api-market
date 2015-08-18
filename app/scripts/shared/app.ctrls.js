@@ -411,10 +411,11 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "Organization", "organizationService", function ($scope, Organization) {
+.controller("OrganizationCtrl", ["$scope", "Organization", "orgModel", function ($scope, Organization, orgModel) {
 
+    var orgId = orgModel.selectedOrgId;
 
-    Organization.get({id: 'Hooli'}, function (data) {
+    Organization.get({id: orgId}, function (data) {
       $scope.organization = data;
     });
 
@@ -427,47 +428,53 @@ angular.module("app.ctrls", [])
   }])
 
 /// ==== NewOrganization Controller
-.controller("NewOrganizationCtrl", ["$scope", "Organization", function ($scope, Organization) {
+.controller("NewOrganizationCtrl", ["$scope", "$location", "Organization", "orgModel", function ($scope, $location, Organization, orgModel) {
 
     $scope.createOrganization = function (org) {
-      Organization.save(org);
+      Organization.save(org, function (organization) {
+        orgModel.setSelectedOrgId(organization.id);
+      });
     };
+
+    $scope.$on('orgModel::selectedOrgUpdated', function (event) {
+      $location.path('organization');
+    });
 
   }])
 
 
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-    .controller("PlansCtrl", ["$scope", "Plan", function ($scope, Plan) {
+    .controller("PlansCtrl", ["$scope", "Plan", "orgModel", function ($scope, Plan, orgModel) {
 
-      Plan.query({orgId: 'Hooli'}, function (data) {
+      Plan.query({orgId: orgModel.selectedOrgId}, function (data) {
         $scope.plans = data;
       });
 
     }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "Service", function ($scope, Service) {
+  .controller("ServicesCtrl", ["$scope", "Service", "orgModel", function ($scope, Service, orgModel) {
 
-    Service.query({orgId: 'Hooli'}, function (data) {
+    Service.query({orgId: orgModel.selectedOrgId}, function (data) {
       $scope.services = data;
     });
 
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "Application", function ($scope, Application) {
+  .controller("ApplicationsCtrl", ["$scope", "Application", "orgModel", function ($scope, Application, orgModel) {
 
-    Application.query({orgId: 'Hooli'}, function (data) {
+    Application.query({orgId: orgModel.selectedOrgId}, function (data) {
       $scope.applications = data;
     });
 
   }])
 
   /// ==== Members Controller
-  .controller("MembersCtrl", ["$scope", "Member", function ($scope, Member) {
+  .controller("MembersCtrl", ["$scope", "Member", "orgModel", function ($scope, Member, orgModel) {
 
-    Member.query({orgId: 'Hooli'}, function (data) {
+    Member.query({orgId: orgModel.selectedOrgId}, function (data) {
       $scope.members = data;
     });
 

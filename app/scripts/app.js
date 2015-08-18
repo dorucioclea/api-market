@@ -17,9 +17,11 @@
 		"FBAngular",
 
 		/* custom modules */
+    "app.state",
 		"app.ctrls",
 		"app.directives",
     "app.services",
+    "app.apiEngine",
 		"app.ui.ctrls",
 		"app.ui.directives",
 		"app.form.ctrls",
