@@ -11,13 +11,13 @@
 		"ngMaterial",
 
 		/* 3rd party modules */
+    "ngStorage",
 		"oc.lazyLoad",
 		"ui.bootstrap",
 		"angular-loading-bar",
 		"FBAngular",
 
 		/* custom modules */
-    "app.state",
 		"app.ctrls",
 		"app.directives",
     "app.services",
@@ -37,6 +37,11 @@
 	    cfpLoadingBarProvider.includeSpinner = false;
 	     cfpLoadingBarProvider.latencyThreshold = 500;
 	}])
+
+  .config(['$localStorageProvider',
+    function ($localStorageProvider) {
+      $localStorageProvider.setKeyPrefix('apim');
+  }])
 
 	// lazy loading scripts references of angular modules only
 	.config(["$ocLazyLoadProvider", function($oc) {

@@ -27,7 +27,7 @@
               <div class="form-group">
                 <select class="form-control" name="appSelect" id="appSelect"
                         ng-options="application as application.name for application in applications track by application.id"
-                        ng-model="selectedApp" ng-change="updateSelectedApp()"></select>
+                        ng-model="$storage.selectedApp"></select>
               </div>
             </form>
             <button class="btn btn-success btn-block" ng-click="subscribe()">Subscribe</button>

@@ -72,6 +72,7 @@ module.exports = function(config) {
       'bower_components/ui-select/src/select3.js',
       'bower_components/perfect-scrollbar/src/perfect-scrollbar.js',
       'bower_components/d3/d3.js',
+      'bower_components/ngstorage/ngStorage.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/less/dist/less.js',
       // endbower

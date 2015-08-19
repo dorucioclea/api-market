@@ -5,8 +5,61 @@
 angular.module("app.ctrls", [])
 
 // Root Controller
-.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", function($rs, $scope, $timeout) {
+.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", "$localStorage", function($rs, $scope, $timeout, $localStorage) {
 	var mm = window.matchMedia("(max-width: 767px)");
+
+    // ###TODO Remove preseeded data!###
+    $scope.$storage = $localStorage;
+
+    $scope.$storage.selectedOrg = {
+      id: "FedEx",
+      name: "FedEx",
+      description: "Shipping company",
+      createdBy: "admin",
+      createdOn: 1439894816000,
+      modifiedBy: "admin",
+      modifiedOn: 1439894816000
+    };
+
+    $scope.$storage.selectedApp = {
+      organization: {
+        id: "FedEx",
+        name: "FedEx",
+        description: "Shipping company",
+        createdBy: "admin",
+        createdOn: 1439894816000,
+        modifiedBy: "admin",
+        modifiedOn: 1439894816000
+      },
+      id: "PackageTracker",
+      name: "Package Tracker",
+      description: "Will allow users to track packages and automatically receive shipping updates",
+      createdBy: "admin",
+      createdOn: 1439896404000
+    };
+    $scope.$storage.selectedAppVersion =   {
+      organizationId: "FedEx",
+      organizationName: "FedEx",
+      id: "PackageTracker",
+      name: "Package Tracker",
+      description: "Will allow users to track packages and automatically receive shipping updates",
+      status: "Created",
+      version: "v1"
+    };
+
+    $scope.$storage.selectedSvc = {
+      organizationId: "FedEx",
+      organizationName: "FedEx",
+      id: "PackageTrackingService",
+      name: "Package Tracking Service",
+      description: "Track your packages via tracking number",
+      createdOn: 1439900026000
+    };
+
+    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc);
+    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc.id);
+    // ### End todo
+
 	$rs.isMobile = mm.matches ? true: false;
 
 	$rs.safeApply = function(fn) {
@@ -211,7 +264,7 @@ angular.module("app.ctrls", [])
 
 
 /// ==== Dashboard Controller
-.controller("DashboardCtrl", ["$scope", "$location", "svcModel", function($scope, $location, svcModel) {
+.controller("DashboardCtrl", ["$scope", "$location", function($scope, $location) {
 
   $scope.currentSorting = 'Popular';
   $scope.currentPricing = 'All';
@@ -225,7 +278,6 @@ angular.module("app.ctrls", [])
 
 
   $scope.goToApi = function(api) {
-    //svcModel.setSelectedSvcId(api.id);
     $location.path('api');
   };
 }])
@@ -246,21 +298,21 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== API Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$location", "$modal", "Application", "orgModel", "svcModel", "appModel", function($scope, $location, $modal, Application, orgModel, svcModel, appModel) {
+  .controller("ApiDocCtrl", ["$scope", "$location", "$modal", function($scope, $location, $modal) {
 
     $scope.updateUrl = function() {
-      $scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
-      switch ($scope.apiEnvironment) {
-        case 'dev':
-          $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
-          break;
-        case 'acc':
-          $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
-          break;
-        case 'prod':
-          $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
-          break;
-      }
+      //$scope.apiUrl = $scope.apiBaseUrl + '/' + $scope.apiEnvironment + '/' + $scope.apiVersion;
+      //switch ($scope.apiEnvironment) {
+      //  case 'dev':
+      //    $scope.swaggerUrl = "http://petstore.swagger.io/v2/swagger.json";
+      //    break;
+      //  case 'acc':
+      //    $scope.swaggerUrl = "http://www.bittitan.com/swagger/api-docs";
+      //    break;
+      //  case 'prod':
+      //    $scope.swaggerUrl = "http://api.3drobotics.com/api-docs";
+      //    break;
+      //}
     };
 
     $scope.updateUrl();
@@ -295,62 +347,60 @@ angular.module("app.ctrls", [])
 
 
 /// ==== API Swagger Documentation Controller
-.controller("DocumentationCtrl", ["$scope", "$location", "$modal", "Application", "orgModel", "svcModel", "appModel", function($scope, $location, $modal, Application, orgModel, svcModel, appModel) {
+    .controller("DocumentationCtrl", ["$scope", "$localStorage", "$location", "$modal", "Application",
+      function($scope, $localStorage, $location, $modal, Application) {
 
-    $scope.selectedApp = appModel.selectedApp;
-    Application.query({orgId: orgModel.selectedOrgId}, function (apps) {
-      $scope.applications = apps;
-    });
+        $scope.$storage = $localStorage;
 
-    $scope.updateSelectedApp = function() {
-      appModel.setSelectedApp(this.selectedApp);
-    };
+        Application.query({orgId: $scope.$storage.selectedOrg.id}, function (apps) {
+          $scope.applications = apps;
+        });
 
-    $scope.loadSwaggerUi = function(url) {
-      $scope.swaggerUi = new SwaggerUi({
-        url:url,
-        dom_id:"swagger-ui-container",
-        validatorUrl: null,
-        apisSorter: "alpha",
-        operationsSorter: "alpha",
-        docExpansion: "list",
-        onComplete: function() {
-          $('#swagger-ui-container').find('a').each(function(idx, elem) {
-            var href = $(elem).attr('href');
-            if (href[0] == '#') {
-              $(elem).removeAttr('href');
+        $scope.loadSwaggerUi = function(url) {
+          $scope.swaggerUi = new SwaggerUi({
+            url:url,
+            dom_id:"swagger-ui-container",
+            validatorUrl: null,
+            apisSorter: "alpha",
+            operationsSorter: "alpha",
+            docExpansion: "list",
+            onComplete: function() {
+              $('#swagger-ui-container').find('a').each(function(idx, elem) {
+                var href = $(elem).attr('href');
+                if (href[0] == '#') {
+                  $(elem).removeAttr('href');
+                }
+              })
+                .find('div.sandbox_header').each(function(idx, elem) {
+                  $(elem).remove();
+                })
+                .find("li.operation div.auth").each(function(idx, elem) {
+                  $(elem).remove();
+                })
+                .find("li.operation div.access").each(function(idx, elem) {
+                  $(elem).remove();
+                });
+              $scope.$apply(function(error) {
+                $scope.definitionStatus = 'complete';
+              });
+            },
+            onFailure: function() {
+              $scope.$apply(function(error) {
+                $scope.definitionStatus = 'error';
+                $scope.hasError = true;
+                $scope.error = error;
+              });
             }
-          })
-            .find('div.sandbox_header').each(function(idx, elem) {
-              $(elem).remove();
-            })
-            .find("li.operation div.auth").each(function(idx, elem) {
-              $(elem).remove();
-            })
-            .find("li.operation div.access").each(function(idx, elem) {
-              $(elem).remove();
-            });
-          $scope.$apply(function(error) {
-            $scope.definitionStatus = 'complete';
           });
-        },
-        onFailure: function() {
-          $scope.$apply(function(error) {
-            $scope.definitionStatus = 'error';
-            $scope.hasError = true;
-            $scope.error = error;
-          });
-        }
-      });
-      $scope.swaggerUi.load();
-    };
-    $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
+          $scope.swaggerUi.load();
+        };
+        $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
 
 
-    $scope.subscribe = function() {
-      $location.path('contract');
-    };
-  }])
+        $scope.subscribe = function() {
+          $location.path('contract');
+        };
+      }])
 
   .directive('authAccordionGroup', function () {
     return {
@@ -395,68 +445,58 @@ angular.module("app.ctrls", [])
 
   }])
 
-  /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "Organization", "orgModel", function ($scope, Organization, orgModel) {
-
-    var orgId = orgModel.selectedOrgId;
-
-    //TODO Remove manual init of selected org
-    Organization.get({id: orgId}, function (data) {
-      orgModel.setSelectedOrg(data);
-      $scope.organization = orgModel.selectedOrg;
-    });
-
-    $scope.updateOrgDescription = function () {
-      var updatedOrg = new Organization();
-      updatedOrg.description = $scope.organization.description;
-      updatedOrg.$update({id: $scope.organization.id});
-    }
-
-  }])
-
   /// ==== NewApplication Controller
-.controller("NewApplicationCtrl", ["$scope", "$location", "Organization", "Application", "orgModel", "appModel",
-    function ($scope, $location, Organization, Application, orgModel, appModel) {
+.controller("NewApplicationCtrl", ["$scope", "$localStorage", "$location", "$timeout", "Organization", "Application",
+    function ($scope, $localStorage, $location, $timeout, Organization, Application) {
 
-      Organization.get({id: orgModel.selectedOrgId}, function (data) {
-        $scope.organization = data;
-      });
-
+      $scope.$storage = $localStorage;
 
       $scope.createApplication = function (application) {
-        Application.save({ orgId: $scope.organization.id }, application, function (app) {
-          appModel.setSelectedApp(app);
+        Application.save({ orgId: $scope.$storage.selectedOrg.id }, application, function (app) {
+          $scope.$storage.selectedApp = app;
+          $timeout( function() {
+            $location.path('organization');
+          });
         });
       };
-
-      $scope.$on('appModel::selectedAppUpdated', function (event) {
-        $location.path('organization')
-      })
 
     }])
 
 /// ==== NewOrganization Controller
-.controller("NewOrganizationCtrl", ["$scope", "$location", "Organization", "orgModel", function ($scope, $location, Organization, orgModel) {
+.controller("NewOrganizationCtrl", ["$scope", "$localStorage", "$location", "$timeout", "Organization", function ($scope, $localStorage, $location, $timeout, Organization) {
+
+    $scope.$storage = $localStorage;
 
     $scope.createOrganization = function (org) {
       Organization.save(org, function (organization) {
-        orgModel.setSelectedOrgId(organization.id);
-        orgModel.setSelectedOrg(organization);
+        $scope.$storage.selectedOrg = organization;
+        $timeout(function(){
+          $location.path('organization');
+        });
       });
     };
+  }])
 
-    $scope.$on('orgModel::selectedOrgUpdated', function (event) {
-      $location.path('organization');
-    });
+  /// ==== Organization Controller
+  .controller("OrganizationCtrl", ["$scope", "$localStorage", "Organization", function ($scope, $localStorage, Organization) {
+
+    $scope.$storage = $localStorage;
+
+    $scope.updateOrgDescription = function () {
+      var updatedOrg = new Organization();
+      updatedOrg.description = $scope.$storage.selectedOrg.description;
+      updatedOrg.$update({id: $scope.$storage.selectedOrg.id});
+    }
 
   }])
 
-
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-    .controller("PlansCtrl", ["$scope", "$location", "Plan", "orgModel", function ($scope, $location, Plan, orgModel) {
+    .controller("PlansCtrl", ["$scope", "$localStorage", "$location", "Plan", function ($scope, $localStorage, $location, Plan) {
 
-      Plan.query({orgId: orgModel.selectedOrgId}, function (data) {
+      $scope.$storage = $localStorage;
+
+      Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
         $scope.plans = data;
       });
 
@@ -467,18 +507,22 @@ angular.module("app.ctrls", [])
     }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "Service", "orgModel", function ($scope, Service, orgModel) {
+  .controller("ServicesCtrl", ["$scope", "$localStorage", "Service", function ($scope, $localStorage, Service) {
 
-    Service.query({orgId: orgModel.selectedOrgId}, function (data) {
+    $scope.$storage = $localStorage;
+
+    Service.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
       $scope.services = data;
     });
 
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$location", "Application", "orgModel", function ($scope, $location, Application, orgModel) {
+  .controller("ApplicationsCtrl", ["$scope", "$localStorage", "$location", "Application", function ($scope, $localStorage, $location, Application) {
 
-    Application.query({orgId: orgModel.selectedOrgId}, function (data) {
+    $scope.$storage = $localStorage;
+
+    Application.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
       $scope.applications = data;
     });
 
@@ -489,9 +533,11 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Members Controller
-  .controller("MembersCtrl", ["$scope", "Member", "orgModel", function ($scope, Member, orgModel) {
+  .controller("MembersCtrl", ["$scope", "$localStorage", "Member", function ($scope, $localStorage, Member) {
 
-    Member.query({orgId: orgModel.selectedOrgId}, function (data) {
+    $scope.$storage = $localStorage;
+
+    Member.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
       $scope.members = data;
     });
 
@@ -523,16 +569,16 @@ angular.module("app.ctrls", [])
   }])
 
 /// ==== Contract Controller
-.controller("ContractCtrl", ["$scope", "$modal", "$location", "ApplicationVersion", "Contract", "ServicePlans", "orgModel", "svcModel", "appModel",
-    function($scope, $modal, $location, ApplicationVersion, Contract, ServicePlans, orgModel, svcModel, appModel) {
+.controller("ContractCtrl", ["$scope", "$modal", "$location", "$localStorage", "$timeout", "ApplicationVersion", "Contract", "ServicePlans",
+    function($scope, $modal, $location, $localStorage, $timeout, ApplicationVersion, Contract, ServicePlans) {
 
-    $scope.organization = orgModel.selectedOrg;
-    $scope.application = appModel.selectedApp;
-    $scope.service = svcModel.selectedService;
-    $scope.selectedVersion = appModel.selectedAppVersion;
+    $scope.organization = $scope.$storage.selectedOrg;
+    $scope.application = $scope.$storage.selectedApp;
+    $scope.service = $scope.$storage.selectedSvc;
+    $scope.selectedVersion = $scope.$storage.selectedAppVersion;
 
 
-      ApplicationVersion.query({orgId: $scope.organization.id, appId: $scope.application.id}, function (data) {
+    ApplicationVersion.query({orgId: $scope.organization.id, appId: $scope.application.id}, function (data) {
       $scope.versions = data;
     });
 
@@ -548,23 +594,20 @@ angular.module("app.ctrls", [])
     //  "Platinum"
     //];
 
-    $scope.updateApplicationVersion = function() {
-      appModel.setSelectedAppVersion($scope.apiVersion);
-    };
 
     $scope.cancel = function() {
       $location.path('api');
     };
 
     $scope.updateSelectedAppVersion = function() {
-      appModel.setSelectedAppVersion(this.selectedVersion);
+      $scope.$storage.selectedAppVersion = this.selectedVersion;
     };
 
     $scope.createContract = function () {
       var contract = {
         serviceOrgId: $scope.service.organizationId,
         serviceId: $scope.service.id,
-        serviceVersion: svcModel.selectedVersion,
+        serviceVersion: $scope.$storage.selectedSvcVersion,
         planId: $scope.selectedPlan
       };
 
