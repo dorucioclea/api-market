@@ -516,7 +516,10 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Organizations Overview & Search Controller
-  .controller("OrganizationsCtrl", ["$scope", "SearchOrgs", function ($scope, SearchOrgs) {
+  .controller("OrganizationsCtrl", ["$scope", "$localStorage", "$location", "$timeout", "Organization", "SearchOrgs",
+    function ($scope, $localStorage, $location, $timeout, Organization, SearchOrgs) {
+
+    $scope.$storage = $localStorage;
 
     $scope.doSearch = function (searchString) {
       console.log(searchString);
@@ -532,6 +535,15 @@ angular.module("app.ctrls", [])
         $scope.orgs = results.beans;
       })
     };
+
+    $scope.goToOrganization = function (org) {
+      Organization.get({id: org.id}, function (organization) {
+        $scope.$storage.selectedOrg = organization;
+        $timeout(function(){
+          $location.path('organization');
+        });
+      })
+    }
 
   }])
 
