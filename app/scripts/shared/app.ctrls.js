@@ -515,6 +515,26 @@ angular.module("app.ctrls", [])
 
   }])
 
+  /// ==== Organizations Overview & Search Controller
+  .controller("OrganizationsCtrl", ["$scope", "SearchOrgs", function ($scope, SearchOrgs) {
+
+    $scope.doSearch = function (searchString) {
+      console.log(searchString);
+      var search = {};
+      search.filters = [ { name: "name", value: searchString, operator: "like" }];
+      search.orderBy = { ascending: false, name: "name"};
+      search.paging = { page: 1, pageSize: 100};
+      console.log(search);
+
+      SearchOrgs.save(search, function (results) {
+        console.log(results);
+        $scope.totalOrgs = results.totalSize;
+        $scope.orgs = results.beans;
+      })
+    };
+
+  }])
+
   /// ==== Organization Controller
   .controller("OrganizationCtrl", ["$scope", "$localStorage", "screenSize", "Organization", function ($scope, $localStorage, screenSize, Organization) {
 

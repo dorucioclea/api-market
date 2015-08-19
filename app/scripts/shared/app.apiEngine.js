@@ -79,4 +79,11 @@
       return $resource(EngineUrl + '/currentuser/svcorgs');
     }])
 
+  /// ================ SEARCH ===================
+
+    .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/organizations');
+    }])
+
+
 })();
