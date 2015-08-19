@@ -29,7 +29,7 @@
 
   <div class="col-sm-12" ng-repeat="application in applications">
     <div class="col-sm-12">
-      <span class="title"><a>{{application.name}}</a></span>
+      <span class="title"><a ng-click="goToApplication(application)">{{application.name}}</a></span>
     </div>
     <div class="col-sm-12">
       <span class="description">{{application.description}}</span>

@@ -39,9 +39,14 @@
 	     cfpLoadingBarProvider.latencyThreshold = 500;
 	}])
 
+  // ngStorage key config
   .config(['$localStorageProvider',
     function ($localStorageProvider) {
       $localStorageProvider.setKeyPrefix('apim');
+  }])
+  .config(['$sessionStorageProvider',
+    function ($sessionStorageProvider) {
+      $sessionStorageProvider.setKeyPrefix('apim_session');
   }])
 
 	// lazy loading scripts references of angular modules only

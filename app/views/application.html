@@ -7,11 +7,11 @@
           <div class="col-sm-10">
             <div class="text-bold text-primary">
               <div class="col-sm-8 text-primary text-uppercase text-bold">
-                <h5><span class="fa fa-cogs"></span> {{application.name}}</h5>
+                <h5><span class="fa fa-cogs"></span> {{$storage.selectedApp.name}}</h5>
               </div>
               <div class="col-sm-4">
                 <form role="form" class="form-inline right">
-                  <select dir="rtl" class="form-control" ng-model="apiVersion" ng-change="updateUrl()">
+                  <select dir="rtl" class="form-control">
                     <option value="v2" selected>Version v2</option>
                     <option value="v1">Version v1</option>
                   </select>
@@ -21,9 +21,9 @@
 
             <div class="col-sm-12">
               <hr>
-              <p>{{application.description}}</p>
-              <span class="text-light small fa fa-clock-o"> Created on {{application.createdOn | date}}</span> <br>
-              <span class="text-light small fa fa-user"> Created by {{application.createdBy}}</span>
+              <p>{{$storage.selectedApp.description}}</p>
+              <span class="text-light small fa fa-clock-o"> Created on {{$storage.selectedApp.createdOn | date}}</span> <br>
+              <span class="text-light small fa fa-user"> Created by {{$storage.selectedApp.createdBy}}</span>
               <hr>
               <p class="mt15">Status: <label class="label text-uppercase label-warning">Created</label></p>
             </div>

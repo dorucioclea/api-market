@@ -37,6 +37,7 @@ angular.module("app.ctrls", [])
       createdBy: "admin",
       createdOn: 1439896404000
     };
+
     $scope.$storage.selectedAppVersion =   {
       organizationId: "FedEx",
       organizationName: "FedEx",
@@ -434,17 +435,6 @@ angular.module("app.ctrls", [])
     };
   })
 
-/// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "Application", function ($scope, Application) {
-
-    Application.get({orgId: 'Hooli', appId: 'HooliCompressionEngine'}, function (data) {
-      $scope.organization = data.organization;
-      $scope.application = data;
-    })
-
-
-  }])
-
   /// ==== NewApplication Controller
 .controller("NewApplicationCtrl", ["$scope", "$localStorage", "$location", "$timeout", "Organization", "Application",
     function ($scope, $localStorage, $location, $timeout, Organization, Application) {
@@ -475,6 +465,54 @@ angular.module("app.ctrls", [])
         });
       });
     };
+  }])
+
+
+  /// ==== Application Controller
+  .controller("ApplicationCtrl", ["$scope", "$localStorage", "Application", function ($scope, $localStorage, Application) {
+
+    $scope.$storage = $localStorage;
+
+  }])
+
+  // +++ Application Screen Subcontrollers +++
+  /// ==== Activity Controller
+  .controller("ActivityCtrl", ["$scope", "$localStorage", "$location", "ApplicationActivity", function ($scope, $localStorage, $location, ApplicationActivity) {
+
+    $scope.$storage = $localStorage;
+
+    ApplicationActivity.get({orgId: $scope.$storage.selectedApp.organization.id, appId: $scope.$storage.selectedApp.id}, function (data) {
+      $scope.activities = data.beans;
+    });
+
+  }])
+  /// ==== APIs Controller
+  .controller("ApisCtrl", ["$scope", "$localStorage", "$location", "Plan", function ($scope, $localStorage, $location, Plan) {
+
+    $scope.$storage = $localStorage;
+
+    Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
+      $scope.plans = data;
+    });
+
+    $scope.newPlan = function() {
+      $location.path('new-plan');
+    }
+
+  }])
+  /// ==== Contracts Controller
+  .controller("ContractsCtrl", ["$scope", "$localStorage", "$location", "Plan", function ($scope, $localStorage, $location, Plan) {
+
+    $scope.$storage = $localStorage;
+
+    Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
+      $scope.plans = data;
+    });
+
+    $scope.newPlan = function() {
+      $location.path('new-plan');
+    }
+
   }])
 
   /// ==== Organization Controller
@@ -512,10 +550,6 @@ angular.module("app.ctrls", [])
         $scope.plans = data;
       });
 
-      $scope.newPlan = function() {
-        $location.path('new-plan');
-      }
-
     }])
 
   /// ==== Services Controller
@@ -530,7 +564,7 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$localStorage", "$location", "Application", function ($scope, $localStorage, $location, Application) {
+  .controller("ApplicationsCtrl", ["$scope", "$localStorage", "$location", "$timeout", "Application", function ($scope, $localStorage, $location, $timeout, Application) {
 
     $scope.$storage = $localStorage;
 
@@ -540,7 +574,16 @@ angular.module("app.ctrls", [])
 
     $scope.newApplication = function() {
       $location.path('new-application');
-    }
+    };
+
+    $scope.goToApplication = function (application) {
+      Application.get({orgId: $scope.$storage.selectedOrg.id, appId: application.id}, function (app) {
+        $scope.$storage.selectedApp = app;
+        $timeout(function(){
+          $location.path('application');
+        });
+      })
+    };
 
   }])
 
@@ -581,8 +624,8 @@ angular.module("app.ctrls", [])
   }])
 
 /// ==== Contract Controller
-.controller("ContractCtrl", ["$scope", "$modal", "$location", "$localStorage", "$timeout", "ApplicationVersion", "Contract", "ServicePlans",
-    function($scope, $modal, $location, $localStorage, $timeout, ApplicationVersion, Contract, ServicePlans) {
+.controller("ContractCtrl", ["$scope", "$modal", "$location", "$localStorage", "$timeout", "ApplicationVersion", "ApplicationContract", "ServicePlans",
+    function($scope, $modal, $location, $localStorage, $timeout, ApplicationVersion, ApplicationContract, ServicePlans) {
 
     $scope.organization = $scope.$storage.selectedOrg;
     $scope.application = $scope.$storage.selectedApp;
@@ -623,7 +666,7 @@ angular.module("app.ctrls", [])
         planId: $scope.selectedPlan
       };
 
-      Contract.save({orgId: $scope.organization.id, appId: $scope.application.id, versionId: $scope.selectedVersion}, contract, function (data) {
+      ApplicationContract.save({orgId: $scope.organization.id, appId: $scope.application.id, versionId: $scope.selectedVersion}, contract, function (data) {
         $location.path('application');
       });
     };
