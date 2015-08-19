@@ -16,6 +16,7 @@
 		"ui.bootstrap",
 		"angular-loading-bar",
 		"FBAngular",
+    "matchMedia",
 
 		/* custom modules */
 		"app.ctrls",

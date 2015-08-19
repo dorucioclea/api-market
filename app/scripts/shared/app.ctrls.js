@@ -478,9 +478,21 @@ angular.module("app.ctrls", [])
   }])
 
   /// ==== Organization Controller
-  .controller("OrganizationCtrl", ["$scope", "$localStorage", "Organization", function ($scope, $localStorage, Organization) {
+  .controller("OrganizationCtrl", ["$scope", "$localStorage", "screenSize", "Organization", function ($scope, $localStorage, screenSize, Organization) {
 
     $scope.$storage = $localStorage;
+
+    $scope.xs = screenSize.on('xs', function(match){
+      $scope.xs = match;
+    });
+
+    $scope.switchTab = function (tabId) {
+      $scope.$storage.orgScreen.activeTab = tabId;
+    };
+
+    $scope.isTabActive = function (tabId) {
+      return $scope.$storage.orgScreen.activeTab === tabId;
+    };
 
     $scope.updateOrgDescription = function () {
       var updatedOrg = new Organization();
