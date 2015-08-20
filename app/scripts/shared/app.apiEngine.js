@@ -85,8 +85,14 @@
 
   /// ========== SEARCH ===========================================================================
 
+    .factory('SearchApps', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/applications');
+    }])
     .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/organizations');
+    }])
+    .factory('SearchSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/services');
     }])
 
 
