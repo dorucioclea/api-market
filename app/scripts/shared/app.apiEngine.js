@@ -5,15 +5,16 @@
   angular.module("app.apiEngine", ["ngResource"])
 
 
-    /// #### API Engine BaseUrl ####
+  /// ########## API Engine BaseUrl ######################
     .factory('EngineUrl', function () {
       return 'http://localhost:8080/API-Engine-web/v1';
     })
 
 
 
-    /// #### ENDPOINT FACTORIES ####
-    /// ==== Organization ====
+  /// ########### ENDPOINT FACTORIES #####################
+
+  /// ========== ORGANIZATION =====================================================================
     .factory('Organization', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:id', { id: '@id' }, {
         update: {
@@ -21,7 +22,6 @@
         }
       });
     }])
-
     .factory('OrganizationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:id/activity');
     }])
@@ -29,7 +29,7 @@
       return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' });
     }])
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:serviceId', { orgId: '@organizationId', serviceId: '@id' });
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
     }])
     .factory('Application', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' });
@@ -50,7 +50,9 @@
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/')
     }])
 
-    /// ==== CurrentUser ====
+
+
+  /// ========== CURRENTUSER ======================================================================
     .factory('CurrentUserInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/currentuser/info', {}, {
         update: {
@@ -58,7 +60,6 @@
         }
       });
     }])
-
     .factory('CurrentUserApps', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/currentuser/applications');
     }])
@@ -79,7 +80,10 @@
       return $resource(EngineUrl + '/currentuser/svcorgs');
     }])
 
-  /// ================ SEARCH ===================
+
+
+
+  /// ========== SEARCH ===========================================================================
 
     .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/organizations');

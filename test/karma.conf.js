@@ -32,7 +32,6 @@ module.exports = function(config) {
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-fullscreen/src/angular-fullscreen.js',
@@ -74,6 +73,7 @@ module.exports = function(config) {
       'bower_components/d3/d3.js',
       'bower_components/ngstorage/ngStorage.js',
       'bower_components/angular-media-queries/match-media.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/less/dist/less.js',
       // endbower

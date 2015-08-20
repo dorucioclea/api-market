@@ -1,7 +1,7 @@
 <ul class="list-unstyled left-elems">
 
   <li>
-    <img class="logo" src="images/digipolis-logo.svg">
+    <img ui-sref="home.grid" class="logo" src="images/digipolis-logo.svg">
   </li>
 
 	<!-- Search box -->
@@ -17,18 +17,18 @@
 	<!-- site-logo for mobile nav -->
 	<li>
 		<div class="site-logo visible-xs">
-			<a href="#/dashboard" class="text-uppercase h3">
+			<a ui-sref="home.grid" class="text-uppercase h3">
 				<span class="text">ACPaaS</span>
 			</a>
 		</div>
 	</li> <!-- #end site-logo -->
 
   <li class="hidden-sm hidden-xs">
-    <a href="#/dashboard" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
+    <a ui-sref="home.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
   </li>
 
   <li class="hidden-sm hidden-xs">
-    <a href="#/organizations" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-ios-people"></i>Find Organizations</a>
+    <a ui-sref="organizations" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-ios-people"></i>Find Organizations</a>
   </li>
 
 </ul>
@@ -42,10 +42,10 @@
       <span class="text-primary caret"></span>
 		</a>
 		<ul class="dropdown-menu dropdown-menu-right">
-			<li><a href="#/user"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
-			<li><a href="javascript:;"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
+			<li><a ui-sref="user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
+			<li><a ui-sref="user.account"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
 			<li class="divider"></li>
-			<li><a href="#/organizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
+			<li><a ui-sref="myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
       <li class="divider"></li>
       <li><a href="javascript:;"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
 		</ul>

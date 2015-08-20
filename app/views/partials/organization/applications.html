@@ -3,7 +3,7 @@
   <div class="col-sm-12">
     <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
     <button id="apps-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-    <a class="btn btn-primary pull-right" ng-click="newApplication()">New App</a>
+    <a class="btn btn-primary pull-right" ng-click="modalNewApplication()">New App</a>
     <hr>
   </div>
   <!-- The list of applications in the org -->
@@ -29,7 +29,7 @@
 
   <div class="col-sm-12" ng-repeat="application in applications">
     <div class="col-sm-12">
-      <span class="title"><a ng-click="goToApplication(application)">{{application.name}}</a></span>
+      <span class="title"><a ui-sref="application({orgId: application.organizationId, appId: application.id})">{{application.name}}</a></span>
     </div>
     <div class="col-sm-12">
       <span class="description">{{application.description}}</span>

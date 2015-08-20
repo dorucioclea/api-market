@@ -3,7 +3,6 @@
 
 	angular.module("app", [
 		/* Angular modules */
-		"ngRoute",
 		"ngAnimate",
     "ngResource",
 		"ngSanitize",
@@ -11,6 +10,7 @@
 		"ngMaterial",
 
 		/* 3rd party modules */
+    "ui.router",
     "ngStorage",
 		"oc.lazyLoad",
 		"ui.bootstrap",
@@ -48,6 +48,231 @@
     function ($sessionStorageProvider) {
       $sessionStorageProvider.setKeyPrefix('apim_session');
   }])
+
+  // UI-Router states
+  .config(function($stateProvider, $urlRouterProvider) {
+
+    $urlRouterProvider.otherwise('/home/grid');
+
+    $stateProvider
+
+      // HOME STATES (DASHBOARD) AND NESTED VIEWS =======================================
+      .state('home', {
+        abstract: true,
+        url: '/home',
+        templateUrl: '/views/dashboard.html',
+        controller: 'DashboardCtrl'
+      })
+      // API Grid View
+      .state('home.grid', {
+        url: '/grid',
+        templateUrl: 'views/templates/apigrid.html'
+      })
+      // API List View
+      .state('home.list', {
+        url: '/list',
+        templateUrl: 'views/templates/apilist.html'
+      })
+
+      // API DETAILS PAGE AND NESTED VIEWS ==============================================
+      .state('service', {
+        url: '/organization/:orgId/service/:svcId',
+        templateUrl: 'views/api.html',
+        resolve: {
+          Service: 'Service',
+          svcData: function(Service, $stateParams){
+
+            var orgId = $stateParams.orgId;
+            var svcId = $stateParams.svcId;
+
+            return Service.get({orgId: orgId, svcId: svcId}).$promise;
+          }
+        },
+        controller: 'ApiDocCtrl'
+      })
+      // Announcements Tab
+      .state('service.announcements', {
+        url: '/announcements',
+        templateUrl: 'views/partials/api/announcements.html'
+      })
+      // Documentation Tab
+      .state('service.documentation', {
+        url: '/documentation',
+        templateUrl: 'views/partials/api/documentation.html'
+      })
+      // Plans Tab
+      .state('service.plans', {
+        url: '/plans',
+        templateUrl: 'views/partials/api/plans.html'
+      })
+      // Support Tab
+      .state('service.support', {
+        url: '/support',
+        templateUrl: 'views/partials/api/support.html'
+      })
+      // Terms Tab
+      .state('service.terms', {
+        url: '/terms',
+        templateUrl: 'views/partials/api/terms.html'
+      })
+
+      // CONTRACT CREATION PAGE =========================================================
+      .state('contract', {
+        params: { appOrgId: {}, appId: {}, svcOrgId: {}, svcId: {} },
+        templateUrl: 'views/contract.html',
+        resolve: {
+          Application: 'Application',
+          Service: 'Service',
+          appData: function(Application, $stateParams) {
+            var orgId = $stateParams.appOrgId;
+            var appId = $stateParams.appId;
+
+            return Application.get({orgId: orgId, appId: appId}).$promise;
+          },
+          svcData: function(Service, $stateParams) {
+            var orgId = $stateParams.svcOrgId;
+            var svcId = $stateParams.svcId;
+
+            return Service.get({orgId: orgId, svcId: svcId}).$promise;
+          }
+        },
+        controller: 'ContractCtrl'
+      })
+
+      // ORGANIZATION OVERVIEW PAGE AND NESTED VIEWS ====================================
+      .state('organization', {
+        url: '/organization/:orgId',
+        templateUrl: 'views/organization.html',
+        resolve: {
+          Organization: 'Organization',
+          orgData: function(Organization, $stateParams){
+
+            var orgId = $stateParams.orgId;
+
+            return Organization.get({id: orgId}).$promise;
+          }
+        },
+        controller: 'OrganizationCtrl'
+      })
+      // Applications View
+      .state('organization.applications', {
+        url: '/applications',
+        templateUrl: 'views/partials/organization/applications.html'
+      })
+      // Services View
+      .state('organization.services', {
+        url: '/services',
+        templateUrl: 'views/partials/organization/services.html'
+      })
+      // Plans View
+      .state('organization.plans', {
+        url: '/plans',
+        templateUrl: 'views/partials/organization/plans.html'
+      })
+      // Members View
+      .state('organization.members', {
+        url: '/members',
+        templateUrl: 'views/partials/organization/members.html'
+      })
+
+      // ORGANIZATIONS SEARCH PAGE ======================================================
+      .state('organizations', {
+        url: '/organizations',
+        templateUrl: 'views/organizations.html',
+        controller: 'OrganizationsCtrl'
+      })
+
+      // MY ORGANIZATIONS OVERVIEW PAGE =================================================
+      .state('myOrganizations', {
+        url: '/my-organizations',
+        templateUrl: 'views/my-organizations.html',
+        resolve: {
+          CurrentUserAppOrgs: 'CurrentUserAppOrgs',
+          appOrgData: function(CurrentUserAppOrgs){
+            return CurrentUserAppOrgs.query().$promise;
+          }
+        },
+        controller: 'MyOrganizationsCtrl'
+      })
+
+      // APPLICATION OVERVIEW PAGE AND NESTED VIEWS =====================================
+      .state('application', {
+        url: '/organization/:orgId/application/:appId',
+        templateUrl: 'views/application.html',
+        resolve: {
+          Application: 'Application',
+          appData: function(Application, $stateParams){
+
+            var orgId = $stateParams.orgId;
+            var appId = $stateParams.appId;
+
+            return Application.get({orgId: orgId, appId: appId}).$promise;
+          }
+        },
+        controller: 'ApplicationCtrl'
+      })
+      // Overview Tab
+      .state('application.overview', {
+        url: '/overview',
+        templateUrl: 'views/partials/application/overview.html'
+      })
+      // Contracts Tab
+      .state('application.contracts', {
+        url: '/contracts',
+        templateUrl: 'views/partials/application/contracts.html'
+      })
+      // APIs Tab
+      .state('application.apis', {
+        url: '/apis',
+        templateUrl: 'views/partials/application/apis.html'
+      })
+      // Activity Tab
+      .state('application.activity', {
+        url: '/activity',
+        templateUrl: 'views/partials/application/activity.html'
+      })
+
+      // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================
+      .state('user', {
+        url: '/user',
+        templateUrl: 'views/user.html'
+      })
+      // Account Tab
+      .state('user.account', {
+        url: 'user/account',
+        templateUrl: 'views/partials/user/account.html'
+      })
+      // Email Tab
+      .state('user.email', {
+        url: 'user/email',
+        templateUrl: 'views/partials/user/email.html'
+      })
+      // Notifications Tab
+      .state('user.notifications', {
+        url: 'user/notifications',
+        templateUrl: 'views/partials/user/notifications.html'
+      })
+      // Profile Tab
+      .state('user.profile', {
+        url: 'user/profile',
+        templateUrl: 'views/partials/user/profile.html'
+      })
+
+  })
+
+  // Define Force Reload
+  .config(function($provide) {
+    $provide.decorator('$state', function($delegate, $stateParams) {
+      $delegate.forceReload = function() {
+        return $delegate.go($delegate.current, $stateParams, {
+          reload: true,
+          inherit: false,
+          notify: true
+        });
+      };
+      return $delegate;
+    })
+  })
 
 	// lazy loading scripts references of angular modules only
 	.config(["$ocLazyLoadProvider", function($oc) {
@@ -127,282 +352,6 @@
 		c3: ["scripts/lazyload/d3.min.js", "scripts/lazyload/c3.min.js", "styles/lazyload/c3.css"],
 		gmaps: ["https://maps.google.com/maps/api/js"]
 	})
-
-	// route provider
-	.config(["$routeProvider", "$locationProvider", "JQ_LOAD", function($routeProvider, $locationProvider, jqload) {
-
-
-
-		var routes = [
-			"ui/buttons", "ui/typography", "ui/grids", "ui/panels", "ui/tabs", "ui/modals", "ui/progress-bars", "ui/extras",
-			"icons/font-awesome", "icons/ionicons",
-			"forms/wizard",
-			"tables/tables",
-			"pages/signin", "pages/signup", "pages/404", "pages/forget-pass", "pages/lock-screen", "pages/invoice", "pages/search", "pages/timeline"
-		];
-
-		function setRoutes(route) {
-			var url = '/' + route,
-				config = {
-					templateUrl: "views/" + route + ".html"
-				};
-
-			$routeProvider.when(url, config);
-			return $routeProvider;
-		}
-
-		routes.forEach(function(route) {
-			setRoutes(route);
-		});
-
-		$routeProvider
-			.when("/", {redirectTo: "/dashboard"})
-			.when("/404", {templateUrl: "views/pages/404.html"})
-			.otherwise({redirectTo: "/404"});
-
-
-
-		$routeProvider.when("/dashboard", {
-			templateUrl: "views/dashboard.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load([jqload.c3, jqload.sparkline])
-					.then(function() {
-						return a.load({
-							name: "app.directives",
-							files: ["scripts/lazyload/directives/sparkline.directive.js"]
-						});
-					})
-					.then(function() {
-						return a.load("angular-c3");
-					})
-					.then(function() {
-						return a.load("easypiechart");
-					});
-
-				}]
-			}
-		});
-
-    $routeProvider.when("/api", {
-      templateUrl: "../views/api.html"
-    });
-
-    $routeProvider.when("/application", {
-      templateUrl: "views/application.html"
-    });
-
-    $routeProvider.when("/contract", {
-      templateUrl: "views/contract.html"
-    });
-
-    $routeProvider.when("/new-application", {
-      templateUrl: "views/new-application.html"
-    });
-
-    $routeProvider.when("/new-organization", {
-      templateUrl: "views/new-organization.html"
-    });
-
-    $routeProvider.when("/organization", {
-      templateUrl: "views/organization.html"
-    });
-
-    $routeProvider.when("/organizations", {
-      templateUrl: "views/organizations.html"
-    });
-
-    $routeProvider.when("/user", {
-      templateUrl: "views/user.html"
-    });
-
-		// text angular loaded in email/inbox
-		$routeProvider.when("/email/inbox", {
-			templateUrl: "views/email/inbox.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("textAngular");
-				}]
-			}
-		});
-
-
-		// calendar plugin
-		// "scripts/lazyload/apps/calendarDemo.js"
-		$routeProvider.when("/calendar", {
-			templateUrl: "views/calendar.html",
-			controller: "CalendarDemoCtrl",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("ui.calendar")
-					.then(function() {
-						return a.load({
-							name: "app.ctrls",
-							files: ["scripts/lazyload/controllers/calendarCtrl.js"]
-						});
-					});
-				}]
-			}
-		});
-
-
-		// Material Controller (For demo)
-		$routeProvider.when("/material", {
-			templateUrl: "views/material.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load({
-						name: "app.ctrls",
-						files: ["scripts/lazyload/controllers/materialCtrl.js"]
-					});
-				}]
-			}
-		});
-
-		// tree view plugin
-		$routeProvider.when("/ui/treeview", {
-			templateUrl: "views/ui/treeview.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("angularBootstrapNavTree")
-					.then(function() {
-						return a.load({
-							name: "app.ctrls",
-							files: ["scripts/lazyload/controllers/treeviewCtrl.js"]
-						});
-					});
-				}]
-			}
-		});
-
-		// load ui-select when notification page load.
-		$routeProvider.when("/ui/notifications", {
-			templateUrl: "views/ui/notifications.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("ui.select");
-				}]
-			}
-		});
-
-		// load ui-select in form-elements
-		$routeProvider.when("/forms/elements", {
-			templateUrl: "views/forms/elements.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load(["ui.select", "ngTagsInput", "colorpicker.module", "ui.slider"])
-					.then(function() {
-						return a.load({
-							name: "app.ctrls",
-							files: ["scripts/lazyload/controllers/selectCtrl.js", "scripts/lazyload/controllers/tagsInputCtrl.js"]
-						});
-					})
-					.then(function() {
-						return a.load("textAngular");
-					});
-
-				}]
-			}
-		});
-
-
-		// file uploader in form-elements
-		$routeProvider.when("/forms/uploader", {
-			templateUrl: "views/forms/uploader.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("flow");
-				}]
-			}
-		});
-
-		// Image Crop in form-elements
-		$routeProvider.when("/forms/imagecrop", {
-			templateUrl: "views/forms/imagecrop.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("ngImgCrop")
-					.then(function() {
-						return a.load({
-							name: "app.ctrls",
-							files: ["scripts/lazyload/controllers/imageCropCtrl.js"]
-						});
-					});
-				}]
-			}
-		});
-
-		// Form validation
-		$routeProvider.when("/forms/validation", {
-			templateUrl: "views/forms/validation.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("ngMask");
-				}]
-			}
-		});
-
-		/// charts - sparklines
-		$routeProvider.when("/charts/sparklines", {
-			templateUrl: "views/charts/sparklines.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load(jqload.sparkline)
-					.then(function() {
-						return a.load({
-							name: "app.directives",
-							files: ["scripts/lazyload/directives/sparkline.directive.js"]
-						});
-					});
-				}]
-			}
-		});
-
-		/// charts - c3
-		$routeProvider.when("/charts/c3", {
-			templateUrl: "views/charts/c3.html",
-			resolve: {
-				deps: ["$ocLazyLoad", "$rootScope", "$timeout", function(a, $rootScope, $timeout) {
-					return a.load(jqload.c3)
-					.then(function() {
-						return a.load("angular-c3");
-					})
-					.then(function() {
-						return a.load({
-							name: "app.ctrls",
-							files: ["scripts/lazyload/controllers/c3ChartCtrl.js"]
-						});
-					})
-					.then(function() {
-						return a.load("easypiechart");
-					})
-					.then(function() {
-						$timeout(function() {
-							$rootScope.$broadcast("c3.resize");
-						}, 100);
-					});
-
-				}]
-			}
-		});
-
-
-		/// Google Map
-		$routeProvider.when("/maps/google-map", {
-			templateUrl: "views/maps/google-map.html",
-			resolve: {
-				deps: ["$ocLazyLoad", function(a) {
-					return a.load("ngMap");
-
-				}]
-			}
-		});
-
-
-
-
-	}]);
-
 
 
 
