@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="MembersCtrl">
 
   <!-- Members Tab Content -->
   <div class="col-sm-12">
@@ -27,33 +27,22 @@
     </div>
 
     <!-- ngRepeat: member in filteredMembers -->
-    <div class="col-sm-12">
-      <div class="col-sm-12">
-        <span class="title"><a>Maarten Somers</a>
-          <span class="secondary ng-binding">(maarten)</span>
+    <div class="col-sm-12" ng-repeat="member in members">
+      <div class="col-sm-12" >
+        <span class="title"><a>{{member.userName}}</a>
+          <span class="secondary ng-binding">({{member.userId}})</span>
         </span>
         <a>
           <i class="fa fa-clock-o fa-fw"></i>
           <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
-          <span class="title-summary-item ng-binding">2015-08-06</span>
+          <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
         </a>
       </div>
+      <div class="col-sm-12" ng-repeat="role in member.roles">
+        <span class="description">{{role.roleName}}</span>
+      </div>
       <div class="col-sm-12">
-        <span class="description">Organization Owner</span>
         <hr>
-      </div>
-      <div class="col-sm-12">
-        <span class="title"><a>Maarten Somers</a>
-          <span class="secondary ng-binding">(maarten)</span>
-        </span>
-        <a>
-          <i class="fa fa-clock-o fa-fw"></i>
-          <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
-          <span class="title-summary-item ng-binding">2015-08-06</span>
-        </a>
-      </div>
-      <div class="col-sm-12">
-        <span class="description">Organization Owner</span>
       </div>
     </div><!-- end ngRepeat: member in filteredMembers -->
   </div>

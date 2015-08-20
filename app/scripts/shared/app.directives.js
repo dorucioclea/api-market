@@ -119,6 +119,40 @@ angular.module("app.directives", [])
 	}
 }])
 
+
+// Authentication directives
+.directive('authAccordionGroup', function () {
+  return {
+    scope: { title: '=heading'},
+    transclude: true,
+    templateUrl: "/views/templates/auth/accordion-group.html"
+  }
+})
+
+.directive('oauth2', function() {
+  return {
+    templateUrl: "/views/templates/auth/oauth2.html"
+  };
+})
+
+.directive('basicAuth', function() {
+  return {
+    templateUrl: "/views/templates/auth/basic.html"
+  };
+})
+
+.directive('keyAuth', function() {
+  return {
+    templateUrl: "/views/templates/auth/key.html"
+  };
+})
+
+.directive('queryAuth', function() {
+  return {
+    templateUrl: "/views/templates/auth/query.html"
+  };
+})
+
 // add full body class for custom pages.
 .directive("customPage", ["$location",function($location) {
 	return {

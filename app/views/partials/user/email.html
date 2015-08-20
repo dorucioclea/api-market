@@ -8,7 +8,7 @@
       <div class="email-list">
         <div class="row">
           <div class="col-xs-12">
-            <div data-email="maarten.somers@gmail.com" data-emails-href="https://www.mashape.com/api/middleware/accounts/55c9b496e4b007ed15cad80b/emails/55c9b496e4b007ed15cad80c" data-activations-href="https://www.mashape.com/api/middleware/accounts/55c9b496e4b007ed15cad80b/activations/" class="email-row primary  ">
+            <div data-email="maarten.somers@gmail.com" class="email-row primary  ">
               <div class="pull-right email-actions">
                 <a data-loading-text="Loading..." class="btn btn-primary email-make-primary">
                   <span class="btn-text">Make Primary</span>
@@ -36,7 +36,8 @@
       <div>
         <hr>
       </div>
-      <form action="https://www.mashape.com/api/middleware/accounts/55c9b496e4b007ed15cad80b/emails/" method="POST" data-driver="form-settings-emails" class="add-email">
+      <div class="col-sm-6">
+      <form class="add-email">
         <div class="row">
           <div class="col-xs-12 add-email-error">
             <div>
@@ -45,21 +46,20 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-6">
             <div class="form-group">
               <label for="email-add">
-                <span class="fa fa-envelope with-margin"></span>
+                <span class="fa fa-envelope"></span>
                 <span>Add New Email</span>
                 <input id="email-add" type="email" name="email" class="form-control">
               </label>
             </div>
-          </div>
         </div>
         <button data-processing-text="processing..." type="submit" data-loading-text="Loading..." class="btn btn-default submit">
           <span class="btn-text">Add New Email</span>
           <span class="loader-icon fa fa-spinner fa-spin"></span>
         </button>
       </form>
+      </div>
     </div>
   </div>
 </div>

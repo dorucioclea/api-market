@@ -1,4 +1,4 @@
-<div class="page" ng-controller="ContractCtrl">
+<div class="page">
 
   <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
     <div class="panel panel-primary">
@@ -17,8 +17,7 @@
                 <button class="btn btn-light form-control" disabled>{{application.name}}</button>
               </div>
               <div class="col-sm-5 col-sm-offset-1 col-sm-pull-1">
-                <select class="form-control">
-                  <option ng-repeat="version in application.versions" value="0">{{version}}</option>
+                <select class="form-control" ng-model="$storage.selectedAppVersion" ng-options="version as version.version for version in versions track by version.version" required>
                 </select>
               </div>
             </div>
@@ -55,7 +54,7 @@
             </div>
             <div class="panel-body">
               <div class="col-sm-10 col-sm-offset-1">
-                <button class="btn btn-light form-control" disabled>{{api.name}} - {{apiVersion}}</button>
+                <button class="btn btn-light form-control" disabled>{{service.organization.name}}: {{service.name}} - version 1</button>
               </div>
             </div>
           </div>
@@ -65,8 +64,8 @@
 
         <div class="row text-center">
           <div class="col-sm-12 mt20">
-            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-success" disabled>Create contract</button>
+            <button class="btn btn-default" ui-sref="service({orgId: service.organization.id, svcId: service.id})">Cancel</button>
+            <button class="btn btn-success" ng-click="createContract()">Create contract</button>
           </div>
         </div>
       </div>

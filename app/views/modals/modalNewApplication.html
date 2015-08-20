@@ -1,0 +1,49 @@
+<div class="page">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">New Application</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Application Create panel -->
+  <div class="modal-body">
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-4">
+          <label class="control-label text-primary">Organization</label>
+          <input type="text" class="form-control" disabled value="{{$storage.selectedOrg.name}}">
+        </div>
+        <div class="col-md-7">
+          <label class="control-label text-primary">Application Name</label>
+          <input type="text" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-12">
+          <label class="control-label text-primary">Initial Version</label>
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-4">
+          <input type="text" class="form-control" maxlength="20" value="1.0" ng-model="ctrl.application.initialVersion" required>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-12">
+          <button class="btn btn-primary">Choose logo image</button>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-12">
+          <label class="control-label text-primary">Application Description</label>
+          <textarea class="form-control" placeholder="Enter a description (optional)" ng-model="ctrl.application.description"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="createApplication(ctrl.application)">Create Application</button>
+  </div>
+
+</div>

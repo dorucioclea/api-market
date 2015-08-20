@@ -1,22 +1,17 @@
-<div class="page" ng-controller="OrganizationsCtrl">
+<div class="page">
 
   <div class="col-sm-10 col-sm-offset-1">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="col-sm-12">
           <div class="col-sm-12">
-            <h3 class="text-primary">Find an Organization</h3>
+            <h3 class="text-primary">My Organizations</h3>
           </div>
           <div class="col-sm-6">
-            <p class="text-light">Use this page to find Organizations you may wish to join.</p>
+            <p class="text-light">This page provides an overview of organizations of which you are a member. You can create new applications within these organizations.</p>
           </div>
-          <div class="col-sm-6 ">
-            <div class="input-group">
-              <input type="text" class="form-control" ng-model="searchString" placeholder="Enter a word or phrase to search by...">
-              <div class="input-group-btn">
-                <button class="btn btn-default ion ion-search" ng-click="doSearch(searchString)"></button>
-              </div>
-            </div>
+          <div class="col-sm-6">
+            <button class="btn btn-primary pull-right" ng-click="modalNewOrganization()">New Organization</button>
           </div>
           <div class="col-sm-12">
             <hr>
@@ -28,13 +23,14 @@
 
             <div class="col-sm-12" ng-hide="orgs.length > 0">
               <div class="col-sm-10 col-sm-offset-1 well">
-                No organizations found. Either no organizations matched the query or you haven't queried yet!
+                <p>No organizations found. Maybe you are not a member of any organization yet?</p>
+                <p>You can find organizations to join <a ui-sref="organizations">by clicking here</a> or create a new one using the button above!</p>
               </div>
             </div>
 
             <div class="col-sm-12" ng-show="orgs.length > 0">
               <div class="col-sm-12">
-                <p>Found {{totalOrgs}} matching organizations.</p>
+                <p>Found {{orgs.length}} organizations.</p>
               </div>
 
               <div class="col-sm-12">
