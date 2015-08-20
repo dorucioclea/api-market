@@ -1,5 +1,7 @@
-<div ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing" class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12" ui-sref="service({orgId: 'FedEx', svcId: 'PackageTrackingService'})">
-  <div class="panel panel-primary mb20 text-center">
+<div ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing"
+     class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12"
+     ui-sref="service({orgId: 'FedEx', svcId: 'PackageTrackingService'})">
+  <div class="panel panel-primary panel-hovered mb20 text-center">
     <div class="panel-heading">
       <h4 class="text-nowrap text-ellipsis">{{api.name}}</h4>
     </div>
