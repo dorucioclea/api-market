@@ -29,6 +29,7 @@
     "app.ctrl.application",
     "app.ctrl.organization",
     "app.ctrl.contract",
+    "app.ctrl.user",
 		"app.ui.ctrls",
 		"app.ui.directives",
 		"app.form.ctrls",
@@ -67,6 +68,16 @@
         abstract: true,
         url: '/home',
         templateUrl: '/views/dashboard.html',
+        resolve: {
+          SearchSvcs: 'SearchSvcs',
+          svcData: function (SearchSvcs) {
+            var search = {};
+            search.filters = [ { name: 'name', value: '*', operator: 'like' }];
+            search.orderBy = { ascending: true, name: 'name'};
+            search.paging = { page: 1, pageSize: 20};
+            return SearchSvcs.save(search).$promise;
+          }
+        },
         controller: 'DashboardCtrl'
       })
       // API Grid View
