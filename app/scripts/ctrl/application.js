@@ -30,6 +30,10 @@
 
     $scope.$storage = $localStorage;
 
+    $scope.toggle = function () {
+      $scope.apiExpanded = !$scope.apiExpanded;
+    };
+
     Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
       $scope.plans = data;
     });
