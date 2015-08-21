@@ -99,7 +99,7 @@
     .factory('SearchSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/services');
     }])
-    .factory('SearchPublishedSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+    .factory('SearchPublishedSvcsInCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/services/versions');
     }])
     .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {

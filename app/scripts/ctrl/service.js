@@ -5,11 +5,12 @@
 angular.module("app.ctrl.service", [])
 
   /// ==== Service Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$localStorage", "$modal", "svcData",
-    function($scope, $stateParams, $localStorage, $modal, svcData) {
+  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$localStorage", "$modal", "svcData", "svcModel",
+    function($scope, $stateParams, $localStorage, $modal, svcData, svcModel) {
 
       $scope.$storage = $localStorage;
       $scope.$storage.selectedSvc = svcData;
+      svcModel.setService(svcData);
 
       $scope.modalAnim = "default";
 

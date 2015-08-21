@@ -69,13 +69,9 @@
         url: '/home',
         templateUrl: '/views/dashboard.html',
         resolve: {
-          SearchSvcs: 'SearchSvcs',
-          svcData: function (SearchSvcs) {
-            var search = {};
-            search.filters = [ { name: 'name', value: '*', operator: 'like' }];
-            search.orderBy = { ascending: true, name: 'name'};
-            search.paging = { page: 1, pageSize: 20};
-            return SearchSvcs.save(search).$promise;
+          SearchSvcsWithStatus: 'SearchSvcsWithStatus',
+          svcData: function (SearchSvcsWithStatus) {
+            return SearchSvcsWithStatus.query({status: 'Published'}).$promise;
           }
         },
         controller: 'DashboardCtrl'
@@ -160,7 +156,7 @@
             return Service.get({orgId: orgId, svcId: svcId}).$promise;
           }
         },
-        controller: 'ContractCtrl'
+        controller: 'ContractCtrl as ctrl'
       })
 
       // ORGANIZATION OVERVIEW PAGE AND NESTED VIEWS ====================================

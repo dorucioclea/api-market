@@ -234,7 +234,6 @@ angular.module("app.ctrls", [])
   $scope.currentPricing = 'All';
 
     console.log(svcData);
-    console.log(svcData.beans);
 
 
   $scope.availableAPIs = [{ name: "Petstore", logoUrl: "images/yeoman.png", owner: "Swagger Team", ownerLogoUrl: "images/admin.jpg", pricing: "Free", users: 3234, followers: 232, uptimePercent: 100, description: 'Petstore swagger test API', tags: [1,4]},

@@ -5,13 +5,13 @@
 angular.module("app.ctrl.modals", [])
 
 /// ==== Application Selection Controller
-  .controller("AppSelectCtrl", ["$scope", "$localStorage", "$modal", "$state", "$stateParams", "$timeout", "Application", "ApplicationVersion", "CurrentUserAppOrgs",
-    function ($scope, $localStorage, $modal, $state, $stateParams, $timeout, Application, ApplicationVersion, CurrentUserAppOrgs) {
+  .controller("AppSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "svcModel", "Application", "ApplicationVersion", "CurrentUserAppOrgs",
+    function ($scope, $modal, $state, $stateParams, $timeout, svcModel, Application, ApplicationVersion, CurrentUserAppOrgs) {
 
-      $scope.$storage = $localStorage;
       $scope.orgSelected = false;
       $scope.appSelected = false;
       $scope.versionSelected = false;
+      $scope.service = svcModel.getService();
 
       CurrentUserAppOrgs.query({}, function (data) {
         $scope.organizations = data;
