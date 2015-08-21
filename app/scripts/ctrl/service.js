@@ -41,14 +41,10 @@ angular.module("app.ctrl.service", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$localStorage", "$modal", "$state", "$stateParams", "Application",
-      function($scope, $localStorage, $modal, $state, $stateParams, Application) {
+    .controller("DocumentationCtrl", ["$scope", "$localStorage", "$modal", "$state",
+      function($scope, $localStorage, $modal) {
 
         $scope.$storage = $localStorage;
-
-        Application.query({orgId: $scope.$storage.selectedOrg.id}, function (apps) {
-          $scope.applications = apps;
-        });
 
         $scope.loadSwaggerUi = function(url) {
           $scope.swaggerUi = new SwaggerUi({
@@ -90,18 +86,18 @@ angular.module("app.ctrl.service", [])
         };
         $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
 
+        $scope.modalAnim = "default";
 
-        $scope.startCreateContract = function () {
-          console.log("App: " + $scope.$storage.selectedOrg.id);
-          console.log("App: " + $scope.$storage.selectedApp.id);
-          console.log("Svc: " + $stateParams.orgId);
-          console.log("Svc: " + $stateParams.svcId);
+        $scope.modalSelectApplicationForContract = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalSelectApplication.html",
+            size: "lg",
+            controller: "AppSelectCtrl as ctrl",
+            resolve: function() {},
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
 
-          $state.go('contract',
-            { appOrgId: $scope.$storage.selectedOrg.id, appId: $scope.$storage.selectedApp.id,
-              svcOrgId: $stateParams.orgId, svcId: $stateParams.svcId
-            });
-        }
+        };
 
       }])
 

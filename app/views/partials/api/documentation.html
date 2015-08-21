@@ -23,14 +23,7 @@
             API Subscription
           </div>
           <div class="panel-body">
-            <form role="form" class="form mb20">
-              <div class="form-group">
-                <select class="form-control" name="appSelect" id="appSelect"
-                        ng-options="application as application.name for application in applications track by application.id"
-                        ng-model="$storage.selectedApp"></select>
-              </div>
-            </form>
-            <button class="btn btn-success btn-block" ng-click="startCreateContract()">Subscribe</button>
+            <button class="btn btn-success btn-block" ng-click="modalSelectApplicationForContract()">Subscribe</button>
           </div>
         </div><!-- end API Subscription panel -->
 

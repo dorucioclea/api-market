@@ -135,11 +135,18 @@
 
       // CONTRACT CREATION PAGE =========================================================
       .state('contract', {
-        params: { appOrgId: {}, appId: {}, svcOrgId: {}, svcId: {} },
+        params: { appOrgId: {}, appId: {}, appVersion: {}, svcOrgId: {}, svcId: {}, svcVersion: {} },
         templateUrl: 'views/contract.html',
         resolve: {
+          ServicePlans: 'ServicePlans',
           Application: 'Application',
           Service: 'Service',
+          planData: function (ServicePlans, $stateParams) {
+            var orgId = $stateParams.svcOrgId;
+            var svcId = $stateParams.svcId;
+
+            return ServicePlans.query({orgId: orgId, svcId: svcId, versionId: 'v1'}).$promise;
+          },
           appData: function(Application, $stateParams) {
             var orgId = $stateParams.appOrgId;
             var appId = $stateParams.appId;

@@ -15,6 +15,7 @@
   /// ########### ENDPOINT FACTORIES #####################
 
   /// ========== ORGANIZATION =====================================================================
+
     .factory('Organization', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:id', { id: '@id' }, {
         update: {
@@ -53,6 +54,7 @@
 
 
   /// ========== CURRENTUSER ======================================================================
+
     .factory('CurrentUserInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/currentuser/info', {}, {
         update: {
@@ -88,11 +90,20 @@
     .factory('SearchApps', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/applications');
     }])
+    .factory('Categories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/service/categories');
+    }])
     .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/organizations');
     }])
     .factory('SearchSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/services');
+    }])
+    .factory('SearchPublishedSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/services/versions');
+    }])
+    .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/services/:status');
     }])
 
 

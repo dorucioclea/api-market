@@ -14,11 +14,10 @@
             </div>
             <div class="panel-body">
               <div class="col-sm-offset-1 col-sm-5">
-                <button class="btn btn-light form-control" disabled>{{application.name}}</button>
+                <button class="btn btn-primary form-control" disabled>{{application.name}}</button>
               </div>
               <div class="col-sm-5 col-sm-offset-1 col-sm-pull-1">
-                <select class="form-control" ng-model="$storage.selectedAppVersion" ng-options="version as version.version for version in versions track by version.version" required>
-                </select>
+                <button class="btn btn-primary form-control" disabled>Version: {{applicationVersion}}</button>
               </div>
             </div>
           </div>
@@ -54,7 +53,7 @@
             </div>
             <div class="panel-body">
               <div class="col-sm-10 col-sm-offset-1">
-                <button class="btn btn-light form-control" disabled>{{service.organization.name}}: {{service.name}} - version 1</button>
+                <button class="btn btn-primary form-control" disabled>{{service.organization.name}} - {{service.name}} {{serviceVersion}}</button>
               </div>
             </div>
           </div>
