@@ -60,9 +60,6 @@ angular.module("app.ctrl.organization", [])
       $scope.xs = match;
     });
 
-    $scope.switchTab = function (tabId) {
-    };
-
     $scope.updateOrgDescription = function () {
       var updatedOrg = new Organization();
       updatedOrg.description = $scope.$storage.selectedOrg.description;
