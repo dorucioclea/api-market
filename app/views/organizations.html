@@ -43,7 +43,7 @@
                 <div class="organization-item" ng-repeat="org in orgs">
                   <div class="text-primary">
                     <i class="fa fa-shield icon"></i>
-                    <a class="ng-binding" ui-sref="organization({orgId: org.id})">{{org.name}}</a>
+                    <a class="ng-binding" ui-sref="organization.plans({orgId: org.id})">{{org.name}}</a>
                   </div>
                   <div class="text-light text-nowrap text-ellipsis">
                     {{org.description}}
