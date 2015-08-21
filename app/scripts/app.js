@@ -61,8 +61,10 @@
 
     $urlRouterProvider.otherwise('/home/grid');
     $urlRouterProvider.when('/organization/{orgId}', '/organization/{orgId}/plans');
+    $urlRouterProvider.when('/organization/{orgId}/application/{appId}', '/organization/{orgId}/application/{appId}/overview');
 
-    $stateProvider
+
+      $stateProvider
 
       // HOME STATES (DASHBOARD) AND NESTED VIEWS =======================================
       .state('home', {
@@ -250,6 +252,7 @@
 
       // APPLICATION OVERVIEW PAGE AND NESTED VIEWS =====================================
       .state('application', {
+        abstract: true,
         url: '/organization/:orgId/application/:appId',
         templateUrl: 'views/application.html',
         resolve: {
@@ -260,29 +263,59 @@
             var appId = $stateParams.appId;
 
             return Application.get({orgId: orgId, appId: appId}).$promise;
-          }
+          },
+          organizationId: ['$stateParams', function ($stateParams) {
+            return $stateParams.orgId;
+          }],
+          applicationId: ['$stateParams', function ($stateParams) {
+            return $stateParams.appId;
+          }]
         },
         controller: 'ApplicationCtrl'
       })
       // Overview Tab
       .state('application.overview', {
         url: '/overview',
-        templateUrl: 'views/partials/application/overview.html'
+        templateUrl: 'views/partials/application/overview.html',
+        controller: 'OverviewCtrl'
       })
       // Contracts Tab
       .state('application.contracts', {
         url: '/contracts',
-        templateUrl: 'views/partials/application/contracts.html'
+        templateUrl: 'views/partials/application/contracts.html',
+        resolve: {
+          ApplicationContract: 'ApplicationContract',
+          contractData: function (ApplicationContract, organizationId, applicationId) {
+            //TODO make version dynamic!
+            return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: 'v1'}).$promise;
+          }
+        },
+        controller: 'ContractsCtrl'
       })
       // APIs Tab
       .state('application.apis', {
         url: '/apis',
-        templateUrl: 'views/partials/application/apis.html'
+        templateUrl: 'views/partials/application/apis.html',
+        resolve: {
+          ApplicationContract: 'ApplicationContract',
+          contractData: function (ApplicationContract, organizationId, applicationId) {
+            //TODO make version dynamic!
+            return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: 'v1'}).$promise;
+          }
+        },
+        controller: 'ApisCtrl'
       })
       // Activity Tab
       .state('application.activity', {
         url: '/activity',
-        templateUrl: 'views/partials/application/activity.html'
+        templateUrl: 'views/partials/application/activity.html',
+        resolve: {
+          ApplicationActivity: 'ApplicationActivity',
+          activityData: function (ApplicationActivity, organizationId, applicationId) {
+            return ApplicationActivity.get({orgId: organizationId, appId: applicationId}).$promise;
+          }
+        },
+        controller: 'ActivityCtrl'
       })
 
       // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================

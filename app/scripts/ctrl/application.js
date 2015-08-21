@@ -6,47 +6,46 @@
 
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "$localStorage", "$stateParams", "appData",
-  function ($scope, $localStorage, $stateParams, appData) {
+.controller("ApplicationCtrl", ["$scope", "$localStorage", "$stateParams", "appData", "appTab",
+  function ($scope, $localStorage, $stateParams, appData, appTab) {
 
     $scope.$storage = $localStorage;
     $scope.$storage.selectedApp = appData;
+    $scope.displayTab = appTab;
 
   }])
 
   // +++ Application Screen Subcontrollers +++
   /// ==== Activity Controller
-  .controller("ActivityCtrl", ["$scope", "$localStorage", "ApplicationActivity", function ($scope, $localStorage, ApplicationActivity) {
+  .controller("ActivityCtrl", ["$scope", "activityData", "appTab", function ($scope, activityData, appTab) {
 
-    $scope.$storage = $localStorage;
-
-    ApplicationActivity.get({orgId: $scope.$storage.selectedApp.organization.id, appId: $scope.$storage.selectedApp.id}, function (data) {
-      $scope.activities = data.beans;
-    });
+    $scope.activities = activityData.beans;
+    appTab.updateTab('Activity');
 
   }])
   /// ==== APIs Controller
-  .controller("ApisCtrl", ["$scope", "$localStorage", "Plan", function ($scope, $localStorage, Plan) {
+  .controller("ApisCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
 
-    $scope.$storage = $localStorage;
+    $scope.contracts = contractData;
+    appTab.updateTab('APIs');
 
     $scope.toggle = function () {
       $scope.apiExpanded = !$scope.apiExpanded;
     };
 
-    Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-      $scope.plans = data;
-    });
-
   }])
   /// ==== Contracts Controller
-  .controller("ContractsCtrl", ["$scope", "$localStorage", "Plan", function ($scope, $localStorage, Plan) {
+  .controller("ContractsCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
 
-    $scope.$storage = $localStorage;
+    $scope.contracts = contractData;
+    appTab.updateTab('Contracts');
 
-    Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-      $scope.plans = data;
-    });
+  }])
+
+  /// ==== Overview Controller
+  .controller("OverviewCtrl", ["$scope", "appTab", function ($scope, appTab) {
+
+    appTab.updateTab('Overview');
 
   }]);
 

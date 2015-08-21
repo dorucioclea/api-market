@@ -31,7 +31,7 @@
 
       <div class="col-sm-12" ng-repeat="application in applications">
         <div class="col-sm-12">
-          <span class="title"><a ui-sref="application({orgId: application.organizationId, appId: application.id})">{{application.name}}</a></span>
+          <span class="title"><a ui-sref="application.overview({orgId: application.organizationId, appId: application.id})">{{application.name}}</a></span>
         </div>
         <div class="col-sm-12">
           <span class="description">{{application.description}}</span>

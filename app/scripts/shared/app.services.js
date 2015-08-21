@@ -13,6 +13,17 @@
       }
 
     })
+
+    .service('appTab', function () {
+
+      this.selectedTab = 'Overview';
+
+      this.updateTab = function (newTab) {
+        this.selectedTab = newTab;
+      }
+
+    })
+
     .service('svcModel', function () {
 
       var service = null;

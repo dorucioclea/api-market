@@ -42,23 +42,20 @@
         </div>
 
       </div>
+
       <div class="panel">
         <div class="panel-body">
-          <tabset>
-            <tab heading="Overview">
-              <ng-include src="'views/partials/application/overview.html'"></ng-include>
-            </tab>
-            <tab heading="Contracts">
-              <ng-include src="'views/partials/application/contracts.html'"></ng-include>
-            </tab>
-            <tab heading="APIs">
-              <ng-include src="'views/partials/application/apis.html'"></ng-include>
-            </tab>
-            <tab heading="Activity">
-              <ng-include src="'views/partials/application/activity.html'"></ng-include>
-            </tab>
-
-          </tabset>
+          <div class="btn-group btn-radio">
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+          </div>
+          <div class="mt10 panel panel-default">
+            <div class="panel-body">
+              <div ui-view></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
