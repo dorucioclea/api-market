@@ -4,6 +4,15 @@
 
   angular.module("app.services", [])
 
+    .service('orgTab', function () {
+
+      this.selectedTab = 'Plans';
+
+      this.updateTab = function (newTab) {
+        this.selectedTab = newTab;
+      }
+
+    })
     .service('svcModel', function () {
 
       var service = null;

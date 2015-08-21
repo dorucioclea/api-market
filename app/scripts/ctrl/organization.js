@@ -49,22 +49,18 @@ angular.module("app.ctrl.organization", [])
 
 
 /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "$localStorage", "$state", "$stateParams", "screenSize", "orgData", "Organization",
-  function ($scope, $localStorage, $state, $stateParams, screenSize, orgData, Organization) {
+.controller("OrganizationCtrl", ["$scope", "$localStorage", "$state", "$stateParams", "screenSize", "orgData", "Organization", "orgTab",
+  function ($scope, $localStorage, $state, $stateParams, screenSize, orgData, Organization, orgTab) {
 
     $scope.$storage = $localStorage;
     $scope.$storage.selectedOrg = orgData;
+    $scope.displayTab = orgTab;
 
     $scope.xs = screenSize.on('xs', function(match){
       $scope.xs = match;
     });
 
     $scope.switchTab = function (tabId) {
-      $scope.$storage.orgScreen.activeTab = tabId;
-    };
-
-    $scope.isTabActive = function (tabId) {
-      return $scope.$storage.orgScreen.activeTab === tabId;
     };
 
     $scope.updateOrgDescription = function () {
@@ -79,37 +75,29 @@ angular.module("app.ctrl.organization", [])
 
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-  .controller("PlansCtrl", ["$scope", "$localStorage", "Plan", function ($scope, $localStorage, Plan) {
+  .controller("PlansCtrl", ["$scope", "planData", "orgTab", function ($scope, planData, orgTab) {
 
-    $scope.$storage = $localStorage;
-
-    Plan.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-      $scope.plans = data;
-    });
+    $scope.plans = planData;
+    orgTab.updateTab('Plans');
 
   }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "$localStorage", "Service", function ($scope, $localStorage, Service) {
+  .controller("ServicesCtrl", ["$scope", "svcData", "orgTab", function ($scope, svcData, orgTab) {
 
-    $scope.$storage = $localStorage;
+    $scope.services = svcData;
+    orgTab.updateTab('Services');
 
-    Service.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-      $scope.services = data;
-    });
 
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$localStorage", "$location", "$modal", "$timeout", "Application",
-    function ($scope, $localStorage, $location, $modal, $timeout, Application) {
+  .controller("ApplicationsCtrl", ["$scope", "$location", "$modal", "appData", "orgTab",
+    function ($scope, $location, $modal, appData, orgTab) {
 
-      $scope.$storage = $localStorage;
+      $scope.applications = appData;
+      orgTab.updateTab('Applications');
 
-      Application.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-        $scope.applications = data;
-        console.log(data);
-      });
 
       $scope.modalAnim = "default";
 
@@ -127,13 +115,11 @@ angular.module("app.ctrl.organization", [])
     }])
 
   /// ==== Members Controller
-  .controller("MembersCtrl", ["$scope", "$localStorage", "Member", function ($scope, $localStorage, Member) {
+  .controller("MembersCtrl", ["$scope", "memberData", "orgTab", function ($scope, memberData, orgTab) {
 
-    $scope.$storage = $localStorage;
+    $scope.members = memberData;
+    orgTab.updateTab('Members');
 
-    Member.query({orgId: $scope.$storage.selectedOrg.id}, function (data) {
-      $scope.members = data;
-    });
 
   }]);
 // +++ End Organization Screen Subcontrollers +++

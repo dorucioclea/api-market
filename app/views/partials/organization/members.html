@@ -1,50 +1,53 @@
-<div class="row" ng-controller="MembersCtrl">
-
-  <!-- Members Tab Content -->
-  <div class="col-sm-12">
-    <input id="members-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by member name or id..." class="ng-pristine ng-untouched ng-valid">
-    <button id="members-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-    <a class="btn btn-default pull-right">Manage Members</a>
-    <hr>
-  </div>
-  <!-- The organization's list of members -->
-  <div class="apiman-members" data-field="members">
-
-    <div class="col-sm-12" ng-hide="members.length > 0">
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-1 well">
-          This is very strange, but apparently this Organization has no members! Highly irregular!
-        </div>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <!-- Members Tab Content -->
+      <div class="col-sm-12">
+        <input id="members-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by member name or id..." class="ng-pristine ng-untouched ng-valid">
+        <button id="members-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
+        <a class="btn btn-default pull-right">Manage Members</a>
+        <hr>
       </div>
-    </div>
+      <!-- The organization's list of members -->
+      <div class="apiman-members" data-field="members">
 
-    <div class="col-sm-12" ng-show="members.length > 0 && filteredMembers.length == 0">
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-1 well">
-          No members found matching your filter criteria - please try searching for something different.
+        <div class="col-sm-12" ng-hide="members.length > 0">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 well">
+              This is very strange, but apparently this Organization has no members! Highly irregular!
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- ngRepeat: member in filteredMembers -->
-    <div class="col-sm-12" ng-repeat="member in members">
-      <div class="col-sm-12" >
+        <div class="col-sm-12" ng-show="members.length > 0 && filteredMembers.length == 0">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 well">
+              No members found matching your filter criteria - please try searching for something different.
+            </div>
+          </div>
+        </div>
+
+        <!-- ngRepeat: member in filteredMembers -->
+        <div class="col-sm-12" ng-repeat="member in members">
+          <div class="col-sm-12" >
         <span class="title"><a>{{member.userName}}</a>
           <span class="secondary ng-binding">({{member.userId}})</span>
         </span>
-        <a>
-          <i class="fa fa-clock-o fa-fw"></i>
-          <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
-          <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
-        </a>
+            <a>
+              <i class="fa fa-clock-o fa-fw"></i>
+              <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
+              <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
+            </a>
+          </div>
+          <div class="col-sm-12" ng-repeat="role in member.roles">
+            <span class="description">{{role.roleName}}</span>
+          </div>
+          <div class="col-sm-12">
+            <hr>
+          </div>
+        </div><!-- end ngRepeat: member in filteredMembers -->
       </div>
-      <div class="col-sm-12" ng-repeat="role in member.roles">
-        <span class="description">{{role.roleName}}</span>
-      </div>
-      <div class="col-sm-12">
-        <hr>
-      </div>
-    </div><!-- end ngRepeat: member in filteredMembers -->
-  </div>
 
+    </div>
+  </div>
 </div>

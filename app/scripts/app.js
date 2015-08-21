@@ -60,6 +60,7 @@
   .config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home/grid');
+    $urlRouterProvider.when('/organization/{orgId}', '/organization/{orgId}/plans');
 
     $stateProvider
 
@@ -161,6 +162,7 @@
 
       // ORGANIZATION OVERVIEW PAGE AND NESTED VIEWS ====================================
       .state('organization', {
+        abstract: true,
         url: '/organization/:orgId',
         templateUrl: 'views/organization.html',
         resolve: {
@@ -170,29 +172,60 @@
             var orgId = $stateParams.orgId;
 
             return Organization.get({id: orgId}).$promise;
-          }
+          },
+          organizationId: ['$stateParams', function ($stateParams) {
+            return $stateParams.orgId;
+          }]
         },
         controller: 'OrganizationCtrl'
       })
       // Applications View
       .state('organization.applications', {
         url: '/applications',
-        templateUrl: 'views/partials/organization/applications.html'
+        templateUrl: 'views/partials/organization/applications.html',
+        resolve: {
+          Application: 'Application',
+          appData: function (Application, organizationId) {
+            return Application.query({orgId: organizationId}).$promise;
+          }
+        },
+        controller: 'ApplicationsCtrl'
       })
       // Services View
       .state('organization.services', {
         url: '/services',
-        templateUrl: 'views/partials/organization/services.html'
+        templateUrl: 'views/partials/organization/services.html',
+        resolve: {
+          Service: 'Service',
+          svcData: function (Service, organizationId) {
+            return Service.query({orgId: organizationId}).$promise;
+          }
+        },
+        controller: 'ServicesCtrl'
       })
       // Plans View
       .state('organization.plans', {
         url: '/plans',
-        templateUrl: 'views/partials/organization/plans.html'
+        templateUrl: 'views/partials/organization/plans.html',
+        resolve: {
+          Plan: 'Plan',
+          planData: function (Plan, organizationId) {
+            return Plan.query({orgId: organizationId}).$promise;
+          }
+        },
+        controller: 'PlansCtrl'
       })
       // Members View
       .state('organization.members', {
         url: '/members',
-        templateUrl: 'views/partials/organization/members.html'
+        templateUrl: 'views/partials/organization/members.html',
+        resolve: {
+          Member: 'Member',
+          memberData: function (Member, organizationId) {
+            return Member.query({orgId: organizationId}).$promise;
+          }
+        },
+        controller: 'MembersCtrl'
       })
 
       // ORGANIZATIONS SEARCH PAGE ======================================================
