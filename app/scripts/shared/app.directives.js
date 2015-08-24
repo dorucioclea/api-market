@@ -153,6 +153,21 @@ angular.module("app.directives", [])
   };
 })
 
+.directive('statusLabel', function () {
+    return {
+      restrict: "E",
+      scope: { status: '@'},
+      template: '<label class=\"label\" ' +
+      'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\',' +
+      '\'label-primary\': status === \'Created\',' +
+      '\'label-warning\': status === \'Ready\', ' +
+      '\'label-danger\': status === \'Retired\'}\">' +
+      '{{status}}</label>'
+    };
+})
+
+
+
 // add full body class for custom pages.
 .directive("customPage", ["$location",function($location) {
 	return {

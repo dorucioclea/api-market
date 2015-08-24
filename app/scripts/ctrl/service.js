@@ -5,12 +5,12 @@
 angular.module("app.ctrl.service", [])
 
   /// ==== Service Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$localStorage", "$modal", "svcData", "svcModel",
-    function($scope, $stateParams, $localStorage, $modal, svcData, svcModel) {
+  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$modal", "svcData", "svcModel", "svcTab",
+    function($scope, $stateParams, $modal, svcData, svcModel, svcTab) {
 
-      $scope.$storage = $localStorage;
-      $scope.$storage.selectedSvc = svcData;
       svcModel.setService(svcData);
+      $scope.serviceVersion = svcData;
+      $scope.displayTab = svcTab;
 
       $scope.modalAnim = "default";
 
@@ -42,10 +42,10 @@ angular.module("app.ctrl.service", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$localStorage", "$modal", "$state",
-      function($scope, $localStorage, $modal) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "svcTab",
+      function($scope, $modal, svcTab) {
 
-        $scope.$storage = $localStorage;
+        svcTab.updateTab('Documentation');
 
         $scope.loadSwaggerUi = function(url) {
           $scope.swaggerUi = new SwaggerUi({
@@ -102,8 +102,17 @@ angular.module("app.ctrl.service", [])
 
       }])
 
+  /// ==== Service Plans Controller
+  .controller("SvcPlanCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Plans');
+
+  }])
+
   /// ==== Service Announcements Controller
-  .controller("AnnouncementCtrl", ["$scope", function($scope) {
+  .controller("AnnouncementCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Announcements');
 
     $scope.selectedAnnouncement = 0;
 
@@ -114,6 +123,20 @@ angular.module("app.ctrl.service", [])
     $scope.switchNotification = function(id) {
       $scope.selectedAnnouncement = id;
     }
+
+  }])
+
+  /// ==== Service Support Controller
+  .controller("SupportCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Support');
+
+  }])
+
+  /// ==== Service Terms Controller
+  .controller("TermsCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Terms');
 
   }]);
 

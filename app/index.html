@@ -36,7 +36,7 @@
 </head>
 <body ng-app="app"
 	id="app" custom-page
-	class="app off-canvas {{themeActive}}" ng-class="{'nav-expand': navFull, 'body-full': bodyFull}"
+	class="app off-canvas {{themeActive}}" ng-class="{'body-full': bodyFull}"
 	ng-controller="AppCtrl">
 
 
@@ -49,11 +49,6 @@
 
 	<!-- main-container -->
 	<div class="main-container clearfix" ng-class="{'nav-expand': navFull, 'nav-horizontal': navHorizontal}">
-		<aside class="nav-wrap" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}"
-			id="site-nav" custom-scrollbar
-			ng-include=" 'views/categorybar.html' ">
-
-		</aside>
 
 		<!-- content-here -->
 		<div ng-class="{'nav-expand': navFull, 'fixedHeader': fixedHeader}"
@@ -111,6 +106,7 @@
 	<script src="scripts/shared/app.services.js"></script>
   <script src="scripts/shared/app.filters.js"></script>
   <script src="scripts/shared/app.apiEngine.js"></script>
+  <script src="scripts/ctrl/dashboard.js"></script>
   <script src="scripts/ctrl/modals.js"></script>
   <script src="scripts/ctrl/service.js"></script>
   <script src="scripts/ctrl/application.js"></script>

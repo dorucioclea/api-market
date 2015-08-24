@@ -29,8 +29,8 @@
     .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' });
     }])
-    .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
+    .factory('Member', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/members');
     }])
     .factory('Application', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' });
@@ -42,13 +42,19 @@
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/activity');
     }])
     .factory('ApplicationContract', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId')
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
     }])
-    .factory('Member', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/members');
+    .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
+    }])
+    .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId');
+    }])
+    .factory('ServiceEndpoint', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
     }])
     .factory('ServicePlans', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/')
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
     }])
 
 

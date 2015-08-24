@@ -1,4 +1,36 @@
-<div class="page page-dashboard">
+<aside class="dash nav-wrap" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}"
+       id="site-nav" custom-scrollbar>
+
+  <div class="nav-head">
+    <!-- site logo -->
+      <span class="text site-logo">Categories</span>
+  </div>
+
+
+
+  <!-- Site nav (vertical) -->
+
+  <nav class="site-nav clearfix" role="navigation">
+    <!-- categories -->
+    <ul class="list-unstyled clearfix col-sm-offset-1 mt30 mb30">
+      <li ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
+        <a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>
+      </li>
+      <li class="btn btn-xs" ng-click="clearSelectedCategories()" ng-hide="currentCategories.length == 0">
+        <h5 class="text-primary">Reset</h5>
+      </li>
+    </ul> <!-- #end navigation -->
+  </nav>
+
+
+  <!-- nav-foot -->
+  <footer class="nav-foot">
+    <p>2015 &copy; <span>ACPAAS</span></p>
+  </footer>
+
+</aside>
+
+<div class="page page-dashboard" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
 
 	<div class="page-wrap">
     <div class="row">

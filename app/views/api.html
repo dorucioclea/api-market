@@ -10,11 +10,11 @@
         <div class="panel-body">
           <!-- Main API info panel -->
           <div class="col col-sm-1">
-            <img class="media center-block" src="images/yeoman.png">
+              <img class="media center-block" src="images/yeoman.png">
           </div>
           <div class="pl30 col col-sm-11">
             <div class="col-sm-8">
-              <h3 class="text-primary text-uppercase text-bold">Swagger Petstore<a href=""> <i class="text-info follow-icon fa fa-star-o"></i></a></h3>
+              <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href=""> <i class="text-info follow-icon fa fa-star-o"></i></a></h3>
             </div>
             <div class="col-sm-4 text-bold">
               <form role="form" class="form-inline right">
@@ -24,42 +24,39 @@
                 </select>
               </form>
             </div>
+            <div class="col-sm-12 text-primary">
+              <span class="text-light fa fa-user"> {{serviceVersion.createdBy}}</span>
+              <i class="ml10 fa fa-globe"> Online documentation</i>
+              <i class="ml10 fa fa-tag"> {{serviceVersion.service.categories.join(', ')}}</i>
+              <span class="ml10 text-light fa fa-clock-o"> Created: {{serviceVersion.createdOn | date }}</span>
+            </div>
             <div class="col-sm-12">
-              <i class="text-primary fa fa-globe"> Online documentation</i>
               <hr>
             </div>
-            <div class="col-sm-12">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel lacus neque. In tempus, libero cursus pellentesque vehicula, urna quam faucibus velit, sed tempus nulla.
-            </div>
           </div><!-- end main info panel -->
-          </div>
+          <span>{{serviceVersion.service.description}}</span>
+        </div>
 
       </div>
     </div>
 
     <div class="row">
-      <!-- tabs style -->
-      <tabset class="tabs-linearrow-api">
-        <tab heading="Documentation">
-          <ng-include src="'views/partials/api/documentation.html'"></ng-include>
-        </tab>
-        <tab heading="Plans">
-          <ng-include src="'views/partials/api/plans.html'"></ng-include>
-        </tab>
-        <tab heading="Announcements">
-          <ng-include src="'views/partials/api/announcements.html'"></ng-include>
-        </tab>
-        <tab>
-          <tab-heading>
-            Support <span class="badge text-bold badge-xs">22</span>
-          </tab-heading>
-          <ng-include class="ticket-tabs" src="'views/partials/api/support.html'"></ng-include>
-        </tab>
-        <tab heading="Api Terms">
-          <ng-include src="'views/partials/api/terms.html'"></ng-include>
-        </tab>
-      </tabset>
-      <!-- #end tab styles -->
+      <div class="col-sm-12 bg-primary">
+      <div class="btn-group btn-radio">
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Documentation'" ui-sref=".documentation">Documentation</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold">22</span></label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms">API Terms</label>
+      </div>
+      </div>
+      <div>
+        <div class="panel panel-primary">
+          <div class="panel-body">
+            <div class="mt20" ui-view></div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>

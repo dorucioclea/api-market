@@ -14,6 +14,16 @@
 
     })
 
+    .service('svcTab', function () {
+
+      this.selectedTab = 'Documentation';
+
+      this.updateTab = function (newTab) {
+        this.selectedTab = newTab;
+      }
+
+    })
+
     .service('appTab', function () {
 
       this.selectedTab = 'Overview';
