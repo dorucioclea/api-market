@@ -42,8 +42,8 @@ angular.module("app.ctrl.service", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$modal", "svcTab",
-      function($scope, $modal, svcTab) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "svcTab", "ServiceDefinition",
+      function($scope, $modal, $stateParams, svcTab, ServiceDefinition) {
 
         svcTab.updateTab('Documentation');
 
@@ -85,7 +85,8 @@ angular.module("app.ctrl.service", [])
           });
           $scope.swaggerUi.load();
         };
-        $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
+
+        $scope.loadSwaggerUi(ServiceDefinition.getDefinitionUrl($stateParams.orgId, $stateParams.svcId, $stateParams.versionId));
 
         $scope.modalAnim = "default";
 

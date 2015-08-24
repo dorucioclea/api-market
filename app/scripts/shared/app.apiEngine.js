@@ -57,7 +57,12 @@
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
     }])
 
-
+  /// ========== SERVICE DEFINITION URL ===========================================================
+    .service('ServiceDefinition', ['EngineUrl', function (EngineUrl) {
+      this.getDefinitionUrl = function (orgId, svcId, versionId) {
+        return EngineUrl + '/organizations/' + orgId + '/services/' + svcId + '/versions/' + versionId + '/definition';
+      }
+    }])
 
   /// ========== CURRENTUSER ======================================================================
 
