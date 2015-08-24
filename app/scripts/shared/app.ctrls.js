@@ -5,61 +5,8 @@
 angular.module("app.ctrls", [])
 
 // Root Controller
-.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", "$localStorage", function($rs, $scope, $timeout, $localStorage) {
+.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", function($rs, $scope, $timeout) {
 	var mm = window.matchMedia("(max-width: 767px)");
-
-    // ###TODO Remove preseeded data!###
-    $scope.$storage = $localStorage;
-
-    $scope.$storage.selectedOrg = {
-      id: "FedEx",
-      name: "FedEx",
-      description: "Shipping company",
-      createdBy: "admin",
-      createdOn: 1439894816000,
-      modifiedBy: "admin",
-      modifiedOn: 1439894816000
-    };
-
-    $scope.$storage.selectedApp = {
-      organization: {
-        id: "FedEx",
-        name: "FedEx",
-        description: "Shipping company",
-        createdBy: "admin",
-        createdOn: 1439894816000,
-        modifiedBy: "admin",
-        modifiedOn: 1439894816000
-      },
-      id: "PackageTracker",
-      name: "Package Tracker",
-      description: "Will allow users to track packages and automatically receive shipping updates",
-      createdBy: "admin",
-      createdOn: 1439896404000
-    };
-
-    $scope.$storage.selectedAppVersion =   {
-      organizationId: "FedEx",
-      organizationName: "FedEx",
-      id: "PackageTracker",
-      name: "Package Tracker",
-      description: "Will allow users to track packages and automatically receive shipping updates",
-      status: "Created",
-      version: "v1"
-    };
-
-    $scope.$storage.selectedSvc = {
-      organizationId: "FedEx",
-      organizationName: "FedEx",
-      id: "PackageTrackingService",
-      name: "Package Tracking Service",
-      description: "Track your packages via tracking number",
-      createdOn: 1439900026000
-    };
-
-    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc);
-    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc.id);
-    // ### End todo
 
 	$rs.isMobile = mm.matches ? true: false;
 

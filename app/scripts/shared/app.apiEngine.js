@@ -106,7 +106,11 @@
       return $resource(EngineUrl + '/search/services');
     }])
     .factory('SearchPublishedSvcsInCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/services/versions');
+      return $resource(EngineUrl + '/search/services/versions', {}, {
+        query: {
+          method: 'POST', isArray: true
+        }
+      });
     }])
     .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/services/:status');

@@ -1,33 +1,33 @@
-<div ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing"
+<div ng-repeat="api in availableAPIs"
      class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12"
-     ui-sref="service({orgId: 'FedEx', svcId: 'PackageTrackingService', versionId: 'v1'})">
+     ui-sref="service({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
   <div class="panel panel-primary panel-hovered mb20 text-center">
     <div class="panel-heading">
-      <h4 class="text-nowrap text-ellipsis">{{api.name}}</h4>
+      <h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4>
     </div>
     <div class="panel-body">
       <div class="clearfix">
         <div class="info">
           <a href="">
-            <img class="img img-circle publisher-img" src={{api.ownerLogoUrl}}>
-            <span class="mt0 text-primary publisher-text text-uppercase">{{api.owner}}</span>
+            <img class="img img-circle publisher-img" src="images/gallery/sample-1.jpg">
+            <span class="mt0 text-primary publisher-text text-uppercase">{{api.service.organization.name}}</span>
           </a>
         </div>
         <div class="media media-middle">
-          <img src={{api.logoUrl}}>
+          <img src="images/yeoman.png">
         </div>test
         <div class="info">
-          <p class="description text-light text-nowrap text-ellipsis">{{api.description}}</p>
+          <p class="description text-light text-nowrap text-ellipsis">{{api.service.description}}</p>
         </div>
       </div>
     </div>
     <div class="panel-footer clearfix">
-      <div class="text-uppercase">{{api.pricing}}</div>
+      <div class="text-uppercase">Free</div>
     </div>
     <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-      <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> {{api.users}}</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> {{api.followers}}</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> {{api.uptimePercent}}%</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> 9999</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> 2222</div>
+      <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> 100%</div>
     </div>
   </div>
 </div>

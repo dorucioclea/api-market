@@ -93,6 +93,12 @@
       </div>
     </div> <!-- #end row -->
 
+    <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-show="availableAPIs.length === 0">
+      Oops! We could't find any available services in this category! This is usually because a service in this category was created, but not published yet. Please check back later!
+    </div>
+    </div>
+
     <!-- API List/Grid switcher -->
     <div ui-view></div>
 	</div> <!-- #end page-wrap -->
