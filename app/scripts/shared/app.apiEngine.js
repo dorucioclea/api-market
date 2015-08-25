@@ -29,6 +29,18 @@
     .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' });
     }])
+    .factory('PlanActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/activity');
+    }])
+    .factory('PlanVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId');
+    }])
+    .factory('PlanVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/activity');
+    }])
+    .factory('PlanVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
+    }])
     .factory('Member', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/members');
     }])

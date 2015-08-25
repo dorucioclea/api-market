@@ -1,0 +1,72 @@
+﻿<div class="page">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6 text-primary">
+              <h4><i class="fa fa-bar-chart-o"></i>
+                Unlimited
+              </h4>
+            </div>
+            <div class="col-sm-6">
+              <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm">
+                  Version: 1.0<span class="caret"></span>
+                </button>
+                <button class="btn btn-primary btn-sm">New Version</button>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+              <div>
+                <p>Plan without any limitations</p>
+              </div>
+              <!-- Service Summary -->
+              <div>
+                <i class="fa fa-clock-o fa-fw"></i>
+                <span>Created on</span>
+                <span>2015-08-25</span>
+              </div>
+              <div>
+                <i class="fa fa-user fa-fw"></i>
+                <span>Created by</span>
+                <span><a href="">maarten</a></span>
+              </div>
+
+            </div>
+            <div class="col-md-5">
+              <!-- The Lock Action -->
+              <div class="pull-right">
+                <button class="btn btn-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-click="lockPlan()">Lock Plan</button>
+              </div>
+            </div>
+            <div class="mt5 col-md-7">
+              <span>Status:</span>
+              <status-label status="Created"</status-label>
+            </div>
+          </div>
+        </div></div>
+
+      <div class="panel">
+        <div class="panel-body ">
+          <div class="btn-group btn-radio">
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+          </div>
+
+          <div class="mt10 panel panel-default">
+            <div class="panel-body" ui-view>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

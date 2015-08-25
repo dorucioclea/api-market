@@ -35,7 +35,7 @@
 
       <div class="col-sm-12">
         <div class="col-sm-12" ng-repeat="plan in plans">
-          <span class="title"><a>{{plan.name}}</a></span>
+          <span class="title"><a ui-sref="plan({orgId: plan.organizationId, planId: plan.id, versionId: 'v1'})">{{plan.name}}</a></span>
           <hr>
         </div>
       </div>

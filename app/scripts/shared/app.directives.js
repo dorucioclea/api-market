@@ -159,8 +159,8 @@ angular.module("app.directives", [])
       scope: { status: '@'},
       template: '<label class=\"label\" ' +
       'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\',' +
-      '\'label-primary\': status === \'Created\',' +
-      '\'label-warning\': status === \'Ready\', ' +
+      '\'label-primary\': status === \'Locked\',' +
+      '\'label-warning\': status === \'Ready\' || status === \'Created\', ' +
       '\'label-danger\': status === \'Retired\'}\">' +
       '{{status}}</label>'
     };
