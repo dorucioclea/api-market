@@ -68,6 +68,25 @@
 
       }])
 
+/// ==== NewPlan Controller
+    .controller("NewPlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Plan",
+      function ($scope, $modal, $state, $stateParams, orgScreenModel, Plan) {
+
+        $scope.org = orgScreenModel.organization;
+
+        $scope.createPlan = function (plan) {
+          Plan.save({ orgId: $stateParams.orgId }, plan, function (plan) {
+            $scope.modalClose();
+            $state.forceReload();
+          });
+        };
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+      }])
+
 /// ==== NewService Controller
     .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Service",
       function ($scope, $modal, $state, $stateParams, orgScreenModel, Service) {

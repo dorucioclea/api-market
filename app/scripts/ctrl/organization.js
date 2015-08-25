@@ -67,10 +67,23 @@ angular.module("app.ctrl.organization", [])
 
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-  .controller("PlansCtrl", ["$scope", "planData", "orgScreenModel", function ($scope, planData, orgScreenModel) {
+  .controller("PlansCtrl", ["$scope", "$modal", "planData", "orgScreenModel", function ($scope, $modal, planData, orgScreenModel) {
 
     $scope.plans = planData;
     orgScreenModel.updateTab('Plans');
+
+    $scope.modalAnim = "default";
+
+    $scope.modalNewPlan = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalNewPlan.html",
+        size: "lg",
+        controller: "NewPlanCtrl as ctrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
 
   }])
 
