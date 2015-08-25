@@ -1,0 +1,58 @@
+<div class="page">
+  <link rel="stylesheet" type="text/css" href="styles/plugins/ng-tags-input.css">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">New Service</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Application Create panel -->
+  <div class="modal-body">
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-4">
+          <label class="control-label text-primary">Organization</label>
+          <input type="text" class="form-control" disabled value="{{org.name}}">
+        </div>
+        <div class="col-md-7">
+          <label class="control-label text-primary">Service Name</label>
+          <input type="text" class="form-control" placeholder="Enter service name..." ng-model="ctrl.service.name" required>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-3 col-sm-3 col-xs-5">
+          <label class="control-label text-primary">Initial Version</label>
+          <input type="text" class="form-control" maxlength="20" placeholder="Ex.: v1" ng-model="ctrl.service.initialVersion" required>
+        </div>
+        <div class="col-md-6 col-sm-6 col-sm-offset-1 col-md-offset-1 col-xs-7">
+          <label class="control-label text-primary">Endpoint</label>
+          <input type="text" class="form-control" maxlength="20" placeholder="Ex.: /yourendpoint" ng-model="ctrl.service.basepath" required>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-12">
+          <button class="btn btn-primary">Choose logo image</button>
+        </div>
+      </div>
+
+      <div class="form-group mt30">
+        <div class="col-md-12">
+          <label class="control-label text-primary">Service Description</label>
+          <textarea class="form-control" placeholder="Enter a description (optional)" ng-model="ctrl.service.description"></textarea>
+        </div>
+      </div>
+      <div class="form-group mt30">
+        <div class="col-sm-12">
+          <label class="control-label text-primary">Service Category Tags</label>
+          <tags-input ng-model="ctrl.categories"></tags-input>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="createService(ctrl.service, ctrl.categories)">Create Service</button>
+  </div>
+
+</div>

@@ -5,21 +5,16 @@
 angular.module("app.ctrl.organization", [])
 
   /// ==== Organizations Overview & Search Controller
-  .controller("OrganizationsCtrl", ["$scope", "$localStorage", "$timeout", "Organization", "SearchOrgs",
-    function ($scope, $localStorage, $timeout, Organization, SearchOrgs) {
-
-      $scope.$storage = $localStorage;
+  .controller("OrganizationsCtrl", ["$scope", "Organization", "SearchOrgs",
+    function ($scope, Organization, SearchOrgs) {
 
       $scope.doSearch = function (searchString) {
-        console.log(searchString);
         var search = {};
         search.filters = [ { name: "name", value: searchString, operator: "like" }];
         search.orderBy = { ascending: true, name: "name"};
         search.paging = { page: 1, pageSize: 100};
-        console.log(search);
 
         SearchOrgs.save(search, function (results) {
-          console.log(results);
           $scope.totalOrgs = results.totalSize;
           $scope.orgs = results.beans;
         })
@@ -49,12 +44,12 @@ angular.module("app.ctrl.organization", [])
 
 
 /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "$localStorage", "$state", "$stateParams", "screenSize", "orgData", "Organization", "orgTab",
-  function ($scope, $localStorage, $state, $stateParams, screenSize, orgData, Organization, orgTab) {
+.controller("OrganizationCtrl", ["$scope", "$state", "$stateParams", "screenSize", "orgData", "Organization", "orgScreenModel",
+  function ($scope, $state, $stateParams, screenSize, orgData, Organization, orgScreenModel) {
 
-    $scope.$storage = $localStorage;
-    $scope.$storage.selectedOrg = orgData;
-    $scope.displayTab = orgTab;
+    $scope.displayTab = orgScreenModel;
+    orgScreenModel.updateOrganization(orgData);
+    $scope.org = orgData;
 
     $scope.xs = screenSize.on('xs', function(match){
       $scope.xs = match;
@@ -62,8 +57,8 @@ angular.module("app.ctrl.organization", [])
 
     $scope.updateOrgDescription = function () {
       var updatedOrg = new Organization();
-      updatedOrg.description = $scope.$storage.selectedOrg.description;
-      updatedOrg.$update({id: $scope.$storage.selectedOrg.id}, function(data) {
+      updatedOrg.description = $scope.org.description;
+      updatedOrg.$update({id: $stateParams.orgId}, function(data) {
         $state.forceReload();
       });
     }
@@ -72,28 +67,42 @@ angular.module("app.ctrl.organization", [])
 
   // +++ Organization Screen Subcontrollers +++
   /// ==== Plans Controller
-  .controller("PlansCtrl", ["$scope", "planData", "orgTab", function ($scope, planData, orgTab) {
+  .controller("PlansCtrl", ["$scope", "planData", "orgScreenModel", function ($scope, planData, orgScreenModel) {
 
     $scope.plans = planData;
-    orgTab.updateTab('Plans');
+    orgScreenModel.updateTab('Plans');
 
   }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "svcData", "orgTab", function ($scope, svcData, orgTab) {
+  .controller("ServicesCtrl", ["$scope", "$modal", "svcData", "orgScreenModel", function ($scope, $modal, svcData, orgScreenModel) {
 
     $scope.services = svcData;
-    orgTab.updateTab('Services');
+    orgScreenModel.updateTab('Services');
+
+
+    $scope.modalAnim = "default";
+
+    $scope.modalNewService = function() {
+      $modal.open({
+        templateUrl: "views/modals/modalNewService.html",
+        size: "lg",
+        controller: "NewServiceCtrl as ctrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
+
+    };
 
 
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$location", "$modal", "appData", "orgTab",
-    function ($scope, $location, $modal, appData, orgTab) {
+  .controller("ApplicationsCtrl", ["$scope", "$modal", "appData", "orgScreenModel",
+    function ($scope, $modal, appData, orgScreenModel) {
 
       $scope.applications = appData;
-      orgTab.updateTab('Applications');
+      orgScreenModel.updateTab('Applications');
 
 
       $scope.modalAnim = "default";
@@ -112,10 +121,10 @@ angular.module("app.ctrl.organization", [])
     }])
 
   /// ==== Members Controller
-  .controller("MembersCtrl", ["$scope", "memberData", "orgTab", function ($scope, memberData, orgTab) {
+  .controller("MembersCtrl", ["$scope", "memberData", "orgScreenModel", function ($scope, memberData, orgScreenModel) {
 
     $scope.members = memberData;
-    orgTab.updateTab('Members');
+    orgScreenModel.updateTab('Members');
 
 
   }]);

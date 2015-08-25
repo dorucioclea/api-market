@@ -4,13 +4,18 @@
 
   angular.module("app.services", [])
 
-    .service('orgTab', function () {
+    .service('orgScreenModel', function () {
 
       this.selectedTab = 'Plans';
+      this.organization = {};
 
       this.updateTab = function (newTab) {
         this.selectedTab = newTab;
-      }
+      };
+
+      this.updateOrganization = function (org) {
+        this.organization = org;
+      };
 
     })
 

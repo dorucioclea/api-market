@@ -6,14 +6,14 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">{{$storage.selectedOrg.name}}</h4>
+            <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
             <hr>
           </div>
           <div class="col-sm-12">
             <div class="col-sm-12 text-light">
               <i class="fa fa-clock-o fa-fw"></i>
               <span>Created on</span>
-              <span data-field="createdOn">{{$storage.selectedOrg.createdOn | date}}</span>
+              <span data-field="createdOn">{{org.createdOn | date}}</span>
             </div>
           </div>
           <div class="col-sm-12 text-light">
@@ -29,7 +29,7 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-              <textarea rows="2" class="form-control resize-v" ng-model="$storage.selectedOrg.description">{{$storage.selectedOrg.description}}</textarea>
+              <textarea rows="2" class="form-control resize-v" ng-model="org.description">{{org.description}}</textarea>
             </div>
             <button class="btn btn-default mt30" ng-click="updateOrgDescription()">Save</button>
           </div>

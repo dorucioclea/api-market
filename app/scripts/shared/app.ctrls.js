@@ -27,6 +27,10 @@ angular.module("app.ctrls", [])
 		});
 	});
 
+    //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
+  $scope.publisherMode = true;
+    //End
+
 	$scope.navFull = true;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;

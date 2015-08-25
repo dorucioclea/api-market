@@ -17,6 +17,7 @@
 		"angular-loading-bar",
 		"FBAngular",
     "matchMedia",
+    "ngTagsInput",
 
 		/* custom modules */
 		"app.ctrls",
