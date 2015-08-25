@@ -31,6 +31,10 @@ angular.module("app.ctrls", [])
   $scope.publisherMode = true;
     //End
 
+  $scope.togglePublisher = function () {
+    $scope.publisherMode = !$scope.publisherMode;
+  };
+
 	$scope.navFull = true;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;
