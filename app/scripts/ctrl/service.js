@@ -42,10 +42,11 @@ angular.module("app.ctrl.service", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "svcTab", "ServiceDefinition",
-      function($scope, $modal, $stateParams, svcTab, ServiceDefinition) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceDefinition",
+      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceDefinition) {
 
         svcTab.updateTab('Documentation');
+        $scope.endpoint = endpoint;
 
         $scope.loadSwaggerUi = function(url) {
           $scope.swaggerUi = new SwaggerUi({

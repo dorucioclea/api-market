@@ -113,7 +113,7 @@
           organizationId: ['$stateParams', function ($stateParams) {
             return $stateParams.orgId;
           }],
-          serviceID: ['$stateParams', function ($stateParams) {
+          serviceId: ['$stateParams', function ($stateParams) {
             return $stateParams.svcId;
           }],
           versionId: ['$stateParams', function ($stateParams) {
@@ -132,13 +132,12 @@
       .state('service.documentation', {
         url: '/documentation',
         templateUrl: 'views/partials/api/documentation.html',
-          //TODO reactivate when backend is fixed
-        //resolve: {
-        //  ServiceEndpoint: 'ServiceEndpoint',
-        //  endpoint: function(ServiceEndpoint, organizationId, serviceId, versionId) {
-        //    return ServiceEndpoint.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
-        //  }
-        //},
+          resolve: {
+            ServiceEndpoint: 'ServiceEndpoint',
+            endpoint: function (ServiceEndpoint, organizationId, serviceId, versionId) {
+              return ServiceEndpoint.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            }
+          },
         controller: 'DocumentationCtrl'
       })
       // Plans Tab
