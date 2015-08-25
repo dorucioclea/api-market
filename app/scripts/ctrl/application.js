@@ -6,11 +6,10 @@
 
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "$localStorage", "$stateParams", "appData", "appTab",
-  function ($scope, $localStorage, $stateParams, appData, appTab) {
+.controller("ApplicationCtrl", ["$scope", "$stateParams", "appData", "appTab",
+  function ($scope, $stateParams, appData, appTab) {
 
-    $scope.$storage = $localStorage;
-    $scope.$storage.selectedApp = appData;
+    $scope.application = appData;
     $scope.displayTab = appTab;
 
   }])
