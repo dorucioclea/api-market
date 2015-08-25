@@ -17,12 +17,7 @@
               <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href=""> <i class="text-info follow-icon fa fa-star-o"></i></a></h3>
             </div>
             <div class="col-sm-4 text-bold">
-              <form role="form" class="form-inline right">
-                <select dir="rtl" class="form-control">
-                  <option value="v2" selected>Version v2</option>
-                  <option value="v1">Version v1</option>
-                </select>
-              </form>
+              <h3><label class="label label-primary text-nowrap text-ellipsis pull-right">Version: {{serviceVersion.version}}</label></h3>
             </div>
             <div class="col-sm-12 text-primary">
               <span class="text-light fa fa-user"> {{serviceVersion.createdBy}}</span>
@@ -33,9 +28,9 @@
             <div class="col-sm-12">
               <hr>
             </div>
-          </div><!-- end main info panel -->
+          </div>
           <span>{{serviceVersion.service.description}}</span>
-        </div>
+        </div><!-- end main info panel -->
 
       </div>
     </div>

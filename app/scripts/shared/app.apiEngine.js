@@ -44,6 +44,12 @@
     .factory('ApplicationContract', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
     }])
+    .factory('ApplicationApiRegistryJson', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
+    }])
+    .factory('ApplicationApiRegistryXml', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
+    }])
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
     }])
@@ -58,9 +64,11 @@
     }])
 
   /// ========== SERVICE DEFINITION URL ===========================================================
-    .service('ServiceDefinition', ['EngineUrl', function (EngineUrl) {
-      this.getDefinitionUrl = function (orgId, svcId, versionId) {
-        return EngineUrl + '/organizations/' + orgId + '/services/' + svcId + '/versions/' + versionId + '/definition';
+    .factory('ServiceDefinition', ['EngineUrl', function (EngineUrl) {
+      return {
+        getDefinitionUrl: function (orgId, svcId, versionId) {
+          return EngineUrl + '/organizations/' + orgId + '/services/' + svcId + '/versions/' + versionId + '/definition';
+        }
       }
     }])
 
