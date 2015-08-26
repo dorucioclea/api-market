@@ -1,0 +1,19 @@
+<div class="form" data-field="form" ng-controller="IgnoredResourcesPolicyCtrl">
+  <div>Manage the list of regular expressions to be ignored in the box below.</div>
+  <div class="col-md-6 mt10">
+    <select id="paths" ng-model="selectedPath" data-field="pathsToIgnore" multiple class="form-control" ng-options="item for item in config.pathsToIgnore | orderBy: 'toString()'">
+    </select>
+  </div>
+  <div class="col-md-6 mt10">
+      <button id="clear" ng-click="clear()" ng-disabled="!config.pathsToIgnore" data-field="clear" class="btn btn-default btn-sm">Clear</button>
+      <button id="remove" ng-click="remove(selectedPath)" ng-disabled="!selectedPath" data-field="remove" class="btn btn-default btn-sm">Remove</button>
+  </div>
+  <div class="form-horizontal col-md-12 mt5">
+    <div class="form-group">
+      <div class="col-md-6">
+        <input id="path" ng-model="path" data-field="pathToIgnore" class="form-control" type="text" placeholder="Enter a Path to ignore...">
+      </div>
+      <button id="add" ng-disabled="!path" ng-click="add(path)" data-field="add" class="btn btn-default">Add</button>
+    </div>
+  </div>
+</div>

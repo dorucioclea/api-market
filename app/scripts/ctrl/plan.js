@@ -23,11 +23,28 @@
 
     }])
     /// ==== Policies Controller
-    .controller("PlanPoliciesCtrl", ["$scope", "policyData", "planScreenModel", function ($scope, policyData, planScreenModel) {
+    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "policyData", "planScreenModel", "PolicyDefs",
+      function ($scope, $modal, policyData, planScreenModel, PolicyDefs) {
 
       $scope.policies = policyData;
       planScreenModel.updateTab('Policies');
 
+      $scope.modalAnim = "default";
+
+      $scope.modalAddPolicy = function() {
+        $modal.open({
+          templateUrl: "views/modals/modalAddPolicy.html",
+          size: "lg",
+          controller: "AddPolicyCtrl as ctrl",
+          resolve: {
+            policyDefs: function (PolicyDefs) {
+              return PolicyDefs.query({}).$promise;
+            }
+          },
+          windowClass: $scope.modalAnim	// Animation Class put here.
+        });
+
+      };
     }])
 
     /// ==== Overview Controller

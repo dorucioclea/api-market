@@ -1,0 +1,192 @@
+<div class="form" ng-controller="BasicAuthPolicyCtrl">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label class="col-md-3 control-label">Authentication Realm</label>
+      <div class="col-md-9">
+        <input id="realm" ng-model="config.realm" class="form-control" type="text" placeholder="Realm...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">Require Transport Security</label>
+      <div class="col-md-9">
+        <input id="requireTS" type="checkbox" class="form-control" ng-model="config.requireTransportSecurity">
+        <label for="requireTS" title="When enabled, requests must be received on a secure channel (e.g. SSL) otherwise they will fail.">Transport security required</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">Forward Authenticated Username as HTTP Header</label>
+      <div class="col-md-9">
+        <input id="forward-identity" ng-model="config.forwardIdentityHttpHeader" class="apiman-form-control form-control" type="text" placeholder="HTTP header or leave blank to disable...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">Require Basic Authentication</label>
+      <div class="col-md-9">
+        <input id="requireBasic" type="checkbox" ng-model="config.requireBasicAuth">
+        <label for="requireBasic" title="When enabled, requests *must* provide BASIC auth credentials, otherwise the request will fail.">Basic Auth required</label>
+        <p class="text-light">
+          If this option is enabled, then BASIC authentication is required for the request to succeed.  You
+          might disable this option if you want to support both BASIC auth and OAuth policies (for example).
+        </p>
+      </div>
+    </div>
+    <hr />
+    <div class="form-group">
+      <label class="col-md-3 control-label">Identity Source</label>
+      <div class="col-md-9">
+        <select id="identity-source" ng-model="identitySourceType" class="form-control" data-live-search="false">
+          <option value="" selected="selected" data-content="<span class='apiman-label-faded'>Choose an Identity Source...</span>">Choose an Identity Source...</option>
+          <option value="static" data-content="<span>Static</span>">Static</option>
+          <option value="jdbc" data-content="<span>JDBC</span>">JDBC</option>
+          <option value="ldap" data-content="<span>LDAP</span>">LDAP</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Static Identity Source - Form Fields -->
+  <div id="form-horizontal" class="sub-form-fields" ng-show="identitySourceType == 'static'">
+    <div class="alert alert-warning" role="alert">
+      <p>The "static" identity source is typically only useful for testing - you probably don't want to use it in production!</p>
+    </div>
+    <div>
+      <div class="mt30">Static Identities</div>
+      <div class="col-md-7">
+        <select id="static-identities" ng-model="selectedIdentity" multiple class="form-control" ng-options="(item.username) for item in config.staticIdentity.identities | orderBy: 'username'">
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button id="static-remove" ng-click="remove(selectedIdentity)" ng-disabled="!selectedIdentity" class="btn btn-default btn-sm">Remove</button>
+        <button id="static-clear" ng-click="clear()" ng-disabled="!config.staticIdentity.identities" class="btn btn-default btn-sm">Clear</button>
+      </div>
+      <div class="form-horizontal col-md-12 mt5">
+        <div class="form-group">
+          <div class="col-md-3">
+            <input id="static-username" ng-model="username" class="form-control" type="text" placeholder="Username...">
+          </div>
+          <div class="col-md-1 text-center">:</div>
+          <div class="col-md-3">
+            <input id="static-password" ng-model="password" class="form-control" type="password" placeholder="Password...">
+          </div>
+          <button id="static-add" ng-disabled="!username || !password" ng-click="add(username, password)" class="btn btn-default" >Add</button>
+        </div>
+      </div>
+      <dt></dt>
+    </div>
+  </div>
+
+  <!-- JDBC Identity Source - Form Fields -->
+  <div id="jdbc-form-fields" class="form-horizontal" ng-show="identitySourceType == 'jdbc'">
+    <div class="form-group">
+      <label class="col-md-3 control-label">JDBC Datasource (JNDI Location)</label>
+      <div class="col-md-9">
+        <input id="jdbc-datasource" ng-model="config.jdbcIdentity.datasourcePath" class="form-control" type="text" placeholder="JNDI Datasource location (example: jdbc/ExampleDS)">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">SQL Query</label>
+      <div class="col-md-9">
+        <textarea id="jdbc-query" ng-model="config.jdbcIdentity.query" class=" form-control" type="text" placeholder="SQL Query (example: SELECT * FROM users WHERE u=? AND p=?)"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">Password Hash Algorithm</label>
+      <div class="col-md-9">
+        <select id="jdbc-pwd-hash" ng-model="config.jdbcIdentity.hashAlgorithm" class="form-control" data-live-search="false">
+          <option value="None">None</option>
+          <option value="SHA1">SHA1</option>
+          <option value="MD5">MD5</option>
+          <option value="SHA256">SHA256</option>
+          <option value="SHA384">SHA384</option>
+          <option value="SHA512">SHA512</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label"></label>
+      <div class="col-md-9">
+        <input id="jdbc-extract-roles" type="checkbox" ng-model="config.jdbcIdentity.extractRoles">
+        <label for="jdbc-extract-roles" title="When enabled, roles can also be extracted from the database for use in the Authorization Policy.">Also extract user roles from the DB</label>
+      </div>
+    </div>
+    <div class="form-group" ng-show="config.jdbcIdentity.extractRoles == true">
+      <label class="col-md-3 control-label">Roles SQL Query</label>
+      <div class="col-md-9">
+        <textarea id="jdbc-role-query" ng-model="config.jdbcIdentity.roleQuery" class="form-control" type="text" placeholder="Role SQL Query (example: SELECT r.rolename FROM roles r WHERE r.user=?)"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- LDAP Identity Source - Form Fields -->
+  <div id="ldap-form-fields" class="form-horizontal" ng-show="identitySourceType == 'ldap'">
+    <div class="form-group">
+      <label class="col-md-3 control-label">LDAP Server URL</label>
+      <div class="col-md-9">
+        <input id="ldap-url" ng-model="config.ldapIdentity.url" class="form-control" type="text" placeholder="LDAP Url (example: ldap://example.org)">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">LDAP Bind DN</label>
+      <div class="col-md-9">
+        <input id="ldap-bind-dn" ng-model="config.ldapIdentity.dnPattern" class="form-control" type="text" placeholder="LDAP Bind DN (example: cn=${username},dc=overlord,dc=org)">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">Bind to LDAP As...</label>
+      <div class="col-md-9">
+        <select id="ldap-bind-as" ng-model="config.ldapIdentity.bindAs" class="form-control" data-live-search="false">
+          <option selected="selected" value="UserAccount">The inbound user</option>
+          <option value="ServiceAccount">A service account</option>
+        </select>
+      </div>
+    </div>
+    <div ng-show="config.ldapIdentity.bindAs == 'ServiceAccount'">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Service Account Username</label>
+        <div class="col-md-9">
+          <input id="ldap-sa-username" ng-model="config.ldapIdentity.credentials.username" class="form-control" type="text" placeholder="Enter a username...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">Service Account Password</label>
+        <div class="col-md-9">
+          <input id="ldap-sa-pass" ng-model="config.ldapIdentity.credentials.password" class="form-control" type="password" placeholder="Enter a password...">
+          <input id="ldap-sa-pass-confirm" ng-model="repeatPassword" class="form-control" type="password" placeholder="Repeat password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">User Search Base DN</label>
+        <div class="col-md-9">
+          <input id="ldap-us-base-dn" ng-model="config.ldapIdentity.userSearch.baseDn" class="form-control" type="text" placeholder="Enter a Base DN...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">User Search Expression</label>
+        <div class="col-md-9">
+          <input id="ldap-us-expr" ng-model="config.ldapIdentity.userSearch.expression" class="form-control" type="text" placeholder="Enter an expression...">
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-group">
+        <label class="col-md-3 control-label"></label>
+        <div class="col-md-9">
+          <input id="ldap-extract-roles" type="checkbox" ng-model="config.ldapIdentity.extractRoles" style="margin-top: 15px">
+          <label for="ldap-extract-roles" title="When enabled, roles can also be extracted from the directory for use in the Authorization Policy.">Also extract user roles from the directory</label>
+        </div>
+      </div>
+      <div class="form-group" ng-show="config.ldapIdentity.extractRoles == true">
+        <label class="col-md-3 control-label">Group Membership Attribute</label>
+        <div class="col-md-9">
+          <input id="ldap-group-attr" ng-model="config.ldapIdentity.membershipAttribute" class="form-control" type="text" placeholder="memberOf">
+        </div>
+      </div>
+      <div class="form-group" ng-show="config.ldapIdentity.extractRoles == true">
+        <label class="col-md-3 control-label">Role Name Attribute</label>
+        <div class="col-md-9">
+          <input id="ldap-role-name-attr" ng-model="config.ldapIdentity.rolenameAttribute" class="form-control" type="text" placeholder="objectGUID">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

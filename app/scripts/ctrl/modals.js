@@ -4,6 +4,56 @@
 
   angular.module("app.ctrl.modals", [])
 
+
+  /// ==== AddPolicy Controller
+    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs",
+      function ($scope, $modal, $state, $stateParams, policyDefs) {
+
+        $scope.policyDefs = policyDefs;
+        $scope.valid = false;
+
+        var ConfigForms = {
+          BASICAuthenticationPolicy: 'basic-auth.html',
+          IgnoredResourcesPolicy: 'ignored-resources.html',
+          IPBlacklistPolicy: 'ip-list.html',
+          IPWhitelistPolicy: 'ip-list.html',
+          RateLimitingPolicy: 'rate-limiting.html',
+          QuotaPolicy: 'quota.html',
+          TransferQuotaPolicy: 'transfer-quota.html',
+          AuthorizationPolicy: 'authorization.html',
+          CachingPolicy: 'caching.html'
+        };
+
+        $scope.selectedPolicy = null;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.setValid = function (isValid) {
+          $scope.valid = isValid;
+        };
+
+        $scope.selectPolicy = function (policy) {
+          if (!policy) {
+            $scope.include = undefined;
+          } else {
+            $scope.selectedPolicy = policy;
+            if ($scope.selectedPolicy.formType == 'JsonSchema') {
+              //Not supported yet!
+              $scope.include = undefined;
+            } else {
+              var inc = ConfigForms[$scope.selectedPolicy.id];
+              if (!inc) {
+                inc = 'Default.include';
+              }
+              $scope.include = 'views/modals/partials/policy/' + inc;
+            }
+          }
+        }
+
+      }])
+
 /// ==== Application Selection Controller
     .controller("AppSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "svcModel", "Application", "ApplicationVersion", "CurrentUserAppOrgs",
       function ($scope, $modal, $state, $stateParams, $timeout, svcModel, Application, ApplicationVersion, CurrentUserAppOrgs) {

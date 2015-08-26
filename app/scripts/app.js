@@ -31,6 +31,7 @@
     "app.ctrl.application",
     "app.ctrl.organization",
     "app.ctrl.plan",
+    "app.ctrl.policy",
     "app.ctrl.contract",
     "app.ctrl.user",
     "app.ui.ctrls",
