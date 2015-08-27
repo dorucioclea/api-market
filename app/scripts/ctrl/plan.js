@@ -54,29 +54,40 @@
 
     }])
     /// ==== Policies Controller
-    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "policyData", "planScreenModel", "PolicyDefs",
-      function ($scope, $modal, policyData, planScreenModel, PolicyDefs) {
+    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "planScreenModel", "PlanVersionPolicy", "PolicyDefs",
+      function ($scope, $modal, $stateParams, policyData, planScreenModel, PlanVersionPolicy, PolicyDefs) {
 
-      $scope.policies = policyData;
-      planScreenModel.updateTab('Policies');
+        $scope.policies = policyData;
+        planScreenModel.updateTab('Policies');
 
-      $scope.modalAnim = "default";
 
-      $scope.modalAddPolicy = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalAddPolicy.html",
-          size: "lg",
-          controller: "AddPolicyCtrl as ctrl",
-          resolve: {
-            policyDefs: function (PolicyDefs) {
-              return PolicyDefs.query({}).$promise;
-            }
-          },
-          windowClass: $scope.modalAnim	// Animation Class put here.
-        });
+        $scope.removePolicy = function(policy) {
+          PlanVersionPolicy.delete({orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId, policyId: policy.id}, function (data) {
+            angular.forEach($scope.policies, function(p, index) {
+              if (policy === p) {
+                $scope.policies.splice(index, 1);
+              }
+            });
+          });
+        };
 
-      };
-    }])
+        $scope.modalAnim = "default";
+
+        $scope.modalAddPolicy = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalAddPolicy.html",
+            size: "lg",
+            controller: "AddPolicyCtrl as ctrl",
+            resolve: {
+              policyDefs: function (PolicyDefs) {
+                return PolicyDefs.query({}).$promise;
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+
+        };
+      }])
 
     /// ==== Overview Controller
     .controller("PlanOverviewCtrl", ["$scope", "planScreenModel", function ($scope, planScreenModel) {
