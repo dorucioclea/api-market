@@ -18,6 +18,7 @@
     "FBAngular",
     "matchMedia",
     "ngTagsInput",
+    "schemaForm",
 
     /* custom modules */
     "app.ctrls",

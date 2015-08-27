@@ -74,6 +74,10 @@ module.exports = function(config) {
       'bower_components/ngstorage/ngStorage.js',
       'bower_components/angular-media-queries/match-media.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/tv4/tv4.js',
+      'bower_components/objectpath/lib/ObjectPath.js',
+      'bower_components/angular-schema-form/dist/schema-form.js',
+      'bower_components/angular-schema-form/dist/bootstrap-decorator.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/less/dist/less.js',
       // endbower
