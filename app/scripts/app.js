@@ -288,13 +288,11 @@
           templateUrl: 'views/plan.html',
           resolve: {
             PlanVersion: 'PlanVersion',
-            planData: function(PlanVersion, $stateParams){
-
-              var orgId     = $stateParams.orgId;
-              var planId    = $stateParams.planId;
-              var versionId = $stateParams.versionId;
-
-              return PlanVersion.get({orgId: orgId, planId: planId, versionId: versionId}).$promise;
+            planData: function(PlanVersion, organizationId, planId, versionId){
+              return PlanVersion.get({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
+            },
+            planVersions: function (PlanVersion, organizationId, planId) {
+              return PlanVersion.query({orgId: organizationId, planId: planId}).$promise;
             },
             organizationId: ['$stateParams', function ($stateParams) {
               return $stateParams.orgId;

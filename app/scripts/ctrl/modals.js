@@ -6,8 +6,8 @@
 
 
   /// ==== AddPolicy Controller
-    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs",
-      function ($scope, $modal, $state, $stateParams, policyDefs) {
+    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
@@ -34,11 +34,32 @@
           $scope.valid = isValid;
         };
 
+        $scope.setConfig = function(config) {
+          $scope.config = config;
+        };
+        $scope.getConfig = function() {
+          return $scope.config;
+        };
+
+        $scope.addPolicy = function() {
+          console.log(angular.toJson($scope.config));
+          var newPolicy = {
+            definitionId: $scope.selectedPolicy.id,
+            configuration: angular.toJson($scope.config)
+          };
+          PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+            $scope.modalClose();
+            $scope.forceReload();
+          });
+        };
+
+
         $scope.selectPolicy = function (policy) {
           if (!policy) {
             $scope.include = undefined;
           } else {
             $scope.selectedPolicy = policy;
+            $scope.config = {};
             if ($scope.selectedPolicy.formType == 'JsonSchema') {
               //Not supported yet!
               $scope.include = undefined;
@@ -125,9 +146,37 @@
         $scope.org = orgScreenModel.organization;
 
         $scope.createPlan = function (plan) {
-          Plan.save({ orgId: $stateParams.orgId }, plan, function (plan) {
+          Plan.save({ orgId: $stateParams.orgId }, plan, function (newPlan) {
             $scope.modalClose();
-            $state.forceReload();
+            console.log(plan);
+            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+          });
+        };
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+      }])
+
+    /// ==== NewPlanVersion Controller
+    .controller("NewPlanVersionCtrl", ["$scope", "$state", "$stateParams", "planScreenModel", "PlanVersion",
+      function ($scope, $state, $stateParams, planScreenModel, PlanVersion) {
+
+        $scope.currentVersion = planScreenModel.plan.version;
+
+        $scope.newVersion = '';
+        $scope.shouldClone = true;
+
+        $scope.createVersion = function () {
+          var newVersion = {
+            version: $scope.newVersion,
+            clone: $scope.shouldClone,
+            cloneVersion: $scope.currentVersion
+          };
+          PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
+            $scope.modalClose();
+            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
           });
         };
 

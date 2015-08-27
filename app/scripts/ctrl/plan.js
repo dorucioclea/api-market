@@ -6,11 +6,42 @@
 
 
 /// ==== Plan Controller
-    .controller("PlanCtrl", ["$scope", "$localStorage", "$stateParams", "planScreenModel",
-      function ($scope, $localStorage, $stateParams, planScreenModel) {
+    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "Action",
+      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, Action) {
 
-        $scope.$storage = $localStorage;
+        $scope.planVersion = planData;
+        planScreenModel.updatePlan(planData);
         $scope.displayTab = planScreenModel;
+        $scope.versions = planVersions;
+
+        $scope.locked = $scope.planVersion.status === 'Locked';
+
+        $scope.modalNewVersion = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalNewPlanVersion.html",
+            size: "lg",
+            controller: "NewPlanVersionCtrl as ctrl",
+            resolve: function() {},
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+
+        };
+
+        $scope.lockPlan = function () {
+          var lockAction = {
+            type: 'lockPlan',
+            organizationId: $stateParams.orgId,
+            entityId: $stateParams.planId,
+            entityVersion: $stateParams.versionId
+          };
+          Action.save(lockAction, function (reply) {
+            $state.forceReload();
+          });
+        };
+
+        $scope.selectVersion = function (version) {
+          $state.go($state.$current.name, { orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: version.version});
+        };
 
       }])
 

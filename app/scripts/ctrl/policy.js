@@ -23,7 +23,6 @@
     }])
 
     .controller("RateLimitingPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var validate = function(config) {
         var valid = true;
@@ -48,8 +47,6 @@
     }])
 
     .controller("QuotaPolicyCtrl", ['$scope', function ($scope) {
-
-      $scope.config = {};
 
       var validate = function(config) {
         var valid = true;
@@ -81,7 +78,6 @@
       var GB = 1024 * 1024 * 1024;
 
       $scope.limitDenomination = 'B';
-      $scope.config = {};
 
       if ($scope.config && $scope.config.limit) {
         var limit = Number($scope.config.limit);
@@ -145,7 +141,6 @@
     }])
 
     .controller("IPListPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var validate = function(config) {
         var valid = true;
@@ -190,7 +185,6 @@
     }])
 
     .controller("IgnoredResourcesPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var validate = function(config) {
         var valid = true;
@@ -231,7 +225,6 @@
     }])
 
     .controller("BasicAuthPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var validate = function(config) {
         if (!config) {
@@ -368,7 +361,6 @@
     }])
 
     .controller("AuthorizationPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var isRegexpValid = function(v) {
         var valid = true;
@@ -427,7 +419,6 @@
     }])
 
     .controller("CachingPolicyCtrl", ['$scope', function ($scope) {
-      $scope.config = {};
 
       var validate = function(config) {
         var valid = false;

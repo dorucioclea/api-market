@@ -14,6 +14,12 @@
 
   /// ########### ENDPOINT FACTORIES #####################
 
+  /// ========== ACTIONS ==========================================================================
+    .factory('Action', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/actions');
+    }])
+
+
   /// ========== ORGANIZATION =====================================================================
 
     .factory('Organization', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {

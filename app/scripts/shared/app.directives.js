@@ -157,12 +157,11 @@ angular.module("app.directives", [])
     return {
       restrict: "E",
       scope: { status: '@'},
-      template: '<label class=\"label\" ' +
-      'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\',' +
-      '\'label-primary\': status === \'Locked\',' +
+      template: '<h5>Status: <label class=\"label text-uppercase\" ' +
+      'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\' || status === \'Locked\',' +
       '\'label-warning\': status === \'Ready\' || status === \'Created\', ' +
       '\'label-danger\': status === \'Retired\'}\">' +
-      '{{status}}</label>'
+      '{{status}}</label></h5>'
     };
 })
 

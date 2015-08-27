@@ -6,15 +6,20 @@
           <div class="row">
             <div class="col-sm-6 text-primary">
               <h4><i class="fa fa-bar-chart-o"></i>
-                Unlimited
+                {{planVersion.plan.name}}
               </h4>
             </div>
             <div class="col-sm-6">
               <div class="pull-right">
-                <button type="button" class="btn btn-default btn-sm">
-                  Version: 1.0<span class="caret"></span>
-                </button>
-                <button class="btn btn-primary btn-sm">New Version</button>
+                <div class="btn-group dropdown" dropdown>
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                    Version: {{planVersion.version}}<span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
+                  </ul>
+                </div>
+                <button class="btn btn-primary btn-sm" ng-click="modalNewVersion()">New Version</button>
               </div>
             </div>
             <div class="col-sm-12">
@@ -24,30 +29,29 @@
           <div class="row">
             <div class="col-md-7">
               <div>
-                <p>Plan without any limitations</p>
+                <p>{{planVersion.plan.description}}</p>
               </div>
               <!-- Service Summary -->
               <div>
                 <i class="fa fa-clock-o fa-fw"></i>
                 <span>Created on</span>
-                <span>2015-08-25</span>
+                <span>{{planVersion.createdOn | date}}</span>
               </div>
               <div>
                 <i class="fa fa-user fa-fw"></i>
                 <span>Created by</span>
-                <span><a href="">maarten</a></span>
+                <span><a href="">{{planVersion.createdBy}}</a></span>
               </div>
 
             </div>
             <div class="col-md-5">
               <!-- The Lock Action -->
               <div class="pull-right">
-                <button class="btn btn-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-click="lockPlan()">Lock Plan</button>
+                <button class="btn btn-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-hide="locked" ng-click="lockPlan()">Lock Plan</button>
               </div>
             </div>
             <div class="mt5 col-md-7">
-              <span>Status:</span>
-              <status-label status="Created"</status-label>
+              <status-label status="{{planVersion.status}}"></status-label>
             </div>
           </div>
         </div></div>
