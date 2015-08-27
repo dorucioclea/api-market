@@ -33,9 +33,14 @@
         </div>
       </div>
 
-      <div class="col-sm-12">
-        <div class="col-sm-12" ng-repeat="plan in plans">
-          <span class="title"><a ui-sref="plan({orgId: plan.organizationId, planId: plan.id, versionId: 'v1'})">{{plan.name}}</a></span>
+      <div class="col-sm-12" ng-repeat="plan in plans">
+        <div class="col-sm-12">
+          <span><a href ng-click="goToPlan(plan)">{{plan.name }}</a></span>
+        </div>
+        <div class="col-sm-12">
+          <span class="text-light">{{ plan.description }}</span>
+        </div>
+        <div class="col-sm-12">
           <hr>
         </div>
       </div>
