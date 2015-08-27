@@ -4,47 +4,25 @@
 
   angular.module("app.ctrl.contract", [])
     /// ==== Contract Controller
-    .controller("ContractCtrl", ["$scope", "$modal", "$location", "$localStorage", "$timeout", "appData", "svcData", "ApplicationVersion", "ApplicationContract", "ServicePlans",
-      function($scope, $modal, $location, $localStorage, $timeout, appData, svcData, ApplicationVersion, ApplicationContract, ServicePlans) {
+    .controller("ContractCtrl", ["$scope", "$state", "$stateParams", "appData", "svcData", "planData", "ApplicationContract",
+      function($scope, $state, $stateParams, appData, svcData, planData, ApplicationContract) {
 
         $scope.application = appData;
+        $scope.applicationVersion = $stateParams.appVersion;
         $scope.service = svcData;
-        $scope.selectedVersion = $scope.$storage.selectedAppVersion;
+        $scope.serviceVersion = $stateParams.svcVersion;
+        $scope.plans = planData;
 
-        console.log("App: " + appData);
-        console.log("Svc: " + svcData);
-
-
-        ApplicationVersion.query({orgId: $scope.application.organization.id, appId: $scope.application.id}, function (data) {
-          $scope.versions = data;
-        });
-
-        ServicePlans.query({orgId: $scope.service.organization.id, svcId: $scope.service.id, versionId: 'v1'}, function (data) {
-          $scope.plans = data;
-        });
-
-        //$scope.plans = [
-        //  "Unlimited",
-        //  "Bronze",
-        //  "Silver",
-        //  "Gold",
-        //  "Platinum"
-        //];
-
-        $scope.updateSelectedAppVersion = function() {
-          $scope.$storage.selectedAppVersion = this.selectedVersion;
-        };
-
-        $scope.createContract = function () {
+        $scope.createContract = function (selectedPlan) {
           var contract = {
-            serviceOrgId: $scope.service.organizationId,
+            serviceOrgId: $scope.service.organization.id,
             serviceId: $scope.service.id,
-            serviceVersion: $scope.$storage.selectedSvcVersion,
-            planId: $scope.selectedPlan
+            serviceVersion: $stateParams.svcVersion,
+            planId: selectedPlan.planId
           };
 
-          ApplicationContract.save({orgId: $scope.organization.id, appId: $scope.application.id, versionId: $scope.selectedVersion}, contract, function (data) {
-            $location.path('application');
+          ApplicationContract.save({orgId: $scope.application.organization.id, appId: $scope.application.id, versionId: $stateParams.appVersion}, contract, function (data) {
+            $state.go('application.contracts', {orgId: $scope.application.organization.id, appId: $scope.application.id});
           });
         };
 

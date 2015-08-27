@@ -1,4 +1,4 @@
-<div class="row" ng-controller="DocumentationCtrl">
+<div class="row">
 
       <!-- Swagger API documentation panel -->
       <div class="col-lg-9">
@@ -23,14 +23,7 @@
             API Subscription
           </div>
           <div class="panel-body">
-            <form role="form" class="form mb20">
-              <div class="form-group">
-                <select class="form-control" name="appSelect" id="appSelect"
-                        ng-options="application as application.name for application in applications track by application.id"
-                        ng-model="$storage.selectedApp"></select>
-              </div>
-            </form>
-            <button class="btn btn-success btn-block" ng-click="startCreateContract()">Subscribe</button>
+            <button class="btn btn-success btn-block" ng-click="modalSelectApplicationForContract()">Subscribe</button>
           </div>
         </div><!-- end API Subscription panel -->
 
@@ -42,7 +35,7 @@
           <div class="panel-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <input readonly type="text" class="form-control" value="Service URL goes here">
+                <input readonly type="text" class="form-control" value="{{endpoint.managedEndpoint}}">
               </div>
             </form>
           </div>

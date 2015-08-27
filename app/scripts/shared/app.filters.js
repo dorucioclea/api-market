@@ -4,6 +4,12 @@
 
   angular.module("app.filters", [])
 
+    .filter('joinBy', function () {
+      return function (input, delimiter) {
+        return (input || []).join(delimiter || ',');
+      };
+    })
+
     .filter('pricing', function () {
       return function(apis, currentPricingFilter) {
         var out = [];

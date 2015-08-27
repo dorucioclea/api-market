@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-sm-12">
+    <!-- Title and help text -->
+    <h4>Plan Policies</h4>
+    <p>Here is a list of all Policies defined for this Plan. These Policies will be applied to all Service invocations made by Applications using this Plan in a Contract (in addition to whatever Policies are defined individually by the Application and/or Service).</p>
+    <hr>
+  </div>
+  <!-- The list of policies -->
+  <div class="col-sm-12">
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="locked">Add Policy</button>
+  </div>
+
+  <div class="col-sm-12" ng-hide="policies.length > 0">
+    <hr>
+    <div class="col-sm-10 col-sm-offset-1 well" ng-show="locked">
+      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Plan, since this one is locked!
+    </div>
+    <div class="col-sm-8 col-sm-offset-1 well" ng-hide="locked">
+      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you may try defining one using the Add Policy button above...
+    </div>
+    <div class="col-sm-3">
+      <div class="no-entities-arrow" ng-hide="locked"></div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <apiman-policy-list class="ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="policies" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="Digipolis" page-id="Unlimited" version="1.0"><div class="apiman-policies ng-untouched ng-valid ng-scope ng-dirty" id="draggable-ctr" as-sortable="policyListOptions" ng-model="ctrl.policies">
+    <!-- ngRepeat: policy in ctrl.policies -->
+  </div>
+  </apiman-policy-list>
+</div>
+</div>
+<!-- /Content -->

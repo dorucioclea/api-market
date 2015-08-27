@@ -1,28 +1,29 @@
 <!-- Basic Table -->
-<div class="col-md-12">
+<div class="col-md-12" ng-hide="availableAPIs.length === 0">
   <div class="panel panel-lined mb20 table-responsive">
     <table class="table table-bordered text-center">
-      <tr ng-repeat="api in availableAPIs | categories:currentCategories | pricing:currentPricing">
+      <tr ng-repeat="api in availableAPIs">
         <td>
           <div class="media media-middle">
-            <a href=""><img src={{api.logoUrl}}></a>
+            <a ui-sref="service({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><img src="images/yeoman.png"></a>
           </div>
         </td>
         <td class="text-left">
           <div class="text-primary">
-            <a class="text-primary" href="" >{{api.name}}</a><span class="text-default text-light"> by </span><a class="text-primary" href="" >{{api.owner}}</a>
+            <a class="text-primary" ui-sref="service({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
+            <span class="text-default text-light"> by </span><a class="text-primary" ui-sref="organization.services({orgId: api.service.organization.id})">{{api.service.organization.name}}</a>
           </div>
           <div class="description">
-            {{api.description}}
+            {{api.service.description}}
           </div>
         </td>
         <td>
-          <div class="text-bold text-uppercase">{{api.pricing}}</div>
+          <div class="text-bold text-uppercase">Free</div>
         </td>
         <td>
-          <div class="fa-hover col-xs-4"><b>{{api.users}}</b><br>developers</div>
-          <div class="fa-hover col-xs-4"><b>{{api.followers}}</b><br>followers<br></div>
-          <div class="fa-hover col-xs-4"><b>{{api.uptimePercent}}%</b><br>uptime</div>
+          <div class="fa-hover col-xs-4"><b>9999</b><br>developers</div>
+          <div class="fa-hover col-xs-4"><b>2222</b><br>followers<br></div>
+          <div class="fa-hover col-xs-4"><b>100%</b><br>uptime</div>
         </td>
         <td>
           <div class="fa-hover"><a href=""><i class="text-primary follow-icon fa fa-star-o"></i></a></div>

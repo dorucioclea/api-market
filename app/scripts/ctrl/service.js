@@ -5,11 +5,12 @@
 angular.module("app.ctrl.service", [])
 
   /// ==== Service Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$localStorage", "$modal", "svcData",
-    function($scope, $stateParams, $localStorage, $modal, svcData) {
+  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$modal", "svcData", "svcModel", "svcTab",
+    function($scope, $stateParams, $modal, svcData, svcModel, svcTab) {
 
-      $scope.$storage = $localStorage;
-      $scope.$storage.selectedSvc = svcData;
+      svcModel.setService(svcData);
+      $scope.serviceVersion = svcData;
+      $scope.displayTab = svcTab;
 
       $scope.modalAnim = "default";
 
@@ -41,14 +42,11 @@ angular.module("app.ctrl.service", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$localStorage", "$modal", "$state", "$stateParams", "Application",
-      function($scope, $localStorage, $modal, $state, $stateParams, Application) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceDefinition",
+      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceDefinition) {
 
-        $scope.$storage = $localStorage;
-
-        Application.query({orgId: $scope.$storage.selectedOrg.id}, function (apps) {
-          $scope.applications = apps;
-        });
+        svcTab.updateTab('Documentation');
+        $scope.endpoint = endpoint;
 
         $scope.loadSwaggerUi = function(url) {
           $scope.swaggerUi = new SwaggerUi({
@@ -88,25 +86,35 @@ angular.module("app.ctrl.service", [])
           });
           $scope.swaggerUi.load();
         };
-        $scope.loadSwaggerUi('http://localhost:8080/API-Engine-web/v1/organizations/FedEx/services/PackageTrackingService/versions/v1/definition');
 
+        $scope.loadSwaggerUi(ServiceDefinition.getDefinitionUrl($stateParams.orgId, $stateParams.svcId, $stateParams.versionId));
 
-        $scope.startCreateContract = function () {
-          console.log("App: " + $scope.$storage.selectedOrg.id);
-          console.log("App: " + $scope.$storage.selectedApp.id);
-          console.log("Svc: " + $stateParams.orgId);
-          console.log("Svc: " + $stateParams.svcId);
+        $scope.modalAnim = "default";
 
-          $state.go('contract',
-            { appOrgId: $scope.$storage.selectedOrg.id, appId: $scope.$storage.selectedApp.id,
-              svcOrgId: $stateParams.orgId, svcId: $stateParams.svcId
-            });
-        }
+        $scope.modalSelectApplicationForContract = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalSelectApplication.html",
+            size: "lg",
+            controller: "AppSelectCtrl as ctrl",
+            resolve: function() {},
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+
+        };
 
       }])
 
+  /// ==== Service Plans Controller
+  .controller("SvcPlanCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Plans');
+
+  }])
+
   /// ==== Service Announcements Controller
-  .controller("AnnouncementCtrl", ["$scope", function($scope) {
+  .controller("AnnouncementCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Announcements');
 
     $scope.selectedAnnouncement = 0;
 
@@ -117,6 +125,20 @@ angular.module("app.ctrl.service", [])
     $scope.switchNotification = function(id) {
       $scope.selectedAnnouncement = id;
     }
+
+  }])
+
+  /// ==== Service Support Controller
+  .controller("SupportCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Support');
+
+  }])
+
+  /// ==== Service Terms Controller
+  .controller("TermsCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+
+    svcTab.updateTab('Terms');
 
   }]);
 

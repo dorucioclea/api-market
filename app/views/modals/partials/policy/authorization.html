@@ -1,0 +1,72 @@
+<div class="form" data-field="form" ng-controller="AuthorizationPolicyCtrl">
+  <div>Manage the list of fine-grained authorization rules in the box below.  If you want a single required role to protect your entire API, simply add one item with a path of ".*" and a verb of "*".</div>
+
+  <div class="panel panel-default mt10">
+    <div class="panel-heading">
+      Add Authorization Rule
+    </div>
+    <div class="panel-body form-inline">
+      <div class="col-md-10">
+        <span>To access resource</span>
+        <input id="path" ng-model="path" class="form-control" style="" type="text" placeholder="(/path/to/.*)">
+        <span>using verb/action</span>
+        <input id="verb" ng-model="verb" class="form-control" style="" type="text" placeholder="(verb)">
+        <span>the user must have role</span>
+        <input id="role" ng-model="role" class="form-control" style="" type="text" placeholder="(required role)">
+        <span>.</span>
+      </div>
+      <div class="col-md-12">
+        <button id="add-rule" ng-disabled="currentItemInvalid()" ng-click="add(path, verb, role)" class="btn btn-default">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt20">
+    <dl>
+      <dt>Configured Authorization Rules</dt>
+    </dl>
+  </div>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th width="60%" apiman-i18n-key="path">Path</th>
+      <th width="20%" apiman-i18n-key="verb">Verb</th>
+      <th width="20%" apiman-i18n-key="required-role">Required Role</th>
+      <th width="1%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in config.rules | orderBy: 'pathPattern'">
+      <td>{{ item.pathPattern }}</td>
+      <td>{{ item.verb }}</td>
+      <td>{{ item.role }}</td>
+      <td>
+        <button ng-click="remove(item)" class="btn btn-default icon fa fa-times"></button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" ng-show="!config.rules.length">
+        <div>
+          <p>No authorization rules have been added!  You'll need at least one, otherwise no authorization will be performed.</p>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="form-inline">
+    <dl>
+      <dt>Unmatched Request Action</dt>
+      <dd>
+        <span>I want the request to</span>
+        <select id="unmatched-request-action" ng-model="config.requestUnmatched" class="form-control" data-live-search="false">
+          <option value="fail">fail</option>
+          <option value="pass">pass</option>
+        </select>
+        <span>if it does not match any of the authorization rules defined above.</span>
+      </dd>
+    </dl>
+  </div>
+
+</div>

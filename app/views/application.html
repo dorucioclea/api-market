@@ -7,7 +7,7 @@
           <div class="col-sm-10">
             <div class="text-bold text-primary">
               <div class="col-sm-8 text-primary text-uppercase text-bold">
-                <h5><span class="fa fa-cogs"></span> {{$storage.selectedApp.name}}</h5>
+                <h5><span class="fa fa-cogs"></span> {{application.name}}</h5>
               </div>
               <div class="col-sm-4">
                 <form role="form" class="form-inline right">
@@ -21,9 +21,9 @@
 
             <div class="col-sm-12">
               <hr>
-              <p>{{$storage.selectedApp.description}}</p>
-              <span class="text-light small fa fa-clock-o"> Created on {{$storage.selectedApp.createdOn | date}}</span> <br>
-              <span class="text-light small fa fa-user"> Created by {{$storage.selectedApp.createdBy}}</span>
+              <p>{{application.description}}</p>
+              <span class="text-light small fa fa-clock-o"> Created on {{application.createdOn | date}}</span> <br>
+              <span class="text-light small fa fa-user"> Created by {{application.createdBy}}</span>
               <hr>
               <p class="mt15">Status: <label class="label text-uppercase label-warning">Created</label></p>
             </div>
@@ -42,23 +42,19 @@
         </div>
 
       </div>
+
       <div class="panel">
         <div class="panel-body">
-          <tabset>
-            <tab heading="Overview">
-              <ng-include src="'views/partials/application/overview.html'"></ng-include>
-            </tab>
-            <tab heading="Contracts">
-              <ng-include src="'views/partials/application/contracts.html'"></ng-include>
-            </tab>
-            <tab heading="APIs">
-              <ng-include src="'views/partials/application/apis.html'"></ng-include>
-            </tab>
-            <tab heading="Activity">
-              <ng-include src="'views/partials/application/activity.html'"></ng-include>
-            </tab>
-
-          </tabset>
+          <div class="btn-group btn-radio">
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+          </div>
+          <div class="mt10 panel panel-default">
+            <div class="panel-body" ui-view>
+            </div>
+          </div>
         </div>
       </div>
     </div>

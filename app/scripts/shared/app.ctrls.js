@@ -5,61 +5,8 @@
 angular.module("app.ctrls", [])
 
 // Root Controller
-.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", "$localStorage", function($rs, $scope, $timeout, $localStorage) {
+.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", function($rs, $scope, $timeout) {
 	var mm = window.matchMedia("(max-width: 767px)");
-
-    // ###TODO Remove preseeded data!###
-    $scope.$storage = $localStorage;
-
-    $scope.$storage.selectedOrg = {
-      id: "FedEx",
-      name: "FedEx",
-      description: "Shipping company",
-      createdBy: "admin",
-      createdOn: 1439894816000,
-      modifiedBy: "admin",
-      modifiedOn: 1439894816000
-    };
-
-    $scope.$storage.selectedApp = {
-      organization: {
-        id: "FedEx",
-        name: "FedEx",
-        description: "Shipping company",
-        createdBy: "admin",
-        createdOn: 1439894816000,
-        modifiedBy: "admin",
-        modifiedOn: 1439894816000
-      },
-      id: "PackageTracker",
-      name: "Package Tracker",
-      description: "Will allow users to track packages and automatically receive shipping updates",
-      createdBy: "admin",
-      createdOn: 1439896404000
-    };
-
-    $scope.$storage.selectedAppVersion =   {
-      organizationId: "FedEx",
-      organizationName: "FedEx",
-      id: "PackageTracker",
-      name: "Package Tracker",
-      description: "Will allow users to track packages and automatically receive shipping updates",
-      status: "Created",
-      version: "v1"
-    };
-
-    $scope.$storage.selectedSvc = {
-      organizationId: "FedEx",
-      organizationName: "FedEx",
-      id: "PackageTrackingService",
-      name: "Package Tracking Service",
-      description: "Track your packages via tracking number",
-      createdOn: 1439900026000
-    };
-
-    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc);
-    console.log('Reading from local storage: ' + $scope.$storage.selectedSvc.id);
-    // ### End todo
 
 	$rs.isMobile = mm.matches ? true: false;
 
@@ -80,17 +27,15 @@ angular.module("app.ctrls", [])
 		});
 	});
 
-    $scope.currentCategories = [];
+    //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
+  $scope.publisherMode = true;
+    //End
 
-    $scope.availableCategories = [{ id: 0, name: "Location" },
-    { id: 1, name: "Business" },
-    { id: 2, name: "Social" },
-    { id: 3, name: "Communication" },
-    { id: 4, name: "Data" },
-    { id: 5, name: "Other" } ];
+  $scope.togglePublisher = function () {
+    $scope.publisherMode = !$scope.publisherMode;
+  };
 
-
-	$scope.navFull = false;
+	$scope.navFull = true;
 	$scope.toggleNav = function() {
 		$scope.navFull = $scope.navFull ? false : true;
 		$rs.navOffCanvas = $rs.navOffCanvas ? false : true;
@@ -100,38 +45,6 @@ angular.module("app.ctrls", [])
 			$rs.$broadcast("c3.resize");
 		}, 260);	// adjust this time according to nav transition
 	};
-
-  $scope.toggleCategories = function(category) {
-    var index = $scope.currentCategories.indexOf(category.id);
-    if (index > -1) {
-      // Category was already selected, remove from array
-      $scope.currentCategories.splice(index, 1);
-    } else {
-      // Category was not selected, add id to array
-      $scope.currentCategories.push(category.id)
-    }
-  };
-
-
-  $scope.isCategorySelected = function (category) {
-    if ($scope.currentCategories.length == 0) {
-      // No filtering on category yet, show all buttons as enabled
-      return "btn-tag-primary"
-    } else {
-      var index = $scope.currentCategories.indexOf(category.id);
-      if (index > -1) {
-        // Category is enabled, show in primary color
-        return "btn-tag-primary"
-      } else {
-        // Category not enabled, show in default color
-        return "btn-tag-default"
-      }
-    }
-  };
-
-  $scope.clearSelectedCategories = function() {
-    $scope.currentCategories = [];
-  };
 
     // ======= Site Settings
 	$scope.toggleSettingsBox = function() {
@@ -223,25 +136,6 @@ angular.module("app.ctrls", [])
 	};
 
 
-}])
-
-
-
-/// ==== Dashboard Controller
-.controller("DashboardCtrl", ["$scope", "svcData", function($scope, svcData) {
-
-  $scope.currentSorting = 'Popular';
-  $scope.currentPricing = 'All';
-
-    console.log(svcData);
-    console.log(svcData.beans);
-
-
-  $scope.availableAPIs = [{ name: "Petstore", logoUrl: "images/yeoman.png", owner: "Swagger Team", ownerLogoUrl: "images/admin.jpg", pricing: "Free", users: 3234, followers: 232, uptimePercent: 100, description: 'Petstore swagger test API', tags: [1,4]},
-    { name: "WeatherAPI", logoUrl: "images/yeoman.png", owner: "KMI", ownerLogoUrl: "images/sample/1.jpg", pricing: "Paid", users: 496, followers: 128, uptimePercent: 96, description: 'Returns weather forecasts for requested zip code', tags: [0,2]},
-    { name: "Test API 1", logoUrl: "images/yeoman.png", owner: "Trust1Team", ownerLogoUrl: "images/sample/2.jpg", pricing: "Freemium", users: 3234, followers: 232, uptimePercent: 50, description: 'Test Description', tags: [0,2]},
-    { name: "Google Experimental API with very long name", logoUrl: "images/yeoman.png", owner: "Google",  ownerLogoUrl: "images/sample/3.jpg", pricing: "FREE", users: 22, followers: 8, uptimePercent: 5, description: 'Google API', tags: [0,2]},
-    { name: "Facebook Profile API", logoUrl: "images/yeoman.png", owner: "Facebook", ownerLogoUrl: "images/sample/4.jpg", pricing: "Freemium", users: 119320, followers: 9999, uptimePercent: 88, description: 'Test Description', tags: [0,2]}];
 }]);
 
 // #end

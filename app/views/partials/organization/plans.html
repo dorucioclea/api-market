@@ -1,31 +1,49 @@
-<div class="row" ng-controller="PlansCtrl">
-  <!-- Plans Tab Content -->
-  <div class="col-sm-12">
-    <input id="plans-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by plan name...">
-    <button id="plans-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-    <hr>
-  </div>
-  <!-- The list of plans in this organization -->
-  <div class="col-sm-12" ng-hide="plans.length > 0">
-    <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 well">
-        There aren't any plans configured for this organization. That means all published services in this organization must be public.
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <!-- Plans Tab Content -->
+      <div class="col-sm-12">
+        <input id="plans-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by plan name...">
+        <button id="plans-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
+        <a class="btn btn-primary pull-right" ng-click="modalNewPlan()" ng-show="publisherMode">New Plan</a>
+        <hr>
       </div>
-    </div>
-  </div>
-
-  <div class="col-sm-12" ng-show="plans.length > 0 && filteredPlans.length == 0">
-    <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 well">
-        No plans found matching your filter criteria - please try searching for something different.
+      <!-- The list of plans in this organization -->
+      <div class="col-sm-12" ng-hide="plans.length > 0">
+        <div class="row" ng-hide="publisherMode">
+          <div class="col-sm-10 col-sm-offset-1 well">
+            There aren't any plans configured for this organization. That means all published services in this organization must be public.
+          </div>
+        </div>
+        <div class="row" ng-show="publisherMode">
+          <div class="col-sm-8 col-sm-offset-1 well">
+            There aren't any plans configured for this organization. That means all published services in this organization must be public.
+          </div>
+          <div class="col-sm-3">
+            <div class="no-entities-arrow"></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="col-sm-12">
-    <div class="col-sm-12" ng-repeat="plan in plans">
-      <span class="title"><a>{{plan.name}}</a></span>
-      <hr>
+      <div class="col-sm-12" ng-show="plans.length > 0 && filteredPlans.length == 0">
+        <div class="row">
+          <div class="col-sm-10 col-sm-offset-1 well">
+            No plans found matching your filter criteria - please try searching for something different.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12" ng-repeat="plan in plans">
+        <div class="col-sm-12">
+          <span><a href ng-click="goToPlan(plan)">{{plan.name }}</a></span>
+        </div>
+        <div class="col-sm-12">
+          <span class="text-light">{{ plan.description }}</span>
+        </div>
+        <div class="col-sm-12">
+          <hr>
+        </div>
+      </div>
     </div>
   </div>
 </div>

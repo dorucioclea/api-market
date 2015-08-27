@@ -1,4 +1,4 @@
-<div class="row" ng-controller="ApisCtrl">
+<div class="row">
   <div class="col-sm-12">
     <h4>Application APIs</h4>
     <p>Below is a list of all the APIs this application consumes. This information is derived from the set of Service Contracts the Application has entered into.</p>
@@ -23,27 +23,27 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': apiExpanded, 'fa-chevron-right': !apiExpanded}" ng-click="toggle()"></i></td>
-        <td>Test</td>
-        <td>v1</td>
-        <td>Test Plan</td>
-      </tr>
-      <tr ng-show="apiExpanded">
-        <td colspan="4">
-          <form role="form">
-            <div class="form-group">
-              <label>API Key</label>
-              <input readonly type="text" class="form-control" value="ed25b864-ec24-4061-8410-3db6d3c0eab2">
-            </div>
-            <div class="form-group">
-              <div>
-                <button title="Click for details on how to invoke this managed service." data-field="detailsButton" class="btn btn-default" ng-click="howToInvoke(api)">How to invoke...</button>
+        <tr ng-repeat="contract in contracts">
+          <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': apiExpanded, 'fa-chevron-right': !apiExpanded}" ng-click="toggle()"></i></td>
+          <td>{{contract.serviceName}}</td>
+          <td>{{contract.serviceVersion}}</td>
+          <td>{{contract.planName}}</td>
+        </tr>
+        <tr ng-show="apiExpanded" ng-repeat="contract in contracts">
+          <td colspan="4">
+            <form role="form">
+              <div class="form-group">
+                <label>API Key</label>
+                <input readonly type="text" class="form-control" value="{{contract.apikey}}">
               </div>
-            </div>
-          </form>
-        </td>
-      </tr>
+              <div class="form-group">
+                <div>
+                  <button title="Click for details on how to invoke this managed service." data-field="detailsButton" class="btn btn-default" ng-click="howToInvoke(api)">How to invoke...</button>
+                </div>
+              </div>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

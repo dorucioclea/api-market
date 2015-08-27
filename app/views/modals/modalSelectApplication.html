@@ -1,0 +1,48 @@
+<div class="page">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">Select Application</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Application Create panel -->
+  <div class="modal-body">
+    <div class="col-sm-12">
+      <p><span class="text-light">Select the application you want to subscribe to </span><span class="text-primary">{{service.name}}</span><span class="text-light"> - </span><span class="text-primary">v1</span></p>
+      <hr>
+    </div>
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-6 col-md-offset-3">
+          <label class="control-label text-primary">Organization</label>
+          <select class="form-control" name="orgSelect" id="orgSelect"
+                  ng-options="organization as organization.name for organization in organizations track by organization.id"
+                  ng-model="ctrl.selectedOrg" ng-change="getOrgApps(ctrl.selectedOrg)"></select>
+          <p class="text-primary text-right xsmall" ng-show="!orgSelected">first select the organization</p>
+        </div>
+        </div>
+      <div class="form-group">
+        <div class="col-md-6 col-md-offset-3">
+          <label class="control-label text-primary">Application</label>
+              <select class="form-control" name="appSelect" id="appSelect"
+                      ng-options="application as application.name for application in applications track by application.id"
+                      ng-model="ctrl.selectedApp" ng-change="getAppVersions(ctrl.selectedApp)"></select>
+          <p class="text-primary text-right xsmall" ng-show="orgSelected && !appSelected">select the application you want to create a contract for</p>
+        </div>
+        </div>
+      <div class="form-group">
+        <div class="col-md-4 col-md-offset-4">
+          <label class="control-label text-primary">Application Version</label>
+          <select class="form-control" name="versionSelect" id="versionSelect"
+                  ng-options="version as version.version for version in versions track by version.version"
+                  ng-model="ctrl.selectedAppVersion" data-ng-change="versionIsSelected()"></select>
+          <p class="text-primary text-right xsmall" ng-show="orgSelected && appSelected && !versionSelected">select the application version</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="startCreateContract(ctrl.selectedAppVersion)">OK</button>
+  </div>
+
+</div>

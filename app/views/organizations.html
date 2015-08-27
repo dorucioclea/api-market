@@ -11,12 +11,14 @@
             <p class="text-light">Use this page to find Organizations you may wish to join.</p>
           </div>
           <div class="col-sm-6 ">
+            <form ng-submit="doSearch(searchString)">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="searchString" placeholder="Enter a word or phrase to search by...">
               <div class="input-group-btn">
                 <button class="btn btn-default ion ion-search" ng-click="doSearch(searchString)"></button>
               </div>
             </div>
+            </form>
           </div>
           <div class="col-sm-12">
             <hr>
@@ -41,7 +43,7 @@
                 <div class="organization-item" ng-repeat="org in orgs">
                   <div class="text-primary">
                     <i class="fa fa-shield icon"></i>
-                    <a class="ng-binding" ui-sref="organization({orgId: org.id})">{{org.name}}</a>
+                    <a class="ng-binding" ui-sref="organization.plans({orgId: org.id})">{{org.name}}</a>
                   </div>
                   <div class="text-light text-nowrap text-ellipsis">
                     {{org.description}}

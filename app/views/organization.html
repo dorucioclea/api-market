@@ -6,14 +6,14 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">{{$storage.selectedOrg.name}}</h4>
+            <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
             <hr>
           </div>
           <div class="col-sm-12">
             <div class="col-sm-12 text-light">
               <i class="fa fa-clock-o fa-fw"></i>
               <span>Created on</span>
-              <span data-field="createdOn">{{$storage.selectedOrg.createdOn | date}}</span>
+              <span data-field="createdOn">{{org.createdOn | date}}</span>
             </div>
           </div>
           <div class="col-sm-12 text-light">
@@ -29,7 +29,7 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-              <textarea rows="2" class="form-control resize-v" ng-model="$storage.selectedOrg.description">{{$storage.selectedOrg.description}}</textarea>
+              <textarea rows="2" class="form-control resize-v" ng-model="org.description">{{org.description}}</textarea>
             </div>
             <button class="btn btn-default mt30" ng-click="updateOrgDescription()">Save</button>
           </div>
@@ -39,20 +39,14 @@
 
     <!-- Organization Actions panels -->
     <div class="col-md-6 mb20" ng-init="activeTab = 1">
-      <tabset ng-class="xs ? 'tabs-vertical' : 'tabs-flip'">
-        <tab heading="Plans" active="isTabActive(1)" ng-click="switchTab(1)">
-          <ng-include src="'views/partials/organization/plans.html'"></ng-include>
-        </tab>
-        <tab heading="Services" active="isTabActive(2)" ng-click="switchTab(2)">
-          <ng-include src="'views/partials/organization/services.html'"></ng-include>
-        </tab>
-        <tab heading="Applications" active="isTabActive(3)" ng-click="switchTab(3)">
-          <ng-include src="'views/partials/organization/applications.html'"></ng-include>
-        </tab>
-        <tab heading="Members" active="isTabActive(4)" ng-click="switchTab(4)">
-          <ng-include src="'views/partials/organization/members.html'"></ng-include>
-        </tab>
-      </tabset>
+      <div class="btn-group btn-radio">
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" ui-sref=".services">Services</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Applications'" ui-sref=".applications">Applications</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Members'" ui-sref=".members">Members</label>
+      </div>
+      <div class="col-sm-12 mt10" ui-view></div>
+
     </div>
 
   </div>
