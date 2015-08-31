@@ -3,19 +3,17 @@
     <div class="col-sm-10 col-sm-offset-1">
       <div class="panel panel-primary">
         <div class="panel-body">
-          <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}"
-                           current-version="{{applicationVersion.version}}" versions="versions"
+          <overview-header name="{{serviceVersion.service.name}}" description="{{serviceVersion.service.description}}"
+                           icon="bar-chart-o" current-version="{{serviceVersion.version}}" versions="versions"
                            select-version="" new-version="modalNewVersion()"></overview-header>
           <div class="row">
             <div class="col-md-7">
-              <overview-status created-by="{{applicationVersion.createdBy}}" created-on="{{applicationVersion.createdOn}}" status="{{applicationVersion.status}}"></overview-status>
+              <overview-status created-by="{{serviceVersion.createdBy}}" created-on="{{serviceVersion.createdOn}}" status="{{serviceVersion.status}}"></overview-status>
             </div>
             <div class="col-md-5">
-              <!-- Application Actions -->
+              <!-- The Lock Action -->
               <div class="pull-right">
-                <button class="btn btn-primary btn-sm">Register</button>
-                <button class="btn btn-warning btn-sm">Regenerate Keys</button>
-                <button class="btn btn-danger btn-sm">Delete Application</button>
+                <button class="btn btn-primary btn-sm">Publish</button>
               </div>
             </div>
           </div>
@@ -23,19 +21,22 @@
       </div>
 
       <div class="panel">
-        <div class="panel-body">
+        <div class="panel-body ">
           <div class="btn-group btn-radio">
             <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition">Definition</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
             <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
           </div>
+
           <div class="mt10 panel panel-default">
             <div class="panel-body" ui-view>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

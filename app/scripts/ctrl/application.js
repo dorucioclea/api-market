@@ -6,27 +6,29 @@
 
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "$stateParams", "appData", "appTab",
-  function ($scope, $stateParams, appData, appTab) {
+.controller("ApplicationCtrl", ["$scope", "$stateParams", "appData", "appVersions", "appScreenModel",
+  function ($scope, $stateParams, appData, appVersions, appScreenModel) {
 
-    $scope.application = appData;
-    $scope.displayTab = appTab;
+    $scope.applicationVersion = appData;
+    appScreenModel.updateApplication(appData);
+    $scope.versions = appVersions;
+    $scope.displayTab = appScreenModel;
 
   }])
 
   // +++ Application Screen Subcontrollers +++
   /// ==== Activity Controller
-  .controller("ActivityCtrl", ["$scope", "activityData", "appTab", function ($scope, activityData, appTab) {
+  .controller("ActivityCtrl", ["$scope", "activityData", "appScreenModel", function ($scope, activityData, appScreenModel) {
 
     $scope.activities = activityData.beans;
-    appTab.updateTab('Activity');
+    appScreenModel.updateTab('Activity');
 
   }])
   /// ==== APIs Controller
-  .controller("ApisCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
+  .controller("ApisCtrl", ["$scope", "contractData", "appScreenModel", function ($scope, contractData, appScreenModel) {
 
     $scope.contracts = contractData;
-    appTab.updateTab('APIs');
+    appScreenModel.updateTab('APIs');
 
     $scope.toggle = function () {
       $scope.apiExpanded = !$scope.apiExpanded;
@@ -34,17 +36,17 @@
 
   }])
   /// ==== Contracts Controller
-  .controller("ContractsCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
+  .controller("ContractsCtrl", ["$scope", "contractData", "appScreenModel", function ($scope, contractData, appScreenModel) {
 
     $scope.contracts = contractData;
-    appTab.updateTab('Contracts');
+    appScreenModel.updateTab('Contracts');
 
   }])
 
   /// ==== Overview Controller
-  .controller("OverviewCtrl", ["$scope", "appTab", function ($scope, appTab) {
+  .controller("OverviewCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
 
-    appTab.updateTab('Overview');
+    appScreenModel.updateTab('Overview');
 
   }]);
 

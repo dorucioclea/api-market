@@ -5,11 +5,32 @@
   angular.module("app.ctrl.modals", [])
 
 
-  /// ==== AddPolicy Controller
+    /// ==== AddPolicy Controller
     .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy",
       function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
+        var testdef =   {
+          id: "RenderTest",
+          policyImpl: "string",
+          name: "JSON Rendering Test",
+          description: "Testing the rendering of an imported schema",
+          icon: "cloud",
+          formType: "JsonSchema",
+          pluginId: 0
+        };
+        var testdef2 =   {
+          id: "JSONTest",
+          policyImpl: "string",
+          name: "Render Test - second edition",
+          description: "Testing the rendering of an imported schema",
+          icon: "fire",
+          formType: "JsonSchema",
+          pluginId: 4
+        };
+        $scope.policyDefs.push(testdef);
+        $scope.policyDefs.push(testdef2);
+        console.log(policyDefs);
         $scope.valid = false;
 
         var ConfigForms = {
@@ -42,7 +63,6 @@
         };
 
         $scope.addPolicy = function() {
-          console.log(angular.toJson($scope.config));
           var newPolicy = {
             definitionId: $scope.selectedPolicy.id,
             configuration: angular.toJson($scope.config)
@@ -61,12 +81,12 @@
             $scope.selectedPolicy = policy;
             $scope.config = {};
             if ($scope.selectedPolicy.formType == 'JsonSchema') {
-              //Not supported yet!
-              $scope.include = undefined;
+              //All plugins should fall into this category!
+              $scope.include = 'views/modals/partials/policy/json-schema.html';
             } else {
               var inc = ConfigForms[$scope.selectedPolicy.id];
               if (!inc) {
-                inc = 'Default.include';
+                inc = 'Default.html';
               }
               $scope.include = 'views/modals/partials/policy/' + inc;
             }
@@ -159,11 +179,22 @@
 
       }])
 
-    /// ==== NewPlanVersion Controller
-    .controller("NewPlanVersionCtrl", ["$scope", "$state", "$stateParams", "planScreenModel", "PlanVersion",
-      function ($scope, $state, $stateParams, planScreenModel, PlanVersion) {
+  /// ==== NewVersion Controller
+    .controller("NewVersionCtrl",
+    ["$scope", "$state", "$stateParams", "appScreenModel", "planScreenModel", "svcScreenModel", "ApplicationVersion", "PlanVersion", "ServiceVersion",
+      function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, ApplicationVersion, PlanVersion, ServiceVersion) {
+        var type = {};
 
-        $scope.currentVersion = planScreenModel.plan.version;
+        if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'Plan';
+          $scope.currentVersion = planScreenModel.plan.version;
+        } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'Application';
+          $scope.currentVersion = appScreenModel.application.version;
+        } else {
+          type = 'Service';
+          $scope.currentVersion = svcScreenModel.service.version;
+        }
 
         $scope.newVersion = '';
         $scope.shouldClone = true;
@@ -174,10 +205,27 @@
             clone: $scope.shouldClone,
             cloneVersion: $scope.currentVersion
           };
-          PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
-            $scope.modalClose();
-            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
-          });
+
+          switch (type) {
+            case 'Application':
+              ApplicationVersion.save({ orgId: $stateParams.orgId, appId: $stateParams.appId }, newVersion, function (newAppVersion) {
+                $scope.modalClose();
+                $state.go('application.overview', {orgId: $stateParams.orgId, appId: newAppVersion.application.id, versionId: newAppVersion.version});
+              });
+              break;
+            case 'Plan':
+              PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
+                $scope.modalClose();
+                $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
+              });
+              break;
+            case 'Service':
+              ServiceVersion.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId }, newVersion, function (newSvcVersion) {
+                $scope.modalClose();
+                $state.go('service.overview', {orgId: $stateParams.orgId, svcId: newSvcVersion.service.id, versionId: newSvcVersion.version});
+              });
+              break;
+          }
         };
 
         $scope.modalClose = function() {

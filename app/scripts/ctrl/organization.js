@@ -94,13 +94,21 @@ angular.module("app.ctrl.organization", [])
   }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "$modal", "svcData", "orgScreenModel", function ($scope, $modal, svcData, orgScreenModel) {
+  .controller("ServicesCtrl", ["$scope", "$state", "$modal", "svcData", "orgScreenModel", "ServiceVersion",
+    function ($scope, $state, $modal, svcData, orgScreenModel, ServiceVersion) {
 
     $scope.services = svcData;
     orgScreenModel.updateTab('Services');
 
 
     $scope.modalAnim = "default";
+
+    $scope.goToSvc = function (svc) {
+      console.log("Clicked: " + svc);
+      ServiceVersion.query({orgId: svc.organizationId, svcId: svc.id}, function (versions) {
+        $state.go('service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version})
+      })
+    };
 
     $scope.modalNewService = function() {
       $modal.open({
@@ -117,14 +125,20 @@ angular.module("app.ctrl.organization", [])
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$modal", "appData", "orgScreenModel",
-    function ($scope, $modal, appData, orgScreenModel) {
+  .controller("ApplicationsCtrl", ["$scope", "$state", "$modal", "appData", "orgScreenModel", "ApplicationVersion",
+    function ($scope, $state, $modal, appData, orgScreenModel, ApplicationVersion) {
 
       $scope.applications = appData;
       orgScreenModel.updateTab('Applications');
 
 
       $scope.modalAnim = "default";
+
+      $scope.goToApp = function (app) {
+        ApplicationVersion.query({orgId: app.organizationId, appId: app.id}, function (versions) {
+          $state.go('application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version})
+        })
+      };
 
       $scope.modalNewApplication = function() {
         $modal.open({

@@ -36,7 +36,7 @@
 
       <div class="col-sm-12" ng-repeat="service in services">
         <div class="col-sm-12">
-          <span class="title"><a>{{service.name}}</a></span>
+          <span class="title"><a href ng-click="goToSvc(service)">{{service.name}}</a></span>
           <a class="apiman-summaryrow-icon pull-right">
             <i class="fa fa-clock-o fa-fw"></i>
             <span class="title-summary-item">Created on</span>

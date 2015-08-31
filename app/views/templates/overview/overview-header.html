@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-sm-6 text-primary">
+    <h4><i class="fa fa-{{icon}}"></i>
+      {{name}}
+    </h4>
+  </div>
+  <div class="col-sm-6">
+    <div class="pull-right">
+      <div class="btn-group dropdown" dropdown>
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+          Version: {{currentVersion}}<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion({version: version})"><a>{{version.version}}</a></li>
+        </ul>
+      </div>
+      <button class="btn btn-primary btn-sm" ng-click="newVersion()">New Version</button>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <p>{{description}}</p>
+    <hr>
+  </div>
+</div>

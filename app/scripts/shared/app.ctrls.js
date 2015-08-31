@@ -5,7 +5,7 @@
 angular.module("app.ctrls", [])
 
 // Root Controller
-.controller("AppCtrl", ["$rootScope", "$scope", "$timeout", function($rs, $scope, $timeout) {
+.controller("AppCtrl", ["$rootScope", "$scope", "$modal", "$timeout", function($rs, $scope, $modal, $timeout) {
 	var mm = window.matchMedia("(max-width: 767px)");
 
 	$rs.isMobile = mm.matches ? true: false;
@@ -118,7 +118,16 @@ angular.module("app.ctrls", [])
 	};
 
 
+    $scope.modalNewVersion = function() {
+      $modal.open({
+        templateUrl: "/views/modals/modalNewVersion.html",
+        size: "lg",
+        controller: "NewVersionCtrl as ctrl",
+        resolve: function() {},
+        windowClass: $scope.modalAnim	// Animation Class put here.
+      });
 
+    };
 }])
 
 

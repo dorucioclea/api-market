@@ -16,17 +16,6 @@
 
         $scope.locked = $scope.planVersion.status === 'Locked';
 
-        $scope.modalNewVersion = function() {
-          $modal.open({
-            templateUrl: "views/modals/modalNewPlanVersion.html",
-            size: "lg",
-            controller: "NewPlanVersionCtrl as ctrl",
-            resolve: function() {},
-            windowClass: $scope.modalAnim	// Animation Class put here.
-          });
-
-        };
-
         $scope.lockPlan = function () {
           var lockAction = {
             type: 'lockPlan',

@@ -153,6 +153,35 @@
       };
     })
 
+    .directive('overviewHeader', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          name: "@",
+          description: "@",
+          icon: "@",
+          currentVersion: "@",
+          versions: "=",
+          selectVersion: "&",
+          newVersion: "&"
+        },
+        bindToController: true,
+        templateUrl: '/views/templates/overview/overview-header.html'
+      }
+    })
+
+    .directive('overviewStatus', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          createdOn: "@",
+          createdBy: "@",
+          status: "@"
+        },
+        templateUrl: '/views/templates/overview/overview-status.html'
+      }
+    })
+
     .directive('policyList', function () {
       return {
         restrict: 'E',
@@ -170,7 +199,6 @@
             containerPositioning: 'relative',
 
             orderChanged: function(event) {
-              Logger.debug("Reordered as: {0}", $scope.ctrl.policies);
               $scope.ctrl.reorder($scope.ctrl.policies);
             }
           };

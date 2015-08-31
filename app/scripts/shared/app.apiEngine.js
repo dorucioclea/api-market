@@ -71,8 +71,17 @@
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
     }])
+    .factory('ServiceActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');
+    }])
     .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId');
+    }])
+    .factory('ServiceVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+    }])
+    .factory('ServiceVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');
     }])
     .factory('ServiceEndpoint', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');

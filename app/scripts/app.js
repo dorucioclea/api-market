@@ -28,6 +28,7 @@
     "app.apiEngine",
     "app.ctrl.dashboard",
     "app.ctrl.modals",
+    "app.ctrl.api",
     "app.ctrl.service",
     "app.ctrl.application",
     "app.ctrl.organization",
@@ -65,9 +66,10 @@
     .config(function($stateProvider, $urlRouterProvider) {
 
       $urlRouterProvider.otherwise('/home/grid');
+      $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
       $urlRouterProvider.when('/org/{orgId}/application/{appId}', '/org/{orgId}/application/{appId}/overview');
-      $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/documentation');
+      $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/overview');
       $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', '/org/{orgId}/plan/{planId}/{versionId}/overview');
 
 
@@ -102,9 +104,9 @@
           templateUrl: 'views/templates/apilist.html'
         })
 
-        // API DETAILS PAGE AND NESTED VIEWS ==============================================
-        .state('service', {
-          url: '/org/:orgId/service/:svcId/:versionId',
+        // API MARKETPLACE PAGE AND NESTED VIEWS ==============================================
+        .state('api', {
+          url: '/org/:orgId/api/:svcId/:versionId',
           templateUrl: 'views/api.html',
           resolve: {
             ServiceVersion: 'ServiceVersion',
@@ -129,13 +131,13 @@
           controller: 'ApiDocCtrl'
         })
         // Announcements Tab
-        .state('service.announcements', {
+        .state('api.announcements', {
           url: '/announcements',
           templateUrl: 'views/partials/api/announcements.html',
           controller: 'AnnouncementCtrl'
         })
         // Documentation Tab
-        .state('service.documentation', {
+        .state('api.documentation', {
           url: '/documentation',
           templateUrl: 'views/partials/api/documentation.html',
           resolve: {
@@ -147,19 +149,19 @@
           controller: 'DocumentationCtrl'
         })
         // Plans Tab
-        .state('service.plans', {
+        .state('api.plans', {
           url: '/plans',
           templateUrl: 'views/partials/api/plans.html',
           controller: 'SvcPlanCtrl'
         })
         // Support Tab
-        .state('service.support', {
+        .state('api.support', {
           url: '/support',
           templateUrl: 'views/partials/api/support.html',
           controller: 'SupportCtrl'
         })
         // Terms Tab
-        .state('service.terms', {
+        .state('api.terms', {
           url: '/terms',
           templateUrl: 'views/partials/api/terms.html',
           controller: 'TermsCtrl'
@@ -341,22 +343,24 @@
         // APPLICATION OVERVIEW PAGE AND NESTED VIEWS =====================================
         .state('application', {
           abstract: true,
-          url: '/org/:orgId/application/:appId',
+          url: '/org/:orgId/application/:appId/:versionId',
           templateUrl: 'views/application.html',
           resolve: {
-            Application: 'Application',
-            appData: function(Application, $stateParams){
-
-              var orgId = $stateParams.orgId;
-              var appId = $stateParams.appId;
-
-              return Application.get({orgId: orgId, appId: appId}).$promise;
+            ApplicationVersion: 'ApplicationVersion',
+            appData: function(ApplicationVersion, organizationId, applicationId, versionId){
+              return ApplicationVersion.get({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
+            },
+            appVersions: function (ApplicationVersion, organizationId, applicationId) {
+              return ApplicationVersion.query({orgId: organizationId, appId: applicationId}).$promise;
             },
             organizationId: ['$stateParams', function ($stateParams) {
               return $stateParams.orgId;
             }],
             applicationId: ['$stateParams', function ($stateParams) {
               return $stateParams.appId;
+            }],
+            versionId: ['$stateParams', function ($stateParams) {
+              return $stateParams.versionId;
             }]
           },
           controller: 'ApplicationCtrl'
@@ -373,9 +377,9 @@
           templateUrl: 'views/partials/application/contracts.html',
           resolve: {
             ApplicationContract: 'ApplicationContract',
-            contractData: function (ApplicationContract, organizationId, applicationId) {
+            contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
               //TODO make version dynamic!
-              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: 'v1'}).$promise;
+              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
             }
           },
           controller: 'ContractsCtrl'
@@ -386,9 +390,9 @@
           templateUrl: 'views/partials/application/apis.html',
           resolve: {
             ApplicationContract: 'ApplicationContract',
-            contractData: function (ApplicationContract, organizationId, applicationId) {
+            contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
               //TODO make version dynamic!
-              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: 'v1'}).$promise;
+              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
             }
           },
           controller: 'ApisCtrl'
@@ -404,6 +408,73 @@
             }
           },
           controller: 'ActivityCtrl'
+        })
+
+        // SERVICE OVERVIEW PAGE AND NESTED VIEWS ====================================
+        .state('service', {
+          url: '/org/:orgId/service/:svcId/:versionId',
+          templateUrl: 'views/service.html',
+          resolve: {
+            ServiceVersion: 'ServiceVersion',
+            svcData: function(ServiceVersion, organizationId, serviceId, versionId){
+              return ServiceVersion.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            },
+            svcVersions: function (ServiceVersion, organizationId, serviceId) {
+              return ServiceVersion.query({orgId: organizationId, svcId: serviceId}).$promise;
+            },
+            organizationId: ['$stateParams', function ($stateParams) {
+              return $stateParams.orgId;
+            }],
+            serviceId: ['$stateParams', function ($stateParams) {
+              return $stateParams.svcId;
+            }],
+            versionId: ['$stateParams', function ($stateParams) {
+              return $stateParams.versionId;
+            }]
+          },
+          controller: 'ServiceCtrl'
+        })
+        // Overview Tab
+        .state('service.overview', {
+          url: '/overview',
+          templateUrl: 'views/partials/service/overview.html',
+          controller: 'ServiceOverviewCtrl'
+        })
+        // Definition Tab
+        .state('service.definition', {
+          url: '/definition',
+          templateUrl: 'views/partials/service/definition.html',
+          controller: 'ServiceDefinitionCtrl'
+        })
+        // Plans Tab
+        .state('service.plans', {
+          url: '/plans',
+          templateUrl: 'views/partials/service/plans.html',
+          controller: 'ServicePlansCtrl'
+        })
+        // Policies Tab
+        .state('service.policies', {
+          url: '/policies',
+          templateUrl: 'views/partials/service/policies.html',
+          resolve: {
+            ServiceVersionPolicy: 'ServiceVersionPolicy',
+            policyData: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
+              return ServiceVersionPolicy.query({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            }
+          },
+          controller: 'ServicePoliciesCtrl'
+        })
+        // Activity Tab
+        .state('service.activity', {
+          url: '/activity',
+          templateUrl: 'views/partials/service/activity.html',
+          resolve: {
+            ServiceActivity: 'ServiceActivity',
+            activityData: function (ServiceActivity, organizationId, serviceId) {
+              return ServiceActivity.get({orgId: organizationId, svcId: serviceId}).$promise;
+            }
+          },
+          controller: 'ServiceActivityCtrl'
         })
 
         // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================
