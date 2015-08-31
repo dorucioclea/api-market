@@ -28,6 +28,35 @@
       svcScreenModel.updateTab('Activity');
 
     }])
+
+    /// ==== Definition Controller
+    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "definitionData", "ServiceVersionDefinition", "svcScreenModel",
+      function ($scope, $state, $stateParams, definitionData, ServiceVersionDefintion, svcScreenModel) {
+
+        $scope.currentDefinition = definitionData;
+        svcScreenModel.updateTab('Definition');
+
+        if (angular.isDefined($scope.currentDefinition)) {
+          $scope.currentDefinitionJSON = angular.toJson($scope.currentDefinition, true);
+          $scope.updatedDefinition = $scope.currentDefinitionJSON;
+        }
+
+        $scope.reset = function () {
+          $scope.updatedDefinition = $scope.currentDefinitionJSON;
+        };
+
+        $scope.saveDefinition = function () {
+          ServiceVersionDefintion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
+            $state.forceReload();
+          });
+        };
+
+        $scope.$watch('updatedDefinition', function(def) {
+          $scope.changed = def !== $scope.currentDefinitionJSON;
+          $scope.invalid = !(def.length > 0 && def !== $scope.currentDefinitionJSON);
+        }, true);
+
+      }])
     /// ==== Policies Controller
     .controller("ServicePoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "svcScreenModel", "ServiceVersionPolicy", "PolicyDefs",
       function ($scope, $modal, $stateParams, policyData, svcScreenModel, ServiceVersionPolicy, PolicyDefs) {

@@ -1,1 +1,22 @@
-Definition Tab
+<div class="row">
+  <div class="col-sm-12">
+    <h4>Service Definition</h4>
+    <p>
+      Here you can provide definition information about your service.  This
+      information should take the form of a Swagger service definition file.  Adding a
+      definition file will allow consumers to better understand how to use your API.
+      Simply copy/paste your Swagger API definition into the text
+      area below.
+    </p>
+    <hr>
+  </div>
+
+  <div class="col-sm-12">
+    <textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control"></textarea>
+    <div class="mt20" >
+      <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
+      <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
+    </div>
+  </div>
+
+</div>

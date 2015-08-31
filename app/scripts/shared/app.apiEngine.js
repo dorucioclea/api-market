@@ -77,6 +77,13 @@
     .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId');
     }])
+    .factory('ServiceVersionDefinition', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/definition', {}, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
     .factory('ServiceVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
     }])

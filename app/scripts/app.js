@@ -378,7 +378,6 @@
           resolve: {
             ApplicationContract: 'ApplicationContract',
             contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-              //TODO make version dynamic!
               return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
             }
           },
@@ -391,7 +390,6 @@
           resolve: {
             ApplicationContract: 'ApplicationContract',
             contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-              //TODO make version dynamic!
               return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
             }
           },
@@ -444,6 +442,12 @@
         .state('service.definition', {
           url: '/definition',
           templateUrl: 'views/partials/service/definition.html',
+          resolve: {
+            ServiceVersionDefinition: 'ServiceVersionDefinition',
+            definitionData: function(ServiceVersionDefinition, organizationId, serviceId, versionId) {
+              return ServiceVersionDefinition.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            }
+          },
           controller: 'ServiceDefinitionCtrl'
         })
         // Plans Tab
