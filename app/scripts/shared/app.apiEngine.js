@@ -132,7 +132,7 @@
   /// ========== POLICYDEFS =======================================================================
 
     .factory('PolicyDefs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/policyDefs');
+      return $resource(EngineUrl + '/policyDefs/:policyId');
     }])
 
   /// ========== SEARCH ===========================================================================

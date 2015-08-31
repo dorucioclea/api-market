@@ -10,27 +10,6 @@
       function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
-        var testdef =   {
-          id: "RenderTest",
-          policyImpl: "string",
-          name: "JSON Rendering Test",
-          description: "Testing the rendering of an imported schema",
-          icon: "cloud",
-          formType: "JsonSchema",
-          pluginId: 0
-        };
-        var testdef2 =   {
-          id: "JSONTest",
-          policyImpl: "string",
-          name: "Render Test - second edition",
-          description: "Testing the rendering of an imported schema",
-          icon: "fire",
-          formType: "JsonSchema",
-          pluginId: 4
-        };
-        $scope.policyDefs.push(testdef);
-        $scope.policyDefs.push(testdef2);
-        console.log(policyDefs);
         $scope.valid = false;
 
         var ConfigForms = {
@@ -91,7 +70,7 @@
               $scope.include = 'views/modals/partials/policy/' + inc;
             }
           }
-        }
+        };
 
       }])
 

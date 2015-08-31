@@ -23,7 +23,7 @@
     }])
 
 
-    .controller("JsonSchemaPolicyConfigFormController", ['$scope', function ($scope) {
+    .controller("JsonSchemaPolicyConfigFormController", ['$scope', 'PolicyDefs', function ($scope, PolicyDefs) {
 
       // Watch for changes to selectedDef - if the user changes from one schema-based policy
       // to another schema-based policy, then the controller won't change.  The result is that
@@ -31,30 +31,18 @@
       $scope.$watch('selectedPolicy', function(newValue) {
         if (newValue && newValue.formType == 'JsonSchema') {
           console.log('switched to JsonSchema policyDef');
-
-          //TODO
+          $scope.loadForm($scope.selectedPolicy);
         }
       });
 
+      $scope.loadForm = function (policy) {
+        PolicyDefs.get({policyId: policy.id}, function (policyData) {
+          $scope.schema = {};
+          $scope.config = {};
+          $scope.schema = angular.fromJson(policyData.form);
+        })
+      };
 
-      $scope.schema = {
-        type: "object",
-        title: "Key Authentication",
-        properties: {
-          key_names: {
-            title: "Key name",
-            type: "string",
-            default: "apikey",
-            description:"Describes an array of comma separated parameter names where the plugin will look for a valid credential. The client must send the authentication key in one of those key names, and the plugin will try to read the credential from a header, the querystring, a form parameter (in this order)."
-          },
-          hide_credentials: {
-            title: "Hide credentials",
-            description:"An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by the gateway before proxying the request.",
-            type: "boolean",
-            default: false
-          }
-        },
-        required: ["key_names"]};
       $scope.form = [ "*" ];
 
       $scope.$watch('config', function(){
