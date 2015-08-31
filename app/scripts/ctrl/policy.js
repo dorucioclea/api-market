@@ -36,10 +36,11 @@
       });
 
       $scope.loadForm = function (policy) {
+        $scope.setValid(false);
         PolicyDefs.get({policyId: policy.id}, function (policyData) {
-          $scope.schema = {};
-          $scope.config = {};
           $scope.schema = angular.fromJson(policyData.form);
+          $scope.$broadcast('schemaFormValidate');
+          $scope.policyForm.$valid ? $scope.setValid(true) : $scope.setValid(false);
         })
       };
 

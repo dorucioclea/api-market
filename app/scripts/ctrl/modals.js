@@ -44,12 +44,13 @@
         $scope.addPolicy = function() {
           var newPolicy = {
             definitionId: $scope.selectedPolicy.id,
-            configuration: angular.toJson($scope.config)
+            configuration: $scope.getConfig()
           };
-          PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
-            $scope.modalClose();
-            $scope.forceReload();
-          });
+          console.log(newPolicy);
+          //PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+          //  $scope.modalClose();
+          //  $scope.forceReload();
+          //});
         };
 
 
