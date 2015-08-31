@@ -1,42 +1,18 @@
-<div class="page">
-  <div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <overview-header name="{{serviceVersion.service.name}}" description="{{serviceVersion.service.description}}"
-                           icon="bar-chart-o" current-version="{{serviceVersion.version}}" versions="versions"
-                           select-version="" new-version="modalNewVersion()"></overview-header>
-          <div class="row">
-            <div class="col-md-7">
-              <overview-status created-by="{{serviceVersion.createdBy}}" created-on="{{serviceVersion.createdOn}}" status="{{serviceVersion.status}}"></overview-status>
-            </div>
-            <div class="col-md-5">
-              <!-- The Lock Action -->
-              <div class="pull-right">
-                <button class="btn btn-primary btn-sm">Publish</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<overview>
+  <overview-header name="{{serviceVersion.service.name}}" icon="puzzle-piece" description="{{serviceVersion.service.description}}"
+                   entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
 
-      <div class="panel">
-        <div class="panel-body ">
-          <div class="btn-group btn-radio">
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition">Definition</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-          </div>
+    <!-- Entity Buttons -->
+    <button class="btn btn-primary btn-sm">Publish</button>
 
-          <div class="mt10 panel panel-default">
-            <div class="panel-body" ui-view>
-            </div>
-          </div>
-        </div>
-      </div>
+  </overview-header>
 
-    </div>
-  </div>
-</div>
+  <overview-tabs>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition">Definition</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+  </overview-tabs>
+</overview>
+

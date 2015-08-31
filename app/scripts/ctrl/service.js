@@ -9,8 +9,6 @@
     .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "Action",
       function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, Action) {
 
-        console.log(svcData);
-
         $scope.serviceVersion = svcData;
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;

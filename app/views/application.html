@@ -1,41 +1,18 @@
-<div class="page">
-  <div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}"
-                           current-version="{{applicationVersion.version}}" versions="versions"
-                           select-version="" new-version="modalNewVersion()"></overview-header>
-          <div class="row">
-            <div class="col-md-7">
-              <overview-status created-by="{{applicationVersion.createdBy}}" created-on="{{applicationVersion.createdOn}}" status="{{applicationVersion.status}}"></overview-status>
-            </div>
-            <div class="col-md-5">
-              <!-- Application Actions -->
-              <div class="pull-right">
-                <button class="btn btn-primary btn-sm">Register</button>
-                <button class="btn btn-warning btn-sm">Regenerate Keys</button>
-                <button class="btn btn-danger btn-sm">Delete Application</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<overview>
+  <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}"
+                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
 
-      <div class="panel">
-        <div class="panel-body">
-          <div class="btn-group btn-radio">
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-          </div>
-          <div class="mt10 panel panel-default">
-            <div class="panel-body" ui-view>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    <!-- Entity Buttons -->
+    <button class="btn btn-primary btn-sm">Register</button>
+    <button class="btn btn-warning btn-sm">Regenerate Keys</button>
+    <button class="btn btn-danger btn-sm">Delete Application</button>
+
+  </overview-header>
+
+  <overview-tabs>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+  </overview-tabs>
+</overview>

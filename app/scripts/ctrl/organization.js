@@ -104,7 +104,6 @@ angular.module("app.ctrl.organization", [])
     $scope.modalAnim = "default";
 
     $scope.goToSvc = function (svc) {
-      console.log("Clicked: " + svc);
       ServiceVersion.query({orgId: svc.organizationId, svcId: svc.id}, function (versions) {
         $state.go('service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version})
       })

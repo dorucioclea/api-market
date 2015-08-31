@@ -153,6 +153,14 @@
       };
     })
 
+    .directive('overview', function () {
+      return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: '/views/templates/overview/overview.html'
+      }
+    })
+
     .directive('overviewHeader', function () {
       return {
         restrict: 'E',
@@ -160,12 +168,13 @@
           name: "@",
           description: "@",
           icon: "@",
-          currentVersion: "@",
+          entityVersion: "=",
           versions: "=",
           selectVersion: "&",
           newVersion: "&"
         },
         bindToController: true,
+        transclude: true,
         templateUrl: '/views/templates/overview/overview-header.html'
       }
     })
@@ -179,6 +188,14 @@
           status: "@"
         },
         templateUrl: '/views/templates/overview/overview-status.html'
+      }
+    })
+
+    .directive('overviewTabs', function () {
+      return {
+        restrict:'E',
+        transclude: true,
+        templateUrl: '/views/templates/overview/overview-tabs.html'
       }
     })
 
