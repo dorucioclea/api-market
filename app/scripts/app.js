@@ -438,15 +438,19 @@
           templateUrl: 'views/partials/service/overview.html',
           controller: 'ServiceOverviewCtrl'
         })
+        // Implementation Tab
+        .state('service.implementation', {
+          url: '/implementation',
+          templateUrl: 'views/partials/service/implementation.html',
+          resolve: {
+          },
+          controller: 'ServiceImplementationCtrl'
+        })
         // Definition Tab
         .state('service.definition', {
           url: '/definition',
           templateUrl: 'views/partials/service/definition.html',
           resolve: {
-            ServiceVersionDefinition: 'ServiceVersionDefinition',
-            definitionData: function(ServiceVersionDefinition, organizationId, serviceId, versionId) {
-              return ServiceVersionDefinition.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
-            }
           },
           controller: 'ServiceDefinitionCtrl'
         })

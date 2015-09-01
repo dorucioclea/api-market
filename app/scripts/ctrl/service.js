@@ -45,24 +45,83 @@
 
     }])
 
-    /// ==== Definition Controller
-    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "definitionData", "ServiceVersionDefinition", "svcScreenModel",
-      function ($scope, $state, $stateParams, definitionData, ServiceVersionDefintion, svcScreenModel) {
+    /// ==== Implementation Controller
+    .controller("ServiceImplementationCtrl", ["$scope", "$state", "$stateParams", "ServiceVersion", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceVersion, svcScreenModel) {
 
-        $scope.currentDefinition = definitionData;
+        $scope.version = svcScreenModel.service;
+        $scope.updatedService = {
+          endpointType: 'rest',
+          endpoint: $scope.version.endpoint,
+          gateways: [{gatewayId: 'KongGateway'}]
+        };
+
+        $scope.typeOptions = ["rest", "soap"];
+        svcScreenModel.updateTab('Implementation');
+
+        $scope.selectType = function (newType) {
+          $scope.updatedService.endpointType = newType;
+        };
+
+        var checkValid = function() {
+          var valid = true;
+          if (!$scope.updatedService.endpointType || angular.isUndefined($scope.updatedService.endpoint)) {
+            valid = false;
+          } else if ($scope.updatedService.endpoint == null || $scope.updatedService.endpoint.length == 0) {
+            valid = false;
+          }
+          $scope.isValid = valid;
+        };
+
+        $scope.$watch('updatedService', function(newValue) {
+          if ($scope.version) {
+            var dirty = false;
+            if (newValue.endpoint != $scope.version.endpoint || newValue.endpointType != $scope.version.endpointType) {
+              dirty = true;
+            }
+            checkValid();
+            $scope.isDirty = dirty;
+          }
+        }, true);
+
+        $scope.reset = function() {
+          $scope.updatedService.endpoint = $scope.version.endpoint;
+          $scope.updatedService.endpointType = $scope.version.endpointType;
+          $scope.isDirty = false;
+        };
+
+        $scope.saveService = function() {
+          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function(reply) {
+            $scope.isDirty = false;
+            $state.forceReload();
+          });
+        };
+
+      }])
+
+    /// ==== Definition Controller
+    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceVersionDefinition", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceVersionDefinition, svcScreenModel) {
+
+        $scope.updatedDefinition = '';
         svcScreenModel.updateTab('Definition');
 
-        if (angular.isDefined($scope.currentDefinition)) {
-          $scope.currentDefinitionJSON = angular.toJson($scope.currentDefinition, true);
-          $scope.updatedDefinition = $scope.currentDefinitionJSON;
-        }
+        ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
+          $scope.currentDefinition = reply;
+          if (angular.isDefined($scope.currentDefinition)) {
+            $scope.currentDefinitionJSON = angular.toJson($scope.currentDefinition, true);
+            $scope.updatedDefinition = $scope.currentDefinitionJSON;
+          } else {
+            $scope.currentDefinitionJSON = '';
+          }
+        });
 
         $scope.reset = function () {
           $scope.updatedDefinition = $scope.currentDefinitionJSON;
         };
 
         $scope.saveDefinition = function () {
-          ServiceVersionDefintion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
+          ServiceVersionDefinition.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
             $state.forceReload();
           });
         };
@@ -180,7 +239,6 @@
         }, true);
 
         $scope.saveService = function() {
-          console.log($scope.updatedService);
           ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
             $state.forceReload();
           });
