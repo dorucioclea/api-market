@@ -140,20 +140,23 @@
           $scope.isDirty = false;
         };
 
-        $scope.$watch('isDirty', function (isDirty) {
-          console.log("Dirty: " + isDirty);
-        }, true);
-
         $scope.$watch('updatedService', function(newValue) {
           var dirty = false;
           if (newValue.plans && $scope.version.plans && newValue.plans.length != $scope.version.plans.length) {
             dirty = true;
           } else if (newValue.plans && $scope.version.plans) {
-            for (var i = 0 ; i < newValue.plans.length; i++) {
-              var p1 = newValue.plans[i];
-              var p2 = $scope.version.plans[i];
-              if (p1.planId != p2.planId || p1.version != p2.version) {
-                dirty = true;
+            for (var i = 0; i < $scope.version.plans.length; i++) {
+              var p1 = $scope.version.plans[i];
+
+              for (var j = 0; j < newValue.plans.length; j++) {
+                var p2 = newValue.plans[j];
+                if(p1.planId === p2.planId) {
+                  // Found Plan, if versions are not equal ==> dirty
+                  if (p1.version !== p2.version) {
+                    dirty = true;
+                  }
+                  break;
+                }
               }
             }
           }
@@ -161,7 +164,7 @@
         }, true);
 
         $scope.saveService = function() {
-
+          console.log($scope.updatedService);
           ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
             $state.forceReload();
           });
