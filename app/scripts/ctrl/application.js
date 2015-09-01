@@ -13,6 +13,9 @@
     appScreenModel.updateApplication(appData);
     $scope.versions = appVersions;
     $scope.displayTab = appScreenModel;
+    $scope.isReady = $scope.applicationVersion.status === 'Ready';
+    $scope.isRegistered = $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+    $scope.isRetired = $scope.applicationVersion.status === 'Retired';
 
   }])
 

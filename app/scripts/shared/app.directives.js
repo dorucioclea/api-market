@@ -248,7 +248,7 @@
         template: '<h5>Status: <label class=\"label text-uppercase\" ' +
         'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\' || status === \'Locked\',' +
         '\'label-warning\': status === \'Ready\' || status === \'Created\', ' +
-        '\'label-danger\': status === \'Retired\'}\">' +
+        '\'label-muted\': status === \'Retired\'}\">' +
         '{{status}}</label></h5>'
       };
     })
