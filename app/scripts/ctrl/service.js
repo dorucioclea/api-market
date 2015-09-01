@@ -14,7 +14,8 @@
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
         $scope.isReady = $scope.serviceVersion.status === 'Ready';
-        $scope.isPublished = $scope.serviceVersion.status === 'Published';
+        $scope.isPublished = $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
+        $scope.isRetired = $scope.serviceVersion.status === 'Retired';
 
 
         $scope.selectVersion = function (version) {
@@ -25,6 +26,18 @@
         $scope.publishService = function () {
           var publishAction = {
             type: 'publishService',
+            organizationId: $stateParams.orgId,
+            entityId: $stateParams.svcId,
+            entityVersion: $stateParams.versionId
+          };
+          Action.save(publishAction, function (reply) {
+            $state.forceReload();
+          });
+        }
+
+        $scope.retireService = function () {
+          var publishAction = {
+            type: 'retireService',
             organizationId: $stateParams.orgId,
             entityId: $stateParams.svcId,
             entityVersion: $stateParams.versionId

@@ -12,8 +12,8 @@
   </div>
 
   <div class="col-sm-12">
-    <textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control"></textarea>
-    <div class="mt20" >
+    <textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control" ng-disabled="isPublished"></textarea>
+    <div class="mt20" ng-hide="isPublished">
       <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
       <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
     </div>
