@@ -454,6 +454,12 @@
         .state('service.plans', {
           url: '/plans',
           templateUrl: 'views/partials/service/plans.html',
+          resolve: {
+            Plan: 'Plan',
+            planData: function (Plan, organizationId) {
+              return Plan.query({orgId: organizationId}).$promise;
+            }
+          },
           controller: 'ServicePlansCtrl'
         })
         // Policies Tab

@@ -57,6 +57,117 @@
         }, true);
 
       }])
+
+    /// ==== Plans Controller
+    .controller("ServicePlansCtrl", ["$scope", "$state", "$stateParams", "$q", "planData", "svcScreenModel", "PlanVersion", "ServiceVersion",
+      function ($scope, $state, $stateParams, $q, planData, svcScreenModel, PlanVersion, ServiceVersion) {
+
+        svcScreenModel.updateTab('Plans');
+        var definedPlans = planData;
+        var lockedPlans = [];
+        $scope.updatedService = {};
+        $scope.version = svcScreenModel.service;
+
+        var getSelectedPlans = function() {
+          var selectedPlans = [];
+          for (var i = 0; i < lockedPlans.length; i++) {
+            var plan = lockedPlans[i];
+            if (plan.checked) {
+              var selectedPlan = {};
+              selectedPlan.planId = plan.id;
+              selectedPlan.version = plan.selectedVersion;
+              selectedPlans.push(selectedPlan);
+            }
+          }
+          return selectedPlans;
+        };
+
+        //find locked plan versions
+        $q(function (resolve) {
+          var promises = [];
+          angular.forEach(definedPlans, function (plan) {
+            promises.push($q(function (resolve, reject) {
+              PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
+                var lockedVersions = [];
+                for (var j = 0; j < planVersions.length; j++) {
+                  var planVersion = planVersions[j];
+                  if (planVersion.status == "Locked") {
+                    lockedVersions.push(planVersion.version);
+                  }
+                }
+                // if we found locked plan versions then add them
+                if (lockedVersions.length > 0) {
+                  plan.lockedVersions = lockedVersions;
+                  lockedPlans.push(plan);
+                }
+                resolve(planVersions);
+              }, reject);
+            }))
+          });
+          $q.all(promises).then(function () {
+            lockedPlans.sort(function (a, b) {
+              if (a.id.toLowerCase() < b.id.toLowerCase()) {
+                return -1;
+              } else if (b.id < a.id) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+            resolve(lockedPlans);
+            $scope.plans = lockedPlans;
+            $scope.reset();
+          });
+        });
+
+        $scope.$watch('plans', function(newValue) {
+          $scope.updatedService.plans = getSelectedPlans();
+        }, true);
+
+        $scope.reset = function() {
+          for (var i = 0; i < lockedPlans.length; i++) {
+            lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
+            for (var j = 0; j < $scope.version.plans.length; j++) {
+              if (lockedPlans[i].id == $scope.version.plans[j].planId) {
+                lockedPlans[i].checked = true;
+                lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
+                break;
+              }
+              lockedPlans[i].checked = false;
+            }
+          }
+          $scope.updatedService.plans = getSelectedPlans();
+          $scope.isDirty = false;
+        };
+
+        $scope.$watch('isDirty', function (isDirty) {
+          console.log("Dirty: " + isDirty);
+        }, true);
+
+        $scope.$watch('updatedService', function(newValue) {
+          var dirty = false;
+          if (newValue.plans && $scope.version.plans && newValue.plans.length != $scope.version.plans.length) {
+            dirty = true;
+          } else if (newValue.plans && $scope.version.plans) {
+            for (var i = 0 ; i < newValue.plans.length; i++) {
+              var p1 = newValue.plans[i];
+              var p2 = $scope.version.plans[i];
+              if (p1.planId != p2.planId || p1.version != p2.version) {
+                dirty = true;
+              }
+            }
+          }
+          $scope.isDirty = dirty;
+        }, true);
+
+        $scope.saveService = function() {
+
+          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
+            $state.forceReload();
+          });
+        };
+
+      }])
     /// ==== Policies Controller
     .controller("ServicePoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "svcScreenModel", "ServiceVersionPolicy", "PolicyDefs",
       function ($scope, $modal, $stateParams, policyData, svcScreenModel, ServiceVersionPolicy, PolicyDefs) {
