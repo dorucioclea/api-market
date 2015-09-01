@@ -13,10 +13,26 @@
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
+        $scope.isReady = $scope.serviceVersion.status === 'Ready';
+        $scope.isPublished = $scope.serviceVersion.status === 'Published';
+
 
         $scope.selectVersion = function (version) {
           $state.go($state.$current.name, { orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
         };
+
+
+        $scope.publishService = function () {
+          var publishAction = {
+            type: 'publishService',
+            organizationId: $stateParams.orgId,
+            entityId: $stateParams.svcId,
+            entityVersion: $stateParams.versionId
+          };
+          Action.save(publishAction, function (reply) {
+            $state.forceReload();
+          });
+        }
 
       }])
 

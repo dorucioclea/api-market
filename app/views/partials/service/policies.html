@@ -1,1 +1,30 @@
-Policies Tab
+<div class="row">
+  <div class="col-sm-12">
+    <!-- Title and help text -->
+    <h4>Service Policies</h4>
+    <p>Here is a list of all Policies defined for this Service. These Policies will be applied to all invocations of this Service by any Application, regardless of the Plan used in its Contract.</p>
+    <hr>
+  </div>
+  <!-- The list of policies -->
+  <div class="col-sm-12">
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="isPublished">Add Policy</button>
+  </div>
+  <div class="col-sm-12" ng-hide="isPublished">
+    <hr>
+  </div>
+
+  <div class="col-sm-12" ng-hide="policies.length > 0">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-show="isPublished">
+      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Service, since this one has already been published and therefore can no longer be modified!
+    </div>
+    <div class="col-sm-8 col-sm-offset-1 well" ng-hide="isPublished">
+      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you may try defining one using the Add Policy button above...
+    </div>
+    <div class="col-sm-3">
+      <div class="no-entities-arrow" ng-hide="locked"></div>
+    </div>
+  </div>
+  <div class="col-sm-12 mt20">
+    <policy-list ng-model="policies" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="{{ org.id }}" page-id="{{ plan.id }}" version="{{ version.version }}"></policy-list>
+  </div>
+</div>

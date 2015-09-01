@@ -3,7 +3,7 @@
                    entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
 
     <!-- Entity Buttons -->
-    <button class="btn btn-primary btn-sm">Publish</button>
+    <button class="btn btn-primary btn-sm" ng-disabled="!isReady" ng-click="publishService()">Publish</button>
 
   </overview-header>
 
