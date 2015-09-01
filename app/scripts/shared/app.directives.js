@@ -161,6 +161,18 @@
       }
     })
 
+    .directive('activityList', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          type: '@',
+          activities: '='
+        },
+        bindToController: true,
+        templateUrl: '/views/templates/activity.html'
+      }
+    })
+
     .directive('overviewHeader', function () {
       return {
         restrict: 'E',
