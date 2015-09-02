@@ -42,52 +42,15 @@ angular.module("app.ctrl.api", [])
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceDefinition",
-      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceDefinition) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceVersionDefinition",
+      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceVersionDefinition) {
 
         svcTab.updateTab('Documentation');
         $scope.endpoint = endpoint;
 
-        $scope.loadSwaggerUi = function(url) {
-          $scope.swaggerUi = new SwaggerUi({
-            url:url,
-            dom_id:"swagger-ui-container",
-            validatorUrl: null,
-            apisSorter: "alpha",
-            operationsSorter: "alpha",
-            docExpansion: "list",
-            onComplete: function() {
-              $('#swagger-ui-container').find('a').each(function(idx, elem) {
-                var href = $(elem).attr('href');
-                if (href[0] == '#') {
-                  $(elem).removeAttr('href');
-                }
-              })
-                .find('div.sandbox_header').each(function(idx, elem) {
-                  $(elem).remove();
-                })
-                .find("li.operation div.auth").each(function(idx, elem) {
-                  $(elem).remove();
-                })
-                .find("li.operation div.access").each(function(idx, elem) {
-                  $(elem).remove();
-                });
-              $scope.$apply(function(error) {
-                $scope.definitionStatus = 'complete';
-              });
-            },
-            onFailure: function() {
-              $scope.$apply(function(error) {
-                $scope.definitionStatus = 'error';
-                $scope.hasError = true;
-                $scope.error = error;
-              });
-            }
-          });
-          $scope.swaggerUi.load();
-        };
-
-        $scope.loadSwaggerUi(ServiceDefinition.getDefinitionUrl($stateParams.orgId, $stateParams.svcId, $stateParams.versionId));
+        ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (definitionSpec) {
+          $scope.loadSwaggerUi(definitionSpec, false);
+        });
 
         $scope.modalAnim = "default";
 

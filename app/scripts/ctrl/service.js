@@ -113,24 +113,23 @@
       }])
 
     /// ==== Definition Controller
-    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceVersionDefinition", "svcScreenModel",
-      function ($scope, $state, $stateParams, ServiceVersionDefinition, svcScreenModel) {
+    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceDefinition", "ServiceVersionDefinition", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceDefinition, ServiceVersionDefinition, svcScreenModel) {
 
         $scope.updatedDefinition = '';
         svcScreenModel.updateTab('Definition');
+        $scope.definitionLoaded = false;
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
           $scope.currentDefinition = reply;
           if (angular.isDefined($scope.currentDefinition)) {
-            $scope.currentDefinitionJSON = angular.toJson($scope.currentDefinition, true);
-            $scope.updatedDefinition = $scope.currentDefinitionJSON;
-          } else {
-            $scope.currentDefinitionJSON = '';
+            $scope.updatedDefinition = $scope.currentDefinition;
+            $scope.loadPreview($scope.currentDefinition);
           }
         });
 
         $scope.reset = function () {
-          $scope.updatedDefinition = $scope.currentDefinitionJSON;
+          $scope.updatedDefinition = $scope.currentDefinition;
         };
 
         $scope.saveDefinition = function () {
@@ -140,10 +139,19 @@
         };
 
         $scope.$watch('updatedDefinition', function(def) {
-          $scope.changed = def !== $scope.currentDefinitionJSON;
-          $scope.invalid = !(def.length > 0 && def !== $scope.currentDefinitionJSON);
+          $scope.changed = def !== $scope.currentDefinition;
+          $scope.invalid = !(def !== $scope.currentDefinition);
         }, true);
 
+        $scope.loadDefinition = function ($fileContent) {
+          $scope.updatedDefinition = angular.fromJson($fileContent);
+          $scope.loadPreview($scope.updatedDefinition);
+        };
+
+        $scope.loadPreview = function (spec) {
+          $scope.definitionLoaded = true;
+          $scope.loadSwaggerUi(spec, true);
+        }
       }])
 
     /// ==== Plans Controller

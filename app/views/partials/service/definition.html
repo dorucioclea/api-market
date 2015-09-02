@@ -1,18 +1,43 @@
 <div class="row">
+  <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
   <div class="col-sm-12">
     <h4>Service Definition</h4>
     <p>
       Here you can provide definition information about your service.  This
       information should take the form of a Swagger service definition file.  Adding a
       definition file will allow consumers to better understand how to use your API.
-      Simply copy/paste your Swagger API definition into the text
-      area below.
+      Simply select your Swagger API definition below.
+    </p>
+    <p class="text-bold">
+      Only Swagger 2.0 JSON definition files
+          are currently supported!
     </p>
     <hr>
   </div>
 
+  <!-- Swagger API documentation panel -->
+  <div class="col-sm-12" ng-show="definitionLoaded">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Documentation Preview
+      </div>
+      <div class="panel-body">
+        <div class="swagger-section">
+          <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end Swagger Documentation panel -->
+
+  <div class="col-sm-12 mt30">
+    <h5>Update Swagger definiton</h5>
+    <input type="file" definition-select="loadDefinition($fileContent)" />
+  </div>
+
   <div class="col-sm-12">
-    <textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control" ng-disabled="isPublished"></textarea>
+    <!--<textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control" ng-disabled="isPublished"></textarea>-->
     <div class="mt20" ng-hide="isPublished">
       <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
       <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
