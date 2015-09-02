@@ -49,7 +49,7 @@ angular.module("app.ctrl.api", [])
         $scope.endpoint = endpoint;
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (definitionSpec) {
-          $scope.loadSwaggerUi(definitionSpec, false);
+          $scope.loadSwaggerUi(definitionSpec, "swagger-ui-container", false);
         });
 
         $scope.modalAnim = "default";

@@ -17,11 +17,25 @@
     <hr>
   </div>
 
-  <!-- Swagger API documentation panel -->
+  <!-- Existing Swagger API documentation panel -->
+  <div class="col-sm-12" ng-hide="definitionLoaded">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Current Documentation
+      </div>
+      <div class="panel-body">
+        <div class="swagger-section">
+          <div class="swagger-ui-wrap" id="original-swagger-ui-container"></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end Swagger Documentation panel -->
+
+  <!-- Uploaded Swagger API documentation panel -->
   <div class="col-sm-12" ng-show="definitionLoaded">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Documentation Preview
+        Updated Documentation Preview
       </div>
       <div class="panel-body">
         <div class="swagger-section">

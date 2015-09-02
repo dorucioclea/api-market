@@ -35,10 +35,10 @@
         $scope.publisherMode = !$scope.publisherMode;
       };
 
-      $scope.loadSwaggerUi = function(spec, isPreview) {
+      $scope.loadSwaggerUi = function(spec, domId, isPreview) {
         $scope.swaggerUi = new SwaggerUi({
           spec: spec,
-          dom_id:"swagger-ui-container",
+          dom_id: domId,
           validatorUrl: null,
           apisSorter: "alpha",
           operationsSorter: "alpha",
