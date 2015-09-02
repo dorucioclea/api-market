@@ -44,7 +44,7 @@
           operationsSorter: "alpha",
           docExpansion: isPreview ? "none" : "list",
           onComplete: function() {
-            $('#swagger-ui-container').find('a').each(function(idx, elem) {
+            $('#' + domId).find('a').each(function(idx, elem) {
               var href = $(elem).attr('href');
               if (href[0] == '#') {
                 $(elem).removeAttr('href');
