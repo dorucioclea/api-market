@@ -113,8 +113,8 @@
       }])
 
     /// ==== Definition Controller
-    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceDefinition", "ServiceVersionDefinition", "svcScreenModel",
-      function ($scope, $state, $stateParams, ServiceDefinition, ServiceVersionDefinition, svcScreenModel) {
+    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceVersionDefinition", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceVersionDefinition, svcScreenModel) {
 
         $scope.updatedDefinition = '';
         svcScreenModel.updateTab('Definition');

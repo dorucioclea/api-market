@@ -101,15 +101,6 @@
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
     }])
 
-  /// ========== SERVICE DEFINITION URL ===========================================================
-    .factory('ServiceDefinition', ['EngineUrl', function (EngineUrl) {
-      return {
-        getDefinitionUrl: function (orgId, svcId, versionId) {
-          return EngineUrl + '/organizations/' + orgId + '/services/' + svcId + '/versions/' + versionId + '/definition';
-        }
-      }
-    }])
-
   /// ========== CURRENTUSER ======================================================================
 
     .factory('CurrentUserInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
