@@ -31,13 +31,12 @@
     </div>
   </div><!-- end Swagger Documentation panel -->
 
-  <div class="col-sm-12 mt30">
+  <div class="col-sm-12 mt30" ng-hide="isPublished">
     <h5>Update Swagger definiton</h5>
     <input type="file" definition-select="loadDefinition($fileContent)" />
   </div>
 
   <div class="col-sm-12">
-    <!--<textarea id="service-definition" rows="20" style="overflow: auto" placeholder="Copy/paste your Service Definition in here!" ng-model="updatedDefinition" data-field="data" class="form-control" ng-disabled="isPublished"></textarea>-->
     <div class="mt20" ng-hide="isPublished">
       <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
       <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
