@@ -119,6 +119,7 @@
         $scope.updatedDefinition = '';
         svcScreenModel.updateTab('Definition');
         $scope.definitionLoaded = false;
+        $scope.noDefinition = false;
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
           $scope.currentDefinition = reply;
@@ -126,6 +127,8 @@
             $scope.updatedDefinition = $scope.currentDefinition;
             $scope.loadSwaggerUi($scope.currentDefinition, "original-swagger-ui-container", true);
           }
+        }, function (error) {
+          $scope.noDefinition = true;
         });
 
         $scope.reset = function () {

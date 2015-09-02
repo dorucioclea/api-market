@@ -17,8 +17,14 @@
     <hr>
   </div>
 
+  <div class="col-sm-10 col-sm-offset-1" ng-show="noDefinition && !definitionLoaded">
+    <div class="well">
+      No documentation has been uploaded yet. Please select your definition file using the button below.
+    </div>
+  </div>
+
   <!-- Existing Swagger API documentation panel -->
-  <div class="col-sm-12" ng-hide="definitionLoaded">
+  <div class="col-sm-12" ng-hide="definitionLoaded || noDefinition">
     <div class="panel panel-default">
       <div class="panel-heading">
         Current Documentation
