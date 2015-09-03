@@ -18,7 +18,7 @@
             <div class="col-sm-12 text-primary">
               <span class="text-light fa fa-user"> {{serviceVersion.createdBy}}</span>
               <i class="ml10 fa fa-globe"> Online documentation</i>
-              <i class="ml10 fa fa-tag"> {{serviceVersion.service.categories.join(', ')}}</i>
+              <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0"> {{serviceVersion.service.categories.join(', ')}}</i>
               <span class="ml10 text-light fa fa-clock-o"> Created: {{serviceVersion.createdOn | date }}</span>
             </div>
             <div class="col-sm-12">
