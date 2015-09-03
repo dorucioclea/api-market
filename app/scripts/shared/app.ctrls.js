@@ -81,7 +81,6 @@
           if(key && key.trim() != "") {
             var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("apikey", key, "header");
             $scope.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
-            console.log("added key " + key);
           }
         }
         $scope.swaggerUi.load();
