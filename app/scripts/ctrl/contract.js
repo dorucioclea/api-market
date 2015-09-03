@@ -22,7 +22,7 @@
           };
 
           ApplicationContract.save({orgId: $scope.application.organization.id, appId: $scope.application.id, versionId: $stateParams.appVersion}, contract, function (data) {
-            $state.go('application.contracts', {orgId: $scope.application.organization.id, appId: $scope.application.id});
+            $state.go('root.application.contracts', {orgId: $scope.application.organization.id, appId: $scope.application.id, versionId: $scope.applicationVersion});
           });
         };
 

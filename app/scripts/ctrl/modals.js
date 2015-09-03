@@ -119,7 +119,7 @@
         };
 
         $scope.startCreateContract = function(selectedVersion) {
-          $state.go('contract',
+          $state.go('root.contract',
             { appOrgId: selectedVersion.organizationId, appId: selectedVersion.id, appVersion: selectedVersion.version,
               svcOrgId: $stateParams.orgId, svcId: $stateParams.svcId, svcVersion: $stateParams.versionId
             });
@@ -234,7 +234,7 @@
           Plan.save({ orgId: $stateParams.orgId }, plan, function (newPlan) {
             $scope.modalClose();
             console.log(plan);
-            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+            $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
           });
         };
 
@@ -275,19 +275,19 @@
             case 'Application':
               ApplicationVersion.save({ orgId: $stateParams.orgId, appId: $stateParams.appId }, newVersion, function (newAppVersion) {
                 $scope.modalClose();
-                $state.go('application.overview', {orgId: $stateParams.orgId, appId: newAppVersion.application.id, versionId: newAppVersion.version});
+                $state.go('root.application.overview', {orgId: $stateParams.orgId, appId: newAppVersion.application.id, versionId: newAppVersion.version});
               });
               break;
             case 'Plan':
               PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
                 $scope.modalClose();
-                $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
+                $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
               });
               break;
             case 'Service':
               ServiceVersion.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId }, newVersion, function (newSvcVersion) {
                 $scope.modalClose();
-                $state.go('service.overview', {orgId: $stateParams.orgId, svcId: newSvcVersion.service.id, versionId: newSvcVersion.version});
+                $state.go('root.service.overview', {orgId: $stateParams.orgId, svcId: newSvcVersion.service.id, versionId: newSvcVersion.version});
               });
               break;
           }

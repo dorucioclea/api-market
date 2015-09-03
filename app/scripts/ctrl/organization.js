@@ -76,7 +76,7 @@ angular.module("app.ctrl.organization", [])
 
     $scope.goToPlan = function (plan) {
       PlanVersion.query({orgId: plan.organizationId, planId: plan.id}, function (versions) {
-        $state.go('plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version})
+        $state.go('root.plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version})
       })
     };
 
@@ -105,7 +105,7 @@ angular.module("app.ctrl.organization", [])
 
     $scope.goToSvc = function (svc) {
       ServiceVersion.query({orgId: svc.organizationId, svcId: svc.id}, function (versions) {
-        $state.go('service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version})
+        $state.go('root.service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version})
       })
     };
 
@@ -135,7 +135,7 @@ angular.module("app.ctrl.organization", [])
 
       $scope.goToApp = function (app) {
         ApplicationVersion.query({orgId: app.organizationId, appId: app.id}, function (versions) {
-          $state.go('application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version})
+          $state.go('root.application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version})
         })
       };
 

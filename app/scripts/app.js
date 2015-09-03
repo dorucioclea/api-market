@@ -26,6 +26,7 @@
     "app.services",
     "app.filters",
     "app.apiEngine",
+    "app.ctrl.login",
     "app.ctrl.dashboard",
     "app.ctrl.modals",
     "app.ctrl.api",
@@ -65,7 +66,7 @@
     // UI-Router states
     .config(function($stateProvider, $urlRouterProvider) {
 
-      $urlRouterProvider.otherwise('/home/grid');
+      $urlRouterProvider.otherwise('/apis/grid');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
       $urlRouterProvider.when('/org/{orgId}/application/{appId}', '/org/{orgId}/application/{appId}/overview');
@@ -76,10 +77,23 @@
 
       $stateProvider
 
+        // LOGIN PAGE =====================================================================
+        .state('login', {
+          url: '/login',
+          templateUrl: '/views/signin.html',
+          controller: 'LoginCtrl'
+
+        })
+
+        // ROOT STATE =====================================================================
+        .state('root', {
+          templateUrl: '/views/partials/root.html'
+        })
+
         // HOME STATES (DASHBOARD) AND NESTED VIEWS =======================================
-        .state('home', {
+        .state('root.apis', {
           abstract: true,
-          url: '/home',
+          url: '/apis',
           templateUrl: '/views/dashboard.html',
           resolve: {
             SearchSvcsWithStatus: 'SearchSvcsWithStatus',
@@ -94,18 +108,20 @@
           controller: 'DashboardCtrl'
         })
         // API Grid View
-        .state('home.grid', {
+        .state('root.apis.grid', {
           url: '/grid',
           templateUrl: 'views/templates/apigrid.html'
+
+
         })
         // API List View
-        .state('home.list', {
+        .state('root.apis.list', {
           url: '/list',
           templateUrl: 'views/templates/apilist.html'
         })
 
         // API MARKETPLACE PAGE AND NESTED VIEWS ==============================================
-        .state('api', {
+        .state('root.api', {
           url: '/org/:orgId/api/:svcId/:versionId',
           templateUrl: 'views/api.html',
           resolve: {
@@ -131,13 +147,13 @@
           controller: 'ApiDocCtrl'
         })
         // Announcements Tab
-        .state('api.announcements', {
+        .state('root.api.announcements', {
           url: '/announcements',
           templateUrl: 'views/partials/api/announcements.html',
           controller: 'AnnouncementCtrl'
         })
         // Documentation Tab
-        .state('api.documentation', {
+        .state('root.api.documentation', {
           url: '/documentation',
           templateUrl: 'views/partials/api/documentation.html',
           resolve: {
@@ -149,26 +165,26 @@
           controller: 'DocumentationCtrl'
         })
         // Plans Tab
-        .state('api.plans', {
+        .state('root.api.plans', {
           url: '/plans',
           templateUrl: 'views/partials/api/plans.html',
           controller: 'SvcPlanCtrl'
         })
         // Support Tab
-        .state('api.support', {
+        .state('root.api.support', {
           url: '/support',
           templateUrl: 'views/partials/api/support.html',
           controller: 'SupportCtrl'
         })
         // Terms Tab
-        .state('api.terms', {
+        .state('root.api.terms', {
           url: '/terms',
           templateUrl: 'views/partials/api/terms.html',
           controller: 'TermsCtrl'
         })
 
         // CONTRACT CREATION PAGE =========================================================
-        .state('contract', {
+        .state('root.contract', {
           params: { appOrgId: {}, appId: {}, appVersion: {}, svcOrgId: {}, svcId: {}, svcVersion: {} },
           templateUrl: 'views/contract.html',
           resolve: {
@@ -198,8 +214,7 @@
         })
 
         // ORGANIZATION OVERVIEW PAGE AND NESTED VIEWS ====================================
-        .state('organization', {
-          abstract: true,
+        .state('root.organization', {
           url: '/org/:orgId',
           templateUrl: 'views/organization.html',
           resolve: {
@@ -217,7 +232,7 @@
           controller: 'OrganizationCtrl'
         })
         // Applications View
-        .state('organization.applications', {
+        .state('root.organization.applications', {
           url: '/applications',
           templateUrl: 'views/partials/organization/applications.html',
           resolve: {
@@ -229,7 +244,7 @@
           controller: 'ApplicationsCtrl'
         })
         // Services View
-        .state('organization.services', {
+        .state('root.organization.services', {
           url: '/services',
           templateUrl: 'views/partials/organization/services.html',
           resolve: {
@@ -241,7 +256,7 @@
           controller: 'ServicesCtrl'
         })
         // Plans View
-        .state('organization.plans', {
+        .state('root.organization.plans', {
           url: '/plans',
           templateUrl: 'views/partials/organization/plans.html',
           resolve: {
@@ -253,7 +268,7 @@
           controller: 'PlansCtrl'
         })
         // Members View
-        .state('organization.members', {
+        .state('root.organization.members', {
           url: '/members',
           templateUrl: 'views/partials/organization/members.html',
           resolve: {
@@ -266,14 +281,14 @@
         })
 
         // ORGANIZATIONS SEARCH PAGE ======================================================
-        .state('organizations', {
+        .state('root.organizations', {
           url: '/organizations',
           templateUrl: 'views/organizations.html',
           controller: 'OrganizationsCtrl'
         })
 
         // MY ORGANIZATIONS OVERVIEW PAGE =================================================
-        .state('myOrganizations', {
+        .state('root.myOrganizations', {
           url: '/my-organizations',
           templateUrl: 'views/my-organizations.html',
           resolve: {
@@ -286,7 +301,7 @@
         })
 
         // PLAN OVERVIEW PAGE AND NESTED VIEWS ====================================
-        .state('plan', {
+        .state('root.plan', {
           url: '/org/:orgId/plan/:planId/:versionId',
           templateUrl: 'views/plan.html',
           resolve: {
@@ -310,13 +325,13 @@
           controller: 'PlanCtrl'
         })
         // Overview Tab
-        .state('plan.overview', {
+        .state('root.plan.overview', {
           url: '/overview',
           templateUrl: 'views/partials/plan/overview.html',
           controller: 'PlanOverviewCtrl'
         })
         // Policies Tab
-        .state('plan.policies', {
+        .state('root.plan.policies', {
           url: '/policies',
           templateUrl: 'views/partials/plan/policies.html',
           resolve: {
@@ -331,7 +346,7 @@
           controller: 'PlanPoliciesCtrl'
         })
         // Activity Tab
-        .state('plan.activity', {
+        .state('root.plan.activity', {
           url: '/activity',
           templateUrl: 'views/partials/plan/activity.html',
           resolve: {
@@ -344,8 +359,7 @@
         })
 
         // APPLICATION OVERVIEW PAGE AND NESTED VIEWS =====================================
-        .state('application', {
-          abstract: true,
+        .state('root.application', {
           url: '/org/:orgId/application/:appId/:versionId',
           templateUrl: 'views/application.html',
           resolve: {
@@ -369,13 +383,13 @@
           controller: 'ApplicationCtrl'
         })
         // Overview Tab
-        .state('application.overview', {
+        .state('root.application.overview', {
           url: '/overview',
           templateUrl: 'views/partials/application/overview.html',
           controller: 'OverviewCtrl'
         })
         // Contracts Tab
-        .state('application.contracts', {
+        .state('root.application.contracts', {
           url: '/contracts',
           templateUrl: 'views/partials/application/contracts.html',
           resolve: {
@@ -387,7 +401,7 @@
           controller: 'ContractsCtrl'
         })
         // APIs Tab
-        .state('application.apis', {
+        .state('root.application.apis', {
           url: '/apis',
           templateUrl: 'views/partials/application/apis.html',
           resolve: {
@@ -399,7 +413,7 @@
           controller: 'ApisCtrl'
         })
         // Activity Tab
-        .state('application.activity', {
+        .state('root.application.activity', {
           url: '/activity',
           templateUrl: 'views/partials/application/activity.html',
           resolve: {
@@ -412,7 +426,7 @@
         })
 
         // SERVICE OVERVIEW PAGE AND NESTED VIEWS ====================================
-        .state('service', {
+        .state('root.service', {
           url: '/org/:orgId/service/:svcId/:versionId',
           templateUrl: 'views/service.html',
           resolve: {
@@ -436,13 +450,13 @@
           controller: 'ServiceCtrl'
         })
         // Overview Tab
-        .state('service.overview', {
+        .state('root.service.overview', {
           url: '/overview',
           templateUrl: 'views/partials/service/overview.html',
           controller: 'ServiceOverviewCtrl'
         })
         // Implementation Tab
-        .state('service.implementation', {
+        .state('root.service.implementation', {
           url: '/implementation',
           templateUrl: 'views/partials/service/implementation.html',
           resolve: {
@@ -450,7 +464,7 @@
           controller: 'ServiceImplementationCtrl'
         })
         // Definition Tab
-        .state('service.definition', {
+        .state('root.service.definition', {
           url: '/definition',
           templateUrl: 'views/partials/service/definition.html',
           resolve: {
@@ -458,7 +472,7 @@
           controller: 'ServiceDefinitionCtrl'
         })
         // Plans Tab
-        .state('service.plans', {
+        .state('root.service.plans', {
           url: '/plans',
           templateUrl: 'views/partials/service/plans.html',
           resolve: {
@@ -470,7 +484,7 @@
           controller: 'ServicePlansCtrl'
         })
         // Policies Tab
-        .state('service.policies', {
+        .state('root.service.policies', {
           url: '/policies',
           templateUrl: 'views/partials/service/policies.html',
           resolve: {
@@ -485,7 +499,7 @@
           controller: 'ServicePoliciesCtrl'
         })
         // Activity Tab
-        .state('service.activity', {
+        .state('root.service.activity', {
           url: '/activity',
           templateUrl: 'views/partials/service/activity.html',
           resolve: {
@@ -498,27 +512,27 @@
         })
 
         // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================
-        .state('user', {
+        .state('root.user', {
           url: '/user',
           templateUrl: 'views/user.html'
         })
         // Account Tab
-        .state('user.account', {
+        .state('root.user.account', {
           url: 'user/account',
           templateUrl: 'views/partials/user/account.html'
         })
         // Email Tab
-        .state('user.email', {
+        .state('root.user.email', {
           url: 'user/email',
           templateUrl: 'views/partials/user/email.html'
         })
         // Notifications Tab
-        .state('user.notifications', {
+        .state('root.user.notifications', {
           url: 'user/notifications',
           templateUrl: 'views/partials/user/notifications.html'
         })
         // Profile Tab
-        .state('user.profile', {
+        .state('root.user.profile', {
           url: 'user/profile',
           templateUrl: 'views/partials/user/profile.html'
         })
