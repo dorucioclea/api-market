@@ -6,8 +6,8 @@
 
 
     /// ==== AddPolicy Controller
-    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy) {
+    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy", "ServiceVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy, ServiceVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
@@ -42,15 +42,27 @@
         };
 
         $scope.addPolicy = function() {
+          var config = $scope.getConfig();
           var newPolicy = {
             definitionId: $scope.selectedPolicy.id,
-            configuration: $scope.getConfig()
+            configuration: angular.toJson(config)
           };
-          console.log(newPolicy);
-          //PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
-          //  $scope.modalClose();
-          //  $scope.forceReload();
-          //});
+
+          switch ($state.current.data.type) {
+            case 'plan':
+              PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+                $scope.modalClose();
+                $state.forceReload();
+              });
+              break;
+            case 'service':
+              ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+                $scope.modalClose();
+                $state.forceReload();
+              });
+              break;
+          }
+
         };
 
 
@@ -120,6 +132,79 @@
 
       }])
 
+    /// ==== AddServicePolicy Controller
+    .controller("AddServicePolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "ServiceVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, ServiceVersionPolicy) {
+
+        $scope.policyDefs = policyDefs;
+        $scope.valid = false;
+
+        var ConfigForms = {
+          BASICAuthenticationPolicy: 'basic-auth.html',
+          IgnoredResourcesPolicy: 'ignored-resources.html',
+          IPBlacklistPolicy: 'ip-list.html',
+          IPWhitelistPolicy: 'ip-list.html',
+          RateLimitingPolicy: 'rate-limiting.html',
+          QuotaPolicy: 'quota.html',
+          TransferQuotaPolicy: 'transfer-quota.html',
+          AuthorizationPolicy: 'authorization.html',
+          CachingPolicy: 'caching.html'
+        };
+
+        $scope.selectedPolicy = null;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.setValid = function (isValid) {
+          $scope.valid = isValid;
+        };
+
+        $scope.setConfig = function(config) {
+          $scope.config = config;
+        };
+        $scope.getConfig = function() {
+          return $scope.config;
+        };
+
+        $scope.addPolicy = function() {
+          var config = $scope.getConfig();
+          console.log(config);
+          var newPolicy = {
+            definitionId: $scope.selectedPolicy.id,
+            configuration: config
+          };
+          console.log(newPolicy);
+
+          ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+            $scope.modalClose();
+            $scope.forceReload();
+          });
+        };
+
+
+        $scope.selectPolicy = function (policy) {
+          if (!policy) {
+            $scope.include = undefined;
+          } else {
+            $scope.selectedPolicy = policy;
+            $scope.config = {};
+            if ($scope.selectedPolicy.formType == 'JsonSchema') {
+              //All plugins should fall into this category!
+              $scope.include = 'views/modals/partials/policy/json-schema.html';
+            } else {
+              var inc = ConfigForms[$scope.selectedPolicy.id];
+              if (!inc) {
+                inc = 'Default.html';
+              }
+              $scope.include = 'views/modals/partials/policy/' + inc;
+            }
+          }
+        };
+
+      }])
+
 /// ==== NewApplication Controller
     .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Application",
       function ($scope, $modal, $state, $stateParams, orgScreenModel, Application) {
@@ -159,7 +244,7 @@
 
       }])
 
-  /// ==== NewVersion Controller
+    /// ==== NewVersion Controller
     .controller("NewVersionCtrl",
     ["$scope", "$state", "$stateParams", "appScreenModel", "planScreenModel", "svcScreenModel", "ApplicationVersion", "PlanVersion", "ServiceVersion",
       function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, ApplicationVersion, PlanVersion, ServiceVersion) {

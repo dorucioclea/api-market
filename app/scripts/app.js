@@ -325,6 +325,9 @@
               return PlanVersionPolicy.query({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
             }
           },
+          data: {
+            type: 'plan'
+          },
           controller: 'PlanPoliciesCtrl'
         })
         // Activity Tab
@@ -475,6 +478,9 @@
             policyData: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
               return ServiceVersionPolicy.query({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
             }
+          },
+          data: {
+            type: 'service'
           },
           controller: 'ServicePoliciesCtrl'
         })
