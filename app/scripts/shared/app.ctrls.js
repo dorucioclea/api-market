@@ -35,10 +35,13 @@
         $scope.publisherMode = !$scope.publisherMode;
       };
 
-      $scope.loadSwaggerUi = function(spec, domId) {
+      $scope.loadSwaggerUi = function(spec, domId, endpoint) {
         $scope.swaggerUi = new SwaggerUi({
           spec: spec,
           dom_id: domId,
+          showRequestHeaders: true,
+          url: function(){if(endpoint === undefined || endpoint === null)return "/"; else return endpoint.managedEndpoint;}(),
+          supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
           validatorUrl: null,
           apisSorter: "alpha",
           operationsSorter: "alpha",
@@ -71,6 +74,7 @@
             });
           }
         });
+        //$scope.swaggerUi.api.clientAuthorizations.add("apikey", new SwaggerClient.ApiKeyAuthorization("Authorization","XXX","header"))
         $scope.swaggerUi.load();
       };
 

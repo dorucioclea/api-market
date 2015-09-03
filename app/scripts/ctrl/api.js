@@ -44,12 +44,12 @@ angular.module("app.ctrl.api", [])
 /// ==== Service Swagger Documentation Controller
     .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceVersionDefinition",
       function($scope, $modal, $stateParams, endpoint, svcTab, ServiceVersionDefinition) {
-
+        console.log("Endpoint loaded:"+JSON.stringify(endpoint));
         svcTab.updateTab('Documentation');
         $scope.endpoint = endpoint;
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (definitionSpec) {
-          $scope.loadSwaggerUi(definitionSpec, "swagger-ui-container");
+          $scope.loadSwaggerUi(definitionSpec, "swagger-ui-container",endpoint);
         });
 
         $scope.modalAnim = "default";
