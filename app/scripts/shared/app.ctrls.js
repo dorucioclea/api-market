@@ -41,7 +41,7 @@
           dom_id: domId,
           showRequestHeaders: true,
           url: function(){if(endpoint === undefined || endpoint === null)return "/"; else return endpoint.managedEndpoint;}(),
-          supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+          supportedSubmitMethods:function(){if(endpoint === undefined || endpoint === null)return []; else return ['get', 'post', 'put', 'delete', 'patch'];}(),
           validatorUrl: null,
           apisSorter: "alpha",
           operationsSorter: "alpha",
