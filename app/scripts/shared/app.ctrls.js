@@ -35,14 +35,14 @@
         $scope.publisherMode = !$scope.publisherMode;
       };
 
-      $scope.loadSwaggerUi = function(spec, domId, isPreview) {
+      $scope.loadSwaggerUi = function(spec, domId) {
         $scope.swaggerUi = new SwaggerUi({
           spec: spec,
           dom_id: domId,
           validatorUrl: null,
           apisSorter: "alpha",
           operationsSorter: "alpha",
-          docExpansion: isPreview ? "none" : "list",
+          docExpansion: "none",
           onComplete: function() {
             $('#' + domId).find('a').each(function(idx, elem) {
               var href = $(elem).attr('href');
