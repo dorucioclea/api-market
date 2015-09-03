@@ -6,8 +6,8 @@
 
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "$stateParams", "appData", "appVersions", "appScreenModel",
-  function ($scope, $stateParams, appData, appVersions, appScreenModel) {
+.controller("ApplicationCtrl", ["$scope", "$state", "$stateParams", "appData", "appVersions", "appScreenModel",
+  function ($scope, $state, $stateParams, appData, appVersions, appScreenModel) {
 
     $scope.applicationVersion = appData;
     appScreenModel.updateApplication(appData);
@@ -16,6 +16,10 @@
     $scope.isReady = $scope.applicationVersion.status === 'Ready';
     $scope.isRegistered = $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
     $scope.isRetired = $scope.applicationVersion.status === 'Retired';
+
+    $scope.selectVersion = function (version) {
+      $state.go($state.$current.name, { orgId: $stateParams.orgId, appId: $stateParams.appId, versionId: version.version});
+    };
 
   }])
 
