@@ -90,7 +90,21 @@
           templateUrl: '/views/partials/root.html'
         })
 
-        // HOME STATES (DASHBOARD) AND NESTED VIEWS =======================================
+
+        // MARKETPLACE CONSUMER DASHBOARD =================================================
+        .state('root.market-dash', {
+          url: '/dashboard',
+          templateUrl: '/views/market-dashboard.html',
+          resolve: {
+            CurrentUserApps: 'CurrentUserApps',
+            appData: function (CurrentUserApps) {
+              return CurrentUserApps.query().$promise;
+            }
+          },
+          controller: 'MarketDashCtrl'
+        })
+
+        // MARKETPLACE API EXPLORER AND NESTED VIEWS =======================================
         .state('root.apis', {
           abstract: true,
           url: '/apis',

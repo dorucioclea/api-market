@@ -4,6 +4,11 @@
 
   angular.module("app.ctrl.dashboard", [])
 
+    /// ==== MarketDash Controller
+    .controller('MarketDashCtrl', ['$scope', 'appData', function ($scope, appData) {
+      $scope.applications = appData;
+    }])
+
 /// ==== Dashboard Controller
     .controller("DashboardCtrl", ["$scope", "svcData", "categories", "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories",
       function($scope, svcData, categories, SearchSvcsWithStatus, SearchPublishedSvcsInCategories) {
