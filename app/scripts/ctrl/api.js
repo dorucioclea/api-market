@@ -25,6 +25,17 @@ angular.module("app.ctrl.api", [])
 
       };
 
+      $scope.modalSelectApplicationForContract = function() {
+        $modal.open({
+          templateUrl: "views/modals/modalSelectApplication.html",
+          size: "lg",
+          controller: "AppSelectCtrl as ctrl",
+          resolve: function() {},
+          windowClass: $scope.modalAnim	// Animation Class put here.
+        });
+
+      };
+
       $scope.modalClose = function() {
         $scope.$close();	// this method is associated with $modal scope which is this.
       };
@@ -44,27 +55,12 @@ angular.module("app.ctrl.api", [])
 /// ==== Service Swagger Documentation Controller
     .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceVersionDefinition",
       function($scope, $modal, $stateParams, endpoint, svcTab, ServiceVersionDefinition) {
-        console.log("Endpoint loaded:"+JSON.stringify(endpoint));
         svcTab.updateTab('Documentation');
         $scope.endpoint = endpoint;
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (definitionSpec) {
           $scope.loadSwaggerUi(definitionSpec, "swagger-ui-container",endpoint);
         });
-
-        $scope.modalAnim = "default";
-
-        $scope.modalSelectApplicationForContract = function() {
-          $modal.open({
-            templateUrl: "views/modals/modalSelectApplication.html",
-            size: "lg",
-            controller: "AppSelectCtrl as ctrl",
-            resolve: function() {},
-            windowClass: $scope.modalAnim	// Animation Class put here.
-          });
-
-        };
-
       }])
 
   /// ==== Service Plans Controller
