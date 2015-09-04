@@ -97,8 +97,44 @@
           templateUrl: '/views/market-dashboard.html',
           resolve: {
             CurrentUserApps: 'CurrentUserApps',
+            ApplicationVersion: 'ApplicationVersion',
+            ApplicationContract: 'ApplicationContract',
             appData: function (CurrentUserApps) {
               return CurrentUserApps.query().$promise;
+            },
+            appVersions: function ($q, appData, ApplicationVersion) {
+              var appVersions = {};
+              var promises = [];
+
+              angular.forEach(appData, function(app){
+                promises.push(ApplicationVersion.query({orgId: app.organizationId, appId: app.id}).$promise);
+              });
+
+              return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (value) {
+                  appVersions[value[0].id] = value[0];
+                });
+                return appVersions;
+              });
+            },
+            appContracts: function ($q, appVersions, ApplicationContract) {
+              var appContracts = {};
+              var promises = [];
+
+              angular.forEach(appVersions, function(value) {
+                promises.push(ApplicationContract.query({orgId: value.organizationId, appId: value.id, versionId: value.version}).$promise);
+              });
+
+              return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (value) {
+                  // Check if at least one contract was found, so we can add by application Id of the first contract
+                  if(angular.isDefined(value[0])) {
+                    appContracts[value[0].appId] = value;
+                  }
+                });
+                return appContracts;
+              })
+
             }
           },
           controller: 'MarketDashCtrl'

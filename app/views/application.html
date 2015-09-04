@@ -3,9 +3,8 @@
                    entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
 
     <!-- Entity Buttons -->
-    <button class="btn btn-primary btn-sm" ng-disabled="!isReady">Register</button>
+    <button class="btn btn-primary btn-sm" ng-disabled="!isReady" ng-click="publishApp(applicationVersion)">Publish</button>
     <button class="btn btn-warning btn-sm">Regenerate Keys</button>
-
   </overview-header>
 
   <overview-tabs>

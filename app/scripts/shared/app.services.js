@@ -42,16 +42,24 @@
       };
     })
 
+    .service('selectedApp', function () {
+      this.appId = '';
+      this.appOrgId = '';
+      this.appVersion = '';
+
+      this.updateApplication = function (newApp) {
+        this.appId = newApp.id;
+        this.appOrgId = newApp.organizationId;
+        this.appVersion = newApp.version;
+      }
+    })
+
     .service('appScreenModel', function () {
       this.selectedTab = 'Overview';
-      this.application = {};
 
       this.updateTab = function (newTab) {
         this.selectedTab = newTab;
       };
-      this.updateApplication = function (newApp) {
-        this.application = newApp;
-      }
     })
 
     .service('planScreenModel', function () {

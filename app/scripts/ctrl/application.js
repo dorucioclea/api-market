@@ -10,7 +10,6 @@
   function ($scope, $state, $stateParams, appData, appVersions, appScreenModel) {
 
     $scope.applicationVersion = appData;
-    appScreenModel.updateApplication(appData);
     $scope.versions = appVersions;
     $scope.displayTab = appScreenModel;
     $scope.isReady = $scope.applicationVersion.status === 'Ready';

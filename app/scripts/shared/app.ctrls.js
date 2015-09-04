@@ -4,8 +4,16 @@
 
   angular.module("app.ctrls", [])
 
+    .constant('ACTIONS', {
+      "LOCK": "lockPlan",
+      "PUBLISH": "publishService",
+      "RETIRE": "retireService",
+      "REGISTER": "registerApplication",
+      "UNREGISTER": "unregisterApplication"
+    })
+
 // Root Controller
-    .controller("AppCtrl", ["$rootScope", "$scope", "$modal", "$timeout", function($rs, $scope, $modal, $timeout) {
+    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS) {
       var mm = window.matchMedia("(max-width: 767px)");
 
       $rs.isMobile = mm.matches ? true: false;
@@ -84,6 +92,67 @@
           }
         }
         $scope.swaggerUi.load();
+      };
+
+      $scope.createAction = function (entityVersion, type) {
+        var action = {};
+        switch (type) {
+          case ACTIONS.LOCK:
+            action = {
+              type: ACTIONS.LOCK,
+              organizationId: entityVersion.plan.organization.id,
+              entityId: entityVersion.plan.id,
+              entityVersion: entityVersion.version
+            };
+            return action;
+          case ACTIONS.REGISTER:
+            action = {
+              type: ACTIONS.REGISTER,
+              organizationId: entityVersion.organizationId,
+              entityId: entityVersion.id,
+              entityVersion: entityVersion.version
+            };
+            return action;
+          case ACTIONS.UNREGISTER:
+            action = {
+              type: ACTIONS.UNREGISTER,
+              organizationId: entityVersion.organizationId,
+              entityId: entityVersion.id,
+              entityVersion: entityVersion.version
+            };
+            return action;
+          case ACTIONS.PUBLISH:
+            action = {
+              type: ACTIONS.PUBLISH,
+              organizationId: entityVersion.service.organization.id,
+              entityId: entityVersion.service.id,
+              entityVersion: entityVersion.version
+            };
+            return action;
+          case ACTIONS.RETIRE:
+            action = {
+              type: ACTIONS.RETIRE,
+              organizationId: entityVersion.service.organization.id,
+              entityId: entityVersion.service.id,
+              entityVersion: entityVersion.version
+            };
+            return action;
+        }
+      };
+
+      $scope.publishApp = function (applicationVersion) {
+        console.log(applicationVersion);
+        var action = $scope.createAction(applicationVersion, ACTIONS.REGISTER);
+        Action.save(action, function (reply) {
+          $state.forceReload();
+        });
+      };
+
+      $scope.retireApp = function (applicationVersion) {
+        var action = $scope.createAction(applicationVersion, ACTIONS.UNREGISTER);
+        Action.save(action, function (reply) {
+          $state.forceReload();
+        });
       };
 
       $scope.navFull = true;

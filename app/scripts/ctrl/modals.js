@@ -211,8 +211,9 @@
 
         $scope.org = orgScreenModel.organization;
 
+        //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
-          Application.save({ orgId: $stateParams.orgId }, application, function (app) {
+          Application.save({ orgId: 'Digipolis' }, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
           });

@@ -1,50 +1,24 @@
 <div class="page">
   <div class="row">
 
-    <!-- Organization Basic Settings panel -->
-    <div class="col col-md-4 col-md-offset-1 mb30">
-      <div class="panel panel-default">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="panel panel-primary">
         <div class="panel-body">
-          <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
-            <hr>
-          </div>
-          <div class="col-sm-12">
-            <div class="col-sm-12 text-light">
-              <i class="fa fa-clock-o fa-fw"></i>
-              <span>Created on</span>
-              <span data-field="createdOn">{{org.createdOn | date}}</span>
+          <div class="row">
+            <div class="col-sm-6 text-primary">
+              <h4><i class="fa fa-cogs"></i>
+                Applications Overview
+              </h4>
             </div>
-          </div>
-          <div class="col-sm-12 text-light">
-            <div class="col-sm-12">
-              <i class="fa fa-users fa-fw"></i>
-              <span data-field="numMembers" class="ng-binding">1</span>
-              <span>Members</span>
+            <div class="col-sm-6">
+              <div class="pull-right">
+                <button class="btn btn-line-primary" ng-click="modalNewApplication()">New Application</button>
+              </div>
             </div>
-          </div>
-          <div class="col-sm-12">
-            <hr>
-          </div>
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-              <textarea rows="2" class="form-control resize-v" ng-model="org.description">{{org.description}}</textarea>
-            </div>
-            <button class="btn btn-default mt30" ng-click="updateOrgDescription()">Save</button>
           </div>
         </div>
       </div>
-    </div><!-- end Organization Basic Settings panel -->
 
-    <!-- Organization Actions panels -->
-    <div class="col-md-6 mb20" ng-init="activeTab = 1">
-      <div class="btn-group btn-radio">
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" ui-sref=".services">Services</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Applications'" ui-sref=".applications">Applications</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Members'" ui-sref=".members">Members</label>
-      </div>
       <div class="col-sm-12 mt10">
         <div class="row">
           <div class="panel panel-default">
@@ -53,7 +27,6 @@
               <div class="col-sm-12">
                 <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
                 <button id="apps-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-                <a class="btn btn-primary pull-right" ng-click="modalNewApplication()">New App</a>
                 <hr>
               </div>
               <!-- The list of applications in the org -->
@@ -61,7 +34,7 @@
               <div class="col-sm-12" ng-hide="applications.length > 0">
                 <div class="row">
                   <div class="col-sm-8 col-sm-offset-1 well">
-                    It looks like there aren't (yet) any applications in this organization! Now might be a good time to click the New App button up above...
+                    It looks like there you have not yet created any applications! Now might be a good time to click the New App button up above...
                   </div>
                   <div class="col-sm-3">
                     <div class="no-entities-arrow"></div>
@@ -77,23 +50,67 @@
                 </div>
               </div>
 
-              <div class="col-sm-12" ng-repeat="application in applications">
-                <div class="col-sm-12">
-                  <span class="title"><a href ng-click="goToApp(application)">{{application.name}}</a></span>
-                </div>
-                <div class="col-sm-12">
-                  <span class="description">{{application.description}}</span>
-                </div>
-                <div class="col-sm-12">
-                  <hr>
-                </div>
+
+              <div class="col-sm-12 mt10 table-responsive">
+                <table class="table table-bordered table-condensed">
+                  <thead>
+                  <tr>
+                    <th nowrap="nowrap" width="1%"></th>
+                    <th nowrap="nowrap" width="30%">Application</th>
+                    <th nowrap="nowrap" width="10%">Version</th>
+                    <th nowrap="nowrap" width="10%">Status</th>
+                    <th nowrap="nowrap" width="10%"># Contracts</th>
+                    <th nowrap="nowrap" width="30%">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat-start="application in applications">
+                    <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></i></td>
+                    <td><a ui-sref="root.application.overview({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a></td>
+                    <td>{{applicationVersions[application.id].version}}</td>
+                    <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
+                    <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
+                    <td>
+                      <button class="btn btn-line-primary btn-xs" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
+                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="publishApp(applicationVersions[application.id])">Publish</button>
+                      <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="retireApp(applicationVersions[application.id])">Retire</button>
+                    </td>
+                  </tr>
+                  <tr ng-show="application.contractsExpanded" ng-repeat-end>
+                    <td colspan="6">
+                      <div class="col-sm-12" >
+                        <table class="table table-condensed">
+                          <thead>
+                          <tr>
+                            <th nowrap="nowrap" width="10%">#</th>
+                            <th nowrap="nowrap" width="40%">To Service</th>
+                            <th nowrap="nowrap" width="40%">Using Plan</th>
+                            <th nowrap="nowrap" width="20%">Created On</th>
+                            <th nowrap="nowrap" width="30%">Actions</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr ng-repeat="contract in applicationContracts[application.id]">
+                            <td>{{$index+1}}</td>
+                            <td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>
+                            <td>{{contract.planName}} - {{contract.planVersion}}</td>
+                            <td>{{contract.createdOn | date}}</td>
+                            <td>
+                              <button class="btn btn-line-warning btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
