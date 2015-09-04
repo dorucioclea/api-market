@@ -281,18 +281,6 @@
           },
           controller: 'OrganizationCtrl'
         })
-        // Applications View
-        .state('root.organization.applications', {
-          url: '/applications',
-          templateUrl: 'views/partials/organization/applications.html',
-          resolve: {
-            Application: 'Application',
-            appData: function (Application, organizationId) {
-              return Application.query({orgId: organizationId}).$promise;
-            }
-          },
-          controller: 'ApplicationsCtrl'
-        })
         // Services View
         .state('root.organization.services', {
           url: '/services',

@@ -139,17 +139,6 @@ angular.module("app.ctrl.organization", [])
         })
       };
 
-      $scope.modalNewApplication = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalNewApplication.html",
-          size: "lg",
-          controller: "NewApplicationCtrl as ctrl",
-          resolve: function() {},
-          windowClass: $scope.modalAnim	// Animation Class put here.
-        });
-
-      };
-
     }])
 
   /// ==== Members Controller
