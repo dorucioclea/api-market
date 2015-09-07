@@ -140,11 +140,13 @@
         }
       };
 
-      $scope.publishApp = function (applicationVersion) {
+      $scope.publishApp = function (applicationVersion, shouldReload) {
         console.log(applicationVersion);
         var action = $scope.createAction(applicationVersion, ACTIONS.REGISTER);
         Action.save(action, function (reply) {
-          $state.forceReload();
+          if(shouldReload) {
+            $state.forceReload();
+          }
         });
       };
 
@@ -251,7 +253,7 @@
     }])
 
 
-    .controller("HeadCtrl", ["$scope", "Fullscreen", function($scope, Fullscreen) {
+    .controller("HeadCtrl", ["$scope", "$state", "Fullscreen", function($scope, $state, Fullscreen) {
       $scope.toggleFloatingSidebar = function() {
         $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
         console.log("floating-sidebar: " + $scope.floatingSidebar);
@@ -264,6 +266,9 @@
           Fullscreen.all()
       };
 
+      $scope.test = function () {
+        $state.go('root.market-dash');
+      }
 
     }]);
 

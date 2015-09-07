@@ -43,14 +43,10 @@
     })
 
     .service('selectedApp', function () {
-      this.appId = '';
-      this.appOrgId = '';
-      this.appVersion = '';
+      this.appVersion = null;
 
       this.updateApplication = function (newApp) {
-        this.appId = newApp.id;
-        this.appOrgId = newApp.organizationId;
-        this.appVersion = newApp.version;
+        this.appVersion = newApp;
       }
     })
 

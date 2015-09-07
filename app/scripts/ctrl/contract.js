@@ -4,28 +4,17 @@
 
   angular.module("app.ctrl.contract", [])
     /// ==== Contract Controller
-    .controller("ContractCtrl", ["$scope", "$state", "$stateParams", "appData", "svcData", "planData", "ApplicationContract",
-      function($scope, $state, $stateParams, appData, svcData, planData, ApplicationContract) {
+    .controller("ContractCtrl", ["$scope", "$state", "$stateParams",
+      function($scope, $state, $stateParams) {
 
-        $scope.application = appData;
         $scope.applicationVersion = $stateParams.appVersion;
-        $scope.service = svcData;
         $scope.serviceVersion = $stateParams.svcVersion;
-        $scope.plans = planData;
+        $scope.planVersion = $stateParams.planVersion;
 
-        $scope.createContract = function (selectedPlan) {
-          var contract = {
-            serviceOrgId: $scope.service.organization.id,
-            serviceId: $scope.service.id,
-            serviceVersion: $stateParams.svcVersion,
-            planId: selectedPlan.planId
-          };
-
-          ApplicationContract.save({orgId: $scope.application.organization.id, appId: $scope.application.id, versionId: $stateParams.appVersion}, contract, function (data) {
-            $state.go('root.application.contracts', {orgId: $scope.application.organization.id, appId: $scope.application.id, versionId: $scope.applicationVersion});
-          });
-        };
-
+        $scope.publishAppAndReturnToDash = function () {
+          $scope.publishApp($scope.applicationVersion, false);
+          $state.go('root.market-dash');
+        }
       }]);
   // #end
 })();

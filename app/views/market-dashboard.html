@@ -72,7 +72,7 @@
                     <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
                     <td>
                       <button class="btn btn-line-primary btn-xs" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
-                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="publishApp(applicationVersions[application.id])">Publish</button>
+                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="publishApp(applicationVersions[application.id], true)">Publish</button>
                       <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="retireApp(applicationVersions[application.id])">Retire</button>
                     </td>
                   </tr>

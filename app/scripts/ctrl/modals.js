@@ -87,43 +87,96 @@
 
       }])
 
-/// ==== Application Selection Controller
-    .controller("AppSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "svcModel", "Application", "ApplicationVersion", "CurrentUserAppOrgs",
-      function ($scope, $modal, $state, $stateParams, $timeout, svcModel, Application, ApplicationVersion, CurrentUserAppOrgs) {
+/// ==== Contract creation: Plan Selection Controller
+    .controller("PlanSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "svcModel", "Application", "ApplicationContract", "ApplicationVersion", "PlanVersion", "PlanVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, svcModel, Application, ApplicationContract, ApplicationVersion, PlanVersion, PlanVersionPolicy) {
 
-        $scope.orgSelected = false;
-        $scope.appSelected = false;
-        $scope.versionSelected = false;
         $scope.service = svcModel.getService();
+        var hasAppContext = false;
+        if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
+          $scope.selectedAppVersion = selectedApp.appVersion;
+          hasAppContext = true;
+        }
+        $scope.availablePlans = [];
+        var noPlanSelected = true;
 
-        CurrentUserAppOrgs.query({}, function (data) {
-          $scope.organizations = data;
-        });
 
-        $scope.getOrgApps = function (selectedOrg) {
-          Application.query({orgId: selectedOrg.id}, function (data) {
+        $scope.getOrgApps = function () {
+          //TODO make orgId dynamic even when no app has been selected yet
+          var orgId = 'Digipolis';
+          if (hasAppContext) {
+            orgId = $scope.selectedAppVersion.organizationId;
+          }
+          Application.query({ orgId: orgId }, function (data) {
             $scope.applications = data;
-            $scope.orgSelected = true;
           })
         };
 
-        $scope.getAppVersions = function (selectedApp) {
-          ApplicationVersion.query({orgId: selectedApp.organizationId, appId: selectedApp.id}, function (data) {
-            $scope.versions = data;
-            $scope.appSelected = true;
+        $scope.getAppVersions = function () {
+          //TODO make orgId dynamic even when no app has been selected yet
+          if (hasAppContext) {
+            ApplicationVersion.query({ orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id }, function (data) {
+              $scope.versions = data;
+            })
+          }
+        };
+
+        var getAvailablePlans = function () {
+          angular.forEach($scope.service.plans, function (value) {
+            PlanVersion.get({orgId: $scope.service.service.organization.id, planId: value.planId, versionId: value.version}, function (planVersion) {
+              $scope.availablePlans.push(planVersion);
+              if (noPlanSelected) {
+                $scope.selectedPlan = planVersion;
+                getPlanPolicies();
+                noPlanSelected = false;
+              }
+            })
+          });
+        };
+
+        var getPlanPolicies = function () {
+          PlanVersionPolicy.query({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version}, function (policies) {
+            $scope.selectedPlanPolicies = policies;
           })
         };
 
-        $scope.versionIsSelected = function () {
-          $scope.versionSelected = true;
+        $scope.selectApp = function (application) {
+          $scope.selectedAppVersion = application;
+          hasAppContext = true;
+          $scope.getAppVersions();
         };
 
-        $scope.startCreateContract = function(selectedVersion) {
-          $state.go('root.contract',
-            { appOrgId: selectedVersion.organizationId, appId: selectedVersion.id, appVersion: selectedVersion.version,
-              svcOrgId: $stateParams.orgId, svcId: $stateParams.svcId, svcVersion: $stateParams.versionId
-            });
-          $scope.$close();
+        $scope.selectPlan = function (plan) {
+          $scope.selectedPlan = plan;
+          getPlanPolicies();
+        };
+
+        $scope.selectVersion = function (version) {
+          $scope.selectedAppVersion = version;
+        };
+
+        $scope.getOrgApps();
+        $scope.getAppVersions();
+        getAvailablePlans();
+
+        $scope.startCreateContract = function() {
+          console.log($scope.service);
+          console.log($scope.selectedAppVersion);
+          console.log($scope.selectedPlan);
+
+          var contract = {
+            serviceOrgId: $scope.service.service.organization.id,
+            serviceId: $scope.service.service.id,
+            serviceVersion: $scope.service.version,
+            planId: $scope.selectedPlan.plan.id
+          };
+
+          console.log(contract);
+
+          ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
+            $state.go('root.contract', { appVersion: $scope.selectedAppVersion, planVersion: $scope.selectedPlan, svcVersion: $scope.service });
+            $scope.modalClose();
+          });
         };
 
         $scope.modalClose = function() {
@@ -170,12 +223,10 @@
 
         $scope.addPolicy = function() {
           var config = $scope.getConfig();
-          console.log(config);
           var newPolicy = {
             definitionId: $scope.selectedPolicy.id,
             configuration: config
           };
-          console.log(newPolicy);
 
           ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
             $scope.modalClose();
@@ -234,7 +285,6 @@
         $scope.createPlan = function (plan) {
           Plan.save({ orgId: $stateParams.orgId }, plan, function (newPlan) {
             $scope.modalClose();
-            console.log(plan);
             $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
           });
         };

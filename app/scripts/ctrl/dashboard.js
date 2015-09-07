@@ -7,48 +7,49 @@
     /// ==== MarketDash Controller
     .controller('MarketDashCtrl', ['$scope', '$modal', '$state', 'appData', 'appVersions', 'appContracts', 'selectedApp', 'ApplicationContract',
       function ($scope, $modal, $state, appData, appVersions, appContracts, selectedApp, ApplicationContract) {
-      $scope.applications = appData;
-      $scope.applicationVersions = appVersions;
-      $scope.applicationContracts = appContracts;
+        $scope.applications = appData;
+        $scope.applicationVersions = appVersions;
+        $scope.applicationContracts = appContracts;
 
-      $scope.toggle = function (app) {
-        app.contractsExpanded = !app.contractsExpanded;
-      };
+        $scope.toggle = function (app) {
+          app.contractsExpanded = !app.contractsExpanded;
+        };
 
-      $scope.canCreateContract = function (appVersion) {
-        return !!(appVersion.status == 'Created' || appVersion.status == 'Ready');
-      };
+        $scope.canCreateContract = function (appVersion) {
+          return !!(appVersion.status == 'Created' || appVersion.status == 'Ready');
+        };
 
-      $scope.canPublish = function (appVersion) {
-        return appVersion.status == 'Ready';
-      };
+        $scope.canPublish = function (appVersion) {
+          return appVersion.status == 'Ready';
+        };
 
-      $scope.canRetire = function (appVersion) {
-        return appVersion.status == 'Registered'
-      };
+        $scope.canRetire = function (appVersion) {
+          return appVersion.status == 'Registered'
+        };
 
-      $scope.newContract = function (appVersion) {
-        selectedApp.updateApplication(appVersion);
-        $state.go('root.apis.grid');
-      };
+        $scope.newContract = function (appVersion) {
+          console.log(appVersion);
+          selectedApp.updateApplication(appVersion);
+          $state.go('root.apis.grid');
+        };
 
-      $scope.breakContract = function (contract) {
-        ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
-          $state.forceReload();
-        })
-      };
+        $scope.breakContract = function (contract) {
+          ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
+            $state.forceReload();
+          })
+        };
 
-      $scope.modalNewApplication = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalNewApplication.html",
-          size: "lg",
-          controller: "NewApplicationCtrl as ctrl",
-          resolve: function() {},
-          windowClass: $scope.modalAnim	// Animation Class put here.
-        });
+        $scope.modalNewApplication = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalNewApplication.html",
+            size: "lg",
+            controller: "NewApplicationCtrl as ctrl",
+            resolve: function() {},
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
 
-      };
-    }])
+        };
+      }])
 
 /// ==== Dashboard Controller
     .controller("DashboardCtrl", ["$scope", "svcData", "categories", "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories",

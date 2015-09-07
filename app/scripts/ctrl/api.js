@@ -27,9 +27,9 @@ angular.module("app.ctrl.api", [])
 
       $scope.modalSelectApplicationForContract = function() {
         $modal.open({
-          templateUrl: "views/modals/modalSelectApplication.html",
+          templateUrl: "views/modals/modalSelectPlan.html",
           size: "lg",
-          controller: "AppSelectCtrl as ctrl",
+          controller: "PlanSelectCtrl as ctrl",
           resolve: function() {},
           windowClass: $scope.modalAnim	// Animation Class put here.
         });

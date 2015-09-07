@@ -233,33 +233,10 @@
           controller: 'TermsCtrl'
         })
 
-        // CONTRACT CREATION PAGE =========================================================
+        // CONTRACT CREATION CONFIRMATION PAGE =========================================================
         .state('root.contract', {
-          params: { appOrgId: {}, appId: {}, appVersion: {}, svcOrgId: {}, svcId: {}, svcVersion: {} },
+          params: { appVersion: {}, planVersion: {}, svcVersion: {} },
           templateUrl: 'views/contract.html',
-          resolve: {
-            ServicePlans: 'ServicePlans',
-            Application: 'Application',
-            Service: 'Service',
-            planData: function (ServicePlans, $stateParams) {
-              var orgId = $stateParams.svcOrgId;
-              var svcId = $stateParams.svcId;
-
-              return ServicePlans.query({orgId: orgId, svcId: svcId, versionId: 'v1'}).$promise;
-            },
-            appData: function(Application, $stateParams) {
-              var orgId = $stateParams.appOrgId;
-              var appId = $stateParams.appId;
-
-              return Application.get({orgId: orgId, appId: appId}).$promise;
-            },
-            svcData: function(Service, $stateParams) {
-              var orgId = $stateParams.svcOrgId;
-              var svcId = $stateParams.svcId;
-
-              return Service.get({orgId: orgId, svcId: svcId}).$promise;
-            }
-          },
           controller: 'ContractCtrl as ctrl'
         })
 
