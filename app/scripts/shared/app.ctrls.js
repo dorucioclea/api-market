@@ -108,18 +108,28 @@
           case ACTIONS.REGISTER:
             action = {
               type: ACTIONS.REGISTER,
-              organizationId: entityVersion.organizationId,
-              entityId: entityVersion.id,
               entityVersion: entityVersion.version
-            };
+             };
+            if (angular.isDefined(entityVersion.organizationId)) {
+              action.organizationId = entityVersion.organizationId;
+              action.entityId = entityVersion.id;
+            } else {
+              action.organizationId = entityVersion.application.organization.id;
+              action.entityId = entityVersion.application.id;
+            }
             return action;
           case ACTIONS.UNREGISTER:
             action = {
               type: ACTIONS.UNREGISTER,
-              organizationId: entityVersion.organizationId,
-              entityId: entityVersion.id,
               entityVersion: entityVersion.version
             };
+            if (angular.isDefined(entityVersion.organizationId)) {
+              action.organizationId = entityVersion.organizationId;
+              action.entityId = entityVersion.id;
+            } else {
+              action.organizationId = entityVersion.application.organization.id;
+              action.entityId = entityVersion.application.id;
+            }
             return action;
           case ACTIONS.PUBLISH:
             action = {
