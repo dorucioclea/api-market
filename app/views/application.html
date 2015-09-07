@@ -10,7 +10,7 @@
   <overview-tabs>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis" ng-show="isRegistered">APIs</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
   </overview-tabs>
 </overview>
