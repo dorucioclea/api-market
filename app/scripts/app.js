@@ -69,7 +69,7 @@
       $urlRouterProvider.otherwise('/apis/grid');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
-      $urlRouterProvider.when('/org/{orgId}/application/{appId}', '/org/{orgId}/application/{appId}/overview');
+      $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
       $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/overview');
       $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', '/org/{orgId}/plan/{planId}/{versionId}/overview');
 
