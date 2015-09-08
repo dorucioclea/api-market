@@ -31,11 +31,28 @@ module.exports = function (grunt) {
         tasks: 'wiredep'
       },
       scripts: {
-        files: '<%= config.app %>/scripts/{,*/}*.js',
+        files: '<%= config.app %>/scripts/**/*.js',
         tasks: ['newer:jshint:all'],
         options: {
           livereload: '<%= config.connect_live_reload %>'
         }
+      },
+      styles: {
+        files: ['<%= config.app %>/styles/**/*.*ss'],
+        tasks: ['newer:copy:styles']
+      },
+      gruntfile: {
+        files: ['Gruntfile.js']
+      },
+      livereload: {
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        },
+        files: [
+          '<%= config.app %>/**/*.html',
+          '.tmp/styles/{,**/}*.css',
+          '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
+        ]
       }
     }, // End Watch
 
