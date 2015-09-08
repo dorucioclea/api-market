@@ -6,7 +6,9 @@
 
 	ul.left-elems,
 	ul.right-elems {
-		display: table; height: 100%;
+		display: table;
+    height: @site-head-height;
+    line-height: 1;
 		> li {.vertical-center()}
 	}
 
@@ -33,8 +35,9 @@
 		}
 
     > li > .logo {
-      width: 55px;
-      height: 55px;
+      width: @site-head-height;
+      height: @site-head-height;
+      content: url(@brand-logo);
     }
 
 		// === site search

@@ -7,46 +7,48 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-base:              #000;
-@gray-darker:            lighten(@gray-base, 13.5%); // #222
-@gray-dark:              lighten(@gray-base, 20%);   // #333
-@gray:                   lighten(@gray-base, 33.5%); // #555
-@gray-light:             lighten(@gray-base, 46.7%); // #777
-@gray-lighter:           lighten(@gray-base, 93.5%); // #eee
-@gray-lightest: 		 lighten(@gray-base, 97%);  // #f7f7f7
+@gray-base:           #000;
+@gray-darker:         lighten(@gray-base, 13.5%); // #222
+@gray-dark:           lighten(@gray-base, 20%);   // #333
+@gray:                lighten(@gray-base, 33.5%); // #555
+@gray-light:          lighten(@gray-base, 46.7%); // #777
+@gray-lighter:        lighten(@gray-base, 93.5%); // #eee
+@gray-lightest: 		  lighten(@gray-base, 97%);  // #f7f7f7
 
 /// ===== material colors
-@m-indigo: 			 	#3f51b5;
-@m-indigo-dark: 		#303F9F;
-@m-red: 				#F44336;
-@m-red-dark: 			#D32F2F;
-@m-pink: 			 	#E91E63;
-@m-pink-dark: 			#C2185B;
-@m-light-blue: 			#03A9F4;
+@m-indigo: 			 	    #3f51b5;
+@m-indigo-dark: 		  #303F9F;
+@m-red: 				      #F44336;
+@m-red-dark: 			    #D32F2F;
+@m-pink: 			 	      #E91E63;
+@m-pink-dark: 			  #C2185B;
+@m-light-blue: 			  #03A9F4;
 @m-light-blue-dark: 	#0288D1;
-@m-blue: 				#2196F3;
-@m-blue-dark: 			#1976D2;
+@m-blue: 				      #2196F3;
+@m-blue-dark: 			  #1976D2;
 @m-deep-purple: 	    #673AB7;
 @m-deep-purple-dark: 	#512DA8;
-@m-blue-gray: 			#607D8B;
+@m-blue-gray: 			  #607D8B;
 @m-blue-gray-dark: 		#455A64;
-@m-green: 				#4CAF50;
-@m-green-dark: 			#388E3C;
-@m-yellow: 				#FFEB3B;
-@m-yellow-dark: 		darken(#FFEB3B, 4%);
-@m-brown: 				#795548;
-@m-brown-dark: 			#5D4037;
-@m-gray: 				#9E9E9E;
-@m-gray-dark: 			#616161;
+@m-green: 				    #4CAF50;
+@m-green-dark: 			  #388E3C;
+@m-yellow: 				    #FFEB3B;
+@m-yellow-dark: 		  darken(#FFEB3B, 4%);
+@m-brown: 				    #795548;
+@m-brown-dark: 			  #5D4037;
+@m-gray: 				      #9E9E9E;
+@m-gray-dark: 			  #616161;
 
 
-@brand-primary:         @tink-brand;
-@brand-success:         @tink-success;
-@brand-info:            @tink-info;
-@brand-warning:         @tink-warning;
-@brand-danger:          @tink-danger;
-@brand-pink: 			      @tink-pink;
-@brand-purple: 			    @tink-purple;
+@brand-primary:       @tink-brand;
+@brand-success:       @tink-success;
+@brand-info:          @tink-info;
+@brand-warning:       @tink-warning;
+@brand-danger:        @tink-danger;
+@brand-pink: 			    @tink-pink;
+@brand-purple: 			  @tink-purple;
+@brand-site-head:     @tink-site-head;
+@brand-logo:          @tink-logo;
 
 @tink-text-black:     #000;
 @tink-blue:           #81d4fa;
@@ -74,21 +76,40 @@
 @tink-warning:        #ff8d00;
 @tink-white:          #fff;
 @tink-yellow:         #fff176;
+@tink-site-head:      @tink-gray-darker;
+@tink-logo:           '/images/digipolis-logo.svg';
 
 @social-twitter : 		#79cef6;
 @social-facebook: 		#3b5998;
-@social-gplus: 			#dd4a38;
+@social-gplus: 			  #dd4a38;
 @social-instagram: 		#82685A;
-@social-vimeo: 			#63879C;
-@social-flickr: 		#0061DB;
-@social-github: 		#3B3B3B;
-@social-linkedin:		#018FAF;
+@social-vimeo: 			  #63879C;
+@social-flickr: 		  #0061DB;
+@social-github: 		  #3B3B3B;
+@social-linkedin:	  	#018FAF;
 @social-pinterest: 		#D73532;
 @social-dribbble: 		#EA73A0;
-@social-skype: 			#00B0F6;
-@social-behance: 		#B80638;
-@social-rss: 			#F79638;
-@social-youtube: 		#CC181E;
+@social-skype: 			  #00B0F6;
+@social-behance: 		  #B80638;
+@social-rss: 			    #F79638;
+@social-youtube: 		  #CC181E;
+
+
+/**
+ * Variables for publisher
+ * ----------------------------------------------------------------
+ */
+
+/**
+ * Main
+ */
+@stad-primary:        #219dc8;
+@stad-brand:          #cf0039;
+@stad-brand-light:    #f28b00;
+@stad-success:        #0b0;
+@stad-site-head:      #333;
+@stad-logo:           '/images/stad-logo.svg';
+
 
 
 // Layout Vars
@@ -96,8 +117,8 @@
 //
 
 // == Site head
-@site-head-bg: 					@tink-gray-darker;
-@site-head-height: 				55px;
+@site-head-bg: 					@brand-site-head;
+@site-head-height: 				60px;
 
 // == Site nav
 @site-nav-width: 				220px;
