@@ -38,11 +38,11 @@
 	<li class="profile-drop hidden-xs dropdown" dropdown>
 		<a href dropdown-toggle>
 			<img src="images/admin.jpg" alt="admin-pic">
+      <span class="text-primary">&nbsp;{{currentUserInfo.fullName}}</span>
       <span class="text-primary caret"></span>
 		</a>
 		<ul class="dropdown-menu dropdown-menu-right">
-			<li><a ui-sref="root.user"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
-			<li><a ui-sref="root.user"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
+			<li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>My Profile</a></li>
 			<li class="divider"></li>
       <li><a ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
 			<li><a ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>

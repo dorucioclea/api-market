@@ -88,6 +88,14 @@
         return service;
       };
 
+    })
+
+    .service('userScreenModel', function () {
+      this.selectedTab = 'Profile';
+
+      this.updateTab = function (newTab) {
+        this.selectedTab = newTab;
+      }
     });
 
 })();

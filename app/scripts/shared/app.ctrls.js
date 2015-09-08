@@ -263,11 +263,15 @@
     }])
 
 
-    .controller("HeadCtrl", ["$scope", "$state", "Fullscreen", function($scope, $state, Fullscreen) {
+    .controller("HeadCtrl", ["$scope", "$state", "CurrentUserInfo", "Fullscreen", function($scope, $state, CurrentUserInfo, Fullscreen) {
       $scope.toggleFloatingSidebar = function() {
         $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
         console.log("floating-sidebar: " + $scope.floatingSidebar);
       };
+
+      CurrentUserInfo.get({}, function (reply) {
+        $scope.currentUserInfo = reply;
+      });
 
       $scope.goFullScreen = function() {
         if (Fullscreen.isEnabled())

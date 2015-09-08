@@ -5,27 +5,24 @@
   angular.module("app.ctrl.user", [])
 
   /// ==== User Controller
-    .controller("UserCtrl", ["$scope", function ($scope) {
+    .controller("UserCtrl", ["$scope", "userInfo", "userScreenModel", function ($scope, userInfo, userScreenModel) {
 
       $scope.selectedTab = 1;
 
-      $scope.selectTab = function(tabId) {
-        $scope.selectedTab = tabId;
-      };
+      $scope.currentUserInfo = userInfo;
 
-      $scope.pathForTab = function() {
-        switch ($scope.selectedTab) {
-          case 1:
-            return "views/partials/user/profile.html";
-          case 2:
-            return "views/partials/user/account.html";
-          case 3:
-            return "views/partials/user/email.html";
-          case 4:
-            return "views/partials/user/notifications.html";
-        }
-      };
-
+      $scope.isActive = function (tabName) {
+        return tabName == userScreenModel.selectedTab;
+      }
+    }])
+    .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Email');
+    }])
+    .controller("UserProfileCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Profile');
+    }])
+    .controller("UserNotificationsCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Notifications');
     }]);
 
   // #end

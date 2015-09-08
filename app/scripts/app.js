@@ -529,27 +529,32 @@
         // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================
         .state('root.user', {
           url: '/user',
-          templateUrl: 'views/user.html'
-        })
-        // Account Tab
-        .state('root.user.account', {
-          url: 'user/account',
-          templateUrl: 'views/partials/user/account.html'
+          templateUrl: 'views/user.html',
+          resolve: {
+            CurrentUserInfo: 'CurrentUserInfo',
+            userInfo: function (CurrentUserInfo) {
+              return CurrentUserInfo.get().$promise;
+            }
+          },
+          controller: 'UserCtrl'
         })
         // Email Tab
         .state('root.user.email', {
-          url: 'user/email',
-          templateUrl: 'views/partials/user/email.html'
+          url: '/email',
+          templateUrl: 'views/partials/user/email.html',
+          controller: 'UserEmailCtrl'
         })
         // Notifications Tab
         .state('root.user.notifications', {
-          url: 'user/notifications',
-          templateUrl: 'views/partials/user/notifications.html'
+          url: '/notifications',
+          templateUrl: 'views/partials/user/notifications.html',
+          controller: 'UserNotificationsCtrl'
         })
         // Profile Tab
         .state('root.user.profile', {
-          url: 'user/profile',
-          templateUrl: 'views/partials/user/profile.html'
+          url: '/profile',
+          templateUrl: 'views/partials/user/profile.html',
+          controller: 'UserProfileCtrl'
         })
 
     })
