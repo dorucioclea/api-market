@@ -10,7 +10,11 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+
+    connect_port: 9000,
+    connect_live_reload: 35729,
+    connect_hostname: 'localhost',
   };
 
   // Define the configuration for all the tasks
@@ -18,8 +22,69 @@ module.exports = function (grunt) {
     // Project settings
     config: appConfig,
 
-    
+    // ===== //
+    // Watch //
+    // ===== //
+    watch: {
+      bower: {
+        files: 'bower.json',
+        tasks: 'wiredep'
+      },
+      scripts: {
+        files: '<%= config.app %>/scripts/{,*/}*.js',
+        tasks: ['newer:jshint:all'],
+        options: {
+          livereload: '<%= config.connect_live_reload %>'
+        }
+      }
+    }, // End Watch
 
+    // ======= //
+    // Connect //
+    // ======= //
+    connect: {
+      options: {
+        port: '<%= config.connect_port %>',
+        base: '<%= config.app %>',
+        livereload: '<%= config.connect_live_reload %>',
+        hostname: '<%= config.connect_hostname %>'
+      },
+      livereload: {
+        options: {
+          open: true,
+          middleware: function (connect) {
+            return [
+              connect.static('.tmp'),
+              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/app/styles', connect.static('./app/styles')),
+              connect.static(appConfig.app)
+            ];
+          }
+        }
+      }
+    }, // End Connect
+
+    // ========================== //
+    // Wire Dependencies of Bower //
+    // ========================== //
+    wiredep: {
+      task: {
+        src: ['<%= config.app %>/index.html']
+      }
+    }, // End Wiredep
+
+    // ======= //
+    // JS Hint //
+    // ======= //
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: {
+        src: ['Gruntfile.js', '<%= config.app %>/scripts/{,*/}*.js']
+      }
+    }, // End JSHint
   });
 
 
@@ -28,12 +93,9 @@ module.exports = function (grunt) {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
-    grunt.task.run([]);
+    grunt.task.run([
+      'connect:livereload',
+      'watch'
+    ]);
   });
-
-  grunt.registerTask('test', []);
-
-  grunt.registerTask('build', []);
-
-  grunt.registerTask('default', []);
 };
