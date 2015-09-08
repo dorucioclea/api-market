@@ -46,44 +46,52 @@
 	<script src="scripts/dev/less.min.js"></script>
 	<!-- endbuild -->
 
-	<!-- build:js scripts/vendors.js -->
-	<!-- Vendors -->
-	<script src="scripts/vendors/jquery.min.js"></script> <!-- load before angular -->
-	<script src="scripts/vendors/angular.min.js"></script>
-	<!-- endbuild -->
+  <!-- build:js scripts/bower.js -->
+  <!-- bower:js -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-animate/angular-animate.js"></script>
+  <script src="../bower_components/angular-aria/angular-aria.js"></script>
+  <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="../bower_components/angular-fullscreen/src/angular-fullscreen.js"></script>
+  <script src="../bower_components/angular-loading-bar/build/loading-bar.js"></script>
+  <script src="../bower_components/angular-material/angular-material.js"></script>
+  <script src="../bower_components/angular-media-queries/match-media.js"></script>
+  <script src="../bower_components/angular-resource/angular-resource.js"></script>
+  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="../bower_components/tv4/tv4.js"></script>
+  <script src="../bower_components/objectpath/lib/ObjectPath.js"></script>
+  <script src="../bower_components/angular-schema-form/dist/schema-form.js"></script>
+  <script src="../bower_components/angular-schema-form/dist/bootstrap-decorator.js"></script>
+  <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="../bower_components/underscore/underscore.js"></script>
+  <script src="../bower_components/backbone/backbone.js"></script>
+  <script src="../bower_components/handlebars/handlebars.js"></script>
+  <script src="../bower_components/marked/lib/marked.js"></script>
+  <script src="../bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+  <script src="../bower_components/ngstorage/ngStorage.js"></script>
+  <script src="../bower_components/oclazyload/dist/ocLazyLoad.js"></script>
+  <script src="../bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+  <script src="../bower_components/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+  <!-- endbower -->
+  <script>
+    ;(function() {
+      'use strict';
+      Backbone.View = (function(View) {
+        return View.extend({
+          constructor: function(options) {
+            this.options = options || {};
+            View.apply(this, arguments);
+          }
+        });
+      })(Backbone.View);
+    })();
+  </script>
 
-	<!-- build:js scripts/plugins.js -->
-	<!-- Plugins -->
-  <script src="scripts/plugins/angular-ui-router.min.js"></script>
-	<script src="scripts/plugins/angular-animate.min.js"></script>
-	<script src="scripts/plugins/angular-aria.min.js"></script>
-	<script src="scripts/plugins/angular-sanitize.min.js"></script>
-	<script src="scripts/plugins/ui-bootstrap-tpls.min.js"></script>
-	<script src="scripts/plugins/angular-material.min.js"></script>
-  <script src="scripts/plugins/angular-resource.min.js"></script>
-	<script src="scripts/plugins/ocLazyLoad.min.js"></script>
-	<script src="scripts/plugins/loading-bar.min.js"></script>
-	<script src="scripts/plugins/angular-fullscreen.js"></script>
-	<script src="scripts/plugins/perfect-scrollbar.min.js"></script>
-  <script src="scripts/plugins/underscore-min.js"></script>
-  <script src="scripts/plugins/jquery-1.8.0.min.js"></script>
-  <script src="scripts/plugins/jquery.ba-bbq.min.js"></script>
-  <script src="scripts/plugins/jquery.slideto.min.js"></script>
-  <script src="scripts/plugins/jquery.wiggle.min.js"></script>
-  <script src="scripts/plugins/backbone-min.js"></script>
-  <script src="scripts/plugins/handlebars-2.0.0.js"></script>
-  <script src="scripts/plugins/highlight.7.3.pack.js"></script>
-  <script src="scripts/plugins/marked.js"></script>
+  <script src="../bower_components/highlight/src/highlight.js"></script>
   <script src="scripts/plugins/swagger-oauth.js"></script>
   <script src="scripts/plugins/swagger-ui.js"></script>
-  <script src="scripts/plugins/ngStorage.min.js"></script>
-  <script src="scripts/plugins/match-media.js"></script>
-  <script src="scripts/plugins/ng-tags-input.min.js"></script>
-  <script src="scripts/plugins/tv4.js"></script>
-  <script src="scripts/plugins/ObjectPath.js"></script>
-  <script src="scripts/plugins/schema-form.min.js"></script>
-  <script src="scripts/plugins/bootstrap-decorator.min.js"></script>
-	<!-- endbuild -->
+  <!-- endbuild -->
 
 	<!-- build:js scripts/app.js -->
 	<!-- Custom scripts -->

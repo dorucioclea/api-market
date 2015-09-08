@@ -181,26 +181,29 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     wiredep: {
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
-      },
-      test: {
-        devDependencies: true,
-        src: '<%= karma.unit.configFile %>',
-        ignorePath:  /\.\.\//,
-        fileTypes:{
-          js: {
-            block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
-              detect: {
-                js: /'(.*\.js)'/gi
-              },
-              replace: {
-                js: '\'{{filePath}}\','
-              }
-            }
-          }
+      task: {
+        src: ['<%= yeoman.app %>/index.html']
       }
+      //app: {
+      //  src: ['<%= yeoman.app %>/index.html'],
+      //  ignorePath:  /\.\.\//
+      //},
+      //test: {
+      //  devDependencies: true,
+      //  src: '<%= karma.unit.configFile %>',
+      //  ignorePath:  /\.\.\//,
+      //  fileTypes:{
+      //    js: {
+      //      block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
+      //        detect: {
+      //          js: /'(.*\.js)'/gi
+      //        },
+      //        replace: {
+      //          js: '\'{{filePath}}\','
+      //        }
+      //      }
+      //    }
+      //}
     },
 
     // Renames files for browser caching purposes
@@ -420,7 +423,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
-      'watch'
+      'watch:livereload'
     ]);
   });
 
