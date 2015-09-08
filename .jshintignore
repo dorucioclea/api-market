@@ -1,5 +1,4 @@
 app/scripts/plugins/*
 app/scripts/dev/*
-app/scripts/lazyload/*
 app/scripts/vendors/*
 app/scripts/ie/*
