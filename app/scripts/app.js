@@ -1,4 +1,4 @@
-;(function() {
+; (function () {
   "use strict";
 
   angular.module("app", [
@@ -12,7 +12,6 @@
     /* 3rd party modules */
     "ui.router",
     "ngStorage",
-    "oc.lazyLoad",
     "ui.bootstrap",
     "angular-loading-bar",
     "FBAngular",
@@ -48,7 +47,7 @@
 
 
     // disable spinner in loading-bar
-    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
       cfpLoadingBarProvider.includeSpinner = false;
       cfpLoadingBarProvider.latencyThreshold = 500;
     }])
@@ -64,7 +63,7 @@
       }])
 
     // UI-Router states
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider) {
 
       $urlRouterProvider.otherwise('/apis/grid');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
@@ -72,7 +71,6 @@
       $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
       $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/overview');
       $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', '/org/{orgId}/plan/{planId}/{versionId}/overview');
-
 
 
       $stateProvider
@@ -106,7 +104,7 @@
               var appVersions = {};
               var promises = [];
 
-              angular.forEach(appData, function(app){
+              angular.forEach(appData, function (app) {
                 promises.push(ApplicationVersion.query({orgId: app.organizationId, appId: app.id}).$promise);
               });
 
@@ -121,14 +119,18 @@
               var appContracts = {};
               var promises = [];
 
-              angular.forEach(appVersions, function(value) {
-                promises.push(ApplicationContract.query({orgId: value.organizationId, appId: value.id, versionId: value.version}).$promise);
+              angular.forEach(appVersions, function (value) {
+                promises.push(ApplicationContract.query({
+                  orgId: value.organizationId,
+                  appId: value.id,
+                  versionId: value.version
+                }).$promise);
               });
 
               return $q.all(promises).then(function (results) {
                 angular.forEach(results, function (value) {
                   // Check if at least one contract was found, so we can add by application Id of the first contract
-                  if(angular.isDefined(value[0])) {
+                  if (angular.isDefined(value[0])) {
                     appContracts[value[0].appId] = value;
                   }
                 });
@@ -176,7 +178,7 @@
           templateUrl: 'views/api.html',
           resolve: {
             ServiceVersion: 'ServiceVersion',
-            svcData: function(ServiceVersion, $stateParams){
+            svcData: function (ServiceVersion, $stateParams) {
 
               var orgId = $stateParams.orgId;
               var svcId = $stateParams.svcId;
@@ -235,7 +237,7 @@
 
         // CONTRACT CREATION CONFIRMATION PAGE =========================================================
         .state('root.contract', {
-          params: { appVersion: {}, planVersion: {}, svcVersion: {} },
+          params: {appVersion: {}, planVersion: {}, svcVersion: {}},
           templateUrl: 'views/contract.html',
           controller: 'ContractCtrl as ctrl'
         })
@@ -246,7 +248,7 @@
           templateUrl: 'views/organization.html',
           resolve: {
             Organization: 'Organization',
-            orgData: function(Organization, $stateParams){
+            orgData: function (Organization, $stateParams) {
 
               var orgId = $stateParams.orgId;
 
@@ -308,7 +310,7 @@
           templateUrl: 'views/my-organizations.html',
           resolve: {
             CurrentUserAppOrgs: 'CurrentUserAppOrgs',
-            appOrgData: function(CurrentUserAppOrgs){
+            appOrgData: function (CurrentUserAppOrgs) {
               return CurrentUserAppOrgs.query().$promise;
             }
           },
@@ -321,7 +323,7 @@
           templateUrl: 'views/plan.html',
           resolve: {
             PlanVersion: 'PlanVersion',
-            planData: function(PlanVersion, organizationId, planId, versionId){
+            planData: function (PlanVersion, organizationId, planId, versionId) {
               return PlanVersion.get({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
             },
             planVersions: function (PlanVersion, organizationId, planId) {
@@ -379,8 +381,12 @@
           templateUrl: 'views/application.html',
           resolve: {
             ApplicationVersion: 'ApplicationVersion',
-            appData: function(ApplicationVersion, organizationId, applicationId, versionId){
-              return ApplicationVersion.get({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
+            appData: function (ApplicationVersion, organizationId, applicationId, versionId) {
+              return ApplicationVersion.get({
+                orgId: organizationId,
+                appId: applicationId,
+                versionId: versionId
+              }).$promise;
             },
             appVersions: function (ApplicationVersion, organizationId, applicationId) {
               return ApplicationVersion.query({orgId: organizationId, appId: applicationId}).$promise;
@@ -410,7 +416,11 @@
           resolve: {
             ApplicationContract: 'ApplicationContract',
             contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
+              return ApplicationContract.query({
+                orgId: organizationId,
+                appId: applicationId,
+                versionId: versionId
+              }).$promise;
             }
           },
           controller: 'ContractsCtrl'
@@ -422,7 +432,11 @@
           resolve: {
             ApplicationContract: 'ApplicationContract',
             contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-              return ApplicationContract.query({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
+              return ApplicationContract.query({
+                orgId: organizationId,
+                appId: applicationId,
+                versionId: versionId
+              }).$promise;
             }
           },
           controller: 'ApisCtrl'
@@ -446,7 +460,7 @@
           templateUrl: 'views/service.html',
           resolve: {
             ServiceVersion: 'ServiceVersion',
-            svcData: function(ServiceVersion, organizationId, serviceId, versionId){
+            svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
               return ServiceVersion.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
             },
             svcVersions: function (ServiceVersion, organizationId, serviceId) {
@@ -474,16 +488,14 @@
         .state('root.service.implementation', {
           url: '/implementation',
           templateUrl: 'views/partials/service/implementation.html',
-          resolve: {
-          },
+          resolve: {},
           controller: 'ServiceImplementationCtrl'
         })
         // Definition Tab
         .state('root.service.definition', {
           url: '/definition',
           templateUrl: 'views/partials/service/definition.html',
-          resolve: {
-          },
+          resolve: {},
           controller: 'ServiceDefinitionCtrl'
         })
         // Plans Tab
@@ -505,7 +517,11 @@
           resolve: {
             ServiceVersionPolicy: 'ServiceVersionPolicy',
             policyData: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
-              return ServiceVersionPolicy.query({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+              return ServiceVersionPolicy.query({
+                orgId: organizationId,
+                svcId: serviceId,
+                versionId: versionId
+              }).$promise;
             }
           },
           data: {
@@ -560,9 +576,9 @@
     })
 
     // Define Force Reload
-    .config(function($provide) {
-      $provide.decorator('$state', function($delegate, $stateParams) {
-        $delegate.forceReload = function() {
+    .config(function ($provide) {
+      $provide.decorator('$state', function ($delegate, $stateParams) {
+        $delegate.forceReload = function () {
           return $delegate.go($delegate.current, $stateParams, {
             reload: true,
             inherit: false,
@@ -572,87 +588,6 @@
         return $delegate;
       })
     })
-
-    // lazy loading scripts references of angular modules only
-    .config(["$ocLazyLoadProvider", function($oc) {
-      $oc.config({
-        debug: true,
-        event: false,
-        modules: [{
-          name: "angularBootstrapNavTree",
-          files: ["scripts/lazyload/abn_tree_directive.js", "styles/lazyload/abn_tree.css"]
-        },
-          {
-            name: "ui.calendar",
-            serie: true,	// load files in series
-            files: [
-              "scripts/lazyload/moment.min.js",
-              "scripts/lazyload/fullcalendar.min.js",
-              "styles/lazyload/fullcalendar.css",
-              "scripts/lazyload/calendar.js"
-            ]
-          },
-          {
-            name: "ui.select",
-            files: ["scripts/lazyload/select.min.js", "styles/lazyload/select.css"]
-          },
-          {
-            name: "ngTagsInput",
-            files: ["scripts/lazyload/ng-tags-input.min.js", "styles/lazyload/ng-tags-input.css"]
-          },
-          {
-            name: "colorpicker.module",
-            files: ["scripts/lazyload/bootstrap-colorpicker-module.min.js", "styles/lazyload/colorpicker.css"]
-          },
-          {
-            name: "ui.slider",
-            serie: true,
-            files: ["scripts/lazyload/bootstrap-slider.min.js", "scripts/lazyload/directives/bootstrap-slider.directive.js", "styles/lazyload/bootstrap-slider.css"]
-          },
-          {
-            name: "textAngular",
-            serie: true,
-            files: ["scripts/lazyload/textAngular-rangy.min.js",  "scripts/lazyload/textAngular.min.js", "scripts/lazyload/textAngularSetup.js", "styles/lazyload/textAngular.css"]
-          },
-          {
-            name: "flow",
-            files: ["scripts/lazyload/ng-flow-standalone.min.js"]
-          },
-          {
-            name: "ngImgCrop",
-            files: ["scripts/lazyload/ng-img-crop.js", "styles/lazyload/ng-img-crop.css"]
-          },
-          {
-            name: "ngMask",
-            files: ["scripts/lazyload/ngMask.min.js"]
-          },
-          {
-            name: "angular-c3",
-            files: ["scripts/lazyload/directives/c3.directive.js"]
-          },
-          {
-            name: "easypiechart",
-            files: ["scripts/lazyload/angular.easypiechart.min.js"]
-          },
-          {
-            name: "ngMap",
-            files: ["scripts/lazyload/ng-map.min.js"]
-          }
-        ]
-      });
-    }])
-
-
-    // jquery/javascript and css for plugins via lazy load
-    .constant("JQ_LOAD", {
-      fullcalendar: [],
-      moment: ["scripts/lazyload/moment.min.js"],
-      sparkline: ["scripts/lazyload/jquery.sparkline.min.js"],
-      c3: ["scripts/lazyload/d3.min.js", "scripts/lazyload/c3.min.js", "styles/lazyload/c3.css"],
-      gmaps: ["https://maps.google.com/maps/api/js"]
-    })
-
-
 
 }());
 
