@@ -80,7 +80,6 @@
           url: '/login',
           templateUrl: '/views/signin.html',
           controller: 'LoginCtrl'
-
         })
 
         // ROOT STATE =====================================================================
