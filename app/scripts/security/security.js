@@ -6,7 +6,7 @@
  */
 
 ;
-(function ($, apimConfig) {
+(function () {
   'use strict';
 
   function getParameterByName(name) {
@@ -16,49 +16,33 @@
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 
-  function getBaseURL() {
-    var url = location.href;  // entire url including querystring - also: window.location.href;
-    var baseURL = url.substring(0, url.indexOf('/', 14));
+  if (!sessionStorage.getItem("apim_session-apikey")) {
 
-
-    if (baseURL.indexOf('http://localhost') != -1) {
-      // Base Url for localhost
-      var url = location.href;  // window.location.href;
-      var pathname = location.pathname;  // window.location.pathname;
-      var index1 = url.indexOf(pathname);
-      var index2 = url.indexOf("/", index1 + 1);
-      var baseLocalUrl = url.substr(0, index2);
-
-      return baseLocalUrl + "/";
-    }
-    else {
-      // Root Url for domain name
-      return baseURL + "/";
-    }
-  }
-
-  if (!sessionStorage.getItem(apimConfig.Security.SavedKey)) {
-
-    var apikey = getParameterByName(apimConfig.Base.ApiKeyName);
+    var apikey = getParameterByName("apikey");
 
     if (!apikey) {
+      //var url = 'http://api.t1t.be/API-Engine-web/v1/users/idp/redirect';
       var url = 'http://apim.t1t.be:8000/dev/apiengine/v1/users/idp/redirect';
-      var data = "{\"idpUrl\": \"" + apimConfig.Security.IdpUrl + "\", \"spUrl\": \"" + apimConfig.Security.SpUrl + "\", \"spName\": \"" + apimConfig.Security.SpName + "\", \"clientAppRedirect\": \"" + getBaseURL() + "\"}";
+      var clientUrl = "http://localhost:9000/";
+      var data = "{\"idpUrl\": \"https://idp.t1t.be:9443/samlsso\", \"spUrl\": \"http://api.t1t.be/API-Engine-web/v1/users/idp/callback\", \"spName\": \"apimMartket\", \"clientAppRedirect\": \"" + clientUrl + "\"}";
 
       $.ajax({
         method: 'POST',
         url: url,
         data: data,
         dataType: 'text',
+        crossOrigin: true,
         contentType: 'application/json',
         headers: {
-          'apikey': apimConfig.Security.ApiKey
+          'apikey': '80fc20d5d299410cc16033cf3b4e0769'
         },
         success: function (data, status, jqXHR) {
           window.location.href = data;
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.error("Request failed with error code:", textStatus);
+          console.error(errorThrown);
+          console.error(jqXHR);
         }
       });
     } else {
@@ -66,4 +50,4 @@
       window.location.href = getBaseURL();
     }
   }
-})(window.jQuery, window.apimConfig);
+})();
