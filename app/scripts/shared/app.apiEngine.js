@@ -7,8 +7,7 @@
 
   /// ########## API Engine BaseUrl ######################
     .factory('EngineUrl', function () {
-      return 'http://api.t1t.be/API-Engine-web/v1';
-      //return 'http://localhost:8080/API-Engine-web/v1';
+      return 'http://apim.t1t.be:8000/';
     })
 
 
