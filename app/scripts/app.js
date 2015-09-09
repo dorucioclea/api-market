@@ -55,11 +55,11 @@
     // ngStorage key config
     .config(['$localStorageProvider',
       function ($localStorageProvider) {
-        $localStorageProvider.setKeyPrefix('apim');
+        $localStorageProvider.setKeyPrefix('apim-');
       }])
     .config(['$sessionStorageProvider',
       function ($sessionStorageProvider) {
-        $sessionStorageProvider.setKeyPrefix('apim_session');
+        $sessionStorageProvider.setKeyPrefix('apim_session-');
       }])
 
     // UI-Router states
@@ -571,8 +571,20 @@
           templateUrl: 'views/partials/user/profile.html',
           controller: 'UserProfileCtrl'
         })
-
     })
+
+  .factory('sessionInjector', ['$sessionStorage', function($sessionStorage) {
+    var sessionInjector = {
+      request: function(config) {
+        config.headers['apikey'] = $sessionStorage.apikey;
+        return config;
+      }
+    };
+    return sessionInjector;
+  }])
+  .config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push('sessionInjector');
+  }])
 
     // Define Force Reload
     .config(function ($provide) {
