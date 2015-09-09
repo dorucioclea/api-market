@@ -7,7 +7,7 @@
 
   /// ########## API Engine BaseUrl ######################
     .factory('EngineUrl', function () {
-      return 'http://apim.t1t.be:8000/';
+      return 'http://apim.t1t.be:8000';
     })
 
 
