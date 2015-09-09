@@ -65,7 +65,7 @@
     // UI-Router states
     .config(function ($stateProvider, $urlRouterProvider) {
 
-      $urlRouterProvider.otherwise('/apis/grid');
+      $urlRouterProvider.otherwise('/dashboard');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
       $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');

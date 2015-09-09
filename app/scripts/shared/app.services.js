@@ -4,6 +4,17 @@
 
   angular.module("app.services", [])
 
+    .service('headerModel', function ($rootScope) {
+      this.showExplore = true;
+      this.showDash = true;
+
+      this.setIsButtonVisible = function (explore, dash) {
+        this.showExplore = explore;
+        this.showDash = dash;
+        $rootScope.$broadcast('buttonToggle', 'toggled!');
+      }
+    })
+
     .service('orgScreenModel', function () {
 
       this.selectedTab = 'Plans';

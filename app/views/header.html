@@ -23,11 +23,11 @@
 		</div>
 	</li> <!-- #end site-logo -->
 
-  <li class="hidden-sm hidden-xs">
+  <li class="hidden-sm hidden-xs" ng-show="showExplore">
     <a ui-sref="root.apis.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
   </li>
-  <li class="hidden-sm hidden-xs">
-    <a ui-sref="root.market-dash" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>Dashboard</a>
+  <li class="hidden-sm hidden-xs" ng-show="showDash">
+    <a ui-sref="root.market-dash" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</a>
   </li>
 
 </ul>

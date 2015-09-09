@@ -5,9 +5,9 @@
 angular.module("app.ctrl.api", [])
 
   /// ==== Service Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$modal", "svcData", "svcModel", "svcTab",
-    function($scope, $stateParams, $modal, svcData, svcModel, svcTab) {
-
+  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$modal", "svcData", "svcModel", "svcTab", "headerModel",
+    function($scope, $stateParams, $modal, svcData, svcModel, svcTab, headerModel) {
+      headerModel.setIsButtonVisible(true, true);
       svcModel.setService(svcData);
       $scope.serviceVersion = svcData;
       $scope.displayTab = svcTab;

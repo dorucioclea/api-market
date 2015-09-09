@@ -5,8 +5,9 @@
   angular.module("app.ctrl.user", [])
 
   /// ==== User Controller
-    .controller("UserCtrl", ["$scope", "userInfo", "userScreenModel", function ($scope, userInfo, userScreenModel) {
+    .controller("UserCtrl", ["$scope", "userInfo", "headerModel", "userScreenModel", function ($scope, userInfo, headerModel, userScreenModel) {
 
+      headerModel.setIsButtonVisible(true, true);
       $scope.selectedTab = 1;
 
       $scope.currentUserInfo = userInfo;

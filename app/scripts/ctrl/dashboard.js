@@ -5,8 +5,9 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', 'appData', 'appVersions', 'appContracts', 'selectedApp', 'ApplicationContract',
-      function ($scope, $modal, $state, appData, appVersions, appContracts, selectedApp, ApplicationContract) {
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'ApplicationContract',
+      function ($scope, $modal, $state, appData, appVersions, appContracts, headerModel, selectedApp, ApplicationContract) {
+        headerModel.setIsButtonVisible(true, false);
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
         $scope.applicationContracts = appContracts;
@@ -52,9 +53,9 @@
       }])
 
 /// ==== Dashboard Controller
-    .controller("DashboardCtrl", ["$scope", "svcData", "categories", "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories",
-      function($scope, svcData, categories, SearchSvcsWithStatus, SearchPublishedSvcsInCategories) {
-
+    .controller("DashboardCtrl", ["$scope", "svcData", "categories", "headerModel", "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories",
+      function($scope, svcData, categories, headerModel, SearchSvcsWithStatus, SearchPublishedSvcsInCategories) {
+        headerModel.setIsButtonVisible(false, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
 

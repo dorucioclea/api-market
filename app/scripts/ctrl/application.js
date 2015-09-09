@@ -6,9 +6,9 @@
 
 
 /// ==== Application Controller
-    .controller("ApplicationCtrl", ["$scope", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "ApplicationContract",
-      function ($scope, $state, $stateParams, appData, appVersions, appScreenModel, ApplicationContract) {
-
+    .controller("ApplicationCtrl", ["$scope", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "headerModel", "ApplicationContract",
+      function ($scope, $state, $stateParams, appData, appVersions, appScreenModel, headerModel, ApplicationContract) {
+        headerModel.setIsButtonVisible(true, true);
         $scope.applicationVersion = appData;
         appScreenModel.updateApplication(appData);
         $scope.versions = appVersions;
