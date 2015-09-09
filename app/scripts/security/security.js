@@ -9,6 +9,8 @@
 (function () {
   'use strict';
 
+  var config = require('config.json')('./apimConfig.json');
+
   function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -16,15 +18,15 @@
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 
-  if (!sessionStorage.getItem("apim_session-apikey")) {
+  if (!sessionStorage.getItem(config.Storage.SessionStorage + config.Base.ApiKeyName)) {
 
-    var apikey = getParameterByName("apikey");
+    var apikey = getParameterByName(config.Base.ApiKeyName);
+
+    var clientUrl = window.location.origin;
 
     if (!apikey) {
-      //var url = 'http://api.t1t.be/API-Engine-web/v1/users/idp/redirect';
-      var url = 'http://apim.t1t.be:8000/dev/apiengine/v1/users/idp/redirect';
-      var clientUrl = "http://localhost:9000/";
-      var data = "{\"idpUrl\": \"https://idp.t1t.be:9443/samlsso\", \"spUrl\": \"http://api.t1t.be/API-Engine-web/v1/users/idp/callback\", \"spName\": \"apimMartket\", \"clientAppRedirect\": \"" + clientUrl + "\"}";
+      var url = config.Base.Url + config.Security.RedirectUrl;
+      var data = "{\"idpUrl\": \"" + config.Security.IdpUrl + "\", \"spUrl\": \"" + config.Security.SpUrl + "\", \"spName\": \"" + config.Security.SpName + "\", \"clientAppRedirect\": \"" + clientUrl + "\"}";
 
       $.ajax({
         method: 'POST',
@@ -34,7 +36,7 @@
         crossOrigin: true,
         contentType: 'application/json',
         headers: {
-          'apikey': '80fc20d5d299410cc16033cf3b4e0769'
+          'apikey': config.Security.ApiKey
         },
         success: function (data, status, jqXHR) {
           window.location.href = data;
@@ -46,8 +48,8 @@
         }
       });
     } else {
-      sessionStorage.setItem('apim_session-apikey', apikey);
-      window.location.href = getBaseURL();
+      sessionStorage.setItem(config.Storage.SessionStorage + config.Base.ApiKeyName, apikey);
+      window.location.href = clientUrl;
     }
   }
 })();
