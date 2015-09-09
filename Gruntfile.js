@@ -5,7 +5,9 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
 
   // Automatically load required Grunt tasks
-  require('jit-grunt')(grunt);
+  require('jit-grunt')(grunt, {
+    useminPrepare: 'grunt-usemin'
+  });
 
   // Configurable paths for the application
   var appConfig = {
@@ -38,8 +40,12 @@ module.exports = function (grunt) {
         }
       },
       styles: {
-        files: ['<%= config.app %>/styles/**/*.*ss'],
+        files: ['<%= config.app %>/styles/**/*.css'],
         tasks: ['newer:copy:styles']
+      },
+      less: {
+        files: ['<%= config.app%>/styles/**/*/*.less'],
+        tasks: ['newer:less']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -102,6 +108,122 @@ module.exports = function (grunt) {
         src: ['Gruntfile.js', '<%= config.app %>/scripts/{,*/}*.js']
       }
     }, // End JSHint
+
+    // ===== //
+    // Clean //
+    // ===== //
+    clean: {
+      dist: ["dist", ".tmp"]
+    }, // End Clean
+
+    // ====== //
+    // Usemin //
+    // ====== //
+    useminPrepare: {
+      html: '<%= config.app %>/index.html',
+      options: {
+        dest: '<%= config.dist %>',
+        flow: {
+          html: {
+            steps: {
+              js: ['concat', 'uglifyjs'],
+              css: ['cssmin']
+            },
+            post: {}
+          }
+        }
+      }
+    },
+
+    usemin: {
+      html: ['<%= config.dist %>/{,*/}*.html'],
+      css: ['<%= config.dist %>/styles/{,*/}*.css'],
+      js: ['<%= config.dist %>/scripts/{,*/}*.js'],
+      options: {
+        assetsDirs: [
+          '<%= config.dist %>',
+          '<%= config.dist %>/images',
+          '<%= config.dist %>/styles'
+        ],
+        patterns: {
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+        }
+      }
+    },// End Usmin
+
+    // ==== //
+    // Copy //
+    // ==== //
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>',
+          dest: '<%= config.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html',
+            'images/{,*/}*.*',
+            'fonts/{,*/}*.*',
+            'views/{,*/}*.*'
+          ]
+        }]
+      }
+    }, // End Copy
+
+    // ==== //
+    // Less //
+    // ==== //
+    less: {
+      dist: {
+        options: {
+          cleancss: true
+        },
+        files: {
+          'app/styles/main.css': 'app/styles/main.less'
+        }
+      }
+    }, // End Less
+
+    // ============= //
+    // File Revision //
+    // ============= //
+    filerev: {
+      options: {
+        encoding: 'utf8',
+        algorithm: 'md5',
+        length: 20
+      },
+      source: {
+        files: [{
+          src: [
+            'dist/scripts/*.js',
+            'dist/styles/*.css'
+          ]
+        }]
+      }
+    }, // End FileRev
+
+    // HTML Min //
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true,
+          useShortDoctype: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= config.dist %>',
+          src: ['*.html', 'views/**/*.html'],
+          dest: '<%= config.dist %>'
+        }]
+      }
+    }, // End HtmlMin
   });
 
 
@@ -115,4 +237,18 @@ module.exports = function (grunt) {
       'watch'
     ]);
   });
+
+  grunt.registerTask('dist', [
+    'clean:dist',
+    'wiredep',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
 };
