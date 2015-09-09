@@ -6,36 +6,26 @@
 	<meta name="description" content="ACPaaS - API Market">
 	<meta name="keywords" content="materia, webapp, admin, dashboard, template, ui, material admin, material design, themeforest, materialup, material, material template">
 	<meta name="author" content="Trust1Team">
-	<!-- <base href="/"> -->
 
 	<title>ACPaaS - APIM Marketplace</title>
 
-  <!-- build:css styles/bower_components.css -->
+  <!-- build:css styles/vendor.min.css -->
   <!-- bower:css -->
-  <link rel='stylesheet' href='../bower_components/angular-loading-bar/build/loading-bar.css' />
-  <link rel='stylesheet' href='../bower_components/angular-material/angular-material.css' />
-  <link rel='stylesheet' href='../bower_components/ng-tags-input/ng-tags-input.min.css' />
-  <link rel='stylesheet' href='../bower_components/perfect-scrollbar/css/perfect-scrollbar.css' />
+  <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="../bower_components/ng-tags-input/ng-tags-input.min.css" />
+  <link rel="stylesheet" href="../bower_components/perfect-scrollbar/css/perfect-scrollbar.css" />
   <!-- endbower -->
+  <link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
   <!-- endbuild -->
 
-	<!-- Icons -->
-	<link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
-	<link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300' rel='stylesheet' type='text/css'>
 
-
-	<!-- Css/Less Stylesheets -->
-	<!-- build:css styles/bootstrap.min.css -->
-	<link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
+	<!-- build:css styles/app.min.css -->
+	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
-	<!-- build:css styles/main.min.css -->
-	<link rel="stylesheet/less" href="styles/main.less">
-	<!-- endbuild -->
-
-	<!-- <link rel="stylesheet" href="styles/vendors/bootstrap.min.css"> -->
-	<!-- <link rel="stylesheet" href="_tmp/main.min.css"> -->
-
- 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300' rel='stylesheet' type='text/css'>
 
 	<!-- Match Media polyfill for IE9 -->
 	<!--[if IE 9]> <script src="scripts/ie/matchMedia.js"></script>  <![endif]-->
@@ -47,12 +37,7 @@
 
   <div ui-view></div>
 
-	<!-- Dev only -->
-	<!-- build:remove -->
-	<script src="scripts/dev/less.min.js"></script>
-	<!-- endbuild -->
-
-  <!-- build:js scripts/bower.js -->
+  <!-- build:js scripts/vendors.js -->
   <!-- bower:js -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
