@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -14,7 +14,7 @@
         $scope.publishAppAndReturnToDash = function () {
           $scope.publishApp($scope.applicationVersion, false);
           $state.go('root.market-dash');
-        }
+        };
       }]);
   // #end
-})();
+})(window.angular);

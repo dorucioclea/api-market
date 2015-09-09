@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -17,7 +17,7 @@ angular.module("app.ctrl.organization", [])
         SearchOrgs.save(search, function (results) {
           $scope.totalOrgs = results.totalSize;
           $scope.orgs = results.beans;
-        })
+        });
       };
     }])
 
@@ -61,7 +61,7 @@ angular.module("app.ctrl.organization", [])
       updatedOrg.$update({id: $stateParams.orgId}, function(data) {
         $state.forceReload();
       });
-    }
+    };
 
   }])
 
@@ -76,8 +76,8 @@ angular.module("app.ctrl.organization", [])
 
     $scope.goToPlan = function (plan) {
       PlanVersion.query({orgId: plan.organizationId, planId: plan.id}, function (versions) {
-        $state.go('root.plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version})
-      })
+        $state.go('root.plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version});
+      });
     };
 
     $scope.modalNewPlan = function() {
@@ -105,8 +105,8 @@ angular.module("app.ctrl.organization", [])
 
     $scope.goToSvc = function (svc) {
       ServiceVersion.query({orgId: svc.organizationId, svcId: svc.id}, function (versions) {
-        $state.go('root.service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version})
-      })
+        $state.go('root.service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version});
+      });
     };
 
     $scope.modalNewService = function() {
@@ -135,8 +135,8 @@ angular.module("app.ctrl.organization", [])
 
       $scope.goToApp = function (app) {
         ApplicationVersion.query({orgId: app.organizationId, appId: app.id}, function (versions) {
-          $state.go('root.application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version})
-        })
+          $state.go('root.application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version});
+        });
       };
 
     }])
@@ -154,4 +154,4 @@ angular.module("app.ctrl.organization", [])
 
 
   // #end
-})();
+})(window.angular);

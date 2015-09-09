@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -33,7 +33,7 @@
           Action.save(publishAction, function (reply) {
             $state.forceReload();
           });
-        }
+        };
 
         $scope.retireService = function () {
           var publishAction = {
@@ -45,7 +45,7 @@
           Action.save(publishAction, function (reply) {
             $state.forceReload();
           });
-        }
+        };
 
       }])
 
@@ -80,7 +80,7 @@
           var valid = true;
           if (!$scope.updatedService.endpointType || angular.isUndefined($scope.updatedService.endpoint)) {
             valid = false;
-          } else if ($scope.updatedService.endpoint == null || $scope.updatedService.endpoint.length == 0) {
+          } else if ($scope.updatedService.endpoint === null || $scope.updatedService.endpoint.length === 0) {
             valid = false;
           }
           $scope.isValid = valid;
@@ -89,7 +89,7 @@
         $scope.$watch('updatedService', function(newValue) {
           if ($scope.version) {
             var dirty = false;
-            if (newValue.endpoint != $scope.version.endpoint || newValue.endpointType != $scope.version.endpointType) {
+            if (newValue.endpoint !== $scope.version.endpoint || newValue.endpointType !== $scope.version.endpointType) {
               dirty = true;
             }
             checkValid();
@@ -143,8 +143,8 @@
         };
 
         $scope.$watch('updatedDefinition', function(def) {
-          $scope.changed = def !== $scope.currentDefinition;
-          $scope.invalid = !(def !== $scope.currentDefinition);
+          $scope.changed = (def !== $scope.currentDefinition);
+          $scope.invalid = (def === $scope.currentDefinition);
         }, true);
 
         $scope.loadDefinition = function ($fileContent) {
@@ -155,7 +155,7 @@
         $scope.loadPreview = function (spec) {
           $scope.definitionLoaded = true;
           $scope.loadSwaggerUi(spec, "swagger-ui-container");
-        }
+        };
       }])
 
     /// ==== Plans Controller
@@ -191,7 +191,7 @@
                 var lockedVersions = [];
                 for (var j = 0; j < planVersions.length; j++) {
                   var planVersion = planVersions[j];
-                  if (planVersion.status == "Locked") {
+                  if (planVersion.status === "Locked") {
                     lockedVersions.push(planVersion.version);
                   }
                 }
@@ -202,7 +202,7 @@
                 }
                 resolve(planVersions);
               }, reject);
-            }))
+            }));
           });
           $q.all(promises).then(function () {
             lockedPlans.sort(function (a, b) {
@@ -228,7 +228,7 @@
           for (var i = 0; i < lockedPlans.length; i++) {
             lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
             for (var j = 0; j < $scope.version.plans.length; j++) {
-              if (lockedPlans[i].id == $scope.version.plans[j].planId) {
+              if (lockedPlans[i].id === $scope.version.plans[j].planId) {
                 lockedPlans[i].checked = true;
                 lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
                 break;
@@ -242,7 +242,7 @@
 
         $scope.$watch('updatedService', function(newValue) {
           var dirty = false;
-          if (newValue.plans && $scope.version.plans && newValue.plans.length != $scope.version.plans.length) {
+          if (newValue.plans && $scope.version.plans && newValue.plans.length !== $scope.version.plans.length) {
             dirty = true;
           } else if (newValue.plans && $scope.version.plans) {
             for (var i = 0; i < $scope.version.plans.length; i++) {
@@ -314,4 +314,4 @@
     }]);
 
   // #end
-})();
+})(window.angular);

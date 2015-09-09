@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -83,7 +83,7 @@ angular.module("app.ctrl.api", [])
 
     $scope.switchNotification = function(id) {
       $scope.selectedAnnouncement = id;
-    }
+    };
 
   }])
 
@@ -102,4 +102,4 @@ angular.module("app.ctrl.api", [])
   }]);
 
   // #end
-})();
+})(window.angular);

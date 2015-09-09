@@ -1,4 +1,4 @@
-; (function () {
+; (function (angular) {
   "use strict";
 
   angular.module("app", [
@@ -134,8 +134,7 @@
                   }
                 });
                 return appContracts;
-              })
-
+              });
             }
           },
           controller: 'MarketDashCtrl'
@@ -570,7 +569,7 @@
           url: '/profile',
           templateUrl: 'views/partials/user/profile.html',
           controller: 'UserProfileCtrl'
-        })
+        });
     })
 
   .factory('sessionInjector', ['$sessionStorage', function($sessionStorage) {
@@ -597,9 +596,9 @@
           });
         };
         return $delegate;
-      })
-    })
+      });
+    });
 
-}());
+}(window.angular));
 
 

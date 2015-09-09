@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -20,7 +20,7 @@
 
       $rs.safeApply = function(fn) {
         var phase = this.$root.$$phase;
-        if(phase == '$apply' || phase == '$digest') {
+        if(phase === '$apply' || phase === '$digest') {
           if(fn && (typeof(fn) === 'function')) {
             fn();
           }
@@ -86,7 +86,7 @@
         function addApiKeyAuthorization(){
           //TODO add key var
           var key = encodeURIComponent("someapikey");
-          if(key && key.trim() != "") {
+          if(key && key.trim() !== "") {
             var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("apikey", key, "header");
             $scope.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
           }
@@ -151,7 +151,6 @@
       };
 
       $scope.publishApp = function (applicationVersion, shouldReload) {
-        console.log(applicationVersion);
         var action = $scope.createAction(applicationVersion, ACTIONS.REGISTER);
         Action.save(action, function (reply) {
           if(shouldReload) {
@@ -171,7 +170,6 @@
       $scope.toggleNav = function() {
         $scope.navFull = $scope.navFull ? false : true;
         $rs.navOffCanvas = $rs.navOffCanvas ? false : true;
-        console.log("navOffCanvas: " + $scope.navOffCanvas);
 
         $timeout(function() {
           $rs.$broadcast("c3.resize");
@@ -269,7 +267,6 @@
         $scope.showDash = headerModel.showDash;
         $scope.toggleFloatingSidebar = function() {
           $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
-          console.log("floating-sidebar: " + $scope.floatingSidebar);
         };
 
         $scope.$on('buttonToggle', function (event, data) {
@@ -282,17 +279,19 @@
         });
 
         $scope.goFullScreen = function() {
-          if (Fullscreen.isEnabled())
+          if (Fullscreen.isEnabled()) {
             Fullscreen.cancel();
-          else
-            Fullscreen.all()
+          }
+          else {
+            Fullscreen.all();
+          }
         };
 
         $scope.test = function () {
           $state.go('root.market-dash');
-        }
+        };
 
       }]);
 
 // #end
-})();
+})(window.angular);
