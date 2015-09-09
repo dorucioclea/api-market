@@ -109,7 +109,7 @@
             action = {
               type: ACTIONS.REGISTER,
               entityVersion: entityVersion.version
-             };
+            };
             if (angular.isDefined(entityVersion.organizationId)) {
               action.organizationId = entityVersion.organizationId;
               action.entityId = entityVersion.id;
@@ -263,28 +263,36 @@
     }])
 
 
-    .controller("HeadCtrl", ["$scope", "$state", "CurrentUserInfo", "Fullscreen", function($scope, $state, CurrentUserInfo, Fullscreen) {
-      $scope.toggleFloatingSidebar = function() {
-        $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
-        console.log("floating-sidebar: " + $scope.floatingSidebar);
-      };
+    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "CurrentUserInfo", "Fullscreen",
+      function($scope, $state, headerModel, CurrentUserInfo, Fullscreen) {
+        $scope.showExplore = headerModel.showExplore;
+        $scope.showDash = headerModel.showDash;
+        $scope.toggleFloatingSidebar = function() {
+          $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
+          console.log("floating-sidebar: " + $scope.floatingSidebar);
+        };
 
-      CurrentUserInfo.get({}, function (reply) {
-        $scope.currentUserInfo = reply;
-      });
+        $scope.$on('buttonToggle', function (event, data) {
+          $scope.showExplore = headerModel.showExplore;
+          $scope.showDash = headerModel.showDash;
+        });
 
-      $scope.goFullScreen = function() {
-        if (Fullscreen.isEnabled())
-          Fullscreen.cancel();
-        else
-          Fullscreen.all()
-      };
+        CurrentUserInfo.get({}, function (reply) {
+          $scope.currentUserInfo = reply;
+        });
 
-      $scope.test = function () {
-        $state.go('root.market-dash');
-      }
+        $scope.goFullScreen = function() {
+          if (Fullscreen.isEnabled())
+            Fullscreen.cancel();
+          else
+            Fullscreen.all()
+        };
 
-    }]);
+        $scope.test = function () {
+          $state.go('root.market-dash');
+        }
+
+      }]);
 
 // #end
 })();
