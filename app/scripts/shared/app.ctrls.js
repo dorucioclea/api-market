@@ -84,11 +84,10 @@
           }
         });
         function addApiKeyAuthorization(){
-          //TODO add key var
-          var key = encodeURIComponent("someapikey");
+          //TODO add key var - replace with var
+          var key = encodeURIComponent("440fa49f914d431ec30ae030f5409c38");
           if(key && key.trim() !== "") {
-            var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("apikey", key, "header");
-            $scope.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
+            $scope.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("apikey", key, "header"));
           }
         }
         $scope.swaggerUi.load();
