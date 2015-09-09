@@ -11,14 +11,14 @@
   var config = {
     "Base": {
       "ApiKeyName": "apikey",
-      "Url": "http://apim.t1t.be:8000/"
+      "Url": "http://apim.t1t.be:8000/dev/apiengine/v1"
     },
     "Storage": {
       "LocalStorage": "apim-",
       "SessionStorage": "apim_session-"
     },
     "Security": {
-      "RedirectUrl": "dev/apiengine/v1/users/idp/redirect",
+      "RedirectUrl": "/users/idp/redirect",
       "ApiKey": "80fc20d5d299410cc16033cf3b4e0769",
       "IdpUrl": "https://idp.t1t.be:9443/samlsso",
       "SpUrl": "http://api.t1t.be/API-Engine-web/v1/users/idp/callback",
