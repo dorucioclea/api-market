@@ -575,7 +575,7 @@
   .factory('sessionInjector', ['$sessionStorage', function($sessionStorage) {
     var sessionInjector = {
       request: function(config) {
-        config.headers['apikey'] = $sessionStorage.apikey;
+        config.headers.apikey = $sessionStorage.apikey.apikey;
         return config;
       }
     };

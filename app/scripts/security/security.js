@@ -53,17 +53,18 @@
         headers: {
           'apikey': config.Security.ApiKey
         },
-        success: function (data, status, jqXHR) {
+        async: false,
+        success: function (data) {
           window.location.href = data;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.error("Request failed with error code:", textStatus);
-          console.error(errorThrown);
-          console.error(jqXHR);
+          console.log("Request failed with error code:", textStatus);
+          console.log(errorThrown);
+          console.log(jqXHR);
         }
       });
     } else {
-      sessionStorage.setItem(config.Storage.SessionStorage + config.Base.ApiKeyName, apikey);
+      sessionStorage.setItem(config.Storage.SessionStorage + config.Base.ApiKeyName, "{\"apikey\": \"" + apikey + "\"}");
       window.location.href = clientUrl;
     }
   }
