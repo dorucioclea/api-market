@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -11,19 +11,6 @@
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
-
-        var ConfigForms = {
-          BASICAuthenticationPolicy: 'basic-auth.html',
-          IgnoredResourcesPolicy: 'ignored-resources.html',
-          IPBlacklistPolicy: 'ip-list.html',
-          IPWhitelistPolicy: 'ip-list.html',
-          RateLimitingPolicy: 'rate-limiting.html',
-          QuotaPolicy: 'quota.html',
-          TransferQuotaPolicy: 'transfer-quota.html',
-          AuthorizationPolicy: 'authorization.html',
-          CachingPolicy: 'caching.html'
-        };
-
         $scope.selectedPolicy = null;
 
         $scope.modalClose = function() {
@@ -65,22 +52,17 @@
 
         };
 
-
         $scope.selectPolicy = function (policy) {
           if (!policy) {
             $scope.include = undefined;
           } else {
             $scope.selectedPolicy = policy;
             $scope.config = {};
-            if ($scope.selectedPolicy.formType == 'JsonSchema') {
+            if ($scope.selectedPolicy.formType === 'JsonSchema') {
               //All plugins should fall into this category!
               $scope.include = 'views/modals/partials/policy/json-schema.html';
             } else {
-              var inc = ConfigForms[$scope.selectedPolicy.id];
-              if (!inc) {
-                inc = 'Default.html';
-              }
-              $scope.include = 'views/modals/partials/policy/' + inc;
+              $scope.include = 'views/modals/partials/policy/Default.html';
             }
           }
         };
@@ -109,7 +91,7 @@
           }
           Application.query({ orgId: orgId }, function (data) {
             $scope.applications = data;
-          })
+          });
         };
 
         $scope.getAppVersions = function () {
@@ -117,7 +99,7 @@
           if (hasAppContext) {
             ApplicationVersion.query({ orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id }, function (data) {
               $scope.versions = data;
-            })
+            });
           }
         };
 
@@ -130,14 +112,14 @@
                 getPlanPolicies();
                 noPlanSelected = false;
               }
-            })
+            });
           });
         };
 
         var getPlanPolicies = function () {
           PlanVersionPolicy.query({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version}, function (policies) {
             $scope.selectedPlanPolicies = policies;
-          })
+          });
         };
 
         $scope.selectApp = function (application) {
@@ -160,19 +142,12 @@
         getAvailablePlans();
 
         $scope.startCreateContract = function() {
-          console.log($scope.service);
-          console.log($scope.selectedAppVersion);
-          console.log($scope.selectedPlan);
-
           var contract = {
             serviceOrgId: $scope.service.service.organization.id,
             serviceId: $scope.service.service.id,
             serviceVersion: $scope.service.version,
             planId: $scope.selectedPlan.plan.id
           };
-
-          console.log(contract);
-
           ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
             $state.go('root.contract', { appVersion: $scope.selectedAppVersion, planVersion: $scope.selectedPlan, svcVersion: $scope.service });
             $scope.modalClose();
@@ -191,19 +166,6 @@
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
-
-        var ConfigForms = {
-          BASICAuthenticationPolicy: 'basic-auth.html',
-          IgnoredResourcesPolicy: 'ignored-resources.html',
-          IPBlacklistPolicy: 'ip-list.html',
-          IPWhitelistPolicy: 'ip-list.html',
-          RateLimitingPolicy: 'rate-limiting.html',
-          QuotaPolicy: 'quota.html',
-          TransferQuotaPolicy: 'transfer-quota.html',
-          AuthorizationPolicy: 'authorization.html',
-          CachingPolicy: 'caching.html'
-        };
-
         $scope.selectedPolicy = null;
 
         $scope.modalClose = function() {
@@ -241,15 +203,11 @@
           } else {
             $scope.selectedPolicy = policy;
             $scope.config = {};
-            if ($scope.selectedPolicy.formType == 'JsonSchema') {
+            if ($scope.selectedPolicy.formType === 'JsonSchema') {
               //All plugins should fall into this category!
               $scope.include = 'views/modals/partials/policy/json-schema.html';
             } else {
-              var inc = ConfigForms[$scope.selectedPolicy.id];
-              if (!inc) {
-                inc = 'Default.html';
-              }
-              $scope.include = 'views/modals/partials/policy/' + inc;
+              $scope.include = 'views/modals/partials/policy/Default.html';
             }
           }
         };
@@ -366,7 +324,7 @@
           Service.save({ orgId: $stateParams.orgId }, svc, function (data) {
             $scope.modalClose();
             $state.forceReload();
-          })
+          });
         };
 
         $scope.modalClose = function() {
@@ -393,4 +351,4 @@
       }]);
 
   // #end
-})();
+})(window.angular);

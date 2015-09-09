@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -17,19 +17,18 @@
         };
 
         $scope.canCreateContract = function (appVersion) {
-          return !!(appVersion.status == 'Created' || appVersion.status == 'Ready');
+          return !!(appVersion.status === 'Created' || appVersion.status === 'Ready');
         };
 
         $scope.canPublish = function (appVersion) {
-          return appVersion.status == 'Ready';
+          return appVersion.status === 'Ready';
         };
 
         $scope.canRetire = function (appVersion) {
-          return appVersion.status == 'Registered'
+          return appVersion.status === 'Registered';
         };
 
         $scope.newContract = function (appVersion) {
-          console.log(appVersion);
           selectedApp.updateApplication(appVersion);
           $state.go('root.apis.grid');
         };
@@ -37,7 +36,7 @@
         $scope.breakContract = function (contract) {
           ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
             $state.forceReload();
-          })
+          });
         };
 
         $scope.modalNewApplication = function() {
@@ -58,10 +57,6 @@
         headerModel.setIsButtonVisible(false, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
-
-        console.log(svcData);
-        console.log(categories);
-
         $scope.availableAPIs = svcData;
 
         $scope.currentCategories = [];
@@ -76,7 +71,7 @@
             $scope.currentCategories.splice(index, 1);
           } else {
             // Category was not selected, add it to array
-            $scope.currentCategories.push(category)
+            $scope.currentCategories.push(category);
           }
           refreshServiceList();
         };
@@ -93,23 +88,23 @@
             selection.categories = $scope.currentCategories;
             SearchPublishedSvcsInCategories.query(selection, function (data) {
               $scope.availableAPIs = data;
-            })
+            });
           }
         };
 
 
         $scope.isCategorySelected = function (category) {
-          if ($scope.currentCategories.length == 0) {
+          if ($scope.currentCategories.length === 0) {
             // No filtering on category yet, show all buttons as enabled
-            return "btn-tag-primary"
+            return "btn-tag-primary";
           } else {
             var index = $scope.currentCategories.indexOf(category);
             if (index > -1) {
               // Category is enabled, show in primary color
-              return "btn-tag-primary"
+              return "btn-tag-primary";
             } else {
               // Category not enabled, show in default color
-              return "btn-tag-default"
+              return "btn-tag-default";
             }
           }
         };
@@ -127,5 +122,5 @@
       }]);
 
   // #end
-})();
+})(window.angular);
 

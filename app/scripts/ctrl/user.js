@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -13,8 +13,8 @@
       $scope.currentUserInfo = userInfo;
 
       $scope.isActive = function (tabName) {
-        return tabName == userScreenModel.selectedTab;
-      }
+        return tabName === userScreenModel.selectedTab;
+      };
     }])
     .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
       userScreenModel.updateTab('Email');
@@ -27,4 +27,4 @@
     }]);
 
   // #end
-})();
+})(window.angular);
