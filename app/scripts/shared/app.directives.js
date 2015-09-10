@@ -159,6 +159,10 @@
     .directive('overview', function () {
       return {
         restrict: 'E',
+        scope: {
+          entityVersion: "=",
+          type: "@"
+        },
         transclude: true,
         templateUrl: '/views/templates/overview/overview.html'
       };
