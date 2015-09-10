@@ -222,6 +222,7 @@
 
         //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
+          application.base64logo = "";
           Application.save({ orgId: 'Digipolis' }, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
