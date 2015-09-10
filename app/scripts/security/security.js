@@ -19,7 +19,7 @@
     },
     "Security": {
       "RedirectUrl": "/users/idp/redirect",
-      "ApiKey": "440fa49f914d431ec30ae030f5409c38",
+      "ApiKey": "6b8406cc81fe4ca3cc9cd4a0abfb97c2",
       "IdpUrl": "https://idp.t1t.be:9443/samlsso",
       "SpUrl": "http://api.t1t.be/API-Engine-web/v1/users/idp/callback",
       "SpName": "apimarket"
