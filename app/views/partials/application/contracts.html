@@ -7,12 +7,13 @@
 
   <div class="col-sm-12">
     <div class="col-sm-10 col-sm-offset-1" ng-repeat="contract in contracts">
-      <a ui-sref="organization.services({orgId: contract.serviceOrganizationId})">{{contract.serviceOrganizationName}}</a> / <span class="title"><a ui-sref="service({orgId: contract.serviceOrganizationId, svcId: contract.serviceId})">{{contract.serviceName}}</a></span>
+      <a ui-sref="root.organization.services({orgId: contract.serviceOrganizationId})">{{contract.serviceOrganizationName}}</a> / <span class="title"><a ui-sref="root.service({orgId: contract.serviceOrganizationId, svcId: contract.serviceId})">{{contract.serviceName}}</a></span>
+      <button class="btn btn-xs btn-line-warning pull-right" ng-show="!isRegistered" ng-click="breakContract(contract)">Break Contract</button>
       <div class="versionAndPlan">
         <span>Service version</span>
-        <span><a ui-sref="service({orgId: contract.serviceOrganizationId, svcId: contract.serviceId})">{{contract.serviceVersion}}</a></span>
+        <span><a ui-sref="root.service({orgId: contract.serviceOrganizationId, svcId: contract.serviceId})">{{contract.serviceVersion}}</a></span>
         <span>via plan</span>
-        <span><a ui-sref="organization.plans({orgId: contract.serviceOrganizationId})">{{contract.planName}}</a></span>
+        <span><a ui-sref="root.organization.plans({orgId: contract.serviceOrganizationId})">{{contract.planName}}</a></span>
         <span>entered into on</span>
         <i class="fa fa-clock-o fa-fw fa-inline"></i>
         <span>{{contract.createdOn | date}}</span>
@@ -22,6 +23,9 @@
       <div>
         <hr>
       </div>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 well" ng-show="contracts.length == 0">
+      This application doesn't appear to have any service contracts.  Try creating a new Contract to a Service - if you do it will get listed here!
     </div>
   </div>
 </div>

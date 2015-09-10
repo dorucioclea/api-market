@@ -10,11 +10,11 @@
           <div class="col-xs-12">
             <div data-email="maarten.somers@gmail.com" class="email-row primary  ">
               <div class="pull-right email-actions">
-                <a data-loading-text="Loading..." class="btn btn-primary email-make-primary">
+                <a data-loading-text="Loading..." class="btn btn-line-primary email-make-primary">
                   <span class="btn-text">Make Primary</span>
                   <span class="loader-icon fa fa-spinner fa-spin"></span>
                 </a>
-                <a data-method="DELETE" data-loading-text="Loading..." class="btn btn-default email-remove has-icon">
+                <a data-method="DELETE" data-loading-text="Loading..." class="btn btn-line-default email-remove has-icon">
                   <span class="fa fa-trash-o"></span>
                   &nbsp;
                   <span class="btn-text">Remove</span>
@@ -36,29 +36,20 @@
       <div>
         <hr>
       </div>
-      <div class="col-sm-6">
-      <form class="add-email">
-        <div class="row">
-          <div class="col-xs-12 add-email-error">
-            <div>
-
-            </div>
-          </div>
-        </div>
-        <div class="row">
+      <div class="col-sm-4">
+        <form role="form" class="form-horizontal">
             <div class="form-group">
               <label for="email-add">
                 <span class="fa fa-envelope"></span>
                 <span>Add New Email</span>
-                <input id="email-add" type="email" name="email" class="form-control">
               </label>
+              <input id="email-add" type="email" name="email" class="form-control">
             </div>
-        </div>
-        <button data-processing-text="processing..." type="submit" data-loading-text="Loading..." class="btn btn-default submit">
-          <span class="btn-text">Add New Email</span>
-          <span class="loader-icon fa fa-spinner fa-spin"></span>
-        </button>
-      </form>
+          <button data-processing-text="processing..." type="submit" data-loading-text="Loading..." class="btn btn-default submit">
+            <span class="btn-text">Add New Email</span>
+            <span class="loader-icon fa fa-spinner fa-spin"></span>
+          </button>
+        </form>
       </div>
     </div>
   </div>

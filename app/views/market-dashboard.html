@@ -1,0 +1,124 @@
+<div class="page page-ui-notifications">
+  <div class="toast toast-bottomRight">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg">Test Toast</div>
+    </alert>
+  </div>
+  <div class="row">
+
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6 text-primary">
+              <h4><i class="fa fa-cogs"></i>
+                Applications Overview
+              </h4>
+            </div>
+            <div class="col-sm-6">
+              <div class="pull-right">
+                <button class="btn btn-line-primary" ng-click="modalNewApplication()">New Application</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 mt10">
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-body">
+
+              <!-- Applications Tab Content -->
+              <div class="col-sm-12">
+                <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
+                <button id="apps-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
+                <hr>
+              </div>
+              <!-- The list of applications in the org -->
+
+              <div class="col-sm-12" ng-hide="applications.length > 0">
+                <div class="row">
+                  <div class="col-sm-8 col-sm-offset-1 well">
+                    It looks like there you have not yet created any applications! Now might be a good time to click the New App button up above...
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="no-entities-arrow"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-12" ng-show="applications.length > 0 && filteredApps.length == 0">
+                <div class="row">
+                  <div class="col-sm-10 col-sm-offset-1 well">
+                    No applications found matching your filter criteria - please try searching for something different.
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0">
+                <table class="table table-bordered table-condensed">
+                  <thead>
+                  <tr>
+                    <th nowrap="nowrap" width="5%"></th>
+                    <th nowrap="nowrap" width="30%">Application</th>
+                    <th nowrap="nowrap" width="10%">Version</th>
+                    <th nowrap="nowrap" width="10%">Status</th>
+                    <th nowrap="nowrap" width="10%"># Contracts</th>
+                    <th nowrap="nowrap" width="30%">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat-start="application in applications">
+                    <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></i></td>
+                    <td><a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a></td>
+                    <td>{{applicationVersions[application.id].version}}</td>
+                    <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
+                    <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
+                    <td>
+                      <button class="btn btn-line-primary btn-xs" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
+                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])">Publish</button>
+                      <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])">Retire</button>
+                    </td>
+                  </tr>
+                  <tr ng-show="application.contractsExpanded" class="row-selected" ng-repeat-end>
+                    <td colspan="6" style="padding-left: 5px;">
+                      <table class="table table-condensed row-selected">
+                        <thead>
+                        <tr>
+                          <th nowrap="nowrap" width="5%">#</th>
+                          <th nowrap="nowrap" width="30%">To Service</th>
+                          <th nowrap="nowrap" width="20%">Using Plan</th>
+                          <th nowrap="nowrap" width="15%">Created On</th>
+                          <th nowrap="nowrap" width="30%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contract in applicationContracts[application.id]">
+                          <td>{{$index+1}}</td>
+                          <td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>
+                          <td>{{contract.planName}} - {{contract.planVersion}}</td>
+                          <td>{{contract.createdOn | date}}</td>
+                          <td>
+                            <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
+                            <button class="btn btn-line-warning btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                <div ng-bind-html="alert.msg"></div>
+              </alert>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

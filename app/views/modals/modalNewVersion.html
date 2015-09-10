@@ -1,0 +1,32 @@
+<div class="page">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">New Version</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Plan Create panel -->
+  <div class="modal-body">
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-12">
+          <label class="control-label text-primary">Version</label>
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-4">
+          <input type="text" class="form-control" maxlength="20" value="1.0" ng-model="newVersion" required>
+        </div>
+      </div>
+
+      <div class="mt30 ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+        <label>
+          <input type="checkbox" ng-model="shouldClone">
+          <span>Make a clone of the previously selected version (<b>{{currentVersion}}</b>). This will copy all policies and settings.</span>
+        </label>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="createVersion()">Create Version</button>
+  </div>
+
+</div>

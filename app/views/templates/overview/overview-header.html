@@ -1,0 +1,38 @@
+<div class="panel panel-primary">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6 text-primary">
+        <h4><i class="fa fa-{{icon}}"></i>
+          {{name}}
+        </h4>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-right">
+          <div class="btn-group dropdown" dropdown>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+              Version: {{entityVersion.version}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion({version: version})"><a>{{version.version}}</a></li>
+            </ul>
+          </div>
+          <button class="btn btn-line-primary btn-sm" ng-click="newVersion()">New Version</button>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <p>{{description}}</p>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <overview-status created-by="{{entityVersion.createdBy}}" created-on="{{entityVersion.createdOn}}" status="{{entityVersion.status}}"></overview-status>
+      </div>
+      <div class="col-md-5">
+        <!-- The Lock Action -->
+        <div class="pull-right" ng-transclude>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

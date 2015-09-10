@@ -1,29 +1,16 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
   angular.module("app.ctrl.modals", [])
 
 
-  /// ==== AddPolicy Controller
-    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy) {
+    /// ==== AddPolicy Controller
+    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy", "ServiceVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy, ServiceVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
-
-        var ConfigForms = {
-          BASICAuthenticationPolicy: 'basic-auth.html',
-          IgnoredResourcesPolicy: 'ignored-resources.html',
-          IPBlacklistPolicy: 'ip-list.html',
-          IPWhitelistPolicy: 'ip-list.html',
-          RateLimitingPolicy: 'rate-limiting.html',
-          QuotaPolicy: 'quota.html',
-          TransferQuotaPolicy: 'transfer-quota.html',
-          AuthorizationPolicy: 'authorization.html',
-          CachingPolicy: 'caching.html'
-        };
-
         $scope.selectedPolicy = null;
 
         $scope.modalClose = function() {
@@ -42,12 +29,168 @@
         };
 
         $scope.addPolicy = function() {
-          console.log(angular.toJson($scope.config));
+          var config = $scope.getConfig();
           var newPolicy = {
             definitionId: $scope.selectedPolicy.id,
-            configuration: angular.toJson($scope.config)
+            configuration: angular.toJson(config)
           };
-          PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+
+          switch ($state.current.data.type) {
+            case 'plan':
+              PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+                $scope.modalClose();
+                $state.forceReload();
+              });
+              break;
+            case 'service':
+              ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
+                $scope.modalClose();
+                $state.forceReload();
+              });
+              break;
+          }
+
+        };
+
+        $scope.selectPolicy = function (policy) {
+          if (!policy) {
+            $scope.include = undefined;
+          } else {
+            $scope.selectedPolicy = policy;
+            $scope.config = {};
+            if ($scope.selectedPolicy.formType === 'JsonSchema') {
+              //All plugins should fall into this category!
+              $scope.include = 'views/modals/partials/policy/json-schema.html';
+            } else {
+              $scope.include = 'views/modals/partials/policy/Default.html';
+            }
+          }
+        };
+
+      }])
+
+/// ==== Contract creation: Plan Selection Controller
+    .controller("PlanSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "svcModel", "Application", "ApplicationContract", "ApplicationVersion", "PlanVersion", "PlanVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, svcModel, Application, ApplicationContract, ApplicationVersion, PlanVersion, PlanVersionPolicy) {
+
+        $scope.service = svcModel.getService();
+        var hasAppContext = false;
+        if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
+          $scope.selectedAppVersion = selectedApp.appVersion;
+          hasAppContext = true;
+        }
+        $scope.availablePlans = [];
+        var noPlanSelected = true;
+
+
+        $scope.getOrgApps = function () {
+          //TODO make orgId dynamic even when no app has been selected yet
+          var orgId = 'Digipolis';
+          if (hasAppContext) {
+            orgId = $scope.selectedAppVersion.organizationId;
+          }
+          Application.query({ orgId: orgId }, function (data) {
+            $scope.applications = data;
+          });
+        };
+
+        $scope.getAppVersions = function () {
+          //TODO make orgId dynamic even when no app has been selected yet
+          if (hasAppContext) {
+            ApplicationVersion.query({ orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id }, function (data) {
+              $scope.versions = data;
+            });
+          }
+        };
+
+        var getAvailablePlans = function () {
+          angular.forEach($scope.service.plans, function (value) {
+            PlanVersion.get({orgId: $scope.service.service.organization.id, planId: value.planId, versionId: value.version}, function (planVersion) {
+              $scope.availablePlans.push(planVersion);
+              if (noPlanSelected) {
+                $scope.selectedPlan = planVersion;
+                getPlanPolicies();
+                noPlanSelected = false;
+              }
+            });
+          });
+        };
+
+        var getPlanPolicies = function () {
+          PlanVersionPolicy.query({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version}, function (policies) {
+            $scope.selectedPlanPolicies = policies;
+          });
+        };
+
+        $scope.selectApp = function (application) {
+          $scope.selectedAppVersion = application;
+          hasAppContext = true;
+          $scope.getAppVersions();
+        };
+
+        $scope.selectPlan = function (plan) {
+          $scope.selectedPlan = plan;
+          getPlanPolicies();
+        };
+
+        $scope.selectVersion = function (version) {
+          $scope.selectedAppVersion = version;
+        };
+
+        $scope.getOrgApps();
+        $scope.getAppVersions();
+        getAvailablePlans();
+
+        $scope.startCreateContract = function() {
+          var contract = {
+            serviceOrgId: $scope.service.service.organization.id,
+            serviceId: $scope.service.service.id,
+            serviceVersion: $scope.service.version,
+            planId: $scope.selectedPlan.plan.id
+          };
+          ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
+            $state.go('root.contract', { appVersion: $scope.selectedAppVersion, planVersion: $scope.selectedPlan, svcVersion: $scope.service });
+            $scope.modalClose();
+          });
+        };
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+      }])
+
+    /// ==== AddServicePolicy Controller
+    .controller("AddServicePolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "ServiceVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, ServiceVersionPolicy) {
+
+        $scope.policyDefs = policyDefs;
+        $scope.valid = false;
+        $scope.selectedPolicy = null;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.setValid = function (isValid) {
+          $scope.valid = isValid;
+        };
+
+        $scope.setConfig = function(config) {
+          $scope.config = config;
+        };
+        $scope.getConfig = function() {
+          return $scope.config;
+        };
+
+        $scope.addPolicy = function() {
+          var config = $scope.getConfig();
+          var newPolicy = {
+            definitionId: $scope.selectedPolicy.id,
+            configuration: config
+          };
+
+          ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
             $scope.modalClose();
             $scope.forceReload();
           });
@@ -60,74 +203,78 @@
           } else {
             $scope.selectedPolicy = policy;
             $scope.config = {};
-            if ($scope.selectedPolicy.formType == 'JsonSchema') {
-              //Not supported yet!
-              $scope.include = undefined;
+            if ($scope.selectedPolicy.formType === 'JsonSchema') {
+              //All plugins should fall into this category!
+              $scope.include = 'views/modals/partials/policy/json-schema.html';
             } else {
-              var inc = ConfigForms[$scope.selectedPolicy.id];
-              if (!inc) {
-                inc = 'Default.include';
-              }
-              $scope.include = 'views/modals/partials/policy/' + inc;
+              $scope.include = 'views/modals/partials/policy/Default.html';
             }
           }
-        }
+        };
 
       }])
 
-/// ==== Application Selection Controller
-    .controller("AppSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "svcModel", "Application", "ApplicationVersion", "CurrentUserAppOrgs",
-      function ($scope, $modal, $state, $stateParams, $timeout, svcModel, Application, ApplicationVersion, CurrentUserAppOrgs) {
+/// ==== PublishApplication Controller
+    .controller("PublishApplicationCtrl", ["$scope", "$rootScope", "$state", "$modal", "appVersion", "appContracts", "actionService", "toastService",
+      function ($scope, $rootScope, $state, $modal, appVersion, appContracts, actionService, toastService) {
 
-        $scope.orgSelected = false;
-        $scope.appSelected = false;
-        $scope.versionSelected = false;
-        $scope.service = svcModel.getService();
-
-        CurrentUserAppOrgs.query({}, function (data) {
-          $scope.organizations = data;
-        });
-
-        $scope.getOrgApps = function (selectedOrg) {
-          Application.query({orgId: selectedOrg.id}, function (data) {
-            $scope.applications = data;
-            $scope.orgSelected = true;
-          })
-        };
-
-        $scope.getAppVersions = function (selectedApp) {
-          ApplicationVersion.query({orgId: selectedApp.organizationId, appId: selectedApp.id}, function (data) {
-            $scope.versions = data;
-            $scope.appSelected = true;
-          })
-        };
-
-        $scope.versionIsSelected = function () {
-          $scope.versionSelected = true;
-        };
-
-        $scope.startCreateContract = function(selectedVersion) {
-          $state.go('contract',
-            { appOrgId: selectedVersion.organizationId, appId: selectedVersion.id, appVersion: selectedVersion.version,
-              svcOrgId: $stateParams.orgId, svcId: $stateParams.svcId, svcVersion: $stateParams.versionId
-            });
-          $scope.$close();
-        };
+        $scope.selectedAppVersion = appVersion;
+        $scope.contracts = appContracts;
 
         $scope.modalClose = function() {
           $scope.$close();	// this method is associated with $modal scope which is this.
         };
 
+        $scope.doPublish = function () {
+          actionService.publishApp($scope.selectedAppVersion, true);
+          //TODO Show toast only when actually successful
+          var msg = '<b>' + $scope.selectedAppVersion.name + '</b> <b>' + $scope.selectedAppVersion.version + '</b> was successfully published!';
+          toastService.createToast('success', msg, true);
+          $scope.modalClose();
+        };
+
+      }])
+
+/// ==== RetireApplication Controller
+    .controller("RetireApplicationCtrl", ["$scope", "$rootScope", "$modal", "appVersion", "appContracts", 'actionService', 'toastService',
+      function ($scope, $rootScope, $modal, appVersion, appContracts, actionService, toastService) {
+
+        $scope.applicationVersion = appVersion;
+        $scope.contracts = appContracts;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.doRetire = function () {
+          actionService.retireApp($scope.applicationVersion, true);
+          //TODO Show toast only when actually successful
+          var msg = '<b>' + $scope.applicationVersion.name + '</b> <b>' + $scope.applicationVersion.version + '</b> was retired.';
+          toastService.createToast('warning', msg, true);
+          $scope.modalClose();
+        };
+
+        $scope.addAlert = function() {
+          var index = $scope.alerts.length;
+          $scope.alerts.push({type: 'success', msg: 'Application ' + $scope.applicationVersion.application.name + ' ' + $scope.applicationVersion.version + ' has been retired.'});
+          $timeout(function(closeAlert){closeAlert(index);}, 3000);
+        };
+
+        $scope.closeAlert = function(index) {
+          $scope.alerts.splice(index, 1);
+        };
+
       }])
 
 /// ==== NewApplication Controller
-    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Application",
-      function ($scope, $modal, $state, $stateParams, orgScreenModel, Application) {
+    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "toastService", "Application",
+      function ($scope, $modal, $state, $stateParams, toastService, Application) {
 
-        $scope.org = orgScreenModel.organization;
-
+        //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
-          Application.save({ orgId: $stateParams.orgId }, application, function (app) {
+          application.base64logo = "";
+          Application.save({ orgId: 'Digipolis' }, application, function (app) {
+            toastService.createToast('success', 'Application created!', true);
             $scope.modalClose();
             $state.forceReload();
           });
@@ -148,8 +295,7 @@
         $scope.createPlan = function (plan) {
           Plan.save({ orgId: $stateParams.orgId }, plan, function (newPlan) {
             $scope.modalClose();
-            console.log(plan);
-            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+            $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
           });
         };
 
@@ -159,11 +305,22 @@
 
       }])
 
-    /// ==== NewPlanVersion Controller
-    .controller("NewPlanVersionCtrl", ["$scope", "$state", "$stateParams", "planScreenModel", "PlanVersion",
-      function ($scope, $state, $stateParams, planScreenModel, PlanVersion) {
+    /// ==== NewVersion Controller
+    .controller("NewVersionCtrl",
+    ["$scope", "$state", "$stateParams", "appScreenModel", "planScreenModel", "svcScreenModel", "ApplicationVersion", "PlanVersion", "ServiceVersion",
+      function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, ApplicationVersion, PlanVersion, ServiceVersion) {
+        var type = {};
 
-        $scope.currentVersion = planScreenModel.plan.version;
+        if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'Plan';
+          $scope.currentVersion = planScreenModel.plan.version;
+        } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'Application';
+          $scope.currentVersion = appScreenModel.application.version;
+        } else {
+          type = 'Service';
+          $scope.currentVersion = svcScreenModel.service.version;
+        }
 
         $scope.newVersion = '';
         $scope.shouldClone = true;
@@ -174,10 +331,27 @@
             clone: $scope.shouldClone,
             cloneVersion: $scope.currentVersion
           };
-          PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
-            $scope.modalClose();
-            $state.go('plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
-          });
+
+          switch (type) {
+            case 'Application':
+              ApplicationVersion.save({ orgId: $stateParams.orgId, appId: $stateParams.appId }, newVersion, function (newAppVersion) {
+                $scope.modalClose();
+                $state.go('root.application.overview', {orgId: $stateParams.orgId, appId: newAppVersion.application.id, versionId: newAppVersion.version});
+              });
+              break;
+            case 'Plan':
+              PlanVersion.save({ orgId: $stateParams.orgId, planId: $stateParams.planId }, newVersion, function (newPlanVersion) {
+                $scope.modalClose();
+                $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlanVersion.plan.id, versionId: newPlanVersion.version});
+              });
+              break;
+            case 'Service':
+              ServiceVersion.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId }, newVersion, function (newSvcVersion) {
+                $scope.modalClose();
+                $state.go('root.service.overview', {orgId: $stateParams.orgId, svcId: newSvcVersion.service.id, versionId: newSvcVersion.version});
+              });
+              break;
+          }
         };
 
         $scope.modalClose = function() {
@@ -202,7 +376,7 @@
           Service.save({ orgId: $stateParams.orgId }, svc, function (data) {
             $scope.modalClose();
             $state.forceReload();
-          })
+          });
         };
 
         $scope.modalClose = function() {
@@ -229,4 +403,4 @@
       }]);
 
   // #end
-})();
+})(window.angular);

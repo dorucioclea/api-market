@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h4>Available Plans</h4>
+     <p>Choose which plans should be presented when Applications create a link (Contract) to this Service.
+       Note that only plans in a 'Locked' state show up in this list.</p>
+    <hr>
+    <!-- The plans to choose from -->
+    <div class="col-sm-10 col-sm-offset-1 well" ng-hide="plans.length > 0">
+      No plans are available for this service! This could be because no plans have been created yet, or because the plans are not yet locked.
+      As long as no plan is assigned to this service, it cannot be published.
+    </div>
+    <div class="col-sm-12">
+      <div class="col-sm-12" ng-repeat="plan in plans">
+        <div class="row">
+          <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
+            <label>
+              <input type="checkbox" ng-model="plan.checked" ng-disabled="isPublished">
+              <span class="title"><a ui-sref="root.plan.overview({orgId: plan.organizationId, planId: plan.id, versionId: plan.selectedVersion})" title="{{ plan.description }}">{{ plan.name }}</a></span>
+            </label>
+          </div>
+          <div class="col-sm-6">
+            <div class="btn-group dropdown pull-right" dropdown>
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle ng-disabled="isPublished">
+                Version: {{plan.selectedVersion}}<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li ng-repeat="version in plan.lockedVersions | orderBy:'createdOn'" ng-click="plan.selectedVersion = version"><a>{{version}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 mt20" ng-hide="isPublished">
+    <button ng-disabled="!isDirty" class="btn btn-default btn-sm" ng-click="reset()">Cancel</button>
+    <button ng-disabled="!isDirty" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
+  </div>
+</div>

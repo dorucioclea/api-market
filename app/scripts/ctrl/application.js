@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -6,47 +6,62 @@
 
 
 /// ==== Application Controller
-.controller("ApplicationCtrl", ["$scope", "$stateParams", "appData", "appTab",
-  function ($scope, $stateParams, appData, appTab) {
+    .controller("ApplicationCtrl", ["$scope", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "headerModel", "ApplicationContract",
+      function ($scope, $state, $stateParams, appData, appVersions, appScreenModel, headerModel, ApplicationContract) {
+        headerModel.setIsButtonVisible(true, true);
+        $scope.applicationVersion = appData;
+        appScreenModel.updateApplication(appData);
+        $scope.versions = appVersions;
+        $scope.displayTab = appScreenModel;
+        $scope.isReady = $scope.applicationVersion.status === 'Ready';
+        $scope.isRegistered = $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+        $scope.isRetired = $scope.applicationVersion.status === 'Retired';
 
-    $scope.application = appData;
-    $scope.displayTab = appTab;
+        $scope.selectVersion = function (version) {
+          $state.go($state.$current.name, { orgId: $stateParams.orgId, appId: $stateParams.appId, versionId: version.version});
+        };
 
-  }])
+        $scope.breakContract = function (contract) {
+          ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
+            $state.forceReload();
+          });
+        };
 
-  // +++ Application Screen Subcontrollers +++
-  /// ==== Activity Controller
-  .controller("ActivityCtrl", ["$scope", "activityData", "appTab", function ($scope, activityData, appTab) {
+      }])
 
-    $scope.activities = activityData.beans;
-    appTab.updateTab('Activity');
+    // +++ Application Screen Subcontrollers +++
+    /// ==== Activity Controller
+    .controller("ActivityCtrl", ["$scope", "activityData", "appScreenModel", function ($scope, activityData, appScreenModel) {
 
-  }])
-  /// ==== APIs Controller
-  .controller("ApisCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
+      $scope.activities = activityData.beans;
+      appScreenModel.updateTab('Activity');
 
-    $scope.contracts = contractData;
-    appTab.updateTab('APIs');
+    }])
+    /// ==== APIs Controller
+    .controller("ApisCtrl", ["$scope", "contractData", "appScreenModel", function ($scope, contractData, appScreenModel) {
 
-    $scope.toggle = function () {
-      $scope.apiExpanded = !$scope.apiExpanded;
-    };
+      $scope.contracts = contractData;
+      appScreenModel.updateTab('APIs');
 
-  }])
-  /// ==== Contracts Controller
-  .controller("ContractsCtrl", ["$scope", "contractData", "appTab", function ($scope, contractData, appTab) {
+      $scope.toggle = function () {
+        $scope.apiExpanded = !$scope.apiExpanded;
+      };
 
-    $scope.contracts = contractData;
-    appTab.updateTab('Contracts');
+    }])
+    /// ==== Contracts Controller
+    .controller("ContractsCtrl", ["$scope", "contractData", "appScreenModel", function ($scope, contractData, appScreenModel) {
 
-  }])
+      $scope.contracts = contractData;
+      appScreenModel.updateTab('Contracts');
 
-  /// ==== Overview Controller
-  .controller("OverviewCtrl", ["$scope", "appTab", function ($scope, appTab) {
+    }])
 
-    appTab.updateTab('Overview');
+    /// ==== Overview Controller
+    .controller("OverviewCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
 
-  }]);
+      appScreenModel.updateTab('Overview');
+
+    }]);
 
   // #end
-})();
+})(window.angular);

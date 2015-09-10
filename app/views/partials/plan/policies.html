@@ -9,9 +9,11 @@
   <div class="col-sm-12">
     <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="locked">Add Policy</button>
   </div>
+  <div class="col-sm-12" ng-hide="locked">
+    <hr>
+  </div>
 
   <div class="col-sm-12" ng-hide="policies.length > 0">
-    <hr>
     <div class="col-sm-10 col-sm-offset-1 well" ng-show="locked">
       It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Plan, since this one is locked!
     </div>
@@ -22,11 +24,7 @@
       <div class="no-entities-arrow" ng-hide="locked"></div>
     </div>
   </div>
-  <div class="clearfix"></div>
-  <apiman-policy-list class="ng-pristine ng-untouched ng-valid ng-isolate-scope" ng-model="policies" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="Digipolis" page-id="Unlimited" version="1.0"><div class="apiman-policies ng-untouched ng-valid ng-scope ng-dirty" id="draggable-ctr" as-sortable="policyListOptions" ng-model="ctrl.policies">
-    <!-- ngRepeat: policy in ctrl.policies -->
-  </div>
-  </apiman-policy-list>
+  <div class="col-sm-12 mt20">
+  <policy-list ng-model="policies" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="{{ org.id }}" page-id="{{ plan.id }}" version="{{ version.version }}"></policy-list>
 </div>
 </div>
-<!-- /Content -->

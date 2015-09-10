@@ -1,32 +1,38 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
   angular.module("app.ctrl.user", [])
 
   /// ==== User Controller
-    .controller("UserCtrl", ["$scope", function ($scope) {
+    .controller("UserCtrl", ["$scope", "userInfo", "headerModel", "userScreenModel", function ($scope, userInfo, headerModel, userScreenModel) {
 
+      headerModel.setIsButtonVisible(true, true);
       $scope.selectedTab = 1;
 
-      $scope.selectTab = function(tabId) {
-        $scope.selectedTab = tabId;
+      $scope.currentUserInfo = userInfo;
+
+      $scope.isActive = function (tabName) {
+        return tabName === userScreenModel.selectedTab;
+      };
+    }])
+    .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Email');
+    }])
+    .controller("UserProfileCtrl", ["$scope", "$state", "userScreenModel", "CurrentUserInfo", function($scope, $state, userScreenModel, CurrentUserInfo) {
+      userScreenModel.updateTab('Profile');
+
+      $scope.saveUserDetails = function (details) {
+        CurrentUserInfo.update({}, details, function (reply) {
+          $state.forceReload();
+        });
       };
 
-      $scope.pathForTab = function() {
-        switch ($scope.selectedTab) {
-          case 1:
-            return "views/partials/user/profile.html";
-          case 2:
-            return "views/partials/user/account.html";
-          case 3:
-            return "views/partials/user/email.html";
-          case 4:
-            return "views/partials/user/notifications.html";
-        }
-      };
 
+    }])
+    .controller("UserNotificationsCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Notifications');
     }]);
 
   // #end
-})();
+})(window.angular);

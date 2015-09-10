@@ -5,13 +5,13 @@
       <tr ng-repeat="api in availableAPIs">
         <td>
           <div class="media media-middle">
-            <a ui-sref="service({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><img src="images/yeoman.png"></a>
+            <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><img src="images/yeoman.png"></a>
           </div>
         </td>
         <td class="text-left">
           <div class="text-primary">
-            <a class="text-primary" ui-sref="service({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
-            <span class="text-default text-light"> by </span><a class="text-primary" ui-sref="organization.services({orgId: api.service.organization.id})">{{api.service.organization.name}}</a>
+            <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
+            <span class="text-default text-light"> by </span><a class="text-primary" ui-sref="root.organization.services({orgId: api.service.organization.id})">{{api.service.organization.name}}</a>
           </div>
           <div class="description">
             {{api.service.description}}

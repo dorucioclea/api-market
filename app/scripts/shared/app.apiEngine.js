@@ -7,7 +7,7 @@
 
   /// ########## API Engine BaseUrl ######################
     .factory('EngineUrl', function () {
-      return 'http://localhost:8080/API-Engine-web/v1';
+      return "http://apim.t1t.be:8000/dev/apiengine/v1";
     })
 
 
@@ -71,23 +71,34 @@
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
     }])
+    .factory('ServiceActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');
+    }])
     .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId');
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId', {}, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
+    .factory('ServiceVersionDefinition', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/definition', {}, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
+    .factory('ServiceVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+    }])
+    .factory('ServiceVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');
     }])
     .factory('ServiceEndpoint', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
     }])
     .factory('ServicePlans', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
-    }])
-
-  /// ========== SERVICE DEFINITION URL ===========================================================
-    .factory('ServiceDefinition', ['EngineUrl', function (EngineUrl) {
-      return {
-        getDefinitionUrl: function (orgId, svcId, versionId) {
-          return EngineUrl + '/organizations/' + orgId + '/services/' + svcId + '/versions/' + versionId + '/definition';
-        }
-      }
     }])
 
   /// ========== CURRENTUSER ======================================================================
@@ -123,7 +134,7 @@
   /// ========== POLICYDEFS =======================================================================
 
     .factory('PolicyDefs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/policyDefs');
+      return $resource(EngineUrl + '/policyDefs/:policyId');
     }])
 
   /// ========== SEARCH ===========================================================================

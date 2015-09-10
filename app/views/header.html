@@ -1,57 +1,65 @@
 <ul class="list-unstyled left-elems">
 
   <li>
-    <img ui-sref="home.grid" class="logo" src="images/digipolis-logo.svg">
+    <a ui-sref="root.market-dash" class="logo"><img class="logo"></a>
   </li>
 
-	<!-- Search box -->
-	<li>
-		<div class="form-search hidden-xs">
-			<form id="site-search" action="#na">
-				<input type="search" class="form-control" placeholder="Search APIs">
-				<button type="submit" class="ion ion-ios-search-strong"></button>
-			</form>
-		</div>
-	</li>	<!-- #end search-box -->
+  <!-- Search box -->
+  <li>
+    <div class="form-search hidden-xs">
+      <form id="site-search" action="#na">
+        <input type="search" class="form-control" placeholder="Search APIs">
+        <button type="submit" class="ion ion-ios-search-strong"></button>
+      </form>
+    </div>
+  </li>	<!-- #end search-box -->
 
-	<!-- site-logo for mobile nav -->
-	<li>
-		<div class="site-logo visible-xs">
-			<a ui-sref="home.grid" class="text-uppercase h3">
-				<span class="text">ACPaaS</span>
-			</a>
-		</div>
-	</li> <!-- #end site-logo -->
+  <!-- site-logo for mobile nav -->
+  <li>
+    <div class="site-logo visible-xs">
+      <a ui-sref="root.apis.grid" class="text-uppercase h3">
+        <span class="text">ACPaaS</span>
+      </a>
+    </div>
+  </li> <!-- #end site-logo -->
 
-  <li class="hidden-sm hidden-xs">
-    <a ui-sref="home.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
+  <li class="hidden-sm hidden-xs" ng-show="showExplore">
+    <a ui-sref="root.apis.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
   </li>
-
-  <li class="hidden-sm hidden-xs">
-    <a ui-sref="organizations" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-ios-people"></i>Find Organizations</a>
+  <li class="hidden-sm hidden-xs" ng-show="showDash">
+    <a ui-sref="root.market-dash" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</a>
   </li>
 
 </ul>
 
 
 <ul class="list-unstyled right-elems">
-	<!-- profile drop -->
-	<li class="profile-drop hidden-xs dropdown" dropdown>
-		<a href dropdown-toggle>
-			<img src="images/admin.jpg" alt="admin-pic">
+  <!-- profile drop -->
+  <li class="profile-drop hidden-xs dropdown" dropdown>
+    <a href dropdown-toggle>
+      <img src="images/admin.jpg" alt="admin-pic">
+      <span class="text-primary"></span>
       <span class="text-primary caret"></span>
-		</a>
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li><a ui-sref="user"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
-			<li><a ui-sref="user"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
-			<li class="divider"></li>
-			<li><a ui-sref="myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right">
+      <li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserInfo.fullName}}</a></li>
+      <li class="divider"></li>
+      <li><a ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
+      <li><a ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
       <li class="divider"></li>
       <li><a href="javascript:;" ng-click="togglePublisher()"><span class="ion" ng-class="{'ion-toggle-filled': publisherMode, 'ion-toggle': !publisherMode}">&nbsp;&nbsp;</span>Toggle Publisher Mode</a></li>
       <li class="divider"></li>
       <li><a href="javascript:;"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
-		</ul>
-	</li>
-	<!-- #end profile-drop -->
+    </ul>
+  </li>
+  <!-- #end profile-drop -->
 </ul>
+
+<!--<div class="col-sm-6">-->
+  <!--<ol class="progtracker" data-progtrckr-steps="3">-->
+    <!--<li class="progtracker-done">Select API to consume</li>&lt;!&ndash;-->
+ <!--&ndash;&gt;<li class="progtracker-done">Create Contract</li>&lt;!&ndash;-->
+ <!--&ndash;&gt;<li class="progtracker-done">Publish Application</li>-->
+  <!--</ol>-->
+<!--</div>-->
 

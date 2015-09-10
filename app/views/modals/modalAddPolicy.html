@@ -11,11 +11,11 @@
       <span class="text-bold">Policy Type</span>
       <div dropdown>
         <button class="btn btn-primary" dropdown-toggle>
-          <i class="fa fa-{{selectedPolicy.icon}}"></i>
+          <i class="fa {{selectedPolicy.icon}}"></i>
           <span>{{selectedPolicy === null ? 'Choose a policy...' : selectedPolicy.name}} </span><span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left">
-          <li ng-repeat="def in policyDefs | orderBy:'name.toLowerCase()'" ng-click="selectPolicy(def)"><a><span class="fa fa-inline fa-fw fa-{{def.icon}}"></span>&nbsp;&nbsp;{{def.name}}</a></li>
+          <li ng-repeat="def in policyDefs | orderBy:'name.toLowerCase()'" ng-click="selectPolicy(def)"><a><span class="fa fa-inline fa-fw {{def.icon}}"></span>&nbsp;&nbsp;{{def.name}}</a></li>
         </ul>
       </div>
 
@@ -27,6 +27,7 @@
   <div class="row mt20 ng-hide" ng-show="include">
     <div class="panel panel-default">
       <div class="panel-heading">{{selectedPolicy.name}} <span>Configuration</span></div>
+      <div class="panel-body">{{selectedPolicy.description}}</div>
       <div class="panel-body" ng-include="include"></div>
     </div>
   </div>

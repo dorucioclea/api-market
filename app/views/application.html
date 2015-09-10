@@ -1,62 +1,17 @@
-<div class="page">
-  <div class="row">
+<overview>
+  <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}"
+                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
 
-    <div class="col-sm-10 col-sm-offset-1">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <div class="col-sm-10">
-            <div class="text-bold text-primary">
-              <div class="col-sm-8 text-primary text-uppercase text-bold">
-                <h5><span class="fa fa-cogs"></span> {{application.name}}</h5>
-              </div>
-              <div class="col-sm-4">
-                <form role="form" class="form-inline right">
-                  <select dir="rtl" class="form-control">
-                    <option value="v2" selected>Version v2</option>
-                    <option value="v1">Version v1</option>
-                  </select>
-                </form>
-              </div>
-            </div>
+    <!-- Entity Buttons -->
+    <button class="btn btn-line-primary btn-sm">Regenerate Keys</button>
+    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-hide="isRegistered" ng-click="publishApp(applicationVersion, true)">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-show="isRegistered && !isRetired" ng-click="retireApp(applicationVersion)">Retire</button>
+  </overview-header>
 
-            <div class="col-sm-12">
-              <hr>
-              <p>{{application.description}}</p>
-              <span class="text-light small fa fa-clock-o"> Created on {{application.createdOn | date}}</span> <br>
-              <span class="text-light small fa fa-user"> Created by {{application.createdBy}}</span>
-              <hr>
-              <p class="mt15">Status: <label class="label text-uppercase label-warning">Created</label></p>
-            </div>
-          </div>
-
-
-          <div class="col-sm-2 col-sm-offset-0 col-xs-8 col-xs-offset-2">
-            <div class="right">
-              <button class="btn btn-block btn-primary">New Version</button>
-              <button class="btn btn-block btn-warning">Regenerate Keys</button>
-              <div class="mt30">
-                <button class="btn btn-block btn-danger">Delete Application</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="panel">
-        <div class="panel-body">
-          <div class="btn-group btn-radio">
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis">APIs</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-          </div>
-          <div class="mt10 panel panel-default">
-            <div class="panel-body" ui-view>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  <overview-tabs>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis" ng-show="isRegistered">APIs</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+  </overview-tabs>
+</overview>

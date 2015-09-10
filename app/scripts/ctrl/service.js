@@ -1,146 +1,317 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
-angular.module("app.ctrl.service", [])
-
-  /// ==== Service Doc Main Controller
-  .controller("ApiDocCtrl", ["$scope", "$stateParams", "$modal", "svcData", "svcModel", "svcTab",
-    function($scope, $stateParams, $modal, svcData, svcModel, svcTab) {
-
-      svcModel.setService(svcData);
-      $scope.serviceVersion = svcData;
-      $scope.displayTab = svcTab;
-
-      $scope.modalAnim = "default";
-
-      $scope.modalNewTicketOpen = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalCreateTicket.html",
-          size: "lg",
-          controller: "ModalDemoCtrl",
-          resolve: function() {},
-          windowClass: $scope.modalAnim	// Animation Class put here.
-        });
-
-      };
-
-      $scope.modalClose = function() {
-        $scope.$close();	// this method is associated with $modal scope which is this.
-      };
-
-      $scope.openTicket = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalViewTicket.html",
-          size: "lg",
-          controller: "ModalDemoCtrl",
-          resolve: function() {},
-          windowClass: $scope.modalAnim
-        });
-      };
-    }])
+  angular.module("app.ctrl.service", [])
 
 
-/// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceDefinition",
-      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceDefinition) {
+/// ==== Service Controller
+    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "Action",
+      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, Action) {
 
-        svcTab.updateTab('Documentation');
-        $scope.endpoint = endpoint;
+        $scope.serviceVersion = svcData;
+        svcScreenModel.updateService(svcData);
+        $scope.displayTab = svcScreenModel;
+        $scope.versions = svcVersions;
+        $scope.isReady = $scope.serviceVersion.status === 'Ready';
+        $scope.isPublished = $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
+        $scope.isRetired = $scope.serviceVersion.status === 'Retired';
 
-        $scope.loadSwaggerUi = function(url) {
-          $scope.swaggerUi = new SwaggerUi({
-            url:url,
-            dom_id:"swagger-ui-container",
-            validatorUrl: null,
-            apisSorter: "alpha",
-            operationsSorter: "alpha",
-            docExpansion: "list",
-            onComplete: function() {
-              $('#swagger-ui-container').find('a').each(function(idx, elem) {
-                var href = $(elem).attr('href');
-                if (href[0] == '#') {
-                  $(elem).removeAttr('href');
-                }
-              })
-                .find('div.sandbox_header').each(function(idx, elem) {
-                  $(elem).remove();
-                })
-                .find("li.operation div.auth").each(function(idx, elem) {
-                  $(elem).remove();
-                })
-                .find("li.operation div.access").each(function(idx, elem) {
-                  $(elem).remove();
-                });
-              $scope.$apply(function(error) {
-                $scope.definitionStatus = 'complete';
-              });
-            },
-            onFailure: function() {
-              $scope.$apply(function(error) {
-                $scope.definitionStatus = 'error';
-                $scope.hasError = true;
-                $scope.error = error;
-              });
-            }
-          });
-          $scope.swaggerUi.load();
+
+        $scope.selectVersion = function (version) {
+          $state.go($state.$current.name, { orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
         };
 
-        $scope.loadSwaggerUi(ServiceDefinition.getDefinitionUrl($stateParams.orgId, $stateParams.svcId, $stateParams.versionId));
 
-        $scope.modalAnim = "default";
-
-        $scope.modalSelectApplicationForContract = function() {
-          $modal.open({
-            templateUrl: "views/modals/modalSelectApplication.html",
-            size: "lg",
-            controller: "AppSelectCtrl as ctrl",
-            resolve: function() {},
-            windowClass: $scope.modalAnim	// Animation Class put here.
+        $scope.publishService = function () {
+          var publishAction = {
+            type: 'publishService',
+            organizationId: $stateParams.orgId,
+            entityId: $stateParams.svcId,
+            entityVersion: $stateParams.versionId
+          };
+          Action.save(publishAction, function (reply) {
+            $state.forceReload();
           });
+        };
 
+        $scope.retireService = function () {
+          var publishAction = {
+            type: 'retireService',
+            organizationId: $stateParams.orgId,
+            entityId: $stateParams.svcId,
+            entityVersion: $stateParams.versionId
+          };
+          Action.save(publishAction, function (reply) {
+            $state.forceReload();
+          });
         };
 
       }])
 
-  /// ==== Service Plans Controller
-  .controller("SvcPlanCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+    // +++ Service Screen Subcontrollers +++
+    /// ==== Activity Controller
+    .controller("ServiceActivityCtrl", ["$scope", "activityData", "svcScreenModel", function ($scope, activityData, svcScreenModel) {
 
-    svcTab.updateTab('Plans');
+      $scope.activities = activityData.beans;
+      svcScreenModel.updateTab('Activity');
 
-  }])
+    }])
 
-  /// ==== Service Announcements Controller
-  .controller("AnnouncementCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+    /// ==== Implementation Controller
+    .controller("ServiceImplementationCtrl", ["$scope", "$state", "$stateParams", "ServiceVersion", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceVersion, svcScreenModel) {
 
-    svcTab.updateTab('Announcements');
+        $scope.version = svcScreenModel.service;
+        $scope.updatedService = {
+          endpointType: 'rest',
+          endpoint: $scope.version.endpoint,
+          gateways: [{gatewayId: 'KongGateway'}]
+        };
 
-    $scope.selectedAnnouncement = 0;
+        $scope.typeOptions = ["rest", "soap"];
+        svcScreenModel.updateTab('Implementation');
 
-    $scope.announcements = [ { id: 0, timestring: '24 days ago', username: 'Trust1Team', content: { short: 'Release v1 available', description: "<p>It came to me that I was upon this dark common, helpless, unprotected, and alone.  Suddenly, like a thing falling upon me from without, came--fear.</p> <p>With an effort I turned and began a stumbling run through the heather.</p> <p>The fear I felt was no rational fear, but a panic terror not only of the Martians, but of the dusk and stillness all about me.  Such an extraordinary effect in unmanning me it had that I ran weeping silently as a child might do.  Once I had turned, I did not dare to look back.</p> <p>I remember I felt an extraordinary persuasion that I was being played with, that presently, when I was upon the very verge of safety, this mysterious death--as swift as the passage of light--would leap after me from the pit about the cylinder and strike me down.</p> <p>It is still a matter of wonder how the Martians are able to slay men so swiftly and so silently.  Many think that in some way they are able to generate an intense heat in a chamber of practically absolute non-conductivity.  This intense heat they project in a parallel beam against any object they choose, by means of a polished parabolic mirror of unknown composition, much as the parabolic mirror of a lighthouse projects a beam of light.  But no one has absolutely proved these details.  However it is done, it is certain that a beam of heat is the essence of the matter.  Heat, and invisible, instead of visible, light.  Whatever is combustible flashes into flame at its touch, lead runs like water, it softens iron, cracks and melts glass, and when it falls upon water, incontinently that explodes into steam.</p>"}},
-      { id: 1, timestring: '3 months ago', username: 'Test user', content: { short: 'RC1 coming tomorrow!', description: "<p>THE WHALE NEVER FIGURED IN ANY GRAND IMPOSING WAY? In one of the mighty triumphs given to a Roman general upon his entering the world's capital, the bones of a whale, brought all the way from the Syrian coast, were the most conspicuous object in the cymballed procession.*</p> <p>*See subsequent chapters for something more on this head.</p> <p>Grant it, since you cite it; but, say what you will, there is no real dignity in whaling.</p> <p>NO DIGNITY IN WHALING? The dignity of our calling the very heavens attest. Cetus is a constellation in the South! No more! Drive down your hat in presence of the Czar, and take it off to Queequeg! No more! I know a man that, in his lifetime, has taken three hundred and fifty whales. I account that man more honourable than that great captain of antiquity who boasted of taking as many walled towns.</p> <p>And, as for me, if, by any possibility, there be any as yet undiscovered prime thing in me; if I shall ever deserve any real repute in that small but high hushed world which I might not be unreasonably ambitious of; if hereafter I shall do anything that, upon the whole, a man might rather have done than to have left undone; if, at my death, my executors, or more properly my creditors, find any precious MSS. in my desk, then here I prospectively ascribe all the honour and the glory to whaling; for a whale-ship was my Yale College and my Harvard.</p>"}},
-      { id: 2, timestring: 'a year ago', username: 'Trust1Team', content: { short: 'Incubation started', description: "<p>To go on account grog coffer gun salmagundi lee scuppers scuttle Spanish Main chase. Lookout squiffy swab hardtack long boat Blimey spyglass grog blossom furl heave down. Hail-shot bilged on her anchor hornswaggle man-of-war pirate six pounders Pieces of Eight Letter of Marque wherry Nelsons folly.</p> <p>Gaff topgallant cable loot clap of thunder crimp walk the plank fore bilge rat pressgang. Case shot no prey, no pay ballast Arr smartly pinnace holystone rigging ye bring a spring upon her cable. Arr stern line plunder Gold Road cutlass log weigh anchor lugger execution dock.</p> <p>Gibbet gunwalls long clothes killick port bowsprit Sea Legs doubloon spyglass interloper. Topsail pillage to go on account Spanish Main lugsail pirate jury mast Admiral of the Black handsomely Plate Fleet. Fathom blow the man down Barbary Coast bowsprit Sea Legs gangplank reef draught loaded to the gunwalls chandler.</p>"}}];
+        $scope.selectType = function (newType) {
+          $scope.updatedService.endpointType = newType;
+        };
 
-    $scope.switchNotification = function(id) {
-      $scope.selectedAnnouncement = id;
-    }
+        var checkValid = function() {
+          var valid = true;
+          if (!$scope.updatedService.endpointType || angular.isUndefined($scope.updatedService.endpoint)) {
+            valid = false;
+          } else if ($scope.updatedService.endpoint === null || $scope.updatedService.endpoint.length === 0) {
+            valid = false;
+          }
+          $scope.isValid = valid;
+        };
 
-  }])
+        $scope.$watch('updatedService', function(newValue) {
+          if ($scope.version) {
+            var dirty = false;
+            if (newValue.endpoint !== $scope.version.endpoint || newValue.endpointType !== $scope.version.endpointType) {
+              dirty = true;
+            }
+            checkValid();
+            $scope.isDirty = dirty;
+          }
+        }, true);
 
-  /// ==== Service Support Controller
-  .controller("SupportCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+        $scope.reset = function() {
+          $scope.updatedService.endpoint = $scope.version.endpoint;
+          $scope.updatedService.endpointType = $scope.version.endpointType;
+          $scope.isDirty = false;
+        };
 
-    svcTab.updateTab('Support');
+        $scope.saveService = function() {
+          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function(reply) {
+            $scope.isDirty = false;
+            $state.forceReload();
+          });
+        };
 
-  }])
+      }])
 
-  /// ==== Service Terms Controller
-  .controller("TermsCtrl", ["$scope", "svcTab", function($scope, svcTab) {
+    /// ==== Definition Controller
+    .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceVersionDefinition", "svcScreenModel",
+      function ($scope, $state, $stateParams, ServiceVersionDefinition, svcScreenModel) {
 
-    svcTab.updateTab('Terms');
+        $scope.updatedDefinition = '';
+        svcScreenModel.updateTab('Definition');
+        $scope.definitionLoaded = false;
+        $scope.noDefinition = false;
 
-  }]);
+        ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
+          $scope.currentDefinition = reply;
+          if (angular.isDefined($scope.currentDefinition)) {
+            $scope.updatedDefinition = $scope.currentDefinition;
+            $scope.loadSwaggerUi($scope.currentDefinition, "original-swagger-ui-container");
+          }
+        }, function (error) {
+          $scope.noDefinition = true;
+        });
+
+        $scope.reset = function () {
+          $scope.definitionLoaded = false;
+          $scope.updatedDefinition = $scope.currentDefinition;
+        };
+
+        $scope.saveDefinition = function () {
+          ServiceVersionDefinition.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
+            $state.forceReload();
+          });
+        };
+
+        $scope.$watch('updatedDefinition', function(def) {
+          $scope.changed = (def !== $scope.currentDefinition);
+          $scope.invalid = (def === $scope.currentDefinition);
+        }, true);
+
+        $scope.loadDefinition = function ($fileContent) {
+          $scope.updatedDefinition = angular.fromJson($fileContent);
+          $scope.loadPreview($scope.updatedDefinition);
+        };
+
+        $scope.loadPreview = function (spec) {
+          $scope.definitionLoaded = true;
+          $scope.loadSwaggerUi(spec, "swagger-ui-container");
+        };
+      }])
+
+    /// ==== Plans Controller
+    .controller("ServicePlansCtrl", ["$scope", "$state", "$stateParams", "$q", "planData", "svcScreenModel", "PlanVersion", "ServiceVersion",
+      function ($scope, $state, $stateParams, $q, planData, svcScreenModel, PlanVersion, ServiceVersion) {
+
+        svcScreenModel.updateTab('Plans');
+        var definedPlans = planData;
+        var lockedPlans = [];
+        $scope.updatedService = {};
+        $scope.version = svcScreenModel.service;
+
+        var getSelectedPlans = function() {
+          var selectedPlans = [];
+          for (var i = 0; i < lockedPlans.length; i++) {
+            var plan = lockedPlans[i];
+            if (plan.checked) {
+              var selectedPlan = {};
+              selectedPlan.planId = plan.id;
+              selectedPlan.version = plan.selectedVersion;
+              selectedPlans.push(selectedPlan);
+            }
+          }
+          return selectedPlans;
+        };
+
+        //find locked plan versions
+        $q(function (resolve) {
+          var promises = [];
+          angular.forEach(definedPlans, function (plan) {
+            promises.push($q(function (resolve, reject) {
+              PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
+                var lockedVersions = [];
+                for (var j = 0; j < planVersions.length; j++) {
+                  var planVersion = planVersions[j];
+                  if (planVersion.status === "Locked") {
+                    lockedVersions.push(planVersion.version);
+                  }
+                }
+                // if we found locked plan versions then add them
+                if (lockedVersions.length > 0) {
+                  plan.lockedVersions = lockedVersions;
+                  lockedPlans.push(plan);
+                }
+                resolve(planVersions);
+              }, reject);
+            }));
+          });
+          $q.all(promises).then(function () {
+            lockedPlans.sort(function (a, b) {
+              if (a.id.toLowerCase() < b.id.toLowerCase()) {
+                return -1;
+              } else if (b.id < a.id) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+            resolve(lockedPlans);
+            $scope.plans = lockedPlans;
+            $scope.reset();
+          });
+        });
+
+        $scope.$watch('plans', function(newValue) {
+          $scope.updatedService.plans = getSelectedPlans();
+        }, true);
+
+        $scope.reset = function() {
+          for (var i = 0; i < lockedPlans.length; i++) {
+            lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
+            for (var j = 0; j < $scope.version.plans.length; j++) {
+              if (lockedPlans[i].id === $scope.version.plans[j].planId) {
+                lockedPlans[i].checked = true;
+                lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
+                break;
+              }
+              lockedPlans[i].checked = false;
+            }
+          }
+          $scope.updatedService.plans = getSelectedPlans();
+          $scope.isDirty = false;
+        };
+
+        $scope.$watch('updatedService', function(newValue) {
+          var dirty = false;
+          if (newValue.plans && $scope.version.plans && newValue.plans.length !== $scope.version.plans.length) {
+            dirty = true;
+          } else if (newValue.plans && $scope.version.plans) {
+            for (var i = 0; i < $scope.version.plans.length; i++) {
+              var p1 = $scope.version.plans[i];
+
+              for (var j = 0; j < newValue.plans.length; j++) {
+                var p2 = newValue.plans[j];
+                if(p1.planId === p2.planId) {
+                  // Found Plan, if versions are not equal ==> dirty
+                  if (p1.version !== p2.version) {
+                    dirty = true;
+                  }
+                  break;
+                }
+              }
+            }
+          }
+          $scope.isDirty = dirty;
+        }, true);
+
+        $scope.saveService = function() {
+          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
+            $state.forceReload();
+          });
+        };
+
+      }])
+    /// ==== Policies Controller
+    .controller("ServicePoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "svcScreenModel", "ServiceVersionPolicy", "PolicyDefs",
+      function ($scope, $modal, $stateParams, policyData, svcScreenModel, ServiceVersionPolicy, PolicyDefs) {
+
+        $scope.policies = policyData;
+        svcScreenModel.updateTab('Policies');
+
+
+        $scope.removePolicy = function(policy) {
+          ServiceVersionPolicy.delete({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, policyId: policy.id}, function (data) {
+            angular.forEach($scope.policies, function(p, index) {
+              if (policy === p) {
+                $scope.policies.splice(index, 1);
+              }
+            });
+          });
+        };
+
+        $scope.modalAnim = "default";
+
+        $scope.modalAddPolicy = function() {
+          $modal.open({
+            templateUrl: "views/modals/modalAddPolicy.html",
+            size: "lg",
+            controller: "AddPolicyCtrl as ctrl",
+            resolve: {
+              policyDefs: function (PolicyDefs) {
+                return PolicyDefs.query({}).$promise;
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+
+        };
+      }])
+
+    /// ==== Overview Controller
+    .controller("ServiceOverviewCtrl", ["$scope", "svcScreenModel", function ($scope, svcScreenModel) {
+
+      svcScreenModel.updateTab('Overview');
+
+    }]);
 
   // #end
-})();
+})(window.angular);

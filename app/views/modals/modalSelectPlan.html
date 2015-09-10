@@ -1,0 +1,58 @@
+<div class="page">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">Creating Contract with <span class="text-primary">{{service.service.name}} {{service.version}}</span></h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Application Create panel -->
+  <div class="modal-body">
+    <div id="appForm" name="appForm" class="form form-inline">
+      <span>For application </span>
+      <div class="btn-group dropdown" dropdown>
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+          {{selectedAppVersion.name}}<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-left">
+          <li ng-repeat="app in applications | orderBy:'createdOn'" ng-click="selectApp(app)"><a>{{app.name}}</a></li>
+        </ul>
+      </div>
+      <span>, version </span>
+      <div class="btn-group dropdown" dropdown>
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+          {{selectedAppVersion.version}}<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-left">
+          <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
+        </ul>
+      </div>
+      <span>.</span>
+    </div>
+  </div>
+  <div class="modal-body">
+    <p><span class="mt30">Please select the plan you want to use for this contract</span></p>
+    <div class="btn-group dropdown" dropdown>
+      <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
+        {{selectedPlan.plan.name}}<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-left">
+        <li ng-repeat="plan in availablePlans | orderBy:'createdOn'" ng-click="selectPlan(plan)"><a>{{plan.plan.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-body">
+    <p>Policies included in this plan:</p>
+    <div class="well" ng-show="selectedPlanPolicies.length == 0">
+      No Policies have been defined for this plan.
+    </div>
+    <div ng-repeat="policy in selectedPlanPolicies">
+      <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}
+    </div> <!-- TODO implement policy details -->
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-line-success" ng-click="startCreateContract()">Confirm Contract</button>
+  </div>
+</div>
+
+
+

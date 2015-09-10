@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -17,7 +17,7 @@ angular.module("app.ctrl.organization", [])
         SearchOrgs.save(search, function (results) {
           $scope.totalOrgs = results.totalSize;
           $scope.orgs = results.beans;
-        })
+        });
       };
     }])
 
@@ -61,7 +61,7 @@ angular.module("app.ctrl.organization", [])
       updatedOrg.$update({id: $stateParams.orgId}, function(data) {
         $state.forceReload();
       });
-    }
+    };
 
   }])
 
@@ -76,8 +76,8 @@ angular.module("app.ctrl.organization", [])
 
     $scope.goToPlan = function (plan) {
       PlanVersion.query({orgId: plan.organizationId, planId: plan.id}, function (versions) {
-        $state.go('plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version})
-      })
+        $state.go('root.plan.overview', {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version});
+      });
     };
 
     $scope.modalNewPlan = function() {
@@ -94,13 +94,20 @@ angular.module("app.ctrl.organization", [])
   }])
 
   /// ==== Services Controller
-  .controller("ServicesCtrl", ["$scope", "$modal", "svcData", "orgScreenModel", function ($scope, $modal, svcData, orgScreenModel) {
+  .controller("ServicesCtrl", ["$scope", "$state", "$modal", "svcData", "orgScreenModel", "ServiceVersion",
+    function ($scope, $state, $modal, svcData, orgScreenModel, ServiceVersion) {
 
     $scope.services = svcData;
     orgScreenModel.updateTab('Services');
 
 
     $scope.modalAnim = "default";
+
+    $scope.goToSvc = function (svc) {
+      ServiceVersion.query({orgId: svc.organizationId, svcId: svc.id}, function (versions) {
+        $state.go('root.service', {orgId: svc.organizationId, svcId: svc.id, versionId: versions[0].version});
+      });
+    };
 
     $scope.modalNewService = function() {
       $modal.open({
@@ -117,8 +124,8 @@ angular.module("app.ctrl.organization", [])
   }])
 
   /// ==== Applications Controller
-  .controller("ApplicationsCtrl", ["$scope", "$modal", "appData", "orgScreenModel",
-    function ($scope, $modal, appData, orgScreenModel) {
+  .controller("ApplicationsCtrl", ["$scope", "$state", "$modal", "appData", "orgScreenModel", "ApplicationVersion",
+    function ($scope, $state, $modal, appData, orgScreenModel, ApplicationVersion) {
 
       $scope.applications = appData;
       orgScreenModel.updateTab('Applications');
@@ -126,15 +133,10 @@ angular.module("app.ctrl.organization", [])
 
       $scope.modalAnim = "default";
 
-      $scope.modalNewApplication = function() {
-        $modal.open({
-          templateUrl: "views/modals/modalNewApplication.html",
-          size: "lg",
-          controller: "NewApplicationCtrl as ctrl",
-          resolve: function() {},
-          windowClass: $scope.modalAnim	// Animation Class put here.
+      $scope.goToApp = function (app) {
+        ApplicationVersion.query({orgId: app.organizationId, appId: app.id}, function (versions) {
+          $state.go('root.application.overview', {orgId: app.organizationId, appId: app.id, versionId: versions[0].version});
         });
-
       };
 
     }])
@@ -152,4 +154,4 @@ angular.module("app.ctrl.organization", [])
 
 
   // #end
-})();
+})(window.angular);

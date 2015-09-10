@@ -1,0 +1,20 @@
+<overview>
+  <overview-header name="{{serviceVersion.service.name}}" icon="puzzle-piece" description="{{serviceVersion.service.description}}"
+                   entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
+
+    <!-- Entity Buttons -->
+    <button class="btn btn-primary btn-sm" ng-disabled="!isReady" ng-hide="isPublished" ng-click="publishService()">Publish</button>
+    <button class="btn btn-warning btn-sm" ng-show="isPublished && !isRetired" ng-click="retireService()">Retire</button>
+
+  </overview-header>
+
+  <overview-tabs>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Implementation'" ui-sref=".implementation">Implementation</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition">Definition</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+  </overview-tabs>
+</overview>
+
