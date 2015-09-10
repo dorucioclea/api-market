@@ -214,16 +214,67 @@
 
       }])
 
-/// ==== NewApplication Controller
-    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Application",
-      function ($scope, $modal, $state, $stateParams, orgScreenModel, Application) {
+/// ==== PublishApplication Controller
+    .controller("PublishApplicationCtrl", ["$scope", "$rootScope", "$state", "$modal", "appVersion", "appContracts", "actionService", "toastService",
+      function ($scope, $rootScope, $state, $modal, appVersion, appContracts, actionService, toastService) {
 
-        $scope.org = orgScreenModel.organization;
+        $scope.selectedAppVersion = appVersion;
+        $scope.contracts = appContracts;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.doPublish = function () {
+          actionService.publishApp($scope.selectedAppVersion, true);
+          //TODO Show toast only when actually successful
+          var msg = '<b>' + $scope.selectedAppVersion.name + '</b> <b>' + $scope.selectedAppVersion.version + '</b> was successfully published!';
+          toastService.createToast('success', msg, true);
+          $scope.modalClose();
+        };
+
+      }])
+
+/// ==== RetireApplication Controller
+    .controller("RetireApplicationCtrl", ["$scope", "$rootScope", "$modal", "appVersion", "appContracts", 'actionService', 'toastService',
+      function ($scope, $rootScope, $modal, appVersion, appContracts, actionService, toastService) {
+
+        $scope.applicationVersion = appVersion;
+        $scope.contracts = appContracts;
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+        $scope.doRetire = function () {
+          actionService.retireApp($scope.applicationVersion, true);
+          //TODO Show toast only when actually successful
+          var msg = '<b>' + $scope.applicationVersion.name + '</b> <b>' + $scope.applicationVersion.version + '</b> was retired.';
+          toastService.createToast('warning', msg, true);
+          $scope.modalClose();
+        };
+
+        $scope.addAlert = function() {
+          var index = $scope.alerts.length;
+          $scope.alerts.push({type: 'success', msg: 'Application ' + $scope.applicationVersion.application.name + ' ' + $scope.applicationVersion.version + ' has been retired.'});
+          $timeout(function(closeAlert){closeAlert(index);}, 3000);
+        };
+
+        $scope.closeAlert = function(index) {
+          $scope.alerts.splice(index, 1);
+        };
+
+      }])
+
+/// ==== NewApplication Controller
+    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "toastService", "Application",
+      function ($scope, $modal, $state, $stateParams, toastService, Application) {
 
         //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
           application.base64logo = "";
           Application.save({ orgId: 'Digipolis' }, application, function (app) {
+            toastService.createToast('success', 'Application created!', true);
             $scope.modalClose();
             $state.forceReload();
           });

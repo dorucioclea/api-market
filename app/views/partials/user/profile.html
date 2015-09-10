@@ -11,7 +11,7 @@
             <span class="fa fa-user with-margin"></span>
             <span>Full Name</span>
           </label>
-          <input type="text" name="fullname" placeholder="Full Name" value="{{currentUserInfo.fullName}}" class="form-control">
+          <input type="text" name="fullname" placeholder="Full Name" ng-model="currentUserInfo.fullName" value="currentUserInfo.fullName" class="form-control">
         </div>
         <div class="form-group col-xs-6">
           <label for="company">
@@ -46,6 +46,7 @@
           <textarea type="text" name="description" placeholder="Something about yourself" rows="5" cols="60" class="form-control"></textarea>
         </div>
       </div>
+      <button class="btn btn-line-primary" ng-click="saveUserDetails(currentUserInfo)">Save</button>
     </div>
   </div>
 </div>

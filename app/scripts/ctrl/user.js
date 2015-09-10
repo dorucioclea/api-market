@@ -19,8 +19,16 @@
     .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
       userScreenModel.updateTab('Email');
     }])
-    .controller("UserProfileCtrl", ["userScreenModel", function(userScreenModel) {
+    .controller("UserProfileCtrl", ["$scope", "$state", "userScreenModel", "CurrentUserInfo", function($scope, $state, userScreenModel, CurrentUserInfo) {
       userScreenModel.updateTab('Profile');
+
+      $scope.saveUserDetails = function (details) {
+        CurrentUserInfo.update({}, details, function (reply) {
+          $state.forceReload();
+        });
+      };
+
+
     }])
     .controller("UserNotificationsCtrl", ["userScreenModel", function(userScreenModel) {
       userScreenModel.updateTab('Notifications');

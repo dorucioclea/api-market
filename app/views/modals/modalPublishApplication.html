@@ -1,15 +1,17 @@
 <div class="page">
 
   <div class="modal-header clearfix">
-    <h4 class="modal-title">Are you sure you want to retire <span class="text-primary">{{applicationVersion.name}} {{applicationVersion.version}}?</span></h4>
+    <h4 class="modal-title">Are you sure you want to publish <span class="text-primary">{{selectedAppVersion.name}} {{selectedAppVersion.version}}?</span></h4>
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
   </div>
   <!-- Application Create panel -->
   <div class="modal-body">
-    <p>When an application version is retired, all its existing contracts will be voided and removed. The API keys associated with these contracts will no longer be valid.
-      All requests made with these keys will be rejected!</p>
+    <p>Publishing an application version finalizes all contracts and activates them on the API Gateway. No further contracts can be added once published.
+      If you do want to add new contracts to a published application, you will need to create a new version first.</p>
 
-    <p>If the application version is retired, the following contracts and API keys will be affected:</p>
+    <p>You are about to publish <span class="text-bold text-primary">{{selectedAppVersion.name}} {{selectedAppVersion.version}}</span>.</p>
+
+    <p>If published now, the following contracts will be activated:</p>
     <table class="table table-condensed">
       <thead>
       <tr>
@@ -32,7 +34,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-line-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-line-primary" ng-click="doRetire()">Retire Application</button>
+    <button class="btn btn-line-success" ng-click="doPublish()">Confirm Publication</button>
   </div>
 
 </div>

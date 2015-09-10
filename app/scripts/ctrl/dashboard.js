@@ -5,12 +5,14 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'ApplicationContract',
-      function ($scope, $modal, $state, appData, appVersions, appContracts, headerModel, selectedApp, ApplicationContract) {
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$timeout', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'ApplicationContract',
+      function ($scope, $modal, $state, $timeout, appData, appVersions, appContracts, headerModel, selectedApp, toastService, ApplicationContract) {
         headerModel.setIsButtonVisible(true, false);
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
         $scope.applicationContracts = appContracts;
+        $scope.toasts = toastService.toasts;
+        $scope.toastService = toastService;
 
         $scope.toggle = function (app) {
           app.contractsExpanded = !app.contractsExpanded;
@@ -33,6 +35,40 @@
           $state.go('root.apis.grid');
         };
 
+        $scope.confirmPublishApp = function (appVersion) {
+          $modal.open({
+            templateUrl: "views/modals/modalPublishApplication.html",
+            size: "lg",
+            controller: "PublishApplicationCtrl as ctrl",
+            resolve: {
+              appVersion: function () {
+                return appVersion;
+              },
+              appContracts: function () {
+                return $scope.applicationContracts[appVersion.id];
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+        };
+
+        $scope.confirmRetireApp = function (appVersion) {
+          $modal.open({
+            templateUrl: "views/modals/modalRetireApplication.html",
+            size: "lg",
+            controller: "RetireApplicationCtrl as ctrl",
+            resolve: {
+              appVersion: function () {
+                return appVersion;
+              },
+              appContracts: function () {
+                return $scope.applicationContracts[appVersion.id];
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+        };
+
         $scope.breakContract = function (contract) {
           ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
             $state.forceReload();
@@ -48,6 +84,12 @@
             windowClass: $scope.modalAnim	// Animation Class put here.
           });
 
+        };
+
+        $scope.copyKey = function (apikey) {
+          var type = 'info';
+          var msg = '<b>Key copied to clipboard!</b><br>' + apikey;
+          toastService.createToast(type, msg, true);
         };
       }])
 

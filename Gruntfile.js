@@ -39,13 +39,9 @@ module.exports = function (grunt) {
           livereload: '<%= config.connect_live_reload %>'
         }
       },
-      styles: {
-        files: ['<%= config.app %>/styles/**/*.css'],
-        tasks: ['newer:copy:styles']
-      },
       less: {
         files: ['<%= config.app%>/styles/**/*/*.less'],
-        tasks: ['newer:less']
+        tasks: ['less']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -56,7 +52,7 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= config.app %>/**/*.html',
-          '.tmp/styles/{,**/}*.css',
+          '<%= config.app %>/styles/main.css',
           '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }

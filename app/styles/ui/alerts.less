@@ -1,9 +1,6 @@
-
-
-
 .alert {
 	padding:@alert-padding 15px;
-	font-size: @font-size-small;
+	font-size: @font-size-large;
 	margin-bottom: 10px;
 	box-shadow: 0 1px 4px rgba(0,0,0,.2);
 	.close {
@@ -15,3 +12,20 @@
 		margin-bottom: 0;
 	}
 }
+
+.alert-success {
+  .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+}
+
+.alert-info {
+  .alert-variant(@alert-info-bg; @alert-info-border; @alert-info-text);
+}
+
+.alert-warning {
+  .alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
+}
+
+.alert-danger {
+  .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
+}
+

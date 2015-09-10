@@ -18,6 +18,7 @@
     "matchMedia",
     "ngTagsInput",
     "schemaForm",
+    "angular-clipboard",
 
     /* custom modules */
     "app.ctrls",

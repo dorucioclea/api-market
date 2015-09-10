@@ -6,8 +6,8 @@
 
 
 /// ==== Plan Controller
-    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "Action", "ACTIONS",
-      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, Action, ACTIONS) {
+    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService",
+      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService) {
 
         $scope.planVersion = planData;
         planScreenModel.updatePlan(planData);
@@ -17,10 +17,7 @@
         $scope.locked = $scope.planVersion.status === 'Locked';
 
         $scope.lockPlan = function () {
-          var lockAction = $scope.createAction($scope.planVersion, ACTIONS.LOCK);
-          Action.save(lockAction, function (reply) {
-            $state.forceReload();
-          });
+          actionService.lockPlan($scope.planVersion, true);
         };
 
         $scope.selectVersion = function (version) {

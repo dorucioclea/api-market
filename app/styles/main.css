@@ -3494,6 +3494,9 @@ fieldset[disabled] .btn-danger.active {
 .table .ui-radio {
   margin-top: 10px;
 }
+.row-selected {
+  background-color: #f7f7f7 !important;
+}
 .table-center-col-1 tr > td:nth-child(1) {
   text-align: center;
 }
@@ -4546,7 +4549,7 @@ fieldset[disabled] .btn-danger.active {
 }
 .alert {
   padding: 10px 15px;
-  font-size: 12px;
+  font-size: 18px;
   margin-bottom: 10px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
@@ -4557,6 +4560,50 @@ fieldset[disabled] .btn-danger.active {
 }
 .alert p {
   margin-bottom: 0;
+}
+.alert-success {
+  background-color: #b9f1e4;
+  border-color: #b0efdb;
+  color: #066b54;
+}
+.alert-success hr {
+  border-top-color: #9bebd2;
+}
+.alert-success .alert-link {
+  color: #033a2e;
+}
+.alert-info {
+  background-color: #c4e3f3;
+  border-color: #bce3f1;
+  color: #2a617c;
+}
+.alert-info hr {
+  border-top-color: #a6dbec;
+}
+.alert-info .alert-link {
+  color: #1d4356;
+}
+.alert-warning {
+  background-color: #f5f0c6;
+  border-color: #f4eabe;
+  color: #785f33;
+}
+.alert-warning hr {
+  border-top-color: #f0e3a8;
+}
+.alert-warning .alert-link {
+  color: #544324;
+}
+.alert-danger {
+  background-color: #f5cccc;
+  border-color: #f3c3c7;
+  color: #973d3b;
+}
+.alert-danger hr {
+  border-top-color: #efaeb3;
+}
+.alert-danger .alert-link {
+  color: #722e2d;
 }
 .modal {
   height: 100%;
@@ -5349,6 +5396,75 @@ fieldset[disabled] .btn-danger.active {
   transform: translate(-50%, -49%);
   top: 49%;
   left: 50%;
+}
+ol .progtracker {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+ol .progtracker li {
+  display: inline-block;
+  text-align: center;
+  line-height: 3em;
+}
+ol .progtracker li :before {
+  position: relative;
+  bottom: -2.5em;
+  float: left;
+  left: 50%;
+  line-height: 1em;
+}
+ol .progtracker li :after {
+  content: "\00a0\00a0";
+}
+ol .progtracker li .progtracker-done {
+  color: black;
+  border-bottom: 4px solid #cf0039;
+}
+ol .progtracker li .progtracker-done :before {
+  content: "\2713";
+  color: white;
+  background-color: #cf0039;
+  height: 1.2em;
+  width: 1.2em;
+  line-height: 1.2em;
+  border: none;
+  border-radius: 1.2em;
+}
+ol .progtracker li .progtracker-todo {
+  color: silver;
+  border-bottom: 4px solid silver;
+}
+ol .progtracker li .progtracker-todo :before {
+  content: "\039F";
+  color: silver;
+  background-color: white;
+  font-size: 1.5em;
+  bottom: -1.6em;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="2"] li {
+  width: 49%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="3"] li {
+  width: 33%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="4"] li {
+  width: 24%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="5"] li {
+  width: 19%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="6"] li {
+  width: 16%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="7"] li {
+  width: 14%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="8"] li {
+  width: 12%;
+}
+ol .progtracker ol.progtracker[data-progtracker-steps="9"] li {
+  width: 11%;
 }
 /** Only for presentation, buttons **/
 .page-ui-buttons .btn-group button {

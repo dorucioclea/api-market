@@ -1,4 +1,9 @@
-<div class="page">
+<div class="page page-ui-notifications">
+  <div class="toast toast-bottomRight">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg">Test Toast</div>
+    </alert>
+  </div>
   <div class="row">
 
     <div class="col-sm-10 col-sm-offset-1">
@@ -23,6 +28,7 @@
         <div class="row">
           <div class="panel panel-default">
             <div class="panel-body">
+
               <!-- Applications Tab Content -->
               <div class="col-sm-12">
                 <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
@@ -51,11 +57,11 @@
               </div>
 
 
-              <div class="col-sm-12 mt10 table-responsive">
+              <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0">
                 <table class="table table-bordered table-condensed">
                   <thead>
                   <tr>
-                    <th nowrap="nowrap" width="1%"></th>
+                    <th nowrap="nowrap" width="5%"></th>
                     <th nowrap="nowrap" width="30%">Application</th>
                     <th nowrap="nowrap" width="10%">Version</th>
                     <th nowrap="nowrap" width="10%">Status</th>
@@ -72,41 +78,43 @@
                     <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
                     <td>
                       <button class="btn btn-line-primary btn-xs" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
-                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="publishApp(applicationVersions[application.id], true)">Publish</button>
-                      <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="retireApp(applicationVersions[application.id])">Retire</button>
+                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])">Publish</button>
+                      <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])">Retire</button>
                     </td>
                   </tr>
-                  <tr ng-show="application.contractsExpanded" ng-repeat-end>
-                    <td colspan="6">
-                      <div class="col-sm-12" >
-                        <table class="table table-condensed">
-                          <thead>
-                          <tr>
-                            <th nowrap="nowrap" width="10%">#</th>
-                            <th nowrap="nowrap" width="30%">To Service</th>
-                            <th nowrap="nowrap" width="30%">Using Plan</th>
-                            <th nowrap="nowrap" width="20%">Created On</th>
-                            <th nowrap="nowrap" width="10%">Actions</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr ng-repeat="contract in applicationContracts[application.id]">
-                            <td>{{$index+1}}</td>
-                            <td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>
-                            <td>{{contract.planName}} - {{contract.planVersion}}</td>
-                            <td>{{contract.createdOn | date}}</td>
-                            <td>
-                              <button class="btn btn-line-warning btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
-                            </td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                  <tr ng-show="application.contractsExpanded" class="row-selected" ng-repeat-end>
+                    <td colspan="6" style="padding-left: 5px;">
+                      <table class="table table-condensed row-selected">
+                        <thead>
+                        <tr>
+                          <th nowrap="nowrap" width="5%">#</th>
+                          <th nowrap="nowrap" width="30%">To Service</th>
+                          <th nowrap="nowrap" width="20%">Using Plan</th>
+                          <th nowrap="nowrap" width="15%">Created On</th>
+                          <th nowrap="nowrap" width="30%">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contract in applicationContracts[application.id]">
+                          <td>{{$index+1}}</td>
+                          <td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>
+                          <td>{{contract.planName}} - {{contract.planVersion}}</td>
+                          <td>{{contract.createdOn | date}}</td>
+                          <td>
+                            <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
+                            <button class="btn btn-line-warning btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                   </tbody>
                 </table>
               </div>
+              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                <div ng-bind-html="alert.msg"></div>
+              </alert>
             </div>
           </div>
         </div>
