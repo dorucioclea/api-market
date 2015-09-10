@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
   angular.module("app.directives", [])
@@ -37,7 +37,7 @@
             }
             e.stopPropagation();
             e.stopImmediatePropagation();
-          })
+          });
 
           aRest.on("touchend", function(e) {
             if(scope.isMobile) {
@@ -45,7 +45,7 @@
             }
             e.stopPropagation();
             e.stopImmediatePropagation();
-          })
+          });
 
 
 
@@ -61,7 +61,7 @@
           });
 
         }
-      }
+      };
     }])
 
 
@@ -82,20 +82,22 @@
                   li = link.parent("li"),
                   href = link.attr("href");
 
-                if(li.hasClass("active"))
+                if(li.hasClass("active")) {
                   li.removeClass("active");
-                if(path.indexOf(href) == 0)
+                }
+                if(path.indexOf(href) === 0) {
                   li.addClass("active");
-              })
+                }
+              });
             };
 
           highlightActive(links, $location.path());
           scope.$watch(path, function(newVal, oldVal) {
-            if(newVal == oldVal) return;
+            if(newVal === oldVal) {return;}
             highlightActive(links, $location.path());
-          })
+          });
         }
-      }
+      };
     }])
 
 // perfect-scrollbar simple directive
@@ -110,13 +112,14 @@
           });
 
           $interval(function() {
-            if(el[0].scrollHeight >= el[0].clientHeight)
+            if(el[0].scrollHeight >= el[0].clientHeight) {
               el.perfectScrollbar("update");
+            }
           }, 400);	// late update means more performance.
           // }
 
         }
-      }
+      };
     }])
 
 
@@ -126,7 +129,7 @@
         scope: { title: '=heading'},
         transclude: true,
         templateUrl: "/views/templates/auth/accordion-group.html"
-      }
+      };
     })
 
     .directive('oauth2', function() {
@@ -158,7 +161,7 @@
         restrict: 'E',
         transclude: true,
         templateUrl: '/views/templates/overview/overview.html'
-      }
+      };
     })
 
     .directive('activityList', function () {
@@ -170,7 +173,7 @@
         },
         bindToController: true,
         templateUrl: '/views/templates/activity.html'
-      }
+      };
     })
 
     .directive('definitionSelect', function ($parse) {
@@ -205,12 +208,13 @@
           entityVersion: "=",
           versions: "=",
           selectVersion: "&",
-          newVersion: "&"
+          newVersion: "&",
+          endpoint: "@"
         },
         bindToController: true,
         transclude: true,
         templateUrl: '/views/templates/overview/overview-header.html'
-      }
+      };
     })
 
     .directive('overviewStatus', function () {
@@ -222,7 +226,7 @@
           status: "@"
         },
         templateUrl: '/views/templates/overview/overview-status.html'
-      }
+      };
     })
 
     .directive('overviewTabs', function () {
@@ -230,7 +234,7 @@
         restrict:'E',
         transclude: true,
         templateUrl: '/views/templates/overview/overview-tabs.html'
-      }
+      };
     })
 
     .directive('policyList', function () {
@@ -259,7 +263,7 @@
         controllerAs: 'ctrl',
         bindToController: true,
         templateUrl: 'views/templates/policyList.html'
-      }
+      };
     })
 
 
@@ -282,7 +286,7 @@
         restrict: "A",
         link: function(scope, element, attrs) {
 
-          var path = function() {return $location.path()};
+          var path = function() {return $location.path(); };
           var addBg = function(path) {
             scope.bodyFull = false;
             switch(path) {
@@ -296,16 +300,16 @@
           addBg(path());
 
           scope.$watch(path, function(newVal, oldVal) {
-            if(angular.equals(newVal, oldVal)) return;
+            if(angular.equals(newVal, oldVal)) { return; }
             addBg(path());
           });
 
         }
-      }
+      };
 
-    }])
+    }]);
 
-}());
+}(window.angular));
 
 
 
