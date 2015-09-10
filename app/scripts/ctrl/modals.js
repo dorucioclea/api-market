@@ -227,9 +227,6 @@
 
         $scope.doPublish = function () {
           actionService.publishApp($scope.selectedAppVersion, true);
-          //TODO Show toast only when actually successful
-          var msg = '<b>' + $scope.selectedAppVersion.name + '</b> <b>' + $scope.selectedAppVersion.version + '</b> was successfully published!';
-          toastService.createToast('success', msg, true);
           $scope.modalClose();
         };
 
@@ -248,20 +245,7 @@
 
         $scope.doRetire = function () {
           actionService.retireApp($scope.applicationVersion, true);
-          //TODO Show toast only when actually successful
-          var msg = '<b>' + $scope.applicationVersion.name + '</b> <b>' + $scope.applicationVersion.version + '</b> was retired.';
-          toastService.createToast('warning', msg, true);
           $scope.modalClose();
-        };
-
-        $scope.addAlert = function() {
-          var index = $scope.alerts.length;
-          $scope.alerts.push({type: 'success', msg: 'Application ' + $scope.applicationVersion.application.name + ' ' + $scope.applicationVersion.version + ' has been retired.'});
-          $timeout(function(closeAlert){closeAlert(index);}, 3000);
-        };
-
-        $scope.closeAlert = function(index) {
-          $scope.alerts.splice(index, 1);
         };
 
       }])

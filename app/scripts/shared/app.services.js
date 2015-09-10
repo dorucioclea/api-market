@@ -4,7 +4,7 @@
 
   angular.module("app.services", [])
 
-    .service('actionService', ['$state', 'Action', 'ACTIONS', function ($state, Action, ACTIONS) {
+    .service('actionService', ['$state', 'toastService', 'Action', 'ACTIONS', function ($state, toastService, Action, ACTIONS) {
 
       this.createAction = function (entityVersion, type) {
         var action = {};
@@ -62,32 +62,40 @@
         }
       };
 
-      var doAction = function (action, shouldReload) {
+      var doAction = function (action, shouldReload, type, msg) {
         Action.save(action, function (reply) {
           if (shouldReload) {
             $state.forceReload();
+          }
+          if (type && msg) {
+            toastService.createToast(type, msg, true);
           }
         });
       };
 
       this.publishService = function (serviceVersion, shouldReload) {
-        doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload);
+        var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was successfully published!';
+        doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, 'success', msg);
       };
 
       this.retireService = function (serviceVersion, shouldReload) {
-        doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload);
+        var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was retired.';
+        doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, 'warning', msg);
       };
 
       this.lockPlan = function (planVersion, shouldReload) {
-        doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload);
+        var msg = '<b>' + planVersion.name + ' ' + planVersion.version + '</b> was successfully locked!';
+        doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, 'success', msg);
       };
 
       this.publishApp = function (applicationVersion, shouldReload) {
-        doAction(this.createAction(applicationVersion, ACTIONS.REGISTER), shouldReload);
+        var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was successfully published!';
+        doAction(this.createAction(applicationVersion, ACTIONS.REGISTER), shouldReload, 'success', msg);
       };
 
       this.retireApp = function (applicationVersion, shouldReload) {
-        doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload);
+        var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was retired.';
+        doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload, 'warning', msg);
       };
     }])
 
