@@ -11,12 +11,12 @@
     <div class="ng-scope">
       <div class="row ng-scope">
         <a>{{activity.who}}</a>
-        <span>registered {{type}}</span>
+        <span>performed <b>{{activity.what}}</b> on {{type}}</span>
         <a>{{activity.organizationId}}</a>
         <span>/</span>
         <a class="emphasis">{{activity.entityId}}</a>
-        <span>version</span>
-        <a class="emphasis">{{activity.entityVersion}}</a><span>.</span>
+        <span ng-show="activity.entityVersion !== null">version</span>
+        <a class="emphasis" ng-show="activity.entityVersion !== null">{{activity.entityVersion}}</a><span>.</span>
       </div>
     </div>
   </div>

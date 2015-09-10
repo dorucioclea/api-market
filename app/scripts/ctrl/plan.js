@@ -29,7 +29,6 @@
     // +++ Plan Screen Subcontrollers +++
     /// ==== Activity Controller
     .controller("PlanActivityCtrl", ["$scope", "activityData", "planScreenModel", function ($scope, activityData, planScreenModel) {
-
       $scope.activities = activityData.beans;
       planScreenModel.updateTab('Activity');
 
