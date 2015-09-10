@@ -1,4 +1,4 @@
-; (function (angular) {
+(function (angular) {
   "use strict";
 
   angular.module("app", [
@@ -572,18 +572,18 @@
         });
     })
 
-  .factory('sessionInjector', ['$sessionStorage', function($sessionStorage) {
-    var sessionInjector = {
-      request: function(config) {
-        config.headers.apikey = $sessionStorage.apikey.apikey;
-        return config;
-      }
-    };
-    return sessionInjector;
-  }])
-  .config(['$httpProvider', function($httpProvider) {
-    $httpProvider.interceptors.push('sessionInjector');
-  }])
+    // Make sure we use always the api key
+    .factory('sessionInjector', ['$sessionStorage', function ($sessionStorage) {
+      return {
+        request: function (config) {
+          config.headers.apikey = $sessionStorage.apikey.apikey;
+          return config;
+        }
+      };
+    }])
+    .config(['$httpProvider', function ($httpProvider) {
+      $httpProvider.interceptors.push('sessionInjector');
+    }])
 
     // Define Force Reload
     .config(function ($provide) {
@@ -598,7 +598,4 @@
         return $delegate;
       });
     });
-
 }(window.angular));
-
-

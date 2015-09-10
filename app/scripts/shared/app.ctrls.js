@@ -13,7 +13,7 @@
     })
 
 // Root Controller
-    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS) {
+    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "$sessionStorage", function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS,$sessionStorage) {
       var mm = window.matchMedia("(max-width: 767px)");
 
       $rs.isMobile = mm.matches ? true: false;
@@ -84,11 +84,10 @@
           }
         });
         function addApiKeyAuthorization(){
-          //TODO add key var
-          var key = encodeURIComponent("someapikey");
+          //TODO add key var - replace with var
+          var key = encodeURIComponent($sessionStorage.apikey.apikey);
           if(key && key.trim() !== "") {
-            var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("apikey", key, "header");
-            $scope.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
+            $scope.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("apikey", key, "header"));
           }
         }
         $scope.swaggerUi.load();
