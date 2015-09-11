@@ -22,7 +22,8 @@
       "ApiKey": "6b8406cc81fe4ca3cc9cd4a0abfb97c2",
       "IdpUrl": "https://idp.t1t.be:9443/samlsso",
       "SpUrl": "http://api.t1t.be/API-Engine-web/v1/users/idp/callback",
-      "SpName": "apimarket"
+      "SpName": "apimarket",
+      "ClientToken": "opaque"
     }
   };
 
@@ -41,7 +42,7 @@
 
     if (!apikey) {
       var url = config.Base.Url + config.Security.RedirectUrl;
-      var data = "{\"idpUrl\": \"" + config.Security.IdpUrl + "\", \"spUrl\": \"" + config.Security.SpUrl + "\", \"spName\": \"" + config.Security.SpName + "\", \"clientAppRedirect\": \"" + clientUrl + "\"}";
+      var data = "{\"idpUrl\": \"" + config.Security.IdpUrl + "\", \"spUrl\": \"" + config.Security.SpUrl + "\", \"spName\": \"" + config.Security.SpName + "\", \"clientAppRedirect\": \"" + clientUrl + "\", \"token\": \"" + config.Security.ClientToken + "\"}";
 
       $.ajax({
         method: 'POST',
