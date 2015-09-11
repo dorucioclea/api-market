@@ -162,7 +162,7 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'images/{,*/}*.*',
-            'fonts/{,*/}*.*',
+            'fonts/**/*.*',
             'views/{,*/}*.*'
           ]
         }]
@@ -220,6 +220,33 @@ module.exports = function (grunt) {
         }]
       }
     }, // End HtmlMin
+
+    // ====== //
+    // Uglify //
+    // ====== //
+    uglify: {
+      options: {
+        mangle: {
+          except: ['angular']
+        }
+      }
+    }, // End Uglify
+
+    // ================ //
+    // Angular Annotate //
+    // ================ //
+    // ng-annotate tries to make the code safe for minification automatically
+    // by using the Angular long form for dependency injection.
+    ngAnnotate: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat/scripts',
+          src: '*.js',
+          dest: '.tmp/concat/scripts'
+        }]
+      }
+    }, // End Angular Annotate
   });
 
 
@@ -241,6 +268,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'copy:dist',
     'concat',
+    'ngAnnotate',
     'cssmin',
     'uglify',
     'filerev',
