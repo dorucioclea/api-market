@@ -39,10 +39,6 @@
       $scope.publisherMode = true;
       //End
 
-      $scope.togglePublisher = function () {
-        $scope.publisherMode = !$scope.publisherMode;
-      };
-
       $scope.loadSwaggerUi = function(spec, domId, endpoint) {
         $scope.swaggerUi = new SwaggerUi({
           spec: spec,
