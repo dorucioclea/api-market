@@ -70,6 +70,8 @@
           if (type && msg) {
             toastService.createToast(type, msg, true);
           }
+        }, function (error) {
+          toastService.createToast('danger', 'Oops! An error has occurred :(', true);
         });
       };
 
@@ -127,7 +129,7 @@
       var timedClose = function () {
         $timeout(function() {
           closeToastAtIndex(0);
-        }, 2000);
+        }, 3000);
       };
     }])
 
