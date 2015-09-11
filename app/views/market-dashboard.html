@@ -77,9 +77,9 @@
                     <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
                     <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
                     <td>
-                      <button class="btn btn-line-primary btn-xs" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
-                      <button class="btn btn-line-success btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])">Publish</button>
-                      <button class="btn btn-line-warning btn-xs" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])">Retire</button>
+                      <button class="btn btn-line-primary btn-xs btn-w100" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
+                      <button class="btn btn-line-success btn-xs btn-w100" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])">Publish</button>
+                      <button class="btn btn-line-warning btn-xs btn-w100" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])">Retire</button>
                     </td>
                   </tr>
                   <tr ng-show="application.contractsExpanded" class="row-selected" ng-repeat-end>
@@ -102,7 +102,7 @@
                           <td>{{contract.createdOn | date}}</td>
                           <td>
                             <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
-                            <button class="btn btn-line-warning btn-xs" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
+                            <button class="btn btn-line-warning btn-xs btn-w100" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
                           </td>
                         </tr>
                         </tbody>
