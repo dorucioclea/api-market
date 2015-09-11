@@ -3,6 +3,15 @@
     <!-- Title and help text -->
     <h4>Service Policies</h4>
     <p>Here is a list of all Policies defined for this Service. These Policies will be applied to all invocations of this Service by any Application, regardless of the Plan used in its Contract.</p>
+    <p>
+      <b>Default policies</b> applies for each service implicitly:
+    <ul>
+      <li><b><i>CORS</i></b> - Default values are enabled for each published API.</li>
+      <li><b><i>Key Authentication</i></b> - Default enabled for all published APIs, client API keys are provided upon subscription.</li>
+      <li><b><i>API Metrics</i></b> - Default enabled. All transaction information for a published API will be aggregated in the API metrics module.</li>
+    </ul>
+
+    </p>
     <hr>
   </div>
   <!-- The list of policies -->
