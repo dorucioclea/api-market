@@ -41,9 +41,6 @@
 
         $scope.policies = policyData;
         $scope.policyDetails = planPolicyDetails;
-        console.log($scope.policies);
-        console.log($scope.policyDetails);
-        console.log($scope.policyDetails[$scope.policies[0].id].configuration);
         planScreenModel.updateTab('Policies');
 
 
