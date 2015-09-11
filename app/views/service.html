@@ -3,8 +3,8 @@
                    entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}">
 
     <!-- Entity Buttons -->
-    <button class="btn btn-primary btn-sm" ng-disabled="!isReady" ng-hide="isPublished" ng-click="publishService()">Publish</button>
-    <button class="btn btn-warning btn-sm" ng-show="isPublished && !isRetired" ng-click="retireService()">Retire</button>
+    <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-hide="isPublished" ng-click="publishService()">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-show="isPublished && !isRetired" ng-click="retireService()">Retire</button>
 
   </overview-header>
 
