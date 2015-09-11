@@ -48,10 +48,10 @@
                   <div class="text-light text-nowrap text-ellipsis">
                     {{org.description}}
                   </div>
-                  <div class="actions">
+                  <div class="actions" ng-hide="isMember(org)">
                     <button class="btn btn-default btn-sm">Request Membership</button>
                   </div>
-                  <a class="is-member" title="You are already a member of this Organization."></a>
+                  <a class="is-member" title="You are already a member of this Organization." ng-show="isMember(org)"></a>
                 </div>
               </div>
             </div>

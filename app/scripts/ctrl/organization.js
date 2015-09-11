@@ -5,10 +5,25 @@
 angular.module("app.ctrl.organization", [])
 
   /// ==== Organizations Overview & Search Controller
-  .controller("OrganizationsCtrl", ["$scope", "Organization", "SearchOrgs",
-    function ($scope, Organization, SearchOrgs) {
+  .controller("OrganizationsCtrl", ["$scope", "Organization", "SearchOrgs", "CurrentUserSvcOrgs",
+    function ($scope, Organization, SearchOrgs, CurrentUserSvcOrgs) {
+
+      var userOrgIds = null;
+
+      $scope.isMember = function (org) {
+        return userOrgIds.indexOf(org.id) > -1;
+      };
 
       $scope.doSearch = function (searchString) {
+        if (userOrgIds === null) {
+          userOrgIds = [];
+          CurrentUserSvcOrgs.query({}, function (reply) {
+            angular.forEach(reply, function(userOrg) {
+              userOrgIds.push(userOrg.id);
+            });
+          });
+        }
+
         var search = {};
         search.filters = [ { name: "name", value: searchString, operator: "like" }];
         search.orderBy = { ascending: true, name: "name"};
