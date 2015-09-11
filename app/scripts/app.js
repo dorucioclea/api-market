@@ -354,6 +354,21 @@
             PlanVersionPolicy: 'PlanVersionPolicy',
             policyData: function (PlanVersionPolicy, organizationId, planId, versionId) {
               return PlanVersionPolicy.query({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
+            },
+            policyDetails: function ($q, policyData, organizationId, planId, versionId, PlanVersionPolicy) {
+              var policyDetails = {};
+              var promises = [];
+
+              angular.forEach(policyData, function (policy) {
+                promises.push(PlanVersionPolicy.get({orgId: organizationId, planId: planId, versionId: versionId, policyId: policy.id}).$promise);
+              });
+
+              return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (value) {
+                  policyDetails[value.id] = value;
+                });
+                return policyDetails;
+              });
             }
           },
           data: {
@@ -521,6 +536,21 @@
                 svcId: serviceId,
                 versionId: versionId
               }).$promise;
+            },
+            policyDetails: function ($q, policyData, organizationId, serviceId, versionId, ServiceVersionPolicy) {
+              var policyDetails = {};
+              var promises = [];
+
+              angular.forEach(policyData, function (policy) {
+                promises.push(ServiceVersionPolicy.get({orgId: organizationId, svcId: serviceId, versionId: versionId, policyId: policy.id}).$promise);
+              });
+
+              return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (value) {
+                  policyDetails[value.id] = value;
+                });
+                return policyDetails;
+              });
             }
           },
           data: {

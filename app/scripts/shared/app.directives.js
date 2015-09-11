@@ -245,7 +245,8 @@
       return {
         restrict: 'E',
         scope: {
-          policies: "=ngModel",
+          policies: "=",
+          policyDetails: "=",
           remove: "=removeFunction",
           reorder: "=reorderFunction",
           type: "@",

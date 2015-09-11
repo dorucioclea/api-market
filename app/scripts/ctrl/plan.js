@@ -6,13 +6,15 @@
 
 
 /// ==== Plan Controller
-    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService",
-      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService) {
+    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService", "toastService",
+      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService, toastService) {
 
         $scope.planVersion = planData;
         planScreenModel.updatePlan(planData);
         $scope.displayTab = planScreenModel;
         $scope.versions = planVersions;
+        $scope.toasts = toastService.toasts;
+        $scope.toastService = toastService;
 
         $scope.locked = $scope.planVersion.status === 'Locked';
 
@@ -34,10 +36,14 @@
 
     }])
     /// ==== Policies Controller
-    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "planScreenModel", "PlanVersionPolicy", "PolicyDefs",
-      function ($scope, $modal, $stateParams, policyData, planScreenModel, PlanVersionPolicy, PolicyDefs) {
+    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyDetails", "planScreenModel", "PlanVersionPolicy", "PolicyDefs",
+      function ($scope, $modal, $stateParams, policyData, planPolicyDetails, planScreenModel, PlanVersionPolicy, PolicyDefs) {
 
         $scope.policies = policyData;
+        $scope.policyDetails = planPolicyDetails;
+        console.log($scope.policies);
+        console.log($scope.policyDetails);
+        console.log($scope.policyDetails[$scope.policies[0].id].configuration);
         planScreenModel.updateTab('Policies');
 
 
