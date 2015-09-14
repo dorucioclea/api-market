@@ -23,13 +23,13 @@
       </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="contract in contracts">
-          <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': apiExpanded, 'fa-chevron-right': !apiExpanded}" ng-click="toggle()"></i></td>
+        <tr ng-repeat-start="contract in contracts">
+          <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': contract.apiExpanded, 'fa-chevron-right': !contract.apiExpanded}" ng-click="toggle(contract)"></i></td>
           <td>{{contract.serviceName}}</td>
           <td>{{contract.serviceVersion}}</td>
           <td>{{contract.planName}}</td>
         </tr>
-        <tr ng-show="apiExpanded" ng-repeat="contract in contracts">
+        <tr ng-repeat-end ng-show="contract.apiExpanded">
           <td colspan="4">
             <form role="form">
               <div class="form-group">

@@ -4,7 +4,7 @@
 
   angular.module("app.services", [])
 
-    .service('actionService', ['$state', 'toastService', 'Action', 'ACTIONS', function ($state, toastService, Action, ACTIONS) {
+    .service('actionService', ['$state', 'toastService', 'TOAST_TYPES', 'Action', 'ACTIONS', function ($state, toastService, TOAST_TYPES, Action, ACTIONS) {
 
       this.createAction = function (entityVersion, type) {
         var action = {};
@@ -71,33 +71,33 @@
             toastService.createToast(type, msg, true);
           }
         }, function (error) {
-          toastService.createToast('danger', 'Oops! An error has occurred :(', true);
+          toastService.createToast(TOAST_TYPES.DANGER, 'Oops! An error has occurred :(', true);
         });
       };
 
       this.publishService = function (serviceVersion, shouldReload) {
         var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was successfully published!';
-        doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, 'success', msg);
+        doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 
       this.retireService = function (serviceVersion, shouldReload) {
         var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was retired.';
-        doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, 'warning', msg);
+        doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, TOAST_TYPES.WARNING, msg);
       };
 
       this.lockPlan = function (planVersion, shouldReload) {
         var msg = '<b>' + planVersion.name + ' ' + planVersion.version + '</b> was successfully locked!';
-        doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, 'success', msg);
+        doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 
       this.publishApp = function (applicationVersion, shouldReload) {
         var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was successfully published!';
-        doAction(this.createAction(applicationVersion, ACTIONS.REGISTER), shouldReload, 'success', msg);
+        doAction(this.createAction(applicationVersion, ACTIONS.REGISTER), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 
       this.retireApp = function (applicationVersion, shouldReload) {
         var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was retired.';
-        doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload, 'warning', msg);
+        doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload, TOAST_TYPES.WARNING, msg);
       };
     }])
 
@@ -129,7 +129,7 @@
       var timedClose = function () {
         $timeout(function() {
           closeToastAtIndex(0);
-        }, 3000);
+        }, 5000);
       };
     }])
 

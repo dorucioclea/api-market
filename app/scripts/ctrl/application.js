@@ -43,8 +43,8 @@
       $scope.contracts = contractData;
       appScreenModel.updateTab('APIs');
 
-      $scope.toggle = function () {
-        $scope.apiExpanded = !$scope.apiExpanded;
+      $scope.toggle = function (contract) {
+        contract.apiExpanded = !contract.apiExpanded;
       };
 
     }])

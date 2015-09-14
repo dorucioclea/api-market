@@ -62,11 +62,11 @@
                   <thead>
                   <tr>
                     <th nowrap="nowrap" width="5%"></th>
-                    <th nowrap="nowrap" width="30%">Application</th>
+                    <th nowrap="nowrap" width="40%">Application</th>
                     <th nowrap="nowrap" width="10%">Version</th>
-                    <th nowrap="nowrap" width="10%">Status</th>
+                    <th nowrap="nowrap" width="15%">Status</th>
                     <th nowrap="nowrap" width="10%"># Contracts</th>
-                    <th nowrap="nowrap" width="30%">Actions</th>
+                    <th nowrap="nowrap" width="15%">Actions</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -77,21 +77,23 @@
                     <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
                     <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
                     <td>
-                      <button class="btn btn-line-primary btn-xs btn-w100" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])">New Contract</button>
-                      <button class="btn btn-line-success btn-xs btn-w100" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])">Register</button>
-                      <button class="btn btn-line-warning btn-xs btn-w100" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])">Retire</button>
+                      <div class="btn-group-xs">
+                        <button class="btn btn-primary action-icon fa fa-plus" title="New contract" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])"></button>
+                        <button class="btn btn-success action-icon fa fa-check" title="Register application" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])"></button>
+                        <button class="btn btn-warning action-icon fa fa-trash" title="Retire application" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])"></button>
+                      </div>
                     </td>
                   </tr>
                   <tr ng-show="application.contractsExpanded" class="row-selected" ng-repeat-end>
-                    <td colspan="6" style="padding-left: 5px;">
+                    <td></td>
+                    <td colspan="5">
                       <table class="table table-condensed row-selected">
                         <thead>
                         <tr>
                           <th nowrap="nowrap" width="5%">#</th>
-                          <th nowrap="nowrap" width="30%">To Service</th>
-                          <th nowrap="nowrap" width="20%">Using Plan</th>
-                          <th nowrap="nowrap" width="15%">Created On</th>
-                          <th nowrap="nowrap" width="30%">Actions</th>
+                          <th nowrap="nowrap" width="40%">To Service</th>
+                          <th nowrap="nowrap" width="40%">Using Plan</th>
+                          <th nowrap="nowrap" width="15%">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -99,10 +101,9 @@
                           <td>{{$index+1}}</td>
                           <td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>
                           <td>{{contract.planName}} - {{contract.planVersion}}</td>
-                          <td>{{contract.createdOn | date}}</td>
                           <td>
-                            <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
-                            <button class="btn btn-line-warning btn-xs btn-w100" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)">Break Contract</button>
+                            <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
+                            <button class="btn btn-warning btn-xs action-icon fa fa-ban" title="Break contract" ng-show="canPublish(applicationVersions[application.id])" ng-click="breakContract(contract)"></button>
                           </td>
                         </tr>
                         </tbody>

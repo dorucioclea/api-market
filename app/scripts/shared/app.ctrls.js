@@ -4,14 +4,6 @@
 
   angular.module("app.ctrls", [])
 
-    .constant('ACTIONS', {
-      "LOCK": "lockPlan",
-      "PUBLISH": "publishService",
-      "RETIRE": "retireService",
-      "REGISTER": "registerApplication",
-      "UNREGISTER": "unregisterApplication"
-    })
-
 // Root Controller
     .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "$sessionStorage", function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS,$sessionStorage) {
       var mm = window.matchMedia("(max-width: 767px)");

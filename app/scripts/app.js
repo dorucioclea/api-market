@@ -22,6 +22,7 @@
 
     /* custom modules */
     "app.ctrls",
+    "app.constants",
     "app.directives",
     "app.services",
     "app.filters",
@@ -35,7 +36,6 @@
     "app.ctrl.organization",
     "app.ctrl.plan",
     "app.ctrl.policy",
-    "app.ctrl.contract",
     "app.ctrl.user",
     "app.ui.ctrls",
     "app.ui.directives",
@@ -232,13 +232,6 @@
           url: '/terms',
           templateUrl: 'views/partials/api/terms.html',
           controller: 'TermsCtrl'
-        })
-
-        // CONTRACT CREATION CONFIRMATION PAGE =========================================================
-        .state('root.contract', {
-          params: {appVersion: {}, planVersion: {}, svcVersion: {}},
-          templateUrl: 'views/contract.html',
-          controller: 'ContractCtrl as ctrl'
         })
 
         // ORGANIZATION OVERVIEW PAGE AND NESTED VIEWS ====================================

@@ -70,8 +70,8 @@
       }])
 
 /// ==== Contract creation: Plan Selection Controller
-    .controller("PlanSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "svcModel", "Application", "ApplicationContract", "ApplicationVersion", "PlanVersion", "PlanVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, svcModel, Application, ApplicationContract, ApplicationVersion, PlanVersion, PlanVersionPolicy) {
+    .controller("PlanSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "svcModel", "toastService", "TOAST_TYPES", "Application", "ApplicationContract", "ApplicationVersion", "PlanVersion", "PlanVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, svcModel, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion, PlanVersion, PlanVersionPolicy) {
 
         $scope.service = svcModel.getService();
         var hasAppContext = false;
@@ -149,7 +149,12 @@
             planId: $scope.selectedPlan.plan.id
           };
           ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
-            $state.go('root.contract', { appVersion: $scope.selectedAppVersion, planVersion: $scope.selectedPlan, svcVersion: $scope.service });
+            $state.go('root.market-dash');
+            var msg = '<b>Contract created!</b><br>' +
+                'A contract was created between application <b>' + $scope.selectedAppVersion.name + ' ' + $scope.selectedAppVersion.version + '</b> and service <b>' +
+              $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' + $scope.service.version + '</b>, using plan <b>' +
+            $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
+            toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
             $scope.modalClose();
           });
         };
@@ -215,8 +220,8 @@
       }])
 
 /// ==== PublishApplication Controller
-    .controller("PublishApplicationCtrl", ["$scope", "$rootScope", "$state", "$modal", "appVersion", "appContracts", "actionService", "toastService",
-      function ($scope, $rootScope, $state, $modal, appVersion, appContracts, actionService, toastService) {
+    .controller("PublishApplicationCtrl", ["$scope", "$rootScope", "$state", "$modal", "appVersion", "appContracts", "actionService",
+      function ($scope, $rootScope, $state, $modal, appVersion, appContracts, actionService) {
 
         $scope.selectedAppVersion = appVersion;
         $scope.contracts = appContracts;
@@ -233,8 +238,8 @@
       }])
 
 /// ==== RetireApplication Controller
-    .controller("RetireApplicationCtrl", ["$scope", "$rootScope", "$modal", "appVersion", "appContracts", 'actionService', 'toastService',
-      function ($scope, $rootScope, $modal, appVersion, appContracts, actionService, toastService) {
+    .controller("RetireApplicationCtrl", ["$scope", "$rootScope", "$modal", "appVersion", "appContracts", 'actionService',
+      function ($scope, $rootScope, $modal, appVersion, appContracts, actionService) {
 
         $scope.applicationVersion = appVersion;
         $scope.contracts = appContracts;
@@ -251,16 +256,16 @@
       }])
 
 /// ==== NewApplication Controller
-    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "toastService", "Application",
-      function ($scope, $modal, $state, $stateParams, toastService, Application) {
+    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "toastService", "TOAST_TYPES", "Application",
+      function ($scope, $modal, $state, $stateParams, toastService, TOAST_TYPES, Application) {
 
         //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
           application.base64logo = "";
           Application.save({ orgId: 'Digipolis' }, application, function (app) {
-            toastService.createToast('success', 'Application created!', true);
             $scope.modalClose();
             $state.forceReload();
+            toastService.createToast(TOAST_TYPES.SUCCESS, 'Application created!', true);
           });
         };
 

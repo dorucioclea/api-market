@@ -5,8 +5,8 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$timeout', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'ApplicationContract',
-      function ($scope, $modal, $state, $timeout, appData, appVersions, appContracts, headerModel, selectedApp, toastService, ApplicationContract) {
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$timeout', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'TOAST_TYPES', 'ApplicationContract',
+      function ($scope, $modal, $state, $timeout, appData, appVersions, appContracts, headerModel, selectedApp, toastService, TOAST_TYPES, ApplicationContract) {
         headerModel.setIsButtonVisible(true, false);
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
@@ -87,7 +87,7 @@
         };
 
         $scope.copyKey = function (apikey) {
-          var type = 'info';
+          var type = TOAST_TYPES.INFO;
           var msg = '<b>Key copied to clipboard!</b><br>' + apikey;
           toastService.createToast(type, msg, true);
         };
