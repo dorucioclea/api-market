@@ -72,7 +72,7 @@
                   <tbody>
                   <tr ng-repeat-start="application in applications">
                     <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></i></td>
-                    <td><a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a></td>
+                    <td><img class="mini-logo" ng-src="data:image/png;base64,{{application.base64logo}}">&nbsp;&nbsp;<a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a></td>
                     <td>{{applicationVersions[application.id].version}}</td>
                     <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
                     <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>

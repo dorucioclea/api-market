@@ -6401,6 +6401,10 @@ ol .progtracker ol.progtracker[data-progtracker-steps="9"] li {
   line-height: 20px;
   margin-bottom: 5px;
 }
+.page .mini-logo {
+  max-height: 25px;
+  max-width: 25px;
+}
 .content-container.ng-enter {
   z-index: 9999;
   -webkit-animation: 0.3s scaleUp ease-in;
