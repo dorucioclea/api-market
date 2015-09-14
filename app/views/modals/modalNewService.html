@@ -43,9 +43,9 @@
               <img flow-img="$flow.files[0]" />
             </div>
             <div>
-              <span class="btn btn-line-primary" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
-              <span class="btn btn-line-primary" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-              <span class="btn btn-line-danger" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
+              <span class="btn btn-line-primary btn-sm" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+              <span class="btn btn-line-primary btn-sm" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+              <span class="btn btn-line-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
             </div>
             <div class="col-sm-8 mt10">
               <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">

@@ -276,7 +276,11 @@
 
         //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
-          application.base64logo = imageService.image.fileData;
+          if (imageService.image.fileData) {
+            application.base64logo = imageService.image.fileData;
+          } else {
+            application.base64logo = "";
+          }
           Application.save({ orgId: 'Digipolis' }, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
@@ -389,7 +393,11 @@
           for (var i = 0; i < categories.length; i++) {
             cats.push(categories[i].text);
           }
-          svc.base64logo = imageService.image.fileData;
+          if (imageService.image.fileData) {
+            svc.base64logo = imageService.image.fileData;
+          } else {
+            svc.base64logo = "";
+          }
           svc.categories = cats;
 
           Service.save({ orgId: $stateParams.orgId }, svc, function (data) {

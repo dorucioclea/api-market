@@ -1,10 +1,10 @@
 <div class="panel panel-primary">
   <div class="panel-body">
 
-    <div class="col-sm-2" ng-if="base64logo">
-      <img class="media center-block entity-logo" ng-src="data:image/png;base64,{{base64logo}}">
+    <div class="col-sm-2" ng-if="hasLogo">
+      <base64-logo logo-class="media center-block entity-logo" logo="{{base64logo}}"></base64-logo>
     </div>
-    <div ng-class="{'col-sm-12': !base64logo, 'col-sm-10': base64logo}">
+    <div ng-class="{'col-sm-12': !hasLogo, 'col-sm-10': hasLogo}">
       <div class="row">
         <div class="col-sm-6 text-primary">
           <h4><i class="fa fa-{{icon}}"></i>

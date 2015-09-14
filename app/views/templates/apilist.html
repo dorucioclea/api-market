@@ -5,7 +5,7 @@
       <tr ng-repeat="api in availableAPIs">
         <td>
           <div class="media media-middle">
-            <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><img ng-src="data:image/png;base64,{{api.service.base64logo}}"></a>
+            <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><base64-logo logo-class="entity-logo" logo="{{api.service.base64logo}}"></base64-logo></a>
           </div>
         </td>
         <td class="text-left">

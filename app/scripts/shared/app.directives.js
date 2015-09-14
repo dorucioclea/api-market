@@ -207,6 +207,7 @@
         restrict: 'E',
         scope: {
           name: "@",
+          hasLogo: "@",
           base64logo: "@",
           description: "@",
           icon: "@",
@@ -269,6 +270,17 @@
         controllerAs: 'ctrl',
         bindToController: true,
         templateUrl: 'views/templates/policyList.html'
+      };
+    })
+
+    .directive('base64Logo', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          logo: "@",
+          logoClass: "@"
+        },
+        templateUrl: 'views/templates/base64logo.html'
       };
     })
 
