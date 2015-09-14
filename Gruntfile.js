@@ -261,6 +261,16 @@ module.exports = function (grunt) {
         }]
       }
     }, // End Angular Annotate
+
+    // ===== //
+    // Karma //
+    // ===== //
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    }, // End Karma
   });
 
 
