@@ -13,13 +13,14 @@
     <div class="panel">
       <div class="panel-body">
         <div class="col-sm-12">
-          <form role="form" class="form-horizontal">
+          <form role="form" name="orgForm" class="form-horizontal">
             <div class="form-group">
               <div class="col-md-12">
                 <label class="control-label text-primary">Organization Name</label>
               </div>
               <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required>
+                <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required>
+                <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.required" ng-if="orgForm.orgName.$touched">Organization name is required.</p>
               </div>
             </div>
 
@@ -37,6 +38,6 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-click="createOrganization(ctrl.organization)">Create Organization</button>
+    <button class="btn btn-primary" ng-click="createOrganization(ctrl.organization)" ng-disabled="orgForm.$invalid">Create Organization</button>
   </div>
 </div>
