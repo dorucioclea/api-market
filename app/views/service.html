@@ -11,8 +11,8 @@
   <overview-tabs>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Implementation'" ui-sref=".implementation">Implementation</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition">Definition</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition" ng-disabled="!tabStatus.hasImplementation">Definition</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans" ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">Plans</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
   </overview-tabs>

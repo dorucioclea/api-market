@@ -172,6 +172,11 @@
     .service('svcScreenModel', function () {
       this.selectedTab = 'Overview';
       this.service = {};
+      this.tabStatus = {
+        hasImplementation: false,
+        hasDefinition: false
+      };
+
 
       this.updateTab = function (newTab) {
         this.selectedTab = newTab;
@@ -179,6 +184,15 @@
 
       this.updateService = function (newSvc) {
         this.service = newSvc;
+        this.tabStatus.hasImplementation = newSvc.endpoint !== null;
+      };
+
+      this.setHasImplementation = function (bool) {
+        this.tabStatus.hasImplementation = bool;
+      };
+
+      this.setHasDefinition = function (bool) {
+        this.tabStatus.hasDefinition = bool;
       };
     })
 

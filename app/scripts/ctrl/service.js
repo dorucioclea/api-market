@@ -6,8 +6,8 @@
 
 
 /// ==== Service Controller
-    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "Action",
-      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, Action) {
+    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "Action", "ServiceVersionDefinition",
+      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, Action, ServiceVersionDefinition) {
 
         $scope.serviceVersion = svcData;
         svcScreenModel.updateService(svcData);
@@ -16,12 +16,18 @@
         $scope.isReady = $scope.serviceVersion.status === 'Ready';
         $scope.isPublished = $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
         $scope.isRetired = $scope.serviceVersion.status === 'Retired';
+        $scope.tabStatus = svcScreenModel.tabStatus;
 
+
+        ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
+          svcScreenModel.setHasDefinition(true);
+        }, function (error) {
+          svcScreenModel.setHasDefinition(false);
+        });
 
         $scope.selectVersion = function (version) {
           $state.go($state.$current.name, { orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
         };
-
 
         $scope.publishService = function () {
           var publishAction = {
@@ -106,7 +112,12 @@
         $scope.saveService = function() {
           ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function(reply) {
             $scope.isDirty = false;
-            $state.forceReload();
+            if ($scope.tabStatus.hasImplementation) {
+              $state.forceReload();
+            } else {
+              svcScreenModel.setHasImplementation(true);
+              $state.go('^.definition');
+            }
           });
         };
 
@@ -116,7 +127,6 @@
     .controller("ServiceDefinitionCtrl", ["$scope", "$state", "$stateParams", "ServiceVersionDefinition", "svcScreenModel",
       function ($scope, $state, $stateParams, ServiceVersionDefinition, svcScreenModel) {
 
-        $scope.updatedDefinition = '';
         svcScreenModel.updateTab('Definition');
         $scope.definitionLoaded = false;
         $scope.noDefinition = false;
@@ -126,10 +136,13 @@
           if (angular.isDefined($scope.currentDefinition)) {
             $scope.updatedDefinition = $scope.currentDefinition;
             $scope.loadSwaggerUi($scope.currentDefinition, "original-swagger-ui-container");
+          } else {
+            $scope.noDefinition = true;
           }
         }, function (error) {
           $scope.noDefinition = true;
         });
+
 
         $scope.reset = function () {
           $scope.definitionLoaded = false;
@@ -138,7 +151,12 @@
 
         $scope.saveDefinition = function () {
           ServiceVersionDefinition.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
-            $state.forceReload();
+            if ($scope.tabStatus.hasDefinition) {
+              $state.forceReload();
+            } else {
+              svcScreenModel.setHasDefinition(true);
+              $state.go('^.plans');
+            }
           });
         };
 
