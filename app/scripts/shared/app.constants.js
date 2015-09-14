@@ -12,6 +12,13 @@
       "UNREGISTER": "unregisterApplication"
     })
 
+    .constant('ALERT_TYPES', {
+      "SUCCESS": 'success',
+      "INFO": 'info',
+      "WARNING": 'warning',
+      "DANGER": 'danger'
+    })
+
     .constant('TOAST_TYPES', {
       "SUCCESS": 'success',
       "INFO": 'info',

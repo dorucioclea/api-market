@@ -4,6 +4,8 @@
 
   angular.module("app.services", [])
 
+
+    // ACTION SERVICE
     .service('actionService', ['$state', 'toastService', 'TOAST_TYPES', 'Action', 'ACTIONS', function ($state, toastService, TOAST_TYPES, Action, ACTIONS) {
 
       this.createAction = function (entityVersion, type) {
@@ -99,6 +101,58 @@
         var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was retired.';
         doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload, TOAST_TYPES.WARNING, msg);
       };
+    }])
+
+    // ALERT SERVICE
+    .service('alertService', function () {
+      this.alerts = [];
+
+      this.closeAlert = function (index) {
+        this.alerts.splice(index, 1);
+      };
+
+      this.addAlert = function (type, msg) {
+        var alert = {
+          type: type,
+          msg: msg
+        };
+        this.alerts.push(alert);
+      };
+
+      this.resetAllAlerts = function () {
+        this.alerts = [];
+      };
+    })
+
+    .service('imageService', ['alertService', 'ALERT_TYPES', function (alertService, ALERT_TYPES) {
+
+      var image = {
+        isValid: true,
+        fileData: null
+      };
+
+      this.image = image;
+
+      this.readFile = function ($file, $event, $flow) {
+          if ($file.size > 10000) {
+            image.isValid = false;
+            alertService.addAlert(ALERT_TYPES.DANGER, '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
+          } else {
+            alertService.resetAllAlerts();
+            image.isValid = true;
+          }
+
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            setImageData(event.target.result.substr(event.target.result.indexOf('base64')+7));
+          };
+          reader.readAsDataURL($file.file);
+        };
+
+      var setImageData = function (data) {
+        image.fileData = data;
+      };
+
     }])
 
     .service('toastService', ['$timeout', function ($timeout) {

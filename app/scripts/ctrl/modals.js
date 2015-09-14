@@ -256,12 +256,27 @@
       }])
 
 /// ==== NewApplication Controller
-    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "toastService", "TOAST_TYPES", "Application",
-      function ($scope, $modal, $state, $stateParams, toastService, TOAST_TYPES, Application) {
+    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "toastService", "TOAST_TYPES", "Application",
+      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, toastService, TOAST_TYPES, Application) {
+
+        alertService.resetAllAlerts();
+        $scope.imageService = imageService;
+        $scope.alerts = alertService.alerts;
+        $scope.flow = flowFactory.create({
+          singleFile: true
+        });
+
+        $scope.readFile = function ($file, $event, $flow) {
+          imageService.readFile($file, $event, $flow);
+        };
+
+        $scope.closeAlert = function(index) {
+          alertService.closeAlert(index);
+        };
 
         //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
-          application.base64logo = "";
+          application.base64logo = imageService.image.fileData;
           Application.save({ orgId: 'Digipolis' }, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
@@ -350,44 +365,31 @@
       }])
 
 /// ==== NewService Controller
-    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "orgScreenModel", "Service",
-      function ($scope, $modal, $state, $stateParams, flowFactory, orgScreenModel, Service) {
+    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "orgScreenModel", "Service",
+      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, orgScreenModel, Service) {
 
+        alertService.resetAllAlerts();
         $scope.org = orgScreenModel.organization;
-        $scope.isValid = true;
-        $scope.alerts = [];
+        $scope.imageService = imageService;
+        $scope.alerts = alertService.alerts;
         $scope.flow = flowFactory.create({
           singleFile: true
         });
 
-        $scope.readFile =  function ($file, $event, $flow) {
-          if ($file.size > 10000) {
-            $scope.isValid = false;
-            $scope.alerts.push({type: 'danger', msg: '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.'});
-          } else {
-            $scope.alerts = [];
-            $scope.isValid = true;
-          }
-
-          var reader = new FileReader();
-          reader.onload = function(event) {
-            $scope.filedata = event.target.result.substr(event.target.result.indexOf('base64')+7);
-            $scope.filename = $file.name;
-          };
-          reader.readAsDataURL($file.file);
+        $scope.readFile = function ($file, $event, $flow) {
+          imageService.readFile($file, $event, $flow);
         };
 
         $scope.closeAlert = function(index) {
-          $scope.alerts.splice(index, 1);
+          alertService.closeAlert(index);
         };
-
 
         $scope.createService = function (svc, categories) {
           var cats = [];
           for (var i = 0; i < categories.length; i++) {
             cats.push(categories[i].text);
           }
-          svc.base64logo = $scope.filedata;
+          svc.base64logo = imageService.image.fileData;
           svc.categories = cats;
 
           Service.save({ orgId: $stateParams.orgId }, svc, function (data) {

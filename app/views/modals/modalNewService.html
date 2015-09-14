@@ -72,7 +72,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-click="createService(ctrl.service, ctrl.categories)" ng-disabled="serviceForm.$invalid || !isValid">Create Service</button>
+    <button class="btn btn-primary" ng-click="createService(ctrl.service, ctrl.categories)" ng-disabled="serviceForm.$invalid || !imageService.image.isValid">Create Service</button>
   </div>
 
 </div>
