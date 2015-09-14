@@ -207,6 +207,7 @@
         restrict: 'E',
         scope: {
           name: "@",
+          base64logo: "@",
           description: "@",
           icon: "@",
           entityVersion: "=",

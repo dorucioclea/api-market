@@ -6405,6 +6405,10 @@ ol .progtracker ol.progtracker[data-progtracker-steps="9"] li {
   max-height: 25px;
   max-width: 25px;
 }
+.page .entity-logo {
+  max-height: 100px;
+  max-width: 100px;
+}
 .content-container.ng-enter {
   z-index: 9999;
   -webkit-animation: 0.3s scaleUp ease-in;
