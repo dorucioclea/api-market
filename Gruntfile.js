@@ -15,6 +15,7 @@ module.exports = function (grunt) {
     dist: 'dist',
 
     connect_port: 9000,
+    connect_port_test: 9001,
     connect_live_reload: 35729,
     connect_hostname: 'localhost',
   };
@@ -67,6 +68,19 @@ module.exports = function (grunt) {
         base: '<%= config.app %>',
         livereload: '<%= config.connect_live_reload %>',
         hostname: '<%= config.connect_hostname %>'
+      },
+      test: {
+        options: {
+          port: '<%= config.connect_port_test %>',
+          middleware: function (connect) {
+            return [
+              connect.static('.tmp'),
+              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/app/styles', connect.static('./app/styles')),
+              connect.static(appConfig.app)
+            ];
+          }
+        }
       },
       livereload: {
         options: {
@@ -163,7 +177,7 @@ module.exports = function (grunt) {
             '*.html',
             'images/{,*/}*.*',
             'fonts/**/*.*',
-            'views/{,*/}*.*'
+            'views/**/*.*'
           ]
         }]
       }
@@ -270,9 +284,18 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'cssmin',
-    'uglify',
+    //'uglify',
     'filerev',
     'usemin',
     'htmlmin'
+  ]);
+
+  grunt.registerTask('test', [
+    'clean',
+    'wiredep',
+    //'concurrent:test',
+    //'autoprefixer',
+    'connect:test',
+    'karma'
   ]);
 };
