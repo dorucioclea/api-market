@@ -1,19 +1,19 @@
 
 .page {
-	padding: 15px;
-	// margin-bottom: 30px;
-	// border: 1px solid;
+  padding: 15px;
+  // margin-bottom: 30px;
+  // border: 1px solid;
 }
 
 .page {
-	.row > [class^='col'] {
-		@media (max-width: 320px) {
-			width: 100%;
-		}
-	}
-	.page-wrap > .row {
-		padding: 0 15px;
-	}
+  .row > [class^='col'] {
+    @media (max-width: 320px) {
+      width: 100%;
+    }
+  }
+  .page-wrap > .row {
+    padding: 0 15px;
+  }
   .action-icon {
     height: 26px;
     width: 26px;
@@ -21,41 +21,47 @@
     -moz-border-radius: 0;
     border-radius: 0;
   }
+  .thumbnail {
+    max-width: 250px;
+    max-height: 250px;
+    line-height: 20px;
+    margin-bottom: 5px;
+  }
 }
 
 
 // page animation
 .content-container {
-	&.ng-enter {
-		z-index: 9999;
-		.animation(0.3s scaleUp ease-in)
-	}
+  &.ng-enter {
+    z-index: 9999;
+    .animation(0.3s scaleUp ease-in)
+  }
 
-	&.ng-leave {
-		z-index: 8888;
-	}
+  &.ng-leave {
+    z-index: 8888;
+  }
 }
 
 @media(min-width: @screen-sm-min) {
-	@keyframes scaleUp {
-		0% {
-			opacity: 0;
-			.scale(0.95);
-		}
-		100% {
-			opacity: 1;
-			.scale(1);
-		}
-	}
+  @keyframes scaleUp {
+    0% {
+      opacity: 0;
+      .scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      .scale(1);
+    }
+  }
 
-	@-webkit-keyframes scaleUp {
-		0% {
-			opacity: 0;
-			.scale(0.95);
-		}
-		100% {
-			opacity: 1;
-			.scale(1);
-		}
-	}
+  @-webkit-keyframes scaleUp {
+    0% {
+      opacity: 0;
+      .scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      .scale(1);
+    }
+  }
 }

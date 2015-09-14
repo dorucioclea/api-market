@@ -6395,6 +6395,12 @@ ol .progtracker ol.progtracker[data-progtracker-steps="9"] li {
   -moz-border-radius: 0;
   border-radius: 0;
 }
+.page .thumbnail {
+  max-width: 250px;
+  max-height: 250px;
+  line-height: 20px;
+  margin-bottom: 5px;
+}
 .content-container.ng-enter {
   z-index: 9999;
   -webkit-animation: 0.3s scaleUp ease-in;

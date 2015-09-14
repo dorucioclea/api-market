@@ -19,6 +19,7 @@
     "ngTagsInput",
     "schemaForm",
     "angular-clipboard",
+    "flow",
 
     /* custom modules */
     "app.ctrls",

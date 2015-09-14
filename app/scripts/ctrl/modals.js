@@ -350,10 +350,36 @@
       }])
 
 /// ==== NewService Controller
-    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Service",
-      function ($scope, $modal, $state, $stateParams, orgScreenModel, Service) {
+    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "orgScreenModel", "Service",
+      function ($scope, $modal, $state, $stateParams, flowFactory, orgScreenModel, Service) {
 
         $scope.org = orgScreenModel.organization;
+        $scope.isValid = true;
+        $scope.alerts = [];
+        $scope.flow = flowFactory.create({
+          singleFile: true
+        });
+
+        $scope.readFile =  function ($file, $event, $flow) {
+          if ($file.size > 10000) {
+            $scope.isValid = false;
+            $scope.alerts.push({type: 'danger', msg: '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.'});
+          } else {
+            $scope.alerts = [];
+            $scope.isValid = true;
+          }
+
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            $scope.filedata = event.target.result.substr(event.target.result.indexOf('base64')+7);
+            $scope.filename = $file.name;
+          };
+          reader.readAsDataURL($file.file);
+        };
+
+        $scope.closeAlert = function(index) {
+          $scope.alerts.splice(index, 1);
+        };
 
 
         $scope.createService = function (svc, categories) {
@@ -361,7 +387,9 @@
           for (var i = 0; i < categories.length; i++) {
             cats.push(categories[i].text);
           }
+          svc.base64logo = $scope.filedata;
           svc.categories = cats;
+
           Service.save({ orgId: $stateParams.orgId }, svc, function (data) {
             $scope.modalClose();
             $state.forceReload();
