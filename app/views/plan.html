@@ -1,8 +1,13 @@
 ﻿<overview entity-version="planVersion" type="plan">
   <overview-header name="{{planVersion.plan.name}}" icon="bar-chart-o" description="{{planVersion.plan.description}}"
-                   entity-version="planVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()">
+                   entity-version="planVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc">
 
     <!-- Entity Buttons -->
+    <div class="toast toast-bottomRight">
+      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <div ng-bind-html="toast.msg">Test Toast</div>
+      </alert>
+    </div>
     <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-hide="locked" ng-click="lockPlan()">Lock Plan</button>
 
   </overview-header>

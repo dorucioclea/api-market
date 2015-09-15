@@ -78,17 +78,17 @@
       };
 
       this.publishService = function (serviceVersion, shouldReload) {
-        var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was successfully published!';
+        var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was successfully published!';
         doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 
       this.retireService = function (serviceVersion, shouldReload) {
-        var msg = '<b>' + serviceVersion.name + ' ' + serviceVersion.version + '</b> was retired.';
+        var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was retired.';
         doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, TOAST_TYPES.WARNING, msg);
       };
 
       this.lockPlan = function (planVersion, shouldReload) {
-        var msg = '<b>' + planVersion.name + ' ' + planVersion.version + '</b> was successfully locked!';
+        var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version + '</b> was successfully locked!';
         doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 

@@ -6,8 +6,8 @@
 
 
 /// ==== Service Controller
-    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "Action", "ServiceVersionDefinition",
-      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, Action, ServiceVersionDefinition) {
+    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "toastService", "TOAST_TYPES", "actionService", "Service", "ServiceVersionDefinition",
+      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService, Service, ServiceVersionDefinition) {
 
         $scope.serviceVersion = svcData;
         svcScreenModel.updateService(svcData);
@@ -17,6 +17,8 @@
         $scope.isPublished = $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
         $scope.isRetired = $scope.serviceVersion.status === 'Retired';
         $scope.tabStatus = svcScreenModel.tabStatus;
+        $scope.toasts = toastService.toasts;
+        $scope.toastService = toastService;
 
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
@@ -30,26 +32,17 @@
         };
 
         $scope.publishService = function () {
-          var publishAction = {
-            type: 'publishService',
-            organizationId: $stateParams.orgId,
-            entityId: $stateParams.svcId,
-            entityVersion: $stateParams.versionId
-          };
-          Action.save(publishAction, function (reply) {
-            $state.forceReload();
-          });
+          actionService.publishService($scope.serviceVersion, true);
         };
 
         $scope.retireService = function () {
-          var publishAction = {
-            type: 'retireService',
-            organizationId: $stateParams.orgId,
-            entityId: $stateParams.svcId,
-            entityVersion: $stateParams.versionId
-          };
-          Action.save(publishAction, function (reply) {
-            $state.forceReload();
+          actionService.retireService($scope.serviceVersion, true);
+        };
+
+        $scope.updateDesc = function (newValue) {
+          Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, { description: newValue}, function (reply) {
+            //TODO handle reply? Show toast for updating success?
+            toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           });
         };
 

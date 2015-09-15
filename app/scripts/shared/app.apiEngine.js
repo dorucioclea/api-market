@@ -33,7 +33,11 @@
       return $resource(EngineUrl + '/organizations/:id/activity');
     }])
     .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' });
+      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' }, {
+        update: {
+          method: 'PUT'
+        }
+      });
     }])
     .factory('PlanActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/activity');
@@ -51,7 +55,11 @@
       return $resource(EngineUrl + '/organizations/:orgId/members');
     }])
     .factory('Application', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' });
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' }, {
+        update: {
+          method: 'PUT'
+        }
+      });
     }])
     .factory('ApplicationVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId', { orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
@@ -69,7 +77,11 @@
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
     }])
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' });
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' }, {
+        update: {
+          method: 'PUT'
+        }
+      });
     }])
     .factory('ServiceActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');

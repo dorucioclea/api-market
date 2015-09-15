@@ -1,8 +1,13 @@
 <overview entity-version="serviceVersion" type="svc">
   <overview-header name="{{serviceVersion.service.name}}" icon="puzzle-piece" description="{{serviceVersion.service.description}}" has-logo="true" base64logo="{{serviceVersion.service.base64logo}}"
-                   entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}">
+                   entity-version="serviceVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc">
 
     <!-- Entity Buttons -->
+    <div class="toast toast-bottomRight">
+      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <div ng-bind-html="toast.msg">Test Toast</div>
+      </alert>
+    </div>
     <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-hide="isPublished" ng-click="publishService()">Publish</button>
     <button class="btn btn-line-warning btn-sm" ng-show="isPublished && !isRetired" ng-click="retireService()">Retire</button>
 

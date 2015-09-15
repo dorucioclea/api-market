@@ -215,7 +215,8 @@
           versions: "=",
           selectVersion: "&",
           newVersion: "&",
-          endpoint: "@"
+          endpoint: "@",
+          save: "=",
         },
         bindToController: true,
         transclude: true,
@@ -284,6 +285,50 @@
       };
     })
 
+    .directive("clickToEdit", function() {
+      var editorTemplate = '<div class="click-to-edit">' +
+        '<div ng-hide="view.editorEnabled">' +
+        '{{value}} ' +
+        '<a href class="fa fa-pencil" ng-click="enableEditor()"></a>' +
+        '</div>' +
+        '<div ng-show="view.editorEnabled">' +
+        '<input class="form-control" ng-model="view.editableValue">' +
+        '<span class="btn btn-xs fa fa-check" ng-click="doSave()"></span>' +
+        '<span class="btn btn-xs fa fa-ban" ng-click="disableEditor()"></span>' +
+        '</div>' +
+        '</div>';
+
+      return {
+        restrict: "A",
+        replace: true,
+        template: editorTemplate,
+        scope: {
+          value: "=",
+          saveFunction: "&"
+        },
+        controller: function($scope) {
+          $scope.view = {
+            editableValue: $scope.value,
+            editorEnabled: false
+          };
+
+          $scope.enableEditor = function() {
+            $scope.view.editorEnabled = true;
+            $scope.view.editableValue = $scope.value;
+          };
+
+          $scope.disableEditor = function() {
+            $scope.view.editorEnabled = false;
+          };
+
+          $scope.doSave = function() {
+            $scope.value = $scope.view.editableValue;
+            $scope.saveFunction()($scope.value);
+            $scope.disableEditor();
+          };
+        }
+      };
+    })
 
     .directive('statusLabel', function () {
       return {

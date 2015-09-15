@@ -6,8 +6,8 @@
 
 
 /// ==== Plan Controller
-    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService", "toastService",
-      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService, toastService) {
+    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService", "toastService", "TOAST_TYPES", "Plan",
+      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
         $scope.planVersion = planData;
         planScreenModel.updatePlan(planData);
@@ -24,6 +24,13 @@
 
         $scope.selectVersion = function (version) {
           $state.go($state.$current.name, { orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: version.version});
+        };
+
+        $scope.updateDesc = function (newValue) {
+          Plan.update({orgId: $stateParams.orgId, planId: $stateParams.planId}, { description: newValue}, function (reply) {
+            //TODO handle reply? Show toast for updating success?
+            toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+          });
         };
 
       }])
