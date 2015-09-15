@@ -151,9 +151,9 @@
           ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
             $state.go('root.market-dash');
             var msg = '<b>Contract created!</b><br>' +
-                'A contract was created between application <b>' + $scope.selectedAppVersion.name + ' ' + $scope.selectedAppVersion.version + '</b> and service <b>' +
+              'A contract was created between application <b>' + $scope.selectedAppVersion.name + ' ' + $scope.selectedAppVersion.version + '</b> and service <b>' +
               $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' + $scope.service.version + '</b>, using plan <b>' +
-            $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
+              $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
             $scope.modalClose();
           });
@@ -305,6 +305,83 @@
             $scope.modalClose();
             $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
           });
+        };
+
+        $scope.modalClose = function() {
+          $scope.$close();	// this method is associated with $modal scope which is this.
+        };
+
+      }])
+
+    /// ==== EditImgCtrl Controller
+    .controller("EditImgCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "toastService", "TOAST_TYPES", "appScreenModel", "currentUserModel", "svcScreenModel", "Application", "CurrentUserInfo", "Service",
+      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel, Application, CurrentUserInfo, Service) {
+        var type = {};
+
+        if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'User';
+          $scope.currentLogo = currentUserModel.currentUser.base64pic;
+        } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
+          type = 'Application';
+          $scope.currentLogo = appScreenModel.application.application.base64logo;
+        } else {
+          type = 'Service';
+          $scope.currentLogo = svcScreenModel.service.service.base64logo;
+        }
+        alertService.resetAllAlerts();
+        $scope.imageService = imageService;
+        $scope.alerts = alertService.alerts;
+        $scope.flow = flowFactory.create({
+          singleFile: true
+        });
+
+        $scope.readFile = function ($file, $event, $flow) {
+          imageService.readFile($file, $event, $flow);
+        };
+
+        $scope.closeAlert = function(index) {
+          alertService.closeAlert(index);
+        };
+
+        $scope.updateLogo = function () {
+          var updateObject = {};
+          if (type === 'User') {
+            if (imageService.image.fileData) {
+              updateObject.pic = imageService.image.fileData;
+            } else {
+              updateObject.pic = "";
+            }
+          } else {
+            if (imageService.image.fileData) {
+              updateObject.base64logo = imageService.image.fileData;
+            } else {
+              updateObject.base64logo = "";
+            }
+          }
+
+          switch (type) {
+            case 'Application':
+              Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId}, updateObject, function (reply) {
+                success('Application logo updated!');
+              });
+              break;
+            case 'Service':
+              Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, updateObject, function (reply) {
+                success('Service logo updated!');
+              });
+              break;
+            case 'User':
+              CurrentUserInfo.update({}, updateObject, function (reply) {
+                success('Profile pictured saved!');
+              });
+              break;
+          }
+        };
+
+        var success = function (msg) {
+          $scope.modalClose();
+          $state.forceReload();
+          toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
         };
 
         $scope.modalClose = function() {

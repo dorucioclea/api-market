@@ -105,10 +105,13 @@
 
     // ALERT SERVICE
     .service('alertService', function () {
-      this.alerts = [];
+
+      var alerts = [];
+
+      this.alerts = alerts;
 
       this.closeAlert = function (index) {
-        this.alerts.splice(index, 1);
+        closeAlert(index);
       };
 
       this.addAlert = function (type, msg) {
@@ -120,10 +123,17 @@
       };
 
       this.resetAllAlerts = function () {
-        this.alerts = [];
+        this.alerts.forEach(function (value) {
+          closeAlert(0);
+        });
+      };
+
+      var closeAlert = function (index) {
+        alerts.splice(index, 1);
       };
     })
 
+    // IMAGE SERVICE
     .service('imageService', ['alertService', 'ALERT_TYPES', function (alertService, ALERT_TYPES) {
 
       var image = {
@@ -134,11 +144,11 @@
       this.image = image;
 
       this.readFile = function ($file, $event, $flow) {
-          if ($file.size > 10000) {
+        alertService.resetAllAlerts();
+        if ($file.size > 10000) {
             image.isValid = false;
             alertService.addAlert(ALERT_TYPES.DANGER, '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
           } else {
-            alertService.resetAllAlerts();
             image.isValid = true;
           }
 
@@ -155,6 +165,8 @@
 
     }])
 
+
+    // TOAST SERVICE
     .service('toastService', ['$timeout', function ($timeout) {
       var toasts = [];
 
@@ -187,6 +199,8 @@
       };
     }])
 
+
+    // HEADER MODEL
     .service('headerModel', function ($rootScope) {
       this.showExplore = true;
       this.showDash = true;
@@ -198,6 +212,8 @@
       };
     })
 
+
+    // ORGANIZATION SCREEN MODEL
     .service('orgScreenModel', function () {
 
       this.selectedTab = 'Plans';
@@ -213,6 +229,8 @@
 
     })
 
+
+    // SERVICE DOCUMENTATION TAB HELPER
     .service('svcTab', function () {
 
       this.selectedTab = 'Documentation';
@@ -223,6 +241,8 @@
 
     })
 
+
+    // SERVICE SCREEN MODEL
     .service('svcScreenModel', function () {
       this.selectedTab = 'Overview';
       this.service = {};
@@ -250,6 +270,8 @@
       };
     })
 
+
+    // DASHBOARD SELECTED APP HELPER
     .service('selectedApp', function () {
       this.appVersion = null;
 
@@ -258,6 +280,7 @@
       };
     })
 
+    // APPLICATION SCREEN MODEL
     .service('appScreenModel', function () {
       this.selectedTab = 'Overview';
       this.application = {};
@@ -271,6 +294,8 @@
       };
     })
 
+
+    // PLAN SCREEN MODEL
     .service('planScreenModel', function () {
       this.selectedTab = 'Overview';
       this.plan = {};
@@ -284,6 +309,8 @@
       };
     })
 
+
+    // SERVICE DOC MODEL
     .service('svcModel', function () {
 
       var service = null;
@@ -298,6 +325,15 @@
 
     })
 
+    .service('currentUserModel', function () {
+      this.currentUser = {};
+
+      this.updateCurrentUser = function (userInfo) {
+        this.currentUser = userInfo;
+      };
+    })
+
+    // USER SCREEN MODEL
     .service('userScreenModel', function () {
       this.selectedTab = 'Profile';
 

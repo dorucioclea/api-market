@@ -37,12 +37,13 @@
   <!-- profile drop -->
   <li class="profile-drop hidden-xs dropdown" dropdown>
     <a href dropdown-toggle>
-      <img src="images/admin.jpg" alt="admin-pic">
+      <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
+      <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
       <span class="text-primary"></span>
       <span class="text-primary caret"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right">
-      <li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserInfo.fullName}}</a></li>
+      <li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserModel.currentUser.fullName}}</a></li>
       <li class="divider"></li>
       <li><a ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
       <li><a ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>

@@ -3,10 +3,11 @@
 
     <nav class="site-nav clearfix" role="navigation">
       <div class="profile clearfix mb15">
-        <img src="images/admin.jpg" alt="admin">
+        <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
+        <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
         <div class="group">
-          <h5 class="name">{{currentUserInfo.fullName}}</h5>
-          <small class="desig">{{currentUserInfo.username}}</small>
+          <h5 class="name">{{currentUserModel.currentUser.fullName}}</h5>
+          <small class="desig">{{currentUserModel.currentUser.username}}</small>
         </div>
       </div>
 
@@ -36,5 +37,12 @@
     </nav>
   </aside>
 
-  <div class="page page-user" ui-view></div>
+  <div class="page page-ui-notifications page-user">
+    <div class="toast toast-bottomRight">
+      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <div ng-bind-html="toast.msg">Test Toast</div>
+      </alert>
+    </div>
+    <div ui-view></div>
+  </div>
 </div>

@@ -279,9 +279,11 @@
         restrict: 'E',
         scope: {
           logo: "@",
-          logoClass: "@"
+          logoClass: "@",
+          editable: "@"
         },
-        templateUrl: 'views/templates/base64logo.html'
+        templateUrl: 'views/templates/base64logo.html',
+        controller: 'EditLogoCtrl'
       };
     })
 

@@ -1,0 +1,43 @@
+<div class="page">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Image</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <div class="modal-body">
+    <form role="form" name="logoForm" class="form-horizontal">
+      <div class="form-group mt30">
+        <div class="col-md-5">
+          <label class="control-label text-primary">Current Image</label>
+          <div>
+            <base64-logo logo="{{currentLogo}}" logo-class="thumbnail"></base64-logo>
+          </div>
+        </div>
+        <div class="col-md-5" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
+          <label class="control-label text-primary">New Image</label>
+          <div>
+            <div class="thumbnail" ng-hide="$flow.files.length" flow-drop>
+              <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
+            </div>
+            <div class="thumbnail" ng-show="$flow.files.length">
+              <img flow-img="$flow.files[0]" />
+            </div>
+            <div>
+              <span class="btn btn-line-primary btn-sm" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+              <span class="btn btn-line-primary btn-sm" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+              <span class="btn btn-line-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
+            </div>
+            <div class="col-sm-8 mt10">
+              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                <div ng-bind-html="alert.msg"></div>
+              </alert>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="updateLogo()" ng-disabled="!imageService.image.isValid">Save</button>
+  </div>
+</div>

@@ -6409,6 +6409,21 @@ ol .progtracker ol.progtracker[data-progtracker-steps="9"] li {
   max-height: 100px;
   max-width: 100px;
 }
+.page .base64logo {
+  position: relative;
+  display: inline-block;
+}
+.page .base64logo:hover > span {
+  display: block;
+}
+.page .base64logo span {
+  position: absolute;
+  display: none;
+}
+.page .base64logo .edit {
+  top: 0;
+  left: 0;
+}
 .content-container.ng-enter {
   z-index: 9999;
   -webkit-animation: 0.3s scaleUp ease-in;
@@ -7732,7 +7747,7 @@ md-input-container {
   padding: 10px 0px 10px 7px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-.user.nav-wrap .site-nav .profile > img {
+.user.nav-wrap .site-nav .profile base64-logo img {
   border-radius: 100%;
   border: 2px solid #eeeeee;
   width: 50px;

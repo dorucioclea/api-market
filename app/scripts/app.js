@@ -569,12 +569,6 @@
         .state('root.user', {
           url: '/user',
           templateUrl: 'views/user.html',
-          resolve: {
-            CurrentUserInfo: 'CurrentUserInfo',
-            userInfo: function (CurrentUserInfo) {
-              return CurrentUserInfo.get().$promise;
-            }
-          },
           controller: 'UserCtrl'
         })
         // Email Tab

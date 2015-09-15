@@ -11,7 +11,7 @@
             <span class="fa fa-user with-margin"></span>
             <span>Full Name</span>
           </label>
-          <input type="text" name="fullname" placeholder="Full Name" ng-model="currentUserInfo.fullName" value="currentUserInfo.fullName" class="form-control">
+          <input type="text" name="fullName" placeholder="Full Name" ng-model="currentUserModel.currentUser.fullName" class="form-control">
         </div>
         <div class="form-group col-xs-6">
           <label for="company">
@@ -45,32 +45,17 @@
           </label>
           <textarea type="text" name="description" placeholder="Something about yourself" rows="5" cols="60" class="form-control"></textarea>
         </div>
-        <div class="col-md-5" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
+        <div class="form-group col-xs-6">
           <label>
             <span class="fa fa-camera with-margin"></span>
-            <span>Profile picture</span>
+            <span>Profile Picture</span>
           </label>
           <div>
-            <div class="thumbnail" ng-hide="$flow.files.length" flow-drop>
-              <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
-            </div>
-            <div class="thumbnail" ng-show="$flow.files.length">
-              <img flow-img="$flow.files[0]" />
-            </div>
-            <div>
-              <span class="btn btn-line-primary btn-sm" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
-              <span class="btn btn-line-primary btn-sm" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-              <span class="btn btn-line-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
-            </div>
-            <div class="col-sm-8 mt10">
-              <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
-                <div ng-bind-html="alert.msg"></div>
-              </alert>
-            </div>
+            <base64-logo logo="{{currentUserModel.currentUser.base64pic}}" logo-class="entity-logo" editable="true"></base64-logo>
           </div>
         </div>
       </div>
-      <button class="btn btn-line-primary" ng-click="saveUserDetails(currentUserInfo)">Save</button>
+      <button class="btn btn-line-primary" ng-click="saveUserDetails(currentUserModel.currentUser.fullName)">Save</button>
     </div>
   </div>
 </div>

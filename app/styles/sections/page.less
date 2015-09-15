@@ -35,6 +35,23 @@
     max-height: 100px;
     max-width: 100px;
   }
+
+  .base64logo {
+    position: relative;
+    display: inline-block;
+
+    &:hover > span {
+      display: block;
+    }
+    span {
+      position: absolute;
+      display: none;
+    }
+    .edit {
+      top: 0;
+      left: 0;
+    }
+  }
 }
 
 

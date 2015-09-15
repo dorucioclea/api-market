@@ -175,11 +175,26 @@
       };
     }])
 
+    .controller("EditLogoCtrl", [ "$scope", "$modal", function($scope, $modal) {
 
-    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "CurrentUserInfo", "Fullscreen",
-      function($scope, $state, headerModel, CurrentUserInfo, Fullscreen) {
+      $scope.modalEditLogo = function() {
+        $modal.open({
+          templateUrl: "views/modals/modalEditLogo.html",
+          size: "lg",
+          controller: "EditImgCtrl as ctrl",
+          resolve: function() {},
+          windowClass: $scope.modalAnim	// Animation Class put here.
+        });
+
+      };
+    }])
+
+    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "CurrentUserInfo", "Fullscreen",
+      function($scope, $state, headerModel, currentUserModel, CurrentUserInfo, Fullscreen) {
         $scope.showExplore = headerModel.showExplore;
         $scope.showDash = headerModel.showDash;
+        $scope.currentUserModel = currentUserModel;
+
         $scope.toggleFloatingSidebar = function() {
           $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
         };
@@ -190,7 +205,7 @@
         });
 
         CurrentUserInfo.get({}, function (reply) {
-          $scope.currentUserInfo = reply;
+          currentUserModel.updateCurrentUser(reply);
         });
 
         $scope.goFullScreen = function() {

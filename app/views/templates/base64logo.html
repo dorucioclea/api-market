@@ -1,2 +1,5 @@
-<img class="{{logoClass}}" ng-src="data:image/png;base64,{{logo}}" ng-if="logo.length > 0">
-<img class="{{logoClass}}" src="images/no-image-available.svg" ng-if="logo.length === 0">
+<div class="base64logo">
+  <img class="{{logoClass}}" ng-src="data:image/png;base64,{{logo}}" ng-if="logo.length > 0">
+  <img class="{{logoClass}}" src="images/no-image-available.svg" ng-if="logo.length === 0 || logo === null">
+  <span class="edit btn btn-primary btn-xs" ng-if="editable" ng-click="modalEditLogo()">Edit</span>
+</div>
