@@ -335,8 +335,18 @@
           singleFile: true
         });
 
-        $scope.readFile = function ($file, $event, $flow) {
-          imageService.readFile($file, $event, $flow);
+        $scope.cancel = function () {
+          imageService.clear();
+          $scope.flow.cancel();
+        };
+
+        $scope.readFile = function ($file) {
+          if(imageService.checkFileType($file)) {
+            imageService.readFile($file);
+            return true;
+          } else {
+            return false;
+          }
         };
 
         $scope.closeAlert = function(index) {
@@ -385,6 +395,7 @@
         };
 
         $scope.modalClose = function() {
+          imageService.clear();
           $scope.$close();	// this method is associated with $modal scope which is this.
         };
 

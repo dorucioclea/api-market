@@ -143,21 +143,36 @@
 
       this.image = image;
 
-      this.readFile = function ($file, $event, $flow) {
+      this.checkFileType = function ($file) {
         alertService.resetAllAlerts();
-        if ($file.size > 10000) {
-            image.isValid = false;
-            alertService.addAlert(ALERT_TYPES.DANGER, '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
-          } else {
-            image.isValid = true;
-          }
+        var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+        var fileExt = $file.getExtension();
+        if (allowedExtensions.indexOf(fileExt) === -1) {
+          alertService.addAlert(ALERT_TYPES.DANGER, '<b>Unsupported file type</b><br>Only JPG, GIF and PNG types are supported.');
+          return false;
+        } else {
+          return true;
+        }
+      };
 
+      this.readFile = function ($file) {
+        if ($file.size > 10000) {
+          image.isValid = false;
+          alertService.addAlert(ALERT_TYPES.DANGER, '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
+        } else {
+          image.isValid = true;
           var reader = new FileReader();
           reader.onload = function(event) {
             setImageData(event.target.result.substr(event.target.result.indexOf('base64')+7));
           };
           reader.readAsDataURL($file.file);
-        };
+        }
+      };
+
+      this.clear = function () {
+        image.fileData = null;
+        image.isValid = true;
+      };
 
       var setImageData = function (data) {
         image.fileData = data;
