@@ -463,10 +463,13 @@
       }])
 
 /// ==== NewService Controller
-    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "orgScreenModel", "Service",
-      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, orgScreenModel, Service) {
+    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "orgScreenModel", "Categories", "Service",
+      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, orgScreenModel, Categories, Service) {
 
         alertService.resetAllAlerts();
+        Categories.query({}, function (reply) {
+          $scope.currentCategories = reply;
+        });
         $scope.org = orgScreenModel.organization;
         $scope.imageService = imageService;
         $scope.alerts = alertService.alerts;

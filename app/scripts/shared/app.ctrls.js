@@ -28,7 +28,7 @@
       });
 
       //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
-      $scope.publisherMode = false;
+      $scope.publisherMode = true;
       //End
 
       $scope.togglePublisher = function () {

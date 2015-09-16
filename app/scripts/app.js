@@ -174,9 +174,9 @@
             svcData: function (SearchSvcsWithStatus) {
               return SearchSvcsWithStatus.query({status: 'Published'}).$promise;
             },
-            Categories: 'Categories',
-            categories: function (Categories) {
-              return Categories.query().$promise;
+            PublishedCategories: 'PublishedCategories',
+            categories: function (PublishedCategories) {
+              return PublishedCategories.query().$promise;
             }
           },
           controller: 'DashboardCtrl'

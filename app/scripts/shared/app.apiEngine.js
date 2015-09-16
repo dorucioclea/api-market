@@ -155,6 +155,9 @@
       return $resource(EngineUrl + '/search/applications');
     }])
     .factory('Categories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/search/service/categories/all');
+    }])
+    .factory('PublishedCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/service/categories/published');
     }])
     .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
