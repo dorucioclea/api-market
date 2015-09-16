@@ -102,9 +102,6 @@
             organizationId: ['$stateParams', function ($stateParams) {
               return $stateParams.orgId;
             }],
-            orgData: function (organizationId, Organization) {
-              return Organization.get({id: organizationId}).$promise;
-            },
             appData: function ($q, organizationId, CurrentUserApps) {
               var appData = [];
               var promises = [];

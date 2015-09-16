@@ -184,7 +184,6 @@
     // TOAST SERVICE
     .service('toastService', ['$timeout', function ($timeout) {
       var toasts = [];
-
       this.toasts = toasts;
 
       var closeToastAtIndex = function (index) {
@@ -229,7 +228,7 @@
 
 
     // ORGANIZATION SCREEN MODEL
-    .service('orgScreenModel', function () {
+    .service('orgScreenModel', ["Organization", function (Organization) {
 
       this.selectedTab = 'Plans';
       this.organization = {};
@@ -242,7 +241,12 @@
         this.organization = org;
       };
 
-    })
+      this.getOrgDataForId = function (orgScreenModel, id) {
+        Organization.get({id: id}, function (reply) {
+          orgScreenModel.updateOrganization(reply);
+        });
+      };
+    }])
 
 
     // SERVICE DOCUMENTATION TAB HELPER

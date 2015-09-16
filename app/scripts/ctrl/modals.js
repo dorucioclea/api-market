@@ -70,10 +70,14 @@
       }])
 
 /// ==== Contract creation: Plan Selection Controller
-    .controller("PlanSelectCtrl", ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "svcModel", "toastService", "TOAST_TYPES", "Application", "ApplicationContract", "ApplicationVersion", "PlanVersion", "PlanVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, svcModel, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion, PlanVersion, PlanVersionPolicy) {
+    .controller("PlanSelectCtrl",
+    ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "orgScreenModel", "svcModel",
+      "toastService", "TOAST_TYPES", "Application", "ApplicationContract", "ApplicationVersion", "CurrentUserAppOrgs", "PlanVersion", "PlanVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel, svcModel,
+                toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion, CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy) {
 
         $scope.service = svcModel.getService();
+        $scope.orgScreenModel = orgScreenModel;
         var hasAppContext = false;
         if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
           $scope.selectedAppVersion = selectedApp.appVersion;
@@ -82,25 +86,41 @@
         $scope.availablePlans = [];
         var noPlanSelected = true;
 
-
-        $scope.getOrgApps = function () {
-          //TODO make orgId dynamic even when no app has been selected yet
-          var orgId = 'Digipolis';
-          if (hasAppContext) {
-            orgId = $scope.selectedAppVersion.organizationId;
+        var checkOrgContext = function () {
+          if (orgScreenModel.organization.id === undefined) {
+            // No org context, get user's AppOrgs
+            $scope.hasOrgContext = false;
+            CurrentUserAppOrgs.query({}, function (reply) {
+              $scope.appOrgs = reply;
+            });
+          } else {
+            $scope.hasOrgContext = true;
+            $scope.org = orgScreenModel.organization;
           }
+        };
+
+        var getOrgApps = function (orgId) {
           Application.query({ orgId: orgId }, function (data) {
             $scope.applications = data;
+            if (hasAppContext) {
+              getAppVersions($scope.selectedAppVersion.id);
+            } else {
+              getAppVersions(data[0].id);
+            }
           });
         };
 
-        $scope.getAppVersions = function () {
-          //TODO make orgId dynamic even when no app has been selected yet
+        var getAppVersions = function (appId) {
           if (hasAppContext) {
-            ApplicationVersion.query({ orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id }, function (data) {
-              $scope.versions = data;
-            });
+            appId = $scope.selectedAppVersion.id;
           }
+          ApplicationVersion.query({ orgId: $scope.org.id, appId: appId }, function (data) {
+            $scope.versions = data;
+            if(!hasAppContext) {
+              $scope.selectedAppVersion = data[0];
+              selectedApp.updateApplication(data[0]);
+            }
+          });
         };
 
         var getAvailablePlans = function () {
@@ -122,10 +142,16 @@
           });
         };
 
+        $scope.selectOrg = function (organization) {
+          orgScreenModel.getOrgDataForId(orgScreenModel, organization.id);
+          $scope.org = organization;
+          $scope.hasOrgContext = true;
+          getOrgApps(organization.id);
+        };
+
         $scope.selectApp = function (application) {
           $scope.selectedAppVersion = application;
-          hasAppContext = true;
-          $scope.getAppVersions();
+          getAppVersions(application.id);
         };
 
         $scope.selectPlan = function (plan) {
@@ -135,10 +161,13 @@
 
         $scope.selectVersion = function (version) {
           $scope.selectedAppVersion = version;
+          selectedApp.updateApplication(version);
         };
 
-        $scope.getOrgApps();
-        $scope.getAppVersions();
+        checkOrgContext();
+        if ($scope.hasOrgContext) {
+          getOrgApps(orgScreenModel.organization.id);
+        }
         getAvailablePlans();
 
         $scope.startCreateContract = function() {
@@ -155,6 +184,11 @@
               $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' + $scope.service.version + '</b>, using plan <b>' +
               $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+            $scope.modalClose();
+          }, function (error) {
+            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
+            var msg = '<b>An unexpected error has occured :(</b><br>Could not create the contract.';
+            toastService.createToast(TOAST_TYPES.DANGER, msg, true);
             $scope.modalClose();
           });
         };

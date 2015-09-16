@@ -5,7 +5,18 @@
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
   </div>
   <!-- Application Create panel -->
-  <div class="modal-body">
+  <div class="modal-body" ng-hide="hasOrgContext">
+    <p class="mt30">We cannot find an organization context for the contract you wish to create. Please select the organization that contains the application you want to create a contract with.</p>
+    <div class="btn-group dropdown" dropdown>
+      <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
+        Select your organization<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-left">
+        <li ng-repeat="org in appOrgs" ng-click="selectOrg(org)"><a>{{org.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-body" ng-show="hasOrgContext">
     <div id="appForm" name="appForm" class="form form-inline">
       <span>For application </span>
       <div class="btn-group dropdown" dropdown>
@@ -25,10 +36,10 @@
           <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
         </ul>
       </div>
-      <span>.</span>
+      <span>in organization <b>{{orgScreenModel.organization.name}}</b>.</span>
     </div>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" ng-show="hasOrgContext">
     <p><span class="mt30">Please select the plan you want to use for this contract</span></p>
     <div class="btn-group dropdown" dropdown>
       <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
@@ -39,7 +50,7 @@
       </ul>
     </div>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" ng-show="hasOrgContext">
     <p>Policies included in this plan:</p>
     <div class="well" ng-show="selectedPlanPolicies.length == 0">
       No Policies have been defined for this plan.
@@ -50,7 +61,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-line-success" ng-click="startCreateContract()">Confirm Contract</button>
+    <button class="btn btn-line-success" ng-click="startCreateContract()" ng-disabled="!hasOrgContext">Confirm Contract</button>
   </div>
 </div>
 

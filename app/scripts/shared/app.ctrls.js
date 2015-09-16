@@ -28,7 +28,7 @@
       });
 
       //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
-      $scope.publisherMode = true;
+      $scope.publisherMode = false;
       //End
 
       $scope.togglePublisher = function () {
@@ -230,8 +230,12 @@
           }
         };
 
-        $scope.test = function () {
-          $state.go('root.market-dash');
+        $scope.toMarketDash = function () {
+          if ($scope.orgScreenModel.organization.id === undefined) {
+            $state.go('root.myOrganizations');
+          } else {
+            $state.go('root.market-dash', {orgId: $scope.orgScreenModel.organization.id});
+          }
         };
 
       }]);

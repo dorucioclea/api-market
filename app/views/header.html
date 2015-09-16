@@ -24,10 +24,10 @@
   </li> <!-- #end site-logo -->
 
   <li class="hidden-sm hidden-xs" ng-show="showExplore">
-    <a ui-sref="root.apis.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</a>
+    <button ui-sref="root.apis.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
   </li>
   <li class="hidden-sm hidden-xs" ng-show="showDash">
-    <a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</a>
+    <button href ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</button>
   </li>
 
 </ul>
