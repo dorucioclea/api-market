@@ -71,6 +71,10 @@
           });
         };
 
+        $scope.toMetrics = function (appVersion) {
+          $state.go('root.application.metrics', {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version});
+        };
+
         $scope.breakContract = function (contract) {
           ApplicationContract.delete({orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion, contractId: contract.contractId}, function (reply) {
             $state.forceReload();

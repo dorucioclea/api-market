@@ -62,11 +62,11 @@
                   <thead>
                   <tr>
                     <th nowrap="nowrap" width="5%"></th>
-                    <th nowrap="nowrap" width="40%">Application</th>
+                    <th nowrap="nowrap" width="45%">Application</th>
                     <th nowrap="nowrap" width="10%">Version</th>
                     <th nowrap="nowrap" width="15%">Status</th>
                     <th nowrap="nowrap" width="10%"># Contracts</th>
-                    <th nowrap="nowrap" width="15%">Actions</th>
+                    <th nowrap="nowrap" width="10%">Actions</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -84,6 +84,7 @@
                         <button class="btn btn-primary action-icon fa fa-plus" title="New contract" ng-show="canCreateContract(applicationVersions[application.id])" ng-click="newContract(applicationVersions[application.id])"></button>
                         <button class="btn btn-success action-icon fa fa-check" title="Register application" ng-show="canPublish(applicationVersions[application.id])" ng-click="confirmPublishApp(applicationVersions[application.id])"></button>
                         <button class="btn btn-warning action-icon fa fa-trash" title="Retire application" ng-show="canRetire(applicationVersions[application.id])" ng-click="confirmRetireApp(applicationVersions[application.id])"></button>
+                        <button class="btn btn-info action-icon fa fa-pie-chart" title="Application metrics" ng-show="canRetire(applicationVersions[application.id])" ng-click="toMetrics(applicationVersions[application.id])"></button>
                       </div>
                     </td>
                   </tr>

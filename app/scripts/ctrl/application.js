@@ -65,6 +65,13 @@
 
     }])
 
+    /// ==== Metrics Controller
+    .controller("AppMetricsCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
+
+      appScreenModel.updateTab('Metrics');
+
+    }])
+
     /// ==== Overview Controller
     .controller("OverviewCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
 

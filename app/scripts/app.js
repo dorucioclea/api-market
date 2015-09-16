@@ -487,6 +487,12 @@
           },
           controller: 'ActivityCtrl'
         })
+        // Metrics Tab
+        .state('root.application.metrics', {
+          url: '/metrics',
+          templateUrl: 'views/partials/application/metrics.html',
+          controller: 'AppMetricsCtrl'
+        })
 
         // SERVICE OVERVIEW PAGE AND NESTED VIEWS ====================================
         .state('root.service', {
