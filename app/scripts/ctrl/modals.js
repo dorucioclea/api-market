@@ -149,7 +149,7 @@
             planId: $scope.selectedPlan.plan.id
           };
           ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
-            $state.go('root.market-dash');
+            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
             var msg = '<b>Contract created!</b><br>' +
               'A contract was created between application <b>' + $scope.selectedAppVersion.name + ' ' + $scope.selectedAppVersion.version + '</b> and service <b>' +
               $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' + $scope.service.version + '</b>, using plan <b>' +
@@ -256,32 +256,37 @@
       }])
 
 /// ==== NewApplication Controller
-    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "toastService", "TOAST_TYPES", "Application",
-      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, toastService, TOAST_TYPES, Application) {
+    .controller("NewApplicationCtrl", ["$scope", "$modal", "$state", "flowFactory", "alertService", "imageService", "orgScreenModel", "toastService", "TOAST_TYPES", "Application",
+      function ($scope, $modal, $state, flowFactory, alertService, imageService, orgScreenModel, toastService, TOAST_TYPES, Application) {
 
         alertService.resetAllAlerts();
+        $scope.currentOrg = orgScreenModel.organization;
         $scope.imageService = imageService;
         $scope.alerts = alertService.alerts;
         $scope.flow = flowFactory.create({
           singleFile: true
         });
 
-        $scope.readFile = function ($file, $event, $flow) {
-          imageService.readFile($file, $event, $flow);
+        $scope.readFile = function ($file) {
+          if(imageService.checkFileType($file)) {
+            imageService.readFile($file);
+            return true;
+          } else {
+            return false;
+          }
         };
 
         $scope.closeAlert = function(index) {
           alertService.closeAlert(index);
         };
 
-        //TODO make orgId dynamic!
         $scope.createApplication = function (application) {
           if (imageService.image.fileData) {
             application.base64logo = imageService.image.fileData;
           } else {
             application.base64logo = "";
           }
-          Application.save({ orgId: 'Digipolis' }, application, function (app) {
+          Application.save({orgId: $scope.currentOrg.id}, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Application created!', true);
@@ -289,6 +294,7 @@
         };
 
         $scope.modalClose = function() {
+          imageService.clear();
           $scope.$close();	// this method is associated with $modal scope which is this.
         };
 
@@ -468,8 +474,13 @@
           singleFile: true
         });
 
-        $scope.readFile = function ($file, $event, $flow) {
-          imageService.readFile($file, $event, $flow);
+        $scope.readFile = function ($file) {
+          if(imageService.checkFileType($file)) {
+            imageService.readFile($file);
+            return true;
+          } else {
+            return false;
+          }
         };
 
         $scope.closeAlert = function(index) {
@@ -495,6 +506,7 @@
         };
 
         $scope.modalClose = function() {
+          imageService.clear();
           $scope.$close();	// this method is associated with $modal scope which is this.
         };
 

@@ -37,10 +37,16 @@ angular.module("app.ctrl.organization", [])
     }])
 
   /// ==== MyOrganizations Overview Controller
-  .controller("MyOrganizationsCtrl", ["$scope", "$modal", "appOrgData",
-    function ($scope, $modal, appOrgData) {
+  .controller("MyOrganizationsCtrl", ["$scope", "$modal", "appOrgData", "svcOrgData", "headerModel",
+    function ($scope, $modal, appOrgData, svcOrgData, headerModel) {
 
-      $scope.orgs = appOrgData;
+      headerModel.setIsButtonVisible(false, false);
+
+      if ($scope.publisherMode) {
+        $scope.orgs = svcOrgData;
+      } else {
+        $scope.orgs = appOrgData;
+      }
 
       $scope.modalAnim = "default";
 

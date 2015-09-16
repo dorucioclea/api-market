@@ -67,7 +67,7 @@
     // UI-Router states
     .config(function ($stateProvider, $urlRouterProvider) {
 
-      $urlRouterProvider.otherwise('/dashboard');
+      $urlRouterProvider.otherwise('/my-organizations');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
       $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
@@ -92,14 +92,36 @@
 
         // MARKETPLACE CONSUMER DASHBOARD =================================================
         .state('root.market-dash', {
-          url: '/dashboard',
+          url: '/org/:orgId/applications',
           templateUrl: '/views/market-dashboard.html',
           resolve: {
+            Organization: 'Organization',
             CurrentUserApps: 'CurrentUserApps',
             ApplicationVersion: 'ApplicationVersion',
             ApplicationContract: 'ApplicationContract',
-            appData: function (CurrentUserApps) {
-              return CurrentUserApps.query().$promise;
+            organizationId: ['$stateParams', function ($stateParams) {
+              return $stateParams.orgId;
+            }],
+            orgData: function (organizationId, Organization) {
+              return Organization.get({id: organizationId}).$promise;
+            },
+            appData: function ($q, organizationId, CurrentUserApps) {
+              var appData = [];
+              var promises = [];
+
+              promises.push(CurrentUserApps.query().$promise);
+
+              return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (value) {
+                  angular.forEach(value, function (app) {
+                    if (app.organizationId === organizationId) {
+                      appData.push(app);
+                    }
+                  });
+
+                });
+                return appData;
+              });
             },
             appVersions: function ($q, appData, ApplicationVersion) {
               var appVersions = {};
@@ -303,8 +325,12 @@
           templateUrl: 'views/my-organizations.html',
           resolve: {
             CurrentUserAppOrgs: 'CurrentUserAppOrgs',
+            CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
             appOrgData: function (CurrentUserAppOrgs) {
               return CurrentUserAppOrgs.query().$promise;
+            },
+            svcOrgData: function (CurrentUserSvcOrgs) {
+              return CurrentUserSvcOrgs.query().$promise;
             }
           },
           controller: 'MyOrganizationsCtrl'

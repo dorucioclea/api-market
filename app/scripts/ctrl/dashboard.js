@@ -5,9 +5,11 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$timeout', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'TOAST_TYPES', 'ApplicationContract',
-      function ($scope, $modal, $state, $timeout, appData, appVersions, appContracts, headerModel, selectedApp, toastService, TOAST_TYPES, ApplicationContract) {
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$timeout', 'orgData', 'orgScreenModel', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'TOAST_TYPES', 'ApplicationContract',
+      function ($scope, $modal, $state, $timeout, orgData, orgScreenModel, appData, appVersions, appContracts, headerModel, selectedApp, toastService, TOAST_TYPES, ApplicationContract) {
         headerModel.setIsButtonVisible(true, false);
+        orgScreenModel.updateOrganization(orgData);
+        $scope.currentOrg = orgData;
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
         $scope.applicationContracts = appContracts;

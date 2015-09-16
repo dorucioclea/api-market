@@ -201,11 +201,12 @@
       };
     }])
 
-    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "CurrentUserInfo", "Fullscreen",
-      function($scope, $state, headerModel, currentUserModel, CurrentUserInfo, Fullscreen) {
+    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "orgScreenModel", "CurrentUserInfo", "Fullscreen",
+      function($scope, $state, headerModel, currentUserModel, orgScreenModel, CurrentUserInfo, Fullscreen) {
         $scope.showExplore = headerModel.showExplore;
         $scope.showDash = headerModel.showDash;
         $scope.currentUserModel = currentUserModel;
+        $scope.orgScreenModel = orgScreenModel;
 
         $scope.toggleFloatingSidebar = function() {
           $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
