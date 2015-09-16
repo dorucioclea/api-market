@@ -28,8 +28,20 @@
       });
 
       //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
-      $scope.publisherMode = true;
+      $scope.publisherMode = false;
       //End
+
+      $scope.togglePublisher = function () {
+        $scope.publisherMode = !$scope.publisherMode;
+        setHeader();
+      };
+
+      var setHeader = function () {
+        $scope.header = 'ACPAAS - API ' + ($scope.publisherMode? 'Publisher' : 'Marketplace');
+      };
+      setHeader();
+
+
 
       $scope.loadSwaggerUi = function(spec, domId, endpoint) {
         $scope.swaggerUi = new SwaggerUi({
