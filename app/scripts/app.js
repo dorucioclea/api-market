@@ -20,6 +20,7 @@
     "schemaForm",
     "angular-clipboard",
     "flow",
+    'gridshore.c3js.chart',
 
     /* custom modules */
     "app.ctrls",
