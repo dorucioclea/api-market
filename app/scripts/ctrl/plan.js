@@ -42,8 +42,8 @@
 
     }])
     /// ==== Policies Controller
-    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyDetails", "planScreenModel", "PlanVersionPolicy", "PolicyDefs",
-      function ($scope, $modal, $stateParams, policyData, planPolicyDetails, planScreenModel, PlanVersionPolicy, PolicyDefs) {
+    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyDetails", "planScreenModel", "PlanVersionPolicy",
+      function ($scope, $modal, $stateParams, policyData, planPolicyDetails, planScreenModel, PlanVersionPolicy) {
 
         $scope.policies = policyData;
         $scope.policyDetails = planPolicyDetails;

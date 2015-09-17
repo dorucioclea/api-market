@@ -56,7 +56,8 @@
       No Policies have been defined for this plan.
     </div>
     <div ng-repeat="policy in selectedPlanPolicies">
-      <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}
+      <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}:
+      <span class="text-bold">{{selectedPlanPolicyDetails[policy.id].configuration}}</span>
     </div> <!-- TODO implement policy details -->
   </div>
   <div class="modal-footer">

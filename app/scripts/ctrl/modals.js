@@ -86,6 +86,7 @@
           hasAppContext = true;
         }
         $scope.availablePlans = [];
+        $scope.selectedPlanPolicyDetails = [];
         var noPlanSelected = true;
 
         var checkOrgContext = function () {
@@ -141,6 +142,15 @@
         var getPlanPolicies = function () {
           PlanVersionPolicy.query({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version}, function (policies) {
             $scope.selectedPlanPolicies = policies;
+            angular.forEach(policies, function (policy) {
+              getPlanPolicyDetails(policy);
+            });
+          });
+        };
+
+        var getPlanPolicyDetails = function (policy) {
+          PlanVersionPolicy.get({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version, policyId: policy.id}, function (deets) {
+            $scope.selectedPlanPolicyDetails[deets.id] = deets;
           });
         };
 
