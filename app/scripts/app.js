@@ -20,6 +20,7 @@
     "schemaForm",
     "angular-clipboard",
     "flow",
+    'gridshore.c3js.chart',
 
     /* custom modules */
     "app.ctrls",
@@ -592,6 +593,18 @@
             }
           },
           controller: 'ServiceActivityCtrl'
+        })
+        // Metrics Tab
+        .state('root.service.metrics', {
+          url: '/metrics',
+          templateUrl: 'views/partials/service/metrics.html',
+          //resolve: {
+          //  ServiceActivity: 'ServiceMetrics',
+          //  activityData: function (ServiceMetrics, organizationId, serviceId) {
+          //    return ServiceMetrics.get({orgId: organizationId, svcId: serviceId}).$promise;
+          //  }
+          //},
+          controller: 'ServiceMetricsController'
         })
 
         // USER PROFILE AND SETTINGS PAGE AND NESTED VIEWS ================================
