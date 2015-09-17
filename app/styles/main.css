@@ -7963,6 +7963,9 @@ md-input-container {
   display: none;
   opacity: 0;
 }
+.panel-heading.metric-heading {
+  margin: 0 0;
+}
 /*
  * angular-loading-bar v0.6.0
  * https://chieffancypants.github.io/angular-loading-bar
