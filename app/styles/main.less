@@ -3,7 +3,8 @@
 @import (less) "plugins/swagger/screen.css";
 @import "ui/ui.less";	 // include overrided variables, colors etc...
 
-
+// import optional theme overrides
+@import "theme-override.less";
 
 /// Import sections styles
 @import "sections/layout.less";
@@ -36,8 +37,8 @@
 @import "pages/api.less";
 @import "pages/widgets.less";
 @import "pages/user.less";
+@import "pages/metric.less";
 
 /// Import Plugins styles (common plugins)
 @import "plugins/loading-bar.less";
 @import "plugins/perfect-scrollbar.less";
-

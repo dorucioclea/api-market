@@ -1292,10 +1292,6 @@
   }
 }
 /** Shared **/
-/**
- * Overridden variables for publisher
- * ----------------------------------------------------------------
- */
 html,
 body {
   height: 100%;
@@ -5849,6 +5845,10 @@ tags-input .autocomplete .suggestion-item.selected em {
 .w2 {
   width: 2%;
 }
+/**
+ * Overridden variables for publisher
+ * ----------------------------------------------------------------
+ */
 .site-head {
   position: relative;
   width: calc(100% - 0px);
@@ -7962,6 +7962,9 @@ md-input-container {
 .user.nav-wrap .site-nav .nav-list > li.open .inner-drop {
   display: none;
   opacity: 0;
+}
+.panel-heading.metric-heading {
+  margin: 0 0;
 }
 /*
  * angular-loading-bar v0.6.0

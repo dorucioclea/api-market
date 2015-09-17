@@ -6,7 +6,8 @@ module.exports = function (grunt) {
 
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin'
+    useminPrepare: 'grunt-usemin',
+    replace: 'grunt-text-replace',
   });
 
   // Configurable paths for the application
@@ -177,7 +178,8 @@ module.exports = function (grunt) {
             '*.html',
             'images/{,*/}*.*',
             'fonts/**/*.*',
-            'views/**/*.*'
+            'views/**/*.*',
+            'scripts/plugins/*.js'
           ]
         }]
       }
@@ -241,7 +243,7 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         mangle: {
-          except: ['angular']
+          except: ['angular', '']
         }
       }
     }, // End Uglify
@@ -271,6 +273,40 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }, // End Karma
+
+    // ======= //
+    // Replace //
+    // ======= //
+    replace: {
+      mkt: {
+        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\$scope.publisherMode = true;/g,
+            to: '$scope.publisherMode = false;'
+          },
+          {
+            from: '@import "theme-override.less";',
+            to: '//@import "theme-override.less";'
+          }
+        ]
+      },
+      pub: {
+        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\$scope.publisherMode = false;/g,
+            to: '$scope.publisherMode = true;'
+          },
+          {
+            from: /\/\/@import "theme-override.less";/g,
+            to: '@import "theme-override.less";'
+          }
+        ]
+      }
+    }, // End Replace
   });
 
 
@@ -285,20 +321,38 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('dist', [
+  grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
     'concat',
     'ngAnnotate',
     'cssmin',
-    //'uglify',
+    'uglify',
     'filerev',
     'usemin',
     'htmlmin'
   ]);
+
+  grunt.registerTask('mkt', [
+    'clean:dist',
+    'wiredep',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+
 
   grunt.registerTask('test', [
     'clean',
