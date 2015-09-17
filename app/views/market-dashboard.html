@@ -1,4 +1,9 @@
 <div class="page page-ui-notifications">
+  <ol class="breadcrumb breadcrumb-small">
+    <li>Marketplace</li>
+    <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
+    <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
+  </ol>
   <div class="toast toast-bottomRight">
     <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
       <div ng-bind-html="toast.msg">Test Toast</div>
@@ -12,7 +17,7 @@
           <div class="row">
             <div class="col-sm-6 text-primary">
               <h4><i class="fa fa-cogs"></i>
-                Applications Overview
+                {{orgScreenModel.organization.name}} Applications Overview
               </h4>
             </div>
             <div class="col-sm-6">
@@ -66,7 +71,7 @@
                     <th nowrap="nowrap" width="10%">Version</th>
                     <th nowrap="nowrap" width="15%">Status</th>
                     <th nowrap="nowrap" width="10%"># Contracts</th>
-                    <th nowrap="nowrap" width="10%">Actions</th>
+                    <th nowrap="nowrap" width="15%">Actions</th>
                   </tr>
                   </thead>
                   <tbody>

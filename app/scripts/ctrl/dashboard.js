@@ -9,6 +9,7 @@
       function ($scope, $modal, $state, $stateParams, $timeout, orgScreenModel, appData, appVersions, appContracts, headerModel, selectedApp, toastService, TOAST_TYPES, ApplicationContract) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+        $scope.orgScreenModel = orgScreenModel;
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
         $scope.applicationContracts = appContracts;
