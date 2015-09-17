@@ -16,22 +16,25 @@
   </div>
   <!-- The list of policies -->
   <div class="col-sm-12">
-    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="isPublished">Add Policy</button>
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">Add Policy</button>
   </div>
-  <div class="col-sm-12" ng-hide="isPublished">
+  <div class="col-sm-12" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
     <hr>
   </div>
 
   <div class="col-sm-12" ng-hide="policies.length > 0">
-    <div class="col-sm-10 col-sm-offset-1 well" ng-show="isPublished">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isPublished && User.isAuthorizedFor('svcEdit')">
       It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Service, since this one has already been published and can no longer be modified!
     </div>
-    <div ng-hide="isPublished">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isPublished && !User.isAuthorizedFor('svcEdit')">
+      It looks like there aren't any policies defined!
+    </div>
+    <div ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
       <div class="col-sm-8 col-sm-offset-1 well">
         It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you may try defining one using the Add Policy button above...
       </div>
       <div class="col-sm-3">
-        <div class="no-entities-arrow" ng-hide="locked"></div>
+        <div class="no-entities-arrow"></div>
       </div>
     </div>
   </div>

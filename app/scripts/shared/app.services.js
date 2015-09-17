@@ -346,7 +346,7 @@
 
 
     // CURRENT USER MODEL
-    .service('currentUserModel', [ "CurrentUserInfo", function (CurrentUserInfo) {
+    .service('currentUserModel', [ "orgScreenModel", "CurrentUserInfo", function (orgScreenModel, CurrentUserInfo) {
       var permissionTree = [];
       this.currentUser = {};
 
@@ -366,8 +366,8 @@
         });
       };
 
-      this.isAuthorizedFor = function(permission, orgId) {
-        return permissionTree[orgId].indexOf(permission) > -1;
+      this.isAuthorizedFor = function(permission) {
+        return permissionTree[orgScreenModel.organization.id].indexOf(permission) > -1;
       };
     }])
 

@@ -17,9 +17,15 @@
     <hr>
   </div>
 
-  <div class="col-sm-10 col-sm-offset-1" ng-show="noDefinition && !definitionLoaded">
+  <div class="col-sm-10 col-sm-offset-1" ng-if="noDefinition && !definitionLoaded && User.isAuthorizedFor('svcEdit')">
     <div class="well">
       No documentation has been uploaded yet. Please select your definition file using the button below.
+    </div>
+  </div>
+
+  <div class="col-sm-10 col-sm-offset-1" ng-if="noDefinition && !definitionLoaded && !User.isAuthorizedFor('svcEdit')">
+    <div class="well">
+      No documentation has been uploaded yet.
     </div>
   </div>
 
@@ -51,13 +57,13 @@
     </div>
   </div><!-- end Swagger Documentation panel -->
 
-  <div class="col-sm-12 mt30" ng-hide="isPublished">
+  <div class="col-sm-12 mt30" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
     <h5>Update Swagger definiton</h5>
     <input type="file" accept="application/json" definition-select="loadDefinition($fileContent)" />
   </div>
 
   <div class="col-sm-12">
-    <div class="mt20" ng-hide="isPublished">
+    <div class="mt20" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
       <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
       <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
     </div>

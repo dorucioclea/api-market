@@ -2,7 +2,7 @@
   <div class="panel-body">
 
     <div class="col-sm-2" ng-if="hasLogo">
-      <base64-logo logo-class="media center-block entity-logo" logo="{{base64logo}}" editable="true"></base64-logo>
+      <base64-logo logo-class="media center-block entity-logo" logo="{{base64logo}}" editable="adminPermission"></base64-logo>
     </div>
     <div ng-class="{'col-sm-12': !hasLogo, 'col-sm-10': hasLogo}">
       <div class="row">
@@ -21,7 +21,7 @@
                 <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion({version: version})"><a>{{version.version}}</a></li>
               </ul>
             </div>
-            <button class="btn btn-line-primary btn-sm" ng-click="newVersion()">New Version</button>
+            <button class="btn btn-line-primary btn-sm" ng-click="newVersion()" ng-if="adminPermission">New Version</button>
           </div>
         </div>
         <div class="col-sm-12">

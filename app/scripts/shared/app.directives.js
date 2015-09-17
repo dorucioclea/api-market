@@ -217,6 +217,7 @@
           newVersion: "&",
           endpoint: "@",
           save: "=",
+          adminPermission: "@"
         },
         bindToController: true,
         transclude: true,

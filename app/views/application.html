@@ -1,6 +1,6 @@
 <overview entity-version="applicationVersion" type="app">
   <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}" has-logo="true" base64logo="{{applicationVersion.application.base64logo}}"
-                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc">
+                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc" admin-permission="User.isAuthorizedFor('appAdmin')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
@@ -8,8 +8,8 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-hide="isRegistered" ng-click="publishApp(applicationVersion, true)">Publish</button>
-    <button class="btn btn-line-warning btn-sm" ng-show="isRegistered && !isRetired" ng-click="retireApp(applicationVersion)">Retire</button>
+    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appAdmin')" ng-click="publishApp(applicationVersion, true)">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appAdmin')" ng-click="retireApp(applicationVersion)">Retire</button>
   </overview-header>
 
   <overview-tabs>

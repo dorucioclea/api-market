@@ -7,9 +7,9 @@
   </div>
   <!-- The list of policies -->
   <div class="col-sm-12">
-    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="locked">Add Policy</button>
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-hide="locked || !User.isAuthorizedFor('planEdit')">Add Policy</button>
   </div>
-  <div class="col-sm-12" ng-hide="locked">
+  <div class="col-sm-12" ng-hide="locked || !User.isAuthorizedFor('planEdit')">
     <hr>
   </div>
 

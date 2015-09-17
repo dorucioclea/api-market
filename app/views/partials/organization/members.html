@@ -5,7 +5,7 @@
       <div class="col-sm-12">
         <input id="members-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by member name or id..." class="ng-pristine ng-untouched ng-valid">
         <button id="members-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-        <a class="btn btn-line-primary pull-right">Manage Members</a>
+        <a class="btn btn-line-primary pull-right" ng-if="User.isAuthorizedFor('orgAdmin')">Manage Members</a>
         <hr>
       </div>
       <!-- The organization's list of members -->

@@ -5,18 +5,18 @@
       <div class="col-sm-12">
         <input id="services-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by service name..." class="ng-pristine ng-untouched ng-valid">
         <button id="services-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-        <a class="btn btn-line-primary pull-right" ng-click="modalNewService()" ng-show="publisherMode">New Service</a>
+        <a class="btn btn-line-primary pull-right" ng-click="modalNewService()" ng-if="User.isAuthorizedFor('svcAdmin')">New Service</a>
         <hr>
       </div>
       <!-- The list of services the user has access to -->
 
       <div class="col-sm-12" ng-hide="services.length > 0">
-        <div class="row" ng-hide="publisherMode">
+        <div class="row" ng-if="!User.isAuthorizedFor('svcAdmin')">
           <div class="col-sm-10 col-sm-offset-1 well">
             We couldn't find any services in this organization. Probably because none exist. We hope.
           </div>
         </div>
-        <div class="row" ng-show="publisherMode">
+        <div class="row" ng-show="User.isAuthorizedFor('svcAdmin')">
           <div class="col-sm-8 col-sm-offset-1 well">
             We couldn't find any services in this organization. Probably because none exist. We hope. Try creating one using the New Service button.
           </div>

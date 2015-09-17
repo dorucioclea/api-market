@@ -5,8 +5,8 @@
   angular.module("app.ctrls", [])
 
 // Root Controller
-    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "toastService", "TOAST_TYPES", "$sessionStorage",
-      function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS, toastService, TOAST_TYPES, $sessionStorage) {
+    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "currentUserModel", "toastService", "TOAST_TYPES", "$sessionStorage",
+      function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, $sessionStorage) {
       var mm = window.matchMedia("(max-width: 767px)");
 
       $rs.isMobile = mm.matches ? true: false;
@@ -39,6 +39,9 @@
       //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
       $scope.publisherMode = true;
       //End
+
+      //Make currentUserModel available to all child controllers
+      $scope.User = currentUserModel;
 
       $scope.togglePublisher = function () {
         $scope.publisherMode = !$scope.publisherMode;
