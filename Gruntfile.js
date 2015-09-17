@@ -124,7 +124,7 @@ module.exports = function (grunt) {
     // Clean //
     // ===== //
     clean: {
-      dist: ["dist", ".tmp"]
+      dist: ["dist", ".tmp", "release.zip"]
     }, // End Clean
 
     // ====== //
@@ -307,6 +307,21 @@ module.exports = function (grunt) {
         ]
       }
     }, // End Replace
+
+    // ======== //
+    // Compress //
+    // ======== //
+    compress: {
+      dist: {
+        options: {
+          mode: 'zip',
+          archive: 'release.zip'
+        },
+        expand: true,
+        cwd: '<%=config.dist%>',
+        src: ['**/*']
+      }
+    }, // End Compresss
   });
 
 
@@ -324,7 +339,6 @@ module.exports = function (grunt) {
   grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
-    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -334,7 +348,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'compress'
   ]);
 
   grunt.registerTask('mkt', [
@@ -350,7 +365,9 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'compress',
+    'replace:pub',
   ]);
 
 
