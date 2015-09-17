@@ -1,7 +1,74 @@
 <div class="row">
   <div class="col-sm-12">
-    <h4>Service Metics</h4>
-    <p class="alert alert-danger">Some information about the metrics</p>
+    <h4>Metics</h4>
     <hr>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="col-sm-4">
+      <label for="fromDate">From</label>
+
+      <div class="input-group" ng-controller="DatepickerDemoCtrl">
+        <input id="fromDate" type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate"
+               max-date="'2025-06-22'"
+               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" show-button-bar="false"/>
+      <span class="input-group-btn">
+          <button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event)"></i></button>
+      </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <label for="toDate">To</label>
+
+      <div class="input-group" ng-controller="DatepickerDemoCtrl">
+        <input id="toDate" type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate"
+               max-date="'2025-06-22'"
+               datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" show-button-bar="false"/>
+      <span class="input-group-btn">
+          <button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event)"></i></button>
+      </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <label for="interval">Interval</label>
+      <select class="form-control" id="interval">
+        <option value="1">Month</option>
+        <option value="2">Week</option>
+        <option value="3">Day</option>
+        <option value="4">Hour</option>
+        <option value="5">Minute</option>
+      </select>
+    </div>
+    <div class="col-sm-12">
+      <hr>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading metric-heading text-center">Usage</div>
+      <div class="panel-body">
+        <c3chart bindto-id="metrics" chart-data="usageHistogramData" chart-columns="usageHistogramColumns" chart-x="usageHistogramX"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading metric-heading text-center">Bla</div>
+      <div class="panel-body">
+        <c3chart bindto-id="blaat" chart-data="usageHistogramData" chart-columns="usageHistogramColumns" chart-x="usageHistogramX"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading metric-heading text-center">BlaBla</div>
+      <div class="panel-body">
+        <c3chart bindto-id="bmmmmm" chart-data="usageHistogramData" chart-columns="usageHistogramColumns" chart-x="usageHistogramX"/>
+      </div>
+    </div>
   </div>
 </div>

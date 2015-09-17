@@ -332,8 +332,23 @@
     }])
 
 
+
     // ==== Metrics Controller
     .controller('ServiceMetricsController', ['$scope', 'svcScreenModel', function($scope, svcScreenModel) {
+      // usage  historgram by Service
+      $scope.usageHistogramData = [
+        {'x': 15, 'data1': 35},
+        {'x': 16, 'data1': 59},
+        {'x': 17, 'data1': 23},
+        {'x': 18, 'data1': 90},
+        {'x': 19, 'data1': 196},
+        {'x': 20, 'data1': 24}
+      ];
+      $scope.usageHistogramColumns = [
+        {"id": "data1", 'name': 'Usage', "type": "spline", 'color': 'green'},
+      ];
+      $scope.usageHistogramX = {'id': 'x'};
+
       svcScreenModel.updateTab('Metrics');
     }]);
 
