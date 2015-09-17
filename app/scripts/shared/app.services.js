@@ -344,13 +344,32 @@
 
     })
 
-    .service('currentUserModel', function () {
+
+    // CURRENT USER MODEL
+    .service('currentUserModel', [ "CurrentUserInfo", function (CurrentUserInfo) {
+      var permissionTree = [];
       this.currentUser = {};
 
-      this.updateCurrentUser = function (userInfo) {
-        this.currentUser = userInfo;
+      this.updateCurrentUserInfo = function (currentUserModel) {
+        CurrentUserInfo.get({}, function (userInfo) {
+          currentUserModel.currentUser = userInfo;
+          createPermissionsTree(userInfo.permissions);
+        });
       };
-    })
+
+      var createPermissionsTree = function (permissions) {
+        angular.forEach(permissions, function (value) {
+          if (!permissionTree[value.organizationId]) {
+            permissionTree[value.organizationId] = [];
+          }
+          permissionTree[value.organizationId].push(value.name);
+        });
+      };
+
+      this.isAuthorizedFor = function(permission, orgId) {
+        return permissionTree[orgId].indexOf(permission) > -1;
+      };
+    }])
 
     // USER SCREEN MODEL
     .service('userScreenModel', function () {

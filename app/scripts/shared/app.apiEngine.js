@@ -1,4 +1,4 @@
-;(function() {
+;(function(angular) {
   "use strict";
 
 
@@ -175,7 +175,7 @@
     }])
     .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/search/services/:status');
-    }])
+    }]);
 
 
-})();
+})(window.angular);
