@@ -5,7 +5,8 @@
   angular.module("app.ctrls", [])
 
 // Root Controller
-    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "$sessionStorage", function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS,$sessionStorage) {
+    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "toastService", "TOAST_TYPES", "$sessionStorage",
+      function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS, toastService, TOAST_TYPES, $sessionStorage) {
       var mm = window.matchMedia("(max-width: 767px)");
 
       $rs.isMobile = mm.matches ? true: false;
@@ -20,6 +21,14 @@
           this.$apply(fn);
         }
       };
+
+
+      $rs.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error) {
+        if (error === "Not Authorized") {
+          console.log('not authorized');
+          toastService.createToast(TOAST_TYPES.DANGER, 'You are not authorized to perform this action', true);
+        }
+      });
 
       mm.addListener(function(m) {
         $rs.safeApply(function() {
@@ -201,12 +210,13 @@
       };
     }])
 
-    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "orgScreenModel", "CurrentUserInfo", "Fullscreen",
-      function($scope, $state, headerModel, currentUserModel, orgScreenModel, CurrentUserInfo, Fullscreen) {
+    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "orgScreenModel", "Fullscreen",
+      function($scope, $state, headerModel, currentUserModel, orgScreenModel, Fullscreen) {
         $scope.showExplore = headerModel.showExplore;
         $scope.showDash = headerModel.showDash;
         $scope.currentUserModel = currentUserModel;
         $scope.orgScreenModel = orgScreenModel;
+        currentUserModel.updateCurrentUserInfo(currentUserModel);
 
         $scope.toggleFloatingSidebar = function() {
           $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
@@ -215,10 +225,6 @@
         $scope.$on('buttonToggle', function (event, data) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
-        });
-
-        CurrentUserInfo.get({}, function (reply) {
-          currentUserModel.updateCurrentUser(reply);
         });
 
         $scope.goFullScreen = function() {

@@ -348,12 +348,11 @@
     // CURRENT USER MODEL
     .service('currentUserModel', [ "CurrentUserInfo", function (CurrentUserInfo) {
       var permissionTree = [];
-      var currentUser = {};
-      this.currentUser = currentUser;
+      this.currentUser = {};
 
-      this.updateCurrentUserInfo = function () {
+      this.updateCurrentUserInfo = function (currentUserModel) {
         CurrentUserInfo.get({}, function (userInfo) {
-          currentUser = userInfo;
+          currentUserModel.currentUser = userInfo;
           createPermissionsTree(userInfo.permissions);
         });
       };

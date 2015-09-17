@@ -554,11 +554,12 @@
       }])
 
 /// ==== NewOrganization Controller
-    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "toastService", "TOAST_TYPES", "Organization",
-      function ($scope, $modal, $state, toastService, TOAST_TYPES, Organization) {
+    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "currentUserModel", "toastService", "TOAST_TYPES", "Organization",
+      function ($scope, $modal, $state, currentUserModel, toastService, TOAST_TYPES, Organization) {
 
         $scope.createOrganization = function (org) {
           Organization.save(org, function (newOrg) {
+            currentUserModel.updateCurrentUserInfo(currentUserModel);
             $scope.modalClose();
             $state.go('root.organization', {orgId: newOrg.id});
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Organization <b>' + newOrg.name + '</b> created!', true);
