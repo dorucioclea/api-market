@@ -1,6 +1,7 @@
 <div class="page page-ui-notifications">
   <ol class="breadcrumb breadcrumb-small" ng-hide="type === 'app'">
     <li>Publisher</li>
+    <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
     <li class="active" ng-show="type === 'plan'"><a ui-sref="root.organization.plans({orgId: entityVersion.plan.organization.id})">{{entityVersion.plan.organization.name}}</a></li>
     <li class="active" ng-show="type === 'plan'"><a ui-sref="root.plan({orgId: entityVersion.plan.organization.id, planId: entityVersion.plan.id})">{{entityVersion.plan.name}}</a></li>
 
