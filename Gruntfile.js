@@ -179,7 +179,8 @@ module.exports = function (grunt) {
             'images/{,*/}*.*',
             'fonts/**/*.*',
             'views/**/*.*',
-            'scripts/plugins/*.js'
+            'scripts/plugins/*.js',
+            'styles/plugin/swagger/*.css'
           ]
         }]
       }
@@ -367,7 +368,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub',
+    'replace:pub'
   ]);
 
 
