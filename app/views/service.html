@@ -2,7 +2,8 @@
   <overview-header name="{{serviceVersion.service.name}}" icon="puzzle-piece" versions="versions"
                    entity-version="serviceVersion" has-logo="true" base64logo="{{serviceVersion.service.base64logo}}"
                    description="{{serviceVersion.service.description}}" select-version="selectVersion(version)"
-                   new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc" admin-permission="User.isAuthorizedFor('svcAdmin')">
+                   new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc"
+                   edit-permission="User.isAuthorizedFor('svcEdit')" admin-permission="User.isAuthorizedFor('svcAdmin')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">

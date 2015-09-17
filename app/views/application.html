@@ -1,6 +1,7 @@
 <overview entity-version="applicationVersion" type="app">
   <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}" has-logo="true" base64logo="{{applicationVersion.application.base64logo}}"
-                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc" admin-permission="User.isAuthorizedFor('appAdmin')">
+                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
+                   edit-permission="User.isAuthorizedFor('appEdit')" admin-permission="User.isAuthorizedFor('appAdmin')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">

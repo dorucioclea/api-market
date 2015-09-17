@@ -2,7 +2,7 @@
   <div class="panel-body">
 
     <div class="col-sm-2" ng-if="hasLogo">
-      <base64-logo logo-class="media center-block entity-logo" logo="{{base64logo}}" editable="adminPermission"></base64-logo>
+      <base64-logo logo-class="media center-block entity-logo" logo="{{base64logo}}" editable="editPermission"></base64-logo>
     </div>
     <div ng-class="{'col-sm-12': !hasLogo, 'col-sm-10': hasLogo}">
       <div class="row">
@@ -25,8 +25,8 @@
           </div>
         </div>
         <div class="col-sm-12">
-        <div click-to-edit value="description" save-function="save">
-        </div>
+          <div click-to-edit value="description" save-function="save" ng-if="editPermission"></div>
+          <div ng-if="!editPermission">{{description}}</div>
           <hr>
         </div>
       </div>
