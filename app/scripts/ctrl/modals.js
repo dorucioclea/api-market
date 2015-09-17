@@ -6,8 +6,8 @@
 
 
     /// ==== AddPolicy Controller
-    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "PlanVersionPolicy", "ServiceVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, policyDefs, PlanVersionPolicy, ServiceVersionPolicy) {
+    .controller("AddPolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "toastService", "TOAST_TYPES", "PlanVersionPolicy", "ServiceVersionPolicy",
+      function ($scope, $modal, $state, $stateParams, policyDefs, toastService, TOAST_TYPES, PlanVersionPolicy, ServiceVersionPolicy) {
 
         $scope.policyDefs = policyDefs;
         $scope.valid = false;
@@ -40,12 +40,14 @@
               PlanVersionPolicy.save({ orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
                 $scope.modalClose();
                 $state.forceReload();
+                toastService.createToast(TOAST_TYPES.SUCCESS, 'Plan policy successfully added.', true);
               });
               break;
             case 'service':
               ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
                 $scope.modalClose();
                 $state.forceReload();
+                toastService.createToast(TOAST_TYPES.SUCCESS, 'Service policy successfully added.', true);
               });
               break;
           }
@@ -323,7 +325,7 @@
           Application.save({orgId: $scope.currentOrg.id}, application, function (app) {
             $scope.modalClose();
             $state.forceReload();
-            toastService.createToast(TOAST_TYPES.SUCCESS, 'Application created!', true);
+            toastService.createToast(TOAST_TYPES.SUCCESS, 'Application <b>' + app.name +  '</b> created!', true);
           });
         };
 
@@ -335,8 +337,8 @@
       }])
 
 /// ==== NewPlan Controller
-    .controller("NewPlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "Plan",
-      function ($scope, $modal, $state, $stateParams, orgScreenModel, Plan) {
+    .controller("NewPlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgScreenModel", "toastService", "TOAST_TYPES", "Plan",
+      function ($scope, $modal, $state, $stateParams, orgScreenModel, toastService, TOAST_TYPES, Plan) {
 
         $scope.org = orgScreenModel.organization;
 
@@ -344,6 +346,7 @@
           Plan.save({ orgId: $stateParams.orgId }, plan, function (newPlan) {
             $scope.modalClose();
             $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+            toastService.createToast(TOAST_TYPES.SUCCESS, 'Plan <b>' + newPlan.name + '</b> created!', true);
           });
         };
 
@@ -497,8 +500,8 @@
       }])
 
 /// ==== NewService Controller
-    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "orgScreenModel", "Categories", "Service",
-      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, orgScreenModel, Categories, Service) {
+    .controller("NewServiceCtrl", ["$scope", "$modal", "$state", "$stateParams", "flowFactory", "alertService", "imageService", "orgScreenModel", "toastService", "TOAST_TYPES", "Categories", "Service",
+      function ($scope, $modal, $state, $stateParams, flowFactory, alertService, imageService, orgScreenModel, toastService, TOAST_TYPES, Categories, Service) {
 
         alertService.resetAllAlerts();
         Categories.query({}, function (reply) {
@@ -536,9 +539,10 @@
           }
           svc.categories = cats;
 
-          Service.save({ orgId: $stateParams.orgId }, svc, function (data) {
+          Service.save({ orgId: $stateParams.orgId }, svc, function (newSvc) {
             $scope.modalClose();
-            $state.forceReload();
+            $state.go('root.service.overview', {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: svc.initialVersion});
+            toastService.createToast(TOAST_TYPES.SUCCESS, 'Service <b>' + newSvc.name + '</b> created!', true);
           });
         };
 
@@ -550,13 +554,14 @@
       }])
 
 /// ==== NewOrganization Controller
-    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "Organization",
-      function ($scope, $modal, $state, Organization) {
+    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "toastService", "TOAST_TYPES", "Organization",
+      function ($scope, $modal, $state, toastService, TOAST_TYPES, Organization) {
 
         $scope.createOrganization = function (org) {
-          Organization.save(org, function (data) {
+          Organization.save(org, function (newOrg) {
             $scope.modalClose();
-            $state.forceReload();
+            $state.go('root.organization', {orgId: newOrg.id});
+            toastService.createToast(TOAST_TYPES.SUCCESS, 'Organization <b>' + newOrg.name + '</b> created!', true);
           });
         };
 

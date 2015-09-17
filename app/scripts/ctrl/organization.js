@@ -65,25 +65,24 @@ angular.module("app.ctrl.organization", [])
 
 
 /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "$state", "$stateParams", "screenSize", "orgData", "Organization", "orgScreenModel",
-  function ($scope, $state, $stateParams, screenSize, orgData, Organization, orgScreenModel) {
+.controller("OrganizationCtrl", ["$scope", "$state", "$stateParams", "screenSize", "orgData", "toastService", "TOAST_TYPES", "Organization", "orgScreenModel",
+  function ($scope, $state, $stateParams, screenSize, orgData, toastService, TOAST_TYPES, Organization, orgScreenModel) {
 
     $scope.displayTab = orgScreenModel;
     orgScreenModel.updateOrganization(orgData);
     $scope.org = orgData;
+    $scope.toasts = toastService.toasts;
+    $scope.toastService = toastService;
 
     $scope.xs = screenSize.on('xs', function(match){
       $scope.xs = match;
     });
 
-    $scope.updateOrgDescription = function () {
-      var updatedOrg = new Organization();
-      updatedOrg.description = $scope.org.description;
-      updatedOrg.$update({id: $stateParams.orgId}, function(data) {
-        $state.forceReload();
+    $scope.updateOrgDescription = function (newValue) {
+      Organization.update({id: $stateParams.orgId}, { description: newValue}, function (reply) {
+        toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
       });
     };
-
   }])
 
   // +++ Organization Screen Subcontrollers +++

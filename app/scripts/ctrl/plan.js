@@ -28,7 +28,6 @@
 
         $scope.updateDesc = function (newValue) {
           Plan.update({orgId: $stateParams.orgId, planId: $stateParams.planId}, { description: newValue}, function (reply) {
-            //TODO handle reply? Show toast for updating success?
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           });
         };

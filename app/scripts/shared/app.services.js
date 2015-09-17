@@ -216,8 +216,8 @@
 
     // HEADER MODEL
     .service('headerModel', function ($rootScope) {
-      this.showExplore = true;
-      this.showDash = true;
+      this.showExplore = false;
+      this.showDash = false;
 
       this.setIsButtonVisible = function (explore, dash) {
         this.showExplore = explore;

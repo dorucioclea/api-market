@@ -1,10 +1,15 @@
-<div class="page">
+<div class="page page-ui-notifications">
 
   <ol class="breadcrumb breadcrumb-small">
     <li>Publisher</li>
     <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
     <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.name}}</a></li>
   </ol>
+  <div class="toast toast-bottomRight">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg">Test Toast</div>
+    </alert>
+  </div>
   <div class="row">
 
     <!-- Organization Basic Settings panel -->
@@ -34,10 +39,10 @@
           </div>
           <div class="col-sm-12">
             <div class="form-group">
-              <label class="control-label text-primary"><i class="fa fa-pencil"></i> Description</label>
-              <textarea rows="2" class="form-control resize-v" ng-model="org.description">{{org.description}}</textarea>
+            <label class="control-label text-primary">Description</label>
+            <div click-to-edit value="org.description" save-function="updateOrgDescription">
             </div>
-            <button class="btn btn-default mt30" ng-click="updateOrgDescription()">Save</button>
+            </div>
           </div>
         </div>
       </div>
