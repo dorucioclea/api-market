@@ -198,13 +198,8 @@
           templateUrl: 'views/api.html',
           resolve: {
             ServiceVersion: 'ServiceVersion',
-            svcData: function (ServiceVersion, $stateParams) {
-
-              var orgId = $stateParams.orgId;
-              var svcId = $stateParams.svcId;
-              var versionId = $stateParams.versionId;
-
-              return ServiceVersion.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
+              return ServiceVersion.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
             },
             organizationId: ['$stateParams', function ($stateParams) {
               return $stateParams.orgId;
@@ -240,6 +235,13 @@
         .state('root.api.plans', {
           url: '/plans',
           templateUrl: 'views/partials/api/plans.html',
+          resolve: {
+            ServicePlans: 'ServicePlans',
+            PlanVersionPolicy: 'PlanVersionPolicy',
+            planData: function (ServicePlans, organizationId, serviceId, versionId) {
+              return ServicePlans.query({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            }
+          },
           controller: 'SvcPlanCtrl'
         })
         // Support Tab
