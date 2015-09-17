@@ -1,4 +1,5 @@
-;(function(angular) {
+;
+(function (angular) {
   "use strict";
 
 
@@ -6,7 +7,8 @@
 
 
 /// ==== Service Controller
-    .controller("ServiceCtrl", ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "toastService", "TOAST_TYPES", "actionService", "Service", "ServiceVersionDefinition",
+    .controller("ServiceCtrl",
+    ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "toastService", "TOAST_TYPES", "actionService", "Service", "ServiceVersionDefinition",
       function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService, Service, ServiceVersionDefinition) {
 
         $scope.serviceVersion = svcData;
@@ -28,7 +30,7 @@
         });
 
         $scope.selectVersion = function (version) {
-          $state.go($state.$current.name, { orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
+          $state.go($state.$current.name, {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
         };
 
         $scope.publishService = function () {
@@ -40,7 +42,7 @@
         };
 
         $scope.updateDesc = function (newValue) {
-          Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, { description: newValue}, function (reply) {
+          Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, {description: newValue}, function (reply) {
             //TODO handle reply? Show toast for updating success?
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           });
@@ -75,7 +77,7 @@
           $scope.updatedService.endpointType = newType;
         };
 
-        var checkValid = function() {
+        var checkValid = function () {
           var valid = true;
           if (!$scope.updatedService.endpointType || angular.isUndefined($scope.updatedService.endpoint)) {
             valid = false;
@@ -85,7 +87,7 @@
           $scope.isValid = valid;
         };
 
-        $scope.$watch('updatedService', function(newValue) {
+        $scope.$watch('updatedService', function (newValue) {
           if ($scope.version) {
             var dirty = false;
             if (newValue.endpoint !== $scope.version.endpoint || newValue.endpointType !== $scope.version.endpointType) {
@@ -96,14 +98,14 @@
           }
         }, true);
 
-        $scope.reset = function() {
+        $scope.reset = function () {
           $scope.updatedService.endpoint = $scope.version.endpoint;
           $scope.updatedService.endpointType = $scope.version.endpointType;
           $scope.isDirty = false;
         };
 
-        $scope.saveService = function() {
-          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function(reply) {
+        $scope.saveService = function () {
+          ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
             $scope.isDirty = false;
             if ($scope.tabStatus.hasImplementation) {
               $state.forceReload();
@@ -143,7 +145,11 @@
         };
 
         $scope.saveDefinition = function () {
-          ServiceVersionDefinition.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedDefinition, function (data) {
+          ServiceVersionDefinition.update({
+            orgId: $stateParams.orgId,
+            svcId: $stateParams.svcId,
+            versionId: $stateParams.versionId
+          }, $scope.updatedDefinition, function (data) {
             if ($scope.tabStatus.hasDefinition) {
               $state.forceReload();
             } else {
@@ -153,7 +159,7 @@
           });
         };
 
-        $scope.$watch('updatedDefinition', function(def) {
+        $scope.$watch('updatedDefinition', function (def) {
           $scope.changed = (def !== $scope.currentDefinition);
           $scope.invalid = (def === $scope.currentDefinition);
         }, true);
@@ -179,7 +185,7 @@
         $scope.updatedService = {};
         $scope.version = svcScreenModel.service;
 
-        var getSelectedPlans = function() {
+        var getSelectedPlans = function () {
           var selectedPlans = [];
           for (var i = 0; i < lockedPlans.length; i++) {
             var plan = lockedPlans[i];
@@ -231,11 +237,11 @@
           });
         });
 
-        $scope.$watch('plans', function(newValue) {
+        $scope.$watch('plans', function (newValue) {
           $scope.updatedService.plans = getSelectedPlans();
         }, true);
 
-        $scope.reset = function() {
+        $scope.reset = function () {
           for (var i = 0; i < lockedPlans.length; i++) {
             lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
             for (var j = 0; j < $scope.version.plans.length; j++) {
@@ -251,7 +257,7 @@
           $scope.isDirty = false;
         };
 
-        $scope.$watch('updatedService', function(newValue) {
+        $scope.$watch('updatedService', function (newValue) {
           var dirty = false;
           if (newValue.plans && $scope.version.plans && newValue.plans.length !== $scope.version.plans.length) {
             dirty = true;
@@ -261,7 +267,7 @@
 
               for (var j = 0; j < newValue.plans.length; j++) {
                 var p2 = newValue.plans[j];
-                if(p1.planId === p2.planId) {
+                if (p1.planId === p2.planId) {
                   // Found Plan, if versions are not equal ==> dirty
                   if (p1.version !== p2.version) {
                     dirty = true;
@@ -274,7 +280,7 @@
           $scope.isDirty = dirty;
         }, true);
 
-        $scope.saveService = function() {
+        $scope.saveService = function () {
           ServiceVersion.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, $scope.updatedService, function (reply) {
             $state.forceReload();
           });
@@ -290,9 +296,9 @@
         svcScreenModel.updateTab('Policies');
 
 
-        $scope.removePolicy = function(policy) {
+        $scope.removePolicy = function (policy) {
           ServiceVersionPolicy.delete({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, policyId: policy.id}, function (data) {
-            angular.forEach($scope.policies, function(p, index) {
+            angular.forEach($scope.policies, function (p, index) {
               if (policy === p) {
                 $scope.policies.splice(index, 1);
               }
@@ -302,7 +308,7 @@
 
         $scope.modalAnim = "default";
 
-        $scope.modalAddPolicy = function() {
+        $scope.modalAddPolicy = function () {
           $modal.open({
             templateUrl: "views/modals/modalAddPolicy.html",
             size: "lg",
@@ -323,7 +329,15 @@
 
       svcScreenModel.updateTab('Overview');
 
+    }])
+
+
+    // ==== Metrics Controller
+    .controller('ServiceMetricsController', ['$scope', 'svcScreenModel', function($scope, svcScreenModel) {
+      svcScreenModel.updateTab('Metrics');
     }]);
+
+
 
   // #end
 })(window.angular);
