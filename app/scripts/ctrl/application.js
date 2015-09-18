@@ -34,7 +34,7 @@
           Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId}, { description: newValue}, function (reply) {
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           }, function (error) {
-            toastService.createErrorToast(error, 'Could not update the description.');
+            toastService.createErrorToast(error, 'Could not update the description');
           });
         };
 

@@ -45,7 +45,7 @@
           Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, {description: newValue}, function (reply) {
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           }, function (error) {
-            toastService.createErrorToast(error, 'Could not update service\'s description.');
+            toastService.createErrorToast(error, 'Could not update service\'s description');
           });
         };
 

@@ -84,7 +84,7 @@ angular.module("app.ctrl.organization", [])
       Organization.update({id: $stateParams.orgId}, { description: newValue}, function (reply) {
         toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
       }, function (error) {
-        toastService.createErrorToast(error, 'Could not update the organization\'s description.');
+        toastService.createErrorToast(error, 'Could not update the organization\'s description');
       });
     };
   }])
