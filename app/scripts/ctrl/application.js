@@ -6,8 +6,8 @@
 
 
 /// ==== Application Controller
-    .controller("ApplicationCtrl", ["$scope", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "orgScreenModel", "headerModel", "toastService", "TOAST_TYPES", "Application", "ApplicationContract",
-      function ($scope, $state, $stateParams, appData, appVersions, appScreenModel, orgScreenModel, headerModel, toastService, TOAST_TYPES, Application, ApplicationContract) {
+    .controller("ApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "orgScreenModel", "headerModel", "actionService", "toastService", "TOAST_TYPES", "Application", "ApplicationContract",
+      function ($scope, $modal, $state, $stateParams, appData, appVersions, appScreenModel, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES, Application, ApplicationContract) {
         headerModel.setIsButtonVisible(true, true);
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
         $scope.applicationVersion = appData;
@@ -35,6 +35,40 @@
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           }, function (error) {
             toastService.createErrorToast('Could not update the description.');
+          });
+        };
+
+        $scope.confirmPublishApp = function (appVersion) {
+          $modal.open({
+            templateUrl: "views/modals/modalPublishApplication.html",
+            size: "lg",
+            controller: "PublishApplicationCtrl as ctrl",
+            resolve: {
+              appVersion: function () {
+                return appVersion;
+              },
+              appContracts: function () {
+                return ApplicationContract.query({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version}).$promise;
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
+          });
+        };
+
+        $scope.confirmRetireApp = function (appVersion) {
+          $modal.open({
+            templateUrl: "views/modals/modalRetireApplication.html",
+            size: "lg",
+            controller: "RetireApplicationCtrl as ctrl",
+            resolve: {
+              appVersion: function () {
+                return appVersion;
+              },
+              appContracts: function () {
+                return ApplicationContract.query({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version}).$promise;
+              }
+            },
+            windowClass: $scope.modalAnim	// Animation Class put here.
           });
         };
 

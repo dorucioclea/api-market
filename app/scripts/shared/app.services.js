@@ -93,12 +93,12 @@
       };
 
       this.publishApp = function (applicationVersion, shouldReload) {
-        var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was successfully published!';
+        var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version + '</b> was successfully published!';
         doAction(this.createAction(applicationVersion, ACTIONS.REGISTER), shouldReload, TOAST_TYPES.SUCCESS, msg);
       };
 
       this.retireApp = function (applicationVersion, shouldReload) {
-        var msg = '<b>' + applicationVersion.name + ' ' + applicationVersion.version + '</b> was retired.';
+        var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version + '</b> was retired.';
         doAction(this.createAction(applicationVersion, ACTIONS.UNREGISTER), shouldReload, TOAST_TYPES.WARNING, msg);
       };
     }])

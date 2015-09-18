@@ -9,8 +9,8 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appAdmin')" ng-click="publishApp(applicationVersion, true)">Publish</button>
-    <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appAdmin')" ng-click="retireApp(applicationVersion)">Retire</button>
+    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appAdmin')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appAdmin')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
   </overview-header>
 
   <overview-tabs>

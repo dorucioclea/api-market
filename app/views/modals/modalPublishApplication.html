@@ -1,7 +1,7 @@
 <div class="page">
 
   <div class="modal-header clearfix">
-    <h4 class="modal-title">Are you sure you want to publish <span class="text-primary">{{selectedAppVersion.name}} {{selectedAppVersion.version}}?</span></h4>
+    <h4 class="modal-title">Are you sure you want to publish <span class="text-primary">{{selectedAppVersion.application.name}} {{selectedAppVersion.version}}?</span></h4>
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
   </div>
   <!-- Application Create panel -->
@@ -9,7 +9,7 @@
     <p>Publishing an application version finalizes all contracts and activates them on the API Gateway. No further contracts can be added once published.
       If you do want to add new contracts to a published application, you will need to create a new version first.</p>
 
-    <p>You are about to publish <span class="text-bold text-primary">{{selectedAppVersion.name}} {{selectedAppVersion.version}}</span>.</p>
+    <p>You are about to publish <span class="text-bold text-primary">{{selectedAppVersion.application.name}} {{selectedAppVersion.version}}</span>.</p>
 
     <p>If published now, the following contracts will be activated:</p>
     <table class="table table-condensed">

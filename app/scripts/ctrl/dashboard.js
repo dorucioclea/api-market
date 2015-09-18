@@ -5,8 +5,12 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgScreenModel', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'toastService', 'TOAST_TYPES', 'ApplicationContract',
-      function ($scope, $modal, $state, $stateParams, $timeout, orgScreenModel, appData, appVersions, appContracts, headerModel, selectedApp, toastService, TOAST_TYPES, ApplicationContract) {
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgScreenModel',
+      'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp',
+      'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
+      function ($scope, $modal, $state, $stateParams, $timeout, orgScreenModel,
+                appData, appVersions, appContracts, headerModel, selectedApp,
+                toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
         $scope.orgScreenModel = orgScreenModel;
@@ -38,36 +42,40 @@
         };
 
         $scope.confirmPublishApp = function (appVersion) {
-          $modal.open({
-            templateUrl: "views/modals/modalPublishApplication.html",
-            size: "lg",
-            controller: "PublishApplicationCtrl as ctrl",
-            resolve: {
-              appVersion: function () {
-                return appVersion;
+          ApplicationVersion.get({orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version}, function (reply) {
+            $modal.open({
+              templateUrl: "views/modals/modalPublishApplication.html",
+              size: "lg",
+              controller: "PublishApplicationCtrl as ctrl",
+              resolve: {
+                appVersion: function () {
+                  return reply;
+                },
+                appContracts: function () {
+                  return $scope.applicationContracts[appVersion.id];
+                }
               },
-              appContracts: function () {
-                return $scope.applicationContracts[appVersion.id];
-              }
-            },
-            windowClass: $scope.modalAnim	// Animation Class put here.
+              windowClass: $scope.modalAnim	// Animation Class put here.
+            });
           });
         };
 
         $scope.confirmRetireApp = function (appVersion) {
-          $modal.open({
-            templateUrl: "views/modals/modalRetireApplication.html",
-            size: "lg",
-            controller: "RetireApplicationCtrl as ctrl",
-            resolve: {
-              appVersion: function () {
-                return appVersion;
+          ApplicationVersion.get({orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version}, function (reply) {
+            $modal.open({
+              templateUrl: "views/modals/modalRetireApplication.html",
+              size: "lg",
+              controller: "RetireApplicationCtrl as ctrl",
+              resolve: {
+                appVersion: function () {
+                  return reply;
+                },
+                appContracts: function () {
+                  return $scope.applicationContracts[appVersion.id];
+                }
               },
-              appContracts: function () {
-                return $scope.applicationContracts[appVersion.id];
-              }
-            },
-            windowClass: $scope.modalAnim	// Animation Class put here.
+              windowClass: $scope.modalAnim	// Animation Class put here.
+            });
           });
         };
 
