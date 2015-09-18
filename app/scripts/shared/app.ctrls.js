@@ -213,8 +213,13 @@
       };
     }])
 
-    .controller('ErrorCtrl', function ($scope, $state) {
+    .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
       $scope.error = $state.current.error;
+
+      $scope.retryLogin = function () {
+        delete $sessionStorage.apikey;
+        $state.go('root');
+      };
     })
 
     .controller("HeadCtrl", ["$scope", "$state", "currentUser", "currentUserModel", "headerModel", "orgScreenModel", "Fullscreen",
