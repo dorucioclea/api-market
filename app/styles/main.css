@@ -7056,8 +7056,9 @@ md-input-container {
   text-align: center;
 }
 .page-err .err-container .m404 {
+  margin-top: 20%;
   font-weight: 900;
-  font-size: 144px;
+  font-size: 72px;
   color: #cf0039;
   text-shadow: rgba(61, 61, 61, 0.3) 1px 1px, rgba(61, 61, 61, 0.2) 2px 2px, rgba(61, 61, 61, 0.3) 3px 3px;
 }
