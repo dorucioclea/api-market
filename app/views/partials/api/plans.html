@@ -1,1 +1,15 @@
-Plans overview to be implemented
+<div class="row">
+
+  <div class="col-sm-12">
+
+    <div ng-repeat="plan in plans">
+      {{plan}}<br>
+      <div ng-repeat="policy in policies[plan.planId]">
+        {{policy}}<br>
+        <span class="text-bold">{{policyDetails[policy.id]}}</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -68,7 +68,8 @@
     // UI-Router states
     .config(function ($stateProvider, $urlRouterProvider) {
 
-      $urlRouterProvider.otherwise('/my-organizations');
+      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.when('/', '/my-organizations');
       $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
       $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
       $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
@@ -78,18 +79,75 @@
 
       $stateProvider
 
-        // LOGIN PAGE =====================================================================
+        // ERROR PAGE =====================================================================
         .state('error', {
-          templateUrl: '/views/error.html'
+          templateUrl: '/views/error.html',
+          controller: 'ErrorCtrl'
         })
 
         // ROOT STATE =====================================================================
         .state('root', {
-          templateUrl: '/views/partials/root.html'
+          templateUrl: '/views/partials/root.html',
+          resolve: {
+            security: function ($q, $http, $sessionStorage) {
+              var config = {};
+
+              $http.get('apimConfig.json')
+                .success(function (response) {
+                  var deferred = $q.defer();
+                  config = response;
+
+                  if (!$sessionStorage.apikey) {
+                    var apikey = getParameterByName(config.Base.ApiKeyName);
+                    var clientUrl = window.location.origin;
+
+                    if (!apikey) {
+                      var url = config.Base.Url + config.Security.RedirectUrl;
+                      var data = "{\"idpUrl\": \"" + config.Security.IdpUrl + "\", \"spUrl\": \"" + config.Security.SpUrl + "\", \"spName\": \"" + config.Security.SpName + "\", \"clientAppRedirect\": \"" + clientUrl + "\", \"token\": \"" + config.Security.ClientToken + "\"}";
+
+                      $.ajax({
+                        method: 'POST',
+                        url: url,
+                        data: data,
+                        dataType: 'text',
+                        crossOrigin: true,
+                        contentType: 'application/json',
+                        headers: {
+                          'apikey': config.Security.ApiKey
+                        },
+                        async: false,
+                        success: function (data) {
+                         window.location.href = data;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                          console.log("Request failed with error code:", textStatus);
+                          console.log(errorThrown);
+                          console.log(jqXHR);
+                        }
+                      });
+                    } else {
+                      $sessionStorage.apikey = apikey;
+                      window.location.href = clientUrl;
+                    }
+                    return deferred.reject('NOT_AUTHENTICATED');
+                  } else {
+                    deferred.resolve('AUTHENTICATED');
+                  }
+                });
+
+              function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                  results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+              }
+            }
+          },
+          controller: 'HeadCtrl'
         })
 
 
-        // MARKETPLACE CONSUMER DASHBOARD =================================================
+// MARKETPLACE CONSUMER DASHBOARD =================================================
         .state('root.market-dash', {
           url: '/org/:orgId/applications',
           templateUrl: '/views/market-dashboard.html',
@@ -107,17 +165,18 @@
 
               promises.push(CurrentUserApps.query().$promise);
 
-              return $q.all(promises).then(function (results) {
-                angular.forEach(results, function (value) {
-                  angular.forEach(value, function (app) {
-                    if (app.organizationId === organizationId) {
-                      appData.push(app);
-                    }
-                  });
+              return $q.all(promises)
+                .then(function (results) {
+                  angular.forEach(results, function (value) {
+                    angular.forEach(value, function (app) {
+                      if (app.organizationId === organizationId) {
+                        appData.push(app);
+                      }
+                    });
 
+                  });
+                  return appData;
                 });
-                return appData;
-              });
             },
             appVersions: function ($q, appData, ApplicationVersion) {
               var appVersions = {};
@@ -636,10 +695,12 @@
     .run(function($state, $rootScope) {
       $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         event.preventDefault();
-        if (angular.isObject(error) && angular.isString(error.code)) {
-          switch (error.code) {
+        if (angular.isObject(error)) {
+          switch (error.status) {
+            case 401: // Unauthorized
+              console.log('Unauthorized');
+              break;
             default:
-              // set the error object on the error state and go there
               $state.get('error').error = error;
               $state.go('error');
           }
@@ -655,7 +716,7 @@
     .factory('sessionInjector', ['$sessionStorage', function ($sessionStorage) {
       return {
         request: function (config) {
-          config.headers.apikey = $sessionStorage.apikey.apikey;
+          config.headers.apikey = $sessionStorage.apikey;
           return config;
         }
       };

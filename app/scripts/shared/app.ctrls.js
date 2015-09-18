@@ -213,6 +213,10 @@
       };
     }])
 
+    .controller('ErrorCtrl', function ($scope, $state) {
+      $scope.error = $state.current.error;
+    })
+
     .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "orgScreenModel", "Fullscreen",
       function($scope, $state, headerModel, currentUserModel, orgScreenModel, Fullscreen) {
         $scope.showExplore = headerModel.showExplore;
