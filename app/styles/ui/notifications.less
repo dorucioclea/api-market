@@ -1,4 +1,4 @@
-// demo style 
+// demo style
 .page-ui-notifications {
 
 	.toast-positioning {
@@ -7,7 +7,7 @@
 		height: @height;
 		position: relative;
 		span {
-			width: 25%; 
+			width: 25%;
 			height: @height/3;
 			display: block;
 			position: absolute;
@@ -28,21 +28,21 @@
 
 .toast {
 	position: fixed;
-	z-index: @zindex-modal;
+	z-index: @zindex-toast;
 	//=== Position
-	&.toast-topLeft { 
+	&.toast-topLeft {
 		top: 10px;
 		left: 10px;
 	}
 	&.toast-topRight {
-		top: 10px; 
+		top: 10px;
 		right: 10px;
 	 }
-	&.toast-bottomLeft { 
+	&.toast-bottomLeft {
 		bottom: 10px;
 		left: 10px;
 	}
-	&.toast-bottomRight { 
+	&.toast-bottomRight {
 		bottom: 10px;
 		right: 10px;
 	}
@@ -84,7 +84,7 @@
 	// === scale animation
 	// ======================
 	.toast-scale {
-	
+
 		&.ng-enter, &.ng-leave {
 			.animation(toastScale 0.25s);
 		}
@@ -173,7 +173,7 @@
 		&.ng-leave {
 			.animation-direction(reverse);
 		}
-		
+
 	}
 
 	@-webkit-keyframes toastGenie {

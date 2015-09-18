@@ -206,9 +206,20 @@
         }
       };
 
-      this.createErrorToast = function(msg) {
-        var errorMsg = '<b>An unexpected error has occured</b><br>' + msg;
-        this.createToast(TOAST_TYPES.DANGER, errorMsg, true);
+      this.createErrorToast = function(error, heading) {
+        var toastType = TOAST_TYPES.DANGER;
+        var errorMsg = heading;
+
+        switch (error.status) {
+          case 409: //CONFLICT
+            toastType = TOAST_TYPES.WARNING;
+            errorMsg += '<br>This name is already in use!<br>Please select a different name.';
+            break;
+          default:
+            errorMsg += '<br>An unexpected error has occurred';
+            break;
+        }
+        this.createToast(toastType, errorMsg, true);
       };
 
       var timedClose = function () {
