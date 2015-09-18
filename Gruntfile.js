@@ -137,7 +137,7 @@ module.exports = function (grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              js: ['concat'],
               css: ['cssmin']
             },
             post: {}
@@ -154,7 +154,8 @@ module.exports = function (grunt) {
         assetsDirs: [
           '<%= config.dist %>',
           '<%= config.dist %>/images',
-          '<%= config.dist %>/styles'
+          '<%= config.dist %>/styles',
+          '<%= config.dist %>/scripts'
         ],
         patterns: {
           js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
@@ -180,7 +181,7 @@ module.exports = function (grunt) {
             'fonts/**/*.*',
             'views/**/*.*',
             'scripts/plugins/*.js',
-            'styles/plugin/swagger/*.css'
+            'styles/plugins/swagger/*.css'
           ]
         }]
       }
@@ -244,8 +245,9 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         mangle: {
-          except: ['angular', '']
-        }
+          exceptionsFiles: ['concat/scripts/vendor.js']
+        },
+        screwIE8: true
       }
     }, // End Uglify
 

@@ -74,20 +74,7 @@
 <script src="../bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
 <script src="../bower_components/perfect-scrollbar/js/perfect-scrollbar.js"></script>
 <!-- endbower -->
-<script>
-  (function () {
-    'use strict';
-    Backbone.View = (function (View) {
-      return View.extend({
-        constructor: function (options) {
-          this.options = options || {};
-          View.apply(this, arguments);
-        }
-      });
-    })(Backbone.View);
-  })();
-</script>
-
+<script src="scripts/plugins/backbone.fix.js"></script>
 <script src="../bower_components/highlight/src/highlight.js"></script>
 <!-- endbuild -->
 
