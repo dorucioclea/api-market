@@ -32,8 +32,9 @@
 
         $scope.updateDesc = function (newValue) {
           Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId}, { description: newValue}, function (reply) {
-            //TODO handle reply? Show toast for updating success?
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+          }, function (error) {
+            toastService.createErrorToast('Could not update the description.');
           });
         };
 

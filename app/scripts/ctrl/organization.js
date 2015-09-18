@@ -37,10 +37,12 @@ angular.module("app.ctrl.organization", [])
     }])
 
   /// ==== MyOrganizations Overview Controller
-  .controller("MyOrganizationsCtrl", ["$scope", "$modal", "appOrgData", "svcOrgData", "headerModel",
-    function ($scope, $modal, appOrgData, svcOrgData, headerModel) {
+  .controller("MyOrganizationsCtrl", ["$scope", "$modal", "appOrgData", "svcOrgData", "toastService", "headerModel",
+    function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
 
       headerModel.setIsButtonVisible(false, false);
+      $scope.toasts = toastService.toasts;
+      $scope.toastService = toastService;
 
       if ($scope.publisherMode) {
         $scope.orgs = svcOrgData;
@@ -81,6 +83,8 @@ angular.module("app.ctrl.organization", [])
     $scope.updateOrgDescription = function (newValue) {
       Organization.update({id: $stateParams.orgId}, { description: newValue}, function (reply) {
         toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+      }, function (error) {
+        toastService.createErrorToast('Could not update the organization\'s description.');
       });
     };
   }])

@@ -182,7 +182,7 @@
 
 
     // TOAST SERVICE
-    .service('toastService', ['$timeout', function ($timeout) {
+    .service('toastService', ['$timeout', 'TOAST_TYPES', function ($timeout, TOAST_TYPES) {
       var toasts = [];
       this.toasts = toasts;
 
@@ -204,6 +204,11 @@
         if(autoclose) {
           timedClose();
         }
+      };
+
+      this.createErrorToast = function(msg) {
+        var errorMsg = '<b>An unexpected error has occured</b><br>' + msg;
+        this.createToast(TOAST_TYPES.DANGER, errorMsg, true);
       };
 
       var timedClose = function () {

@@ -36,6 +36,8 @@
           };
           CurrentUserInfo.update({}, updateObject, function (reply) {
             toastService.createToast('info', 'Profile updated!', true);
+          }, function (error) {
+            toastService.createErrorToast('Could not update your Profile.');
           });
         };
 

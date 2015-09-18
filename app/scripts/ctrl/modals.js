@@ -41,6 +41,9 @@
                 $scope.modalClose();
                 $state.forceReload();
                 toastService.createToast(TOAST_TYPES.SUCCESS, 'Plan policy successfully added.', true);
+              }, function (error) {
+                $scope.modalClose();
+                toastService.createErrorToast('Could not create the plan policy.');
               });
               break;
             case 'service':
@@ -48,6 +51,9 @@
                 $scope.modalClose();
                 $state.forceReload();
                 toastService.createToast(TOAST_TYPES.SUCCESS, 'Service policy successfully added.', true);
+              }, function (error) {
+                $scope.modalClose();
+                toastService.createErrorToast('Could not create the service policy.');
               });
               break;
           }
@@ -191,17 +197,16 @@
           };
           ApplicationContract.save({orgId: $scope.selectedAppVersion.organizationId, appId: $scope.selectedAppVersion.id, versionId: $scope.selectedAppVersion.version}, contract, function (data) {
             $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
+            $scope.modalClose();
             var msg = '<b>Contract created!</b><br>' +
               'A contract was created between application <b>' + $scope.selectedAppVersion.name + ' ' + $scope.selectedAppVersion.version + '</b> and service <b>' +
               $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' + $scope.service.version + '</b>, using plan <b>' +
               $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
-            $scope.modalClose();
           }, function (error) {
             $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
-            var msg = '<b>An unexpected error has occured :(</b><br>Could not create the contract.';
-            toastService.createToast(TOAST_TYPES.DANGER, msg, true);
             $scope.modalClose();
+            toastService.createErrorToast('Could not create the contract.');
           });
         };
 
@@ -336,6 +341,9 @@
             $scope.modalClose();
             $state.forceReload();
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Application <b>' + app.name +  '</b> created!', true);
+          }, function (error) {
+            $scope.modalClose();
+            toastService.createErrorToast('Could not create application');
           });
         };
 
@@ -357,6 +365,9 @@
             $scope.modalClose();
             $state.go('root.plan.overview', {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Plan <b>' + newPlan.name + '</b> created!', true);
+          }, function (error) {
+            $scope.modalClose();
+            toastService.createErrorToast('Could not create plan.');
           });
         };
 
@@ -425,26 +436,36 @@
           switch (type) {
             case 'Application':
               Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId}, updateObject, function (reply) {
-                success('Application logo updated!');
+                handleResult(true, 'Application logo updated!');
+              }, function (error) {
+                handleResult(false, 'Could not update Application Logo.');
               });
               break;
             case 'Service':
               Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, updateObject, function (reply) {
-                success('Service logo updated!');
+                handleResult(true, 'Service logo updated!');
+              }, function (error) {
+                handleResult(false, 'Could not update Service Logo.');
               });
               break;
             case 'User':
               CurrentUserInfo.update({}, updateObject, function (reply) {
-                success('Profile pictured saved!');
+                handleResult(true, 'Profile pictured saved!');
+              }, function (error) {
+                handleResult(false, 'Could not update Profile Picture.');
               });
               break;
           }
         };
 
-        var success = function (msg) {
+        var handleResult = function (success, msg) {
           $scope.modalClose();
-          $state.forceReload();
-          toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+          if (success) {
+            $state.forceReload();
+            toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+          } else {
+            toastService.createErrorToast(msg);
+          }
         };
 
         $scope.modalClose = function() {
@@ -553,6 +574,8 @@
             $scope.modalClose();
             $state.go('root.service.overview', {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: svc.initialVersion});
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Service <b>' + newSvc.name + '</b> created!', true);
+          }, function (error) {
+            toastService.createErrorToast('Could not create service.');
           });
         };
 
@@ -573,6 +596,10 @@
             $scope.modalClose();
             $state.go('root.organization', {orgId: newOrg.id});
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Organization <b>' + newOrg.name + '</b> created!', true);
+          }, function (error) {
+            $scope.modalClose();
+            $state.go('root.myOrganizations');
+            toastService.createErrorToast('Could not create organization.');
           });
         };
 
