@@ -181,7 +181,8 @@ module.exports = function (grunt) {
             'fonts/**/*.*',
             'views/**/*.*',
             'scripts/plugins/*.js',
-            'styles/plugins/swagger/*.css'
+            'styles/plugins/swagger/*.css',
+            'apimConfig.json'
           ]
         }]
       }
