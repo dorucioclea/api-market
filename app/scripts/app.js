@@ -89,6 +89,7 @@
         .state('root', {
           templateUrl: '/views/partials/root.html',
           resolve: {
+            CurrentUserInfo: 'CurrentUserInfo',
             security: function ($q, $http, $sessionStorage) {
               var config = {};
 
@@ -141,6 +142,9 @@
                   results = regex.exec(location.search);
                 return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
               }
+            },
+            currentUser: function (CurrentUserInfo) {
+              return CurrentUserInfo.get().$promise;
             }
           },
           controller: 'HeadCtrl'

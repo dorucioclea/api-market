@@ -362,6 +362,11 @@
         });
       };
 
+      this.setCurrentUserInfo = function (currentUserInfo) {
+        this.currentUser = currentUserInfo;
+        createPermissionsTree(currentUserInfo.permissions);
+      };
+
       var createPermissionsTree = function (permissions) {
         angular.forEach(permissions, function (value) {
           if (!permissionTree[value.organizationId]) {

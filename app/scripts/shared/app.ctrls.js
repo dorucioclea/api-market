@@ -217,13 +217,13 @@
       $scope.error = $state.current.error;
     })
 
-    .controller("HeadCtrl", ["$scope", "$state", "headerModel", "currentUserModel", "orgScreenModel", "Fullscreen",
-      function($scope, $state, headerModel, currentUserModel, orgScreenModel, Fullscreen) {
+    .controller("HeadCtrl", ["$scope", "$state", "currentUser", "currentUserModel", "headerModel", "orgScreenModel", "Fullscreen",
+      function($scope, $state, currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
         $scope.showExplore = headerModel.showExplore;
         $scope.showDash = headerModel.showDash;
         $scope.currentUserModel = currentUserModel;
         $scope.orgScreenModel = orgScreenModel;
-        currentUserModel.updateCurrentUserInfo(currentUserModel);
+        currentUserModel.setCurrentUserInfo(currentUser);
 
         $scope.toggleFloatingSidebar = function() {
           $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
