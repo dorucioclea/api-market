@@ -634,9 +634,20 @@
     })
 
     .run(function($state, $rootScope) {
-      $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         event.preventDefault();
-        $state.go('error');
+        if (angular.isObject(error) && angular.isString(error.code)) {
+          switch (error.code) {
+            default:
+              // set the error object on the error state and go there
+              $state.get('error').error = error;
+              $state.go('error');
+          }
+        }
+        else {
+          // unexpected error
+          $state.go('error');
+        }
       });
     })
 
