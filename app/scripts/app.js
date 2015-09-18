@@ -79,10 +79,8 @@
       $stateProvider
 
         // LOGIN PAGE =====================================================================
-        .state('login', {
-          url: '/login',
-          templateUrl: '/views/signin.html',
-          controller: 'LoginCtrl'
+        .state('error', {
+          templateUrl: '/views/error.html'
         })
 
         // ROOT STATE =====================================================================
@@ -633,6 +631,13 @@
           templateUrl: 'views/partials/user/profile.html',
           controller: 'UserProfileCtrl'
         });
+    })
+
+    .run(function($state, $rootScope) {
+      $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        event.preventDefault();
+        $state.go('error');
+      });
     })
 
     // Make sure we use always the api key
