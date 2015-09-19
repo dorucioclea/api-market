@@ -31,7 +31,11 @@
 
         $scope.saveUserDetails = function (details) {
           var updateObject = {
-            fullName: details,
+            fullName: details.fullName,
+            company: details.company,
+            location: details.location,
+            bio: details.bio,
+            website: details.website,
             pic: $scope.currentUserModel.currentUser.base64pic
           };
           CurrentUserInfo.update({}, updateObject, function (reply) {
