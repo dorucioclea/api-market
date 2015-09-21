@@ -30,7 +30,7 @@
           Plan.update({orgId: $stateParams.orgId, planId: $stateParams.planId}, { description: newValue}, function (reply) {
             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
           }, function (error) {
-            toastService.createErrorToast(error, 'Could not update plan\'s description');
+            toastService.createErrorToast(error, 'Could not update plan\'s description.');
           });
         };
 
