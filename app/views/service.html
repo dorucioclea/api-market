@@ -17,11 +17,17 @@
 
   <overview-tabs>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Implementation'" ui-sref=".implementation">Implementation</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Implementation'" ui-sref=".implementation">
+      <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">1</span>&nbsp;&nbsp;</span>Implementation
+    </label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" ui-sref=".definition"
-           ng-disabled="!tabStatus.hasImplementation">Definition</label>
+           ng-disabled="!tabStatus.hasImplementation">
+      <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">2</span>&nbsp;&nbsp;</span>Definition
+    </label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans"
-           ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">Plans</label>
+           ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
+      <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">3</span>&nbsp;&nbsp;</span>Plans
+    </label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics">Metrics</label>
