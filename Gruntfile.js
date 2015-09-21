@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         }
       },
       less: {
-        files: ['<%= config.app%>/styles/**/*/*.less'],
+        files: ['<%= config.app%>/styles/**/*.less'],
         tasks: ['less']
       },
       gruntfile: {
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       },
       all: {
-        src: ['Gruntfile.js', '<%= config.app %>/scripts/{,*/}*.js']
+        src: ['Gruntfile.js', '<%= config.app %>/scripts/**/*.js']
       }
     }, // End JSHint
 
@@ -147,9 +147,9 @@ module.exports = function (grunt) {
     },
 
     usemin: {
-      html: ['<%= config.dist %>/{,*/}*.html'],
-      css: ['<%= config.dist %>/styles/{,*/}*.css'],
-      js: ['<%= config.dist %>/scripts/{,*/}*.js'],
+      html: ['<%= config.dist %>/**/*.html'],
+      css: ['<%= config.dist %>/styles/**/*.css'],
+      js: ['<%= config.dist %>/scripts/**/*.js'],
       options: {
         assetsDirs: [
           '<%= config.dist %>',
@@ -177,7 +177,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'images/{,*/}*.*',
+            'images/**/*.*',
             'fonts/**/*.*',
             'views/**/*.*',
             'scripts/plugins/*.js',
