@@ -67,12 +67,15 @@ angular.module("app.ctrl.organization", [])
 
 
 /// ==== Organization Controller
-.controller("OrganizationCtrl", ["$scope", "$state", "$stateParams", "screenSize", "orgData", "toastService", "TOAST_TYPES", "Organization", "orgScreenModel",
-  function ($scope, $state, $stateParams, screenSize, orgData, toastService, TOAST_TYPES, Organization, orgScreenModel) {
+.controller("OrganizationCtrl", ["$scope", "$state", "$stateParams", "screenSize", "orgData", "toastService", "TOAST_TYPES", "Organization", "OrganizationMembers", "orgScreenModel",
+  function ($scope, $state, $stateParams, screenSize, orgData, toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
 
     $scope.displayTab = orgScreenModel;
     orgScreenModel.updateOrganization(orgData);
     $scope.org = orgData;
+    OrganizationMembers.query({orgId: $scope.org.id}, function (reply) {
+      $scope.memberCount = reply.length;
+    });
     $scope.toasts = toastService.toasts;
     $scope.toastService = toastService;
 

@@ -32,6 +32,9 @@
     .factory('OrganizationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:id/activity');
     }])
+    .factory('OrganizationMembers', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/members/:memberId');
+    }])
     .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' }, {
         update: {
