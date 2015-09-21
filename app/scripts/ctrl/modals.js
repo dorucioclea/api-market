@@ -13,6 +13,30 @@
         $scope.valid = false;
         $scope.selectedPolicy = null;
 
+        switch ($state.current.data.type) {
+          case 'plan':
+            PlanVersionPolicy.query({orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: $stateParams.versionId}, function (reply) {
+              removeUsedPolicies(reply);
+            });
+            break;
+          case 'service':
+            ServiceVersionPolicy.query({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, function(reply) {
+              removeUsedPolicies(reply);
+            });
+            break;
+        }
+
+        var removeUsedPolicies = function (usedPolicies) {
+          angular.forEach(usedPolicies, function (policy) {
+            for (var i = 0; i < $scope.policyDefs.length; i++ ) {
+              if ($scope.policyDefs[i].id === policy.policyDefinitionId) {
+                $scope.policyDefs.splice(i, 1);
+                break;
+              }
+            }
+          });
+        };
+
         $scope.modalClose = function() {
           $scope.$close();	// this method is associated with $modal scope which is this.
         };
@@ -204,7 +228,6 @@
               $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
           }, function (error) {
-            console.log(error);
             $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
             $scope.modalClose();
             toastService.createErrorToast(error, 'Could not create the contract.');
@@ -213,60 +236,6 @@
 
         $scope.modalClose = function() {
           $scope.$close();	// this method is associated with $modal scope which is this.
-        };
-
-      }])
-
-    /// ==== AddServicePolicy Controller
-    .controller("AddServicePolicyCtrl", ["$scope", "$modal", "$state", "$stateParams", "policyDefs", "ServiceVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, policyDefs, ServiceVersionPolicy) {
-
-        $scope.policyDefs = policyDefs;
-        $scope.valid = false;
-        $scope.selectedPolicy = null;
-
-        $scope.modalClose = function() {
-          $scope.$close();	// this method is associated with $modal scope which is this.
-        };
-
-        $scope.setValid = function (isValid) {
-          $scope.valid = isValid;
-        };
-
-        $scope.setConfig = function(config) {
-          $scope.config = config;
-        };
-        $scope.getConfig = function() {
-          return $scope.config;
-        };
-
-        $scope.addPolicy = function() {
-          var config = $scope.getConfig();
-          var newPolicy = {
-            definitionId: $scope.selectedPolicy.id,
-            configuration: config
-          };
-
-          ServiceVersionPolicy.save({ orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId }, newPolicy, function(reply) {
-            $scope.modalClose();
-            $scope.forceReload();
-          });
-        };
-
-
-        $scope.selectPolicy = function (policy) {
-          if (!policy) {
-            $scope.include = undefined;
-          } else {
-            $scope.selectedPolicy = policy;
-            $scope.config = {};
-            if ($scope.selectedPolicy.formType === 'JsonSchema') {
-              //All plugins should fall into this category!
-              $scope.include = 'views/modals/partials/policy/json-schema.html';
-            } else {
-              $scope.include = 'views/modals/partials/policy/Default.html';
-            }
-          }
         };
 
       }])
