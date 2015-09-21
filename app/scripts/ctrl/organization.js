@@ -5,8 +5,8 @@
 angular.module("app.ctrl.organization", [])
 
   /// ==== Organizations Overview & Search Controller
-  .controller("OrganizationsCtrl", ["$scope", "Organization", "SearchOrgs", "CurrentUserSvcOrgs",
-    function ($scope, Organization, SearchOrgs, CurrentUserSvcOrgs) {
+  .controller("OrganizationsCtrl", ["$scope", "Organization", "SearchOrgs", "CurrentUserAppOrgs", "CurrentUserSvcOrgs",
+    function ($scope, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
 
       var userOrgIds = null;
 
@@ -17,12 +17,23 @@ angular.module("app.ctrl.organization", [])
       $scope.doSearch = function (searchString) {
         if (userOrgIds === null) {
           userOrgIds = [];
-          CurrentUserSvcOrgs.query({}, function (reply) {
-            angular.forEach(reply, function(userOrg) {
-              userOrgIds.push(userOrg.id);
+          if ($scope.publisherMode) {
+            CurrentUserSvcOrgs.query({}, function (reply) {
+              addOrgs(reply);
             });
-          });
+          } else {
+            CurrentUserAppOrgs.query({}, function (reply) {
+              addOrgs(reply);
+            });
+          }
+
         }
+
+        var addOrgs = function (reply) {
+          angular.forEach(reply, function (org) {
+            userOrgIds.push(org.id);
+          });
+        };
 
         var search = {};
         search.filters = [ { name: "name", value: searchString, operator: "like" }];
