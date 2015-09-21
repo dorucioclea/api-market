@@ -388,7 +388,11 @@
       };
 
       this.isAuthorizedFor = function(permission) {
-        return permissionTree[orgScreenModel.organization.id].indexOf(permission) > -1;
+        if (permissionTree[orgScreenModel.organization.id]) {
+          return permissionTree[orgScreenModel.organization.id].indexOf(permission) > -1;
+        } else {
+          return false;
+        }
       };
     }])
 
