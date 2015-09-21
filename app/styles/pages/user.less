@@ -5,28 +5,20 @@
 // ==== vertical-nav (user-menu)
 // =============================
 .user.nav-wrap {
+  min-height: 2000px; // Possible fix for Safari div collapsing
   margin-top: @site-head-height;
   background: @site-nav-bg;
   z-index: @zindex-navbar-fixed;
-  .transition(.25s ease-in);
   box-shadow: 2px 0 10px rgba(0,0,0,.1);
   overflow: hidden;	// for mobile view
-  // width: @site-nav-width;
+  width: @site-nav-width;
 
-  // handle nav-expand here
-  // =====================
-  &.nav-expand, &:hover  {
-    .nav-foot {
-      visibility: visible;
-      .transition-delay(.25s);
-    }
-
-    .site-nav .nav-list > li.open .inner-drop {
-      display: block;
-      opacity: 1;
-      a {.animation(slideSiteMenuX .3s ease-in);}
-    }
+  .site-nav .nav-list > li.open .inner-drop {
+    display: block;
+    opacity: 1;
+    a {.animation(slideSiteMenuX .3s ease-in);}
   }
+
   @-webkit-keyframes slideSiteMenuX {
     0% {opacity: 0; transform: translate(-20px, 0)}
     100% {opacity: 1; transform: translate(0px, 0)}
@@ -35,55 +27,6 @@
     0% {opacity: 0; transform: translate(-20px, 0)}
     100% {opacity: 1; transform: translate(0px, 0)}
   }
-
-  // === nav-head
-  // ============
-  .nav-head {
-    height: @site-head-height;
-    display: table;
-    overflow: hidden;
-    width: @site-nav-min-width;
-    position: absolute;
-    .transition(.25s ease-in);
-    padding-left: 22px;
-    z-index: @zindex-navbar;
-    background: @site-nav-head;
-    box-shadow: 0 2px 8px rgba(0,0,0,.25);
-    .site-logo {
-      color: #fff;
-      font-weight: bolder;
-      .vertical-center();
-      font-size: @font-size-h3 - 2;
-      position: relative;	// it's a must.
-      > i {
-        font-size: @font-size-h3 + 1;
-        display: inline-block;
-      }
-      > span.text {
-        position: absolute;
-        top: @site-head-height/3 - 6;
-        margin-left: 22px;
-      }
-    }
-  }
-  .nav-foot {
-    background: darken(@site-nav-bg, 6%);
-    position: fixed;
-    bottom: 0;
-    width: @site-nav-width;
-    opacity: .95;
-    font-size: @font-size-small;
-    text-align: center;
-    display:table;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
-    padding: 6px;
-    visibility: hidden;
-    text-transform: uppercase;
-    white-space: nowrap;
-    p { .vertical-center(); margin-bottom: 0;}
-    p > span {color: @m-blue-gray}
-  }
-
 
   // === mini-profile
   // ================

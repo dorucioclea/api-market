@@ -1,48 +1,46 @@
-<div>
-  <aside class="user nav-wrap nav-expand">
+<div class="user nav-wrap clearfix">
 
-    <nav class="site-nav clearfix" role="navigation">
-      <div class="profile clearfix mb15">
-        <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
-        <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
-        <div class="group">
-          <h5 class="name">{{currentUserModel.currentUser.fullName}}</h5>
-          <small class="desig">{{currentUserModel.currentUser.username}}</small>
-        </div>
+  <nav class="site-nav clearfix" role="menuitem">
+    <div class="profile clearfix mb15">
+      <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
+      <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
+      <div class="group">
+        <h5 class="name">{{currentUserModel.currentUser.fullName}}</h5>
+        <small class="desig">{{currentUserModel.currentUser.username}}</small>
       </div>
-
-      <!-- navigation -->
-      <ul class="list-unstyled clearfix nav-list mb15">
-        <li ng-class="{'active': isActive('Profile')}">
-          <a hmd-ink-ripple ui-sref="root.user.profile">
-            <i class="ion ion-person"></i>
-            <span class="text">Profile Settings</span>
-          </a>
-        </li>
-
-        <li ng-class="{'active': isActive('Email')}">
-          <a md-ink-ripple ui-sref="root.user.email">
-            <i class="ion ion-email"></i>
-            <span class="text">Email Settings</span>
-          </a>
-        </li>
-
-        <li ng-class="{'active': isActive('Notifications')}">
-          <a md-ink-ripple ui-sref="root.user.notifications">
-            <i class="ion ion-checkmark-circled"></i>
-            <span class="text">Notifications</span>
-          </a>
-        </li>
-      </ul> <!-- #end navigation -->
-    </nav>
-  </aside>
-
-  <div class="page page-ui-notifications page-user">
-    <div class="toast toast-bottomRight">
-      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-        <div ng-bind-html="toast.msg">Test Toast</div>
-      </alert>
     </div>
-    <div ui-view></div>
+
+    <!-- navigation -->
+    <ul class="list-unstyled clearfix nav-list mb15">
+      <li ng-class="{'active': isActive('Profile')}">
+        <a md-ink-ripple ui-sref="root.user.profile">
+          <i class="ion ion-person"></i>
+          <span class="text">Profile Settings</span>
+        </a>
+      </li>
+
+      <li ng-class="{'active': isActive('Email')}">
+        <a md-ink-ripple ui-sref="root.user.email">
+          <i class="ion ion-email"></i>
+          <span class="text">Email Settings</span>
+        </a>
+      </li>
+
+      <li ng-class="{'active': isActive('Notifications')}">
+        <a md-ink-ripple ui-sref="root.user.notifications">
+          <i class="ion ion-checkmark-circled"></i>
+          <span class="text">Notifications</span>
+        </a>
+      </li>
+    </ul> <!-- #end navigation -->
+  </nav>
+</div>
+
+<div class="page page-ui-notifications page-user">
+  <div class="toast toast-bottomRight">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg">Test Toast</div>
+    </alert>
   </div>
+  <div ui-view></div>
 </div>
