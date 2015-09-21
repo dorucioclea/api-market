@@ -60,8 +60,8 @@
           spec: spec,
           dom_id: domId,
           showRequestHeaders: true,
-          url: function(){if(endpoint === undefined || endpoint === null)return "/"; else return endpoint.managedEndpoint;}(),
-          supportedSubmitMethods:function(){if(endpoint === undefined || endpoint === null)return []; else return ['get', 'post', 'put', 'delete', 'patch'];}(),
+          url: (endpoint === undefined || endpoint === null) ? "/" : endpoint.managedEndpoint,
+          supportedSubmitMethods: (endpoint === undefined || endpoint === null) ? [] : ['get', 'post', 'put', 'delete', 'patch'],
           validatorUrl: null,
           apisSorter: "alpha",
           operationsSorter: "alpha",
@@ -97,7 +97,7 @@
         });
         function addApiKeyAuthorization(){
           //TODO add key var - replace with var
-          var key = encodeURIComponent($sessionStorage.apikey.apikey);
+          var key = encodeURIComponent($sessionStorage.apikey);
           if(key && key.trim() !== "") {
             $scope.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("apikey", key, "header"));
           }
