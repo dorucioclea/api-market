@@ -584,7 +584,11 @@
           Organization.save(org, function (newOrg) {
             currentUserModel.updateCurrentUserInfo(currentUserModel);
             $scope.modalClose();
-            $state.go('root.organization', {orgId: newOrg.id});
+            if ($scope.publisherMode) {
+              $state.go('root.organization', {orgId: newOrg.id});
+            } else {
+              $state.forceReload();
+            }
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Organization <b>' + newOrg.name + '</b> created!', true);
           }, function (error) {
             if (error.status !== 409) {
