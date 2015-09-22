@@ -469,9 +469,9 @@
           url: '/activity',
           templateUrl: 'views/partials/plan/activity.html',
           resolve: {
-            PlanActivity: 'PlanActivity',
-            activityData: function (PlanActivity, organizationId, planId) {
-              return PlanActivity.get({orgId: organizationId, planId: planId}).$promise;
+            PlanVersionActivity: 'PlanVersionActivity',
+            activityData: function (PlanVersionActivity, organizationId, planId, versionId) {
+              return PlanVersionActivity.get({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
             }
           },
           controller: 'PlanActivityCtrl'
@@ -552,9 +552,9 @@
           url: '/activity',
           templateUrl: 'views/partials/application/activity.html',
           resolve: {
-            ApplicationActivity: 'ApplicationActivity',
-            activityData: function (ApplicationActivity, organizationId, applicationId) {
-              return ApplicationActivity.get({orgId: organizationId, appId: applicationId}).$promise;
+            ApplicationVersionActivity: 'ApplicationVersionActivity',
+            activityData: function (ApplicationVersionActivity, organizationId, applicationId, versionId) {
+              return ApplicationVersionActivity.get({orgId: organizationId, appId: applicationId, versionId: versionId}).$promise;
             }
           },
           controller: 'ActivityCtrl'
@@ -665,9 +665,9 @@
           url: '/activity',
           templateUrl: 'views/partials/service/activity.html',
           resolve: {
-            ServiceActivity: 'ServiceActivity',
-            activityData: function (ServiceActivity, organizationId, serviceId) {
-              return ServiceActivity.get({orgId: organizationId, svcId: serviceId}).$promise;
+            ServiceVersionActivity: 'ServiceVersionActivity',
+            activityData: function (ServiceVersionActivity, organizationId, serviceId, versionId) {
+              return ServiceVersionActivity.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
             }
           },
           controller: 'ServiceActivityCtrl'

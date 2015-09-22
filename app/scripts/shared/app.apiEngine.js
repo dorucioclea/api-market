@@ -70,6 +70,9 @@
     .factory('ApplicationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/activity');
     }])
+    .factory('ApplicationVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/activity');
+    }])
     .factory('ApplicationContract', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
     }])
