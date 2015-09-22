@@ -215,6 +215,7 @@
 
     .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
       $scope.error = $state.current.error;
+      console.log($scope.error);
 
       $scope.retryLogin = function () {
         delete $sessionStorage.apikey;
