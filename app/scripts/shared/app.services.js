@@ -247,7 +247,7 @@
     .service('orgScreenModel', ["Organization", function (Organization) {
 
       this.selectedTab = 'Plans';
-      this.organization = {};
+      this.organization = undefined;
 
       this.updateTab = function (newTab) {
         this.selectedTab = newTab;
@@ -388,11 +388,16 @@
       };
 
       this.isAuthorizedFor = function(permission) {
-        if (permissionTree[orgScreenModel.organization.id]) {
-          return permissionTree[orgScreenModel.organization.id].indexOf(permission) > -1;
-        } else {
-          return false;
+        return permissionTree[orgScreenModel.organization.id].indexOf(permission) !== -1;
+      };
+
+      this.isAuthroizedForAny = function (permissions) {
+        for (var i = 0; i < permissions.length; i++) {
+          if (this.isAuthorizedFor(permissions[i])) {
+            return true;
+          }
         }
+        return false;
       };
     }])
 

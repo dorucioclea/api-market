@@ -157,6 +157,9 @@
           templateUrl: '/views/market-dashboard.html',
           resolve: {
             Organization: 'Organization',
+            orgData: function (Organization, organizationId) {
+              return Organization.get({id: organizationId}).$promise;
+            },
             CurrentUserApps: 'CurrentUserApps',
             ApplicationVersion: 'ApplicationVersion',
             ApplicationContract: 'ApplicationContract',
@@ -402,6 +405,10 @@
           url: '/org/:orgId/plan/:planId/:versionId',
           templateUrl: 'views/plan.html',
           resolve: {
+            Organization: 'Organization',
+            orgData: function (Organization, organizationId) {
+              return Organization.get({id: organizationId}).$promise;
+            },
             PlanVersion: 'PlanVersion',
             planData: function (PlanVersion, organizationId, planId, versionId) {
               return PlanVersion.get({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
@@ -475,6 +482,10 @@
           url: '/org/:orgId/application/:appId/:versionId',
           templateUrl: 'views/application.html',
           resolve: {
+            Organization: 'Organization',
+            orgData: function (Organization, organizationId) {
+              return Organization.get({id: organizationId}).$promise;
+            },
             ApplicationVersion: 'ApplicationVersion',
             appData: function (ApplicationVersion, organizationId, applicationId, versionId) {
               return ApplicationVersion.get({
@@ -560,6 +571,10 @@
           url: '/org/:orgId/service/:svcId/:versionId',
           templateUrl: 'views/service.html',
           resolve: {
+            Organization: 'Organization',
+            orgData: function (Organization, organizationId) {
+              return Organization.get({id: organizationId}).$promise;
+            },
             ServiceVersion: 'ServiceVersion',
             svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
               return ServiceVersion.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;

@@ -5,14 +5,14 @@
   angular.module("app.ctrl.dashboard", [])
 
     /// ==== MarketDash Controller
-    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgScreenModel',
+    .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData', 'orgScreenModel',
       'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp',
       'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
-      function ($scope, $modal, $state, $stateParams, $timeout, orgScreenModel,
+      function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                 appData, appVersions, appContracts, headerModel, selectedApp,
                 toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
         headerModel.setIsButtonVisible(true, false);
-        orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+        orgScreenModel.updateOrganization(orgData);
         $scope.orgScreenModel = orgScreenModel;
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;

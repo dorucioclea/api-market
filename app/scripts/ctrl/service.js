@@ -8,9 +8,12 @@
 
 /// ==== Service Controller
     .controller("ServiceCtrl",
-    ["$scope", "$state", "$stateParams", "svcData", "svcVersions", "svcScreenModel", "toastService", "TOAST_TYPES", "actionService", "Service", "ServiceVersionDefinition",
-      function ($scope, $state, $stateParams, svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService, Service, ServiceVersionDefinition) {
+    ["$scope", "$state", "$stateParams", "orgData", "orgScreenModel",
+      "svcData", "svcVersions", "svcScreenModel", "toastService", "TOAST_TYPES", "actionService", "Service", "ServiceVersionDefinition",
+      function ($scope, $state, $stateParams, orgData, orgScreenModel,
+                svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService, Service, ServiceVersionDefinition) {
 
+        orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;

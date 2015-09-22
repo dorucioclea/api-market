@@ -6,10 +6,12 @@
 
 
 /// ==== Application Controller
-    .controller("ApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "appData", "appVersions", "appScreenModel", "orgScreenModel", "headerModel", "actionService", "toastService", "TOAST_TYPES", "Application", "ApplicationContract",
-      function ($scope, $modal, $state, $stateParams, appData, appVersions, appScreenModel, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES, Application, ApplicationContract) {
+    .controller("ApplicationCtrl", ["$scope", "$modal", "$state", "$stateParams", "appData", "appVersions", "appScreenModel",
+      "orgData", "orgScreenModel", "headerModel", "actionService", "toastService", "TOAST_TYPES", "Application", "ApplicationContract",
+      function ($scope, $modal, $state, $stateParams, appData, appVersions, appScreenModel,
+                orgData, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES, Application, ApplicationContract) {
         headerModel.setIsButtonVisible(true, true);
-        orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+        orgScreenModel.updateOrganization(orgData);
         $scope.applicationVersion = appData;
         appScreenModel.updateApplication(appData);
         $scope.versions = appVersions;

@@ -579,7 +579,7 @@
 /// ==== NewOrganization Controller
     .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "publisherMode", "currentUserModel", "toastService", "TOAST_TYPES", "Organization",
       function ($scope, $modal, $state, publisherMode, currentUserModel, toastService, TOAST_TYPES, Organization) {
-        
+
         $scope.createOrganization = function (org) {
           Organization.save(org, function (newOrg) {
             currentUserModel.updateCurrentUserInfo(currentUserModel);

@@ -6,9 +6,10 @@
 
 
 /// ==== Plan Controller
-    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "planData", "planVersions", "planScreenModel", "actionService", "toastService", "TOAST_TYPES", "Plan",
-      function ($scope, $modal, $state, $stateParams, planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
+    .controller("PlanCtrl", ["$scope", "$modal", "$state", "$stateParams", "orgData", "orgScreenModel", "planData", "planVersions", "planScreenModel", "actionService", "toastService", "TOAST_TYPES", "Plan",
+      function ($scope, $modal, $state, $stateParams, orgData, orgScreenModel, planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
+        orgScreenModel.updateOrganization(orgData);
         $scope.planVersion = planData;
         planScreenModel.updatePlan(planData);
         $scope.displayTab = planScreenModel;
