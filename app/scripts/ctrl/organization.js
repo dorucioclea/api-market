@@ -68,7 +68,11 @@ angular.module("app.ctrl.organization", [])
           templateUrl: "views/modals/modalNewOrganization.html",
           size: "lg",
           controller: "NewOrganizationCtrl as ctrl",
-          resolve: function() {},
+          resolve: {
+            publisherMode: function () {
+              return $scope.publisherMode;
+            }
+          },
           windowClass: $scope.modalAnim	// Animation Class put here.
         });
 

@@ -577,17 +577,17 @@
       }])
 
 /// ==== NewOrganization Controller
-    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "currentUserModel", "toastService", "TOAST_TYPES", "Organization",
-      function ($scope, $modal, $state, currentUserModel, toastService, TOAST_TYPES, Organization) {
-
+    .controller("NewOrganizationCtrl", ["$scope", "$modal", "$state", "publisherMode", "currentUserModel", "toastService", "TOAST_TYPES", "Organization",
+      function ($scope, $modal, $state, publisherMode, currentUserModel, toastService, TOAST_TYPES, Organization) {
+        
         $scope.createOrganization = function (org) {
           Organization.save(org, function (newOrg) {
             currentUserModel.updateCurrentUserInfo(currentUserModel);
             $scope.modalClose();
-            if ($scope.publisherMode) {
+            if (publisherMode) {
               $state.go('root.organization', {orgId: newOrg.id});
             } else {
-              $state.forceReload();
+              $state.go('root.market-dash', {orgId: newOrg.id});
             }
             toastService.createToast(TOAST_TYPES.SUCCESS, 'Organization <b>' + newOrg.name + '</b> created!', true);
           }, function (error) {
