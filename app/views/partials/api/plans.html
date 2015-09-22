@@ -2,13 +2,39 @@
 
   <div class="col-sm-12">
 
-    <div ng-repeat="plan in plans">
-      {{plan}}<br>
-      <div ng-repeat="policy in policies[plan.planId]">
-        {{policy}}<br>
-        <span class="text-bold">{{policyDetails[policy.id]}}</span>
-      </div>
-    </div>
+    <accordion class="accordion-panel">
+      <accordion-group class="panel-primary" is-open="true" ng-repeat="plan in plans">
+        <accordion-heading>
+          <h4>
+            {{plan.planName}}
+          </h4>
+        </accordion-heading>
+          <div class="col-sm-12" ng-repeat="policy in policies[plan.planId]">
+            <div class="row">
+              <div class="col-md-1">
+                <h3 class="fa fa-policy-big-icon {{policy.icon}} fa-fw"></h3>
+              </div>
+              <div class="col-md-9">
+                <div>
+                  <span class="title"><a href>{{policy.name}}</a></span>
+                </div>
+                <div class="metaData">
+                  <span>Policy created by </span>
+                  <span><a href>{{ policy.createdBy }}</a></span>
+                  <span>on</span>
+                  <i class="fa fa-clock-o fa-inline"></i>
+                  <span>{{ policy.createdOn | date:'yyyy-MM-dd' }}</span>
+                </div>
+                <div class="description apiman-label-faded">
+                  <b>{{policyDetails[policy.id].configuration}}</b>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+          </div>
+      </accordion-group>
+    </accordion>
 
   </div>
 
