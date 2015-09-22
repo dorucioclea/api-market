@@ -1,7 +1,7 @@
 ﻿<overview entity-version="planVersion" type="plan">
   <overview-header name="{{planVersion.plan.name}}" icon="bar-chart-o" description="{{planVersion.plan.description}}"
                    entity-version="planVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('planEdit')" admin-permission="User.isAuthorizedFor('planAdmin')">
+                   edit-permission="User.isAuthorizedFor('planEdit')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
@@ -9,7 +9,7 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked && User.isAuthorizedFor('planAdmin')" ng-click="lockPlan()">Lock Plan</button>
+    <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked && User.isAuthorizedFor('planEdit')" ng-click="lockPlan()">Lock Plan</button>
 
   </overview-header>
 

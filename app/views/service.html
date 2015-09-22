@@ -3,7 +3,7 @@
                    entity-version="serviceVersion" has-logo="true" base64logo="{{serviceVersion.service.base64logo}}"
                    description="{{serviceVersion.service.description}}" select-version="selectVersion(version)"
                    new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('svcEdit')" admin-permission="User.isAuthorizedFor('svcAdmin')">
+                   edit-permission="User.isAuthorizedFor('svcEdit')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
@@ -11,8 +11,8 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcAdmin')" ng-click="publishService()">Publish</button>
-    <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcAdmin')" ng-click="retireService()">Retire</button>
+    <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="publishService()">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="retireService()">Retire</button>
   </overview-header>
 
   <overview-tabs>

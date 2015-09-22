@@ -22,7 +22,7 @@
             </div>
             <div class="col-sm-6">
               <div class="pull-right">
-                <button class="btn btn-line-primary" ng-click="modalNewApplication()" ng-if="User.isAuthorizedFor('appAdmin')">New Application</button>
+                <button class="btn btn-line-primary" ng-click="modalNewApplication()" ng-if="User.isAuthorizedFor('appEdit')">New Application</button>
               </div>
             </div>
           </div>
@@ -87,9 +87,9 @@
                     <td>
                       <div class="btn-group-xs">
                         <button class="btn btn-primary action-icon fa fa-plus" title="New contract" ng-if="canCreateContract(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersions[application.id])"></button>
-                        <button class="btn btn-success action-icon fa fa-check" title="Register application" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="confirmPublishApp(applicationVersions[application.id])"></button>
-                        <button class="btn btn-warning action-icon fa fa-trash" title="Retire application" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="confirmRetireApp(applicationVersions[application.id])"></button>
-                        <button class="btn btn-info action-icon fa fa-pie-chart" title="Application metrics" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="toMetrics(applicationVersions[application.id])"></button>
+                        <button class="btn btn-success action-icon fa fa-check" title="Register application" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="confirmPublishApp(applicationVersions[application.id])"></button>
+                        <button class="btn btn-warning action-icon fa fa-trash" title="Retire application" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="confirmRetireApp(applicationVersions[application.id])"></button>
+                        <button class="btn btn-info action-icon fa fa-pie-chart" title="Application metrics" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="toMetrics(applicationVersions[application.id])"></button>
                       </div>
                     </td>
                   </tr>
@@ -112,7 +112,7 @@
                           <td>{{contract.planName}} - {{contract.planVersion}}</td>
                           <td>
                             <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!" ng-show="canPublish(applicationVersions[application.id]) || canRetire(applicationVersions[application.id])"></button>
-                            <button class="btn btn-warning btn-xs action-icon fa fa-ban" title="Break contract" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="breakContract(contract)"></button>
+                            <button class="btn btn-warning btn-xs action-icon fa fa-ban" title="Break contract" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="breakContract(contract)"></button>
                           </td>
                         </tr>
                         </tbody>

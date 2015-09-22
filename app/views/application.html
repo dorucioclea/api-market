@@ -1,7 +1,7 @@
 <overview entity-version="applicationVersion" type="app">
   <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}" has-logo="true" base64logo="{{applicationVersion.application.base64logo}}"
                    entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('appEdit')" admin-permission="User.isAuthorizedFor('appAdmin')">
+                   edit-permission="User.isAuthorizedFor('appEdit')">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
@@ -9,8 +9,8 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appAdmin')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
-    <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appAdmin')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
+    <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appEdit')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
   </overview-header>
 
   <overview-tabs>
