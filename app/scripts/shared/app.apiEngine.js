@@ -76,6 +76,9 @@
     .factory('ApplicationContract', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
     }])
+    .factory('ApplicationMetrics', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/metrics/serviceUsage');
+    }])
     .factory('ApplicationApiRegistryJson', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
     }])
@@ -117,6 +120,18 @@
     }])
     .factory('ServicePlans', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
+    }])
+    .factory('ServiceMetricsResponse', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/responseStats');
+    }])
+    .factory('ServiceMetricsResponseSummary', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/summaryResponseStats');
+    }])
+    .factory('ServiceMetricsUsage', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
+    }])
+    .factory('ServiceMarketInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
     }])
 
   /// ========== CURRENTUSER ======================================================================

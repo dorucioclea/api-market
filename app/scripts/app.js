@@ -676,12 +676,6 @@
         .state('root.service.metrics', {
           url: '/metrics',
           templateUrl: 'views/partials/service/metrics.html',
-          //resolve: {
-          //  ServiceActivity: 'ServiceMetrics',
-          //  activityData: function (ServiceMetrics, organizationId, serviceId) {
-          //    return ServiceMetrics.get({orgId: organizationId, svcId: serviceId}).$promise;
-          //  }
-          //},
           controller: 'ServiceMetricsController'
         })
 

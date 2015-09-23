@@ -30,7 +30,7 @@
     </label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics">Metrics</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
   </overview-tabs>
 </overview>
 

@@ -338,25 +338,99 @@
 
 
     // ==== Metrics Controller
-    .controller('ServiceMetricsController', ['$scope', 'svcScreenModel', function($scope, svcScreenModel) {
-      // usage  historgram by Service
-      $scope.usageHistogramData = [
-        {'x': 15, 'data1': 35},
-        {'x': 16, 'data1': 59},
-        {'x': 17, 'data1': 23},
-        {'x': 18, 'data1': 90},
-        {'x': 19, 'data1': 196},
-        {'x': 20, 'data1': 24}
-      ];
-      $scope.usageHistogramColumns = [
-        {"id": "data1", 'name': 'Usage', "type": "spline", 'color': 'green'},
-      ];
-      $scope.usageHistogramX = {'id': 'x'};
+    .controller('ServiceMetricsController', ['$scope', '$stateParams', 'svcScreenModel',
+      'ServiceMetricsResponse', 'ServiceMetricsResponseSummary', 'ServiceMarketInfo',
+      function($scope, $stateParams, svcScreenModel,
+               ServiceMetricsResponse, ServiceMetricsResponseSummary, ServiceMarketInfo) {
 
-      svcScreenModel.updateTab('Metrics');
-    }]);
+        svcScreenModel.updateTab('Metrics');
+        $scope.responseHistogramData = [];
+        $scope.summary = {};
+        $scope.marketInfo = {};
+
+        $scope.open = function($event, to) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          if (to) {
+            $scope.toOpened = true;
+          } else {
+            $scope.fromOpened = true;
+          }
+        };
+
+        ServiceMarketInfo.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
+          $scope.marketInfo = reply;
+        });
+
+        var updateMetrics = function () {
+          ServiceMetricsResponse.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, from: $scope.fromDt, to: $scope.toDt, interval: $scope.interval}, function (response) {
+            createResponseHistogram(response.data);
+          });
+          ServiceMetricsResponseSummary.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, from: $scope.fromDt, to: $scope.toDt}, function (metrics) {
+            $scope.summary = metrics.data[0];
+          });
+        };
+
+        $scope.fromDt = Date.now() - 10000;
+        $scope.toDt = Date.now();
+        $scope.interval = 'day';
+
+        $scope.$watch('fromDt', function () {
+          updateMetrics();
+        });
+
+        $scope.$watch('toDt', function () {
+          updateMetrics();
+        });
+
+        $scope.$watch('interval', function () {
+          updateMetrics();
+        });
+
+        $scope.formatFunction = function (x) {
+          return x.getDay();
+        };
 
 
+        var setBlanksToZero = function (property) {
+          return angular.isDefined(property) ? property : 0;
+        };
+
+        var createResponseHistogram = function (dataArray) {
+          $scope.responseHistogramData = [];
+
+          angular.forEach(dataArray, function (data) {
+            var date = new Date(data.dateInterval);
+
+            var graphObject = {
+              'x': date,
+              'latency_kong': setBlanksToZero(data.latencyKong),
+              'latency_proxy': setBlanksToZero(data.latencyProxy),
+              'latency_request': setBlanksToZero(data.latencyRequest),
+              'requests_count': setBlanksToZero(data.requestsCount),
+              'requests_wrong': setBlanksToZero(data.requestsWrong),
+              'response_wrong': setBlanksToZero(data.responseWrong)
+            };
+            $scope.responseHistogramData.push(graphObject);
+          });
+
+          $scope.responseHistogramData.sort(function(a, b) {
+            return a.x - b.x;
+          });
+        };
+
+        $scope.responseHistogramColumns = [
+          {"id": "latency_kong", 'name': 'Kong latency', "type": "line", 'color': 'green'},
+          {"id": "latency_proxy", 'name': 'Proxy latency', "type": "line", 'color': 'blue'},
+          {"id": "latency_request", 'name': 'Request latency', "type": "line", 'color': 'red'},
+          {"id": "requests_count", 'name': 'Requests', "type": "line", 'color': 'orange'},
+          {"id": "requests_wrong", 'name': 'Wrong requests', "type": "line", 'color': 'magenta'},
+          {"id": "response_wrong", 'name': 'Wrong responses', "type": "line", 'color': 'purple'}
+        ];
+        $scope.responseHistogramX = {'id': 'x'};
+
+      }]);
 
   // #end
 })(window.angular);
