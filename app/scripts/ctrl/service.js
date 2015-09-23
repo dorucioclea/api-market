@@ -348,8 +348,9 @@
         $scope.summary = {};
         $scope.marketInfo = {};
 
-        $scope.fromDt = Date.now() - (86400 * 1000); // 1 Day in millis
-        $scope.toDt = Date.now();
+        $scope.fromDt = new Date();
+        $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
+        $scope.toDt = new Date();
         $scope.interval = 'day';
 
         $scope.open = function($event, to) {
