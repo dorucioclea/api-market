@@ -348,6 +348,10 @@
         $scope.summary = {};
         $scope.marketInfo = {};
 
+        $scope.fromDt = Date.now() - (86400 * 1000); // 1 Day in millis
+        $scope.toDt = Date.now();
+        $scope.interval = 'day';
+
         $scope.open = function($event, to) {
           $event.preventDefault();
           $event.stopPropagation();
@@ -364,17 +368,18 @@
         });
 
         var updateMetrics = function () {
+          console.log($scope.fromDt);
+          console.log($scope.toDt);
+          console.log($scope.interval);
           ServiceMetricsResponse.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, from: $scope.fromDt, to: $scope.toDt, interval: $scope.interval}, function (response) {
             createResponseHistogram(response.data);
           });
           ServiceMetricsResponseSummary.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId, from: $scope.fromDt, to: $scope.toDt}, function (metrics) {
+            console.log(metrics);
             $scope.summary = metrics.data[0];
           });
         };
 
-        $scope.fromDt = Date.now() - 10000;
-        $scope.toDt = Date.now();
-        $scope.interval = 'day';
 
         $scope.$watch('fromDt', function () {
           updateMetrics();
