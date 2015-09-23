@@ -109,17 +109,31 @@
       }])
 
 /// ==== Dashboard Controller
-    .controller("DashboardCtrl", ["$scope", "svcData", "categories", "headerModel", "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories",
-      function($scope, svcData, categories, headerModel, SearchSvcsWithStatus, SearchPublishedSvcsInCategories) {
+    .controller("DashboardCtrl", ["$scope", "svcData", "categories", "headerModel",
+      "SearchSvcsWithStatus", "SearchPublishedSvcsInCategories", "ServiceMarketInfo",
+      function($scope, svcData, categories, headerModel,
+               SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {
         headerModel.setIsButtonVisible(false, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
         $scope.availableAPIs = svcData;
-
         $scope.currentCategories = [];
-
         $scope.availableCategories = categories;
+        $scope.svcStats = [];
 
+        var getStats = function (svc) {
+          ServiceMarketInfo.get({
+            orgId: svc.service.organization.id,
+            svcId: svc.service.id,
+            versionId: svc.version
+          }, function (stats) {
+            $scope.svcStats[svc.service.id] = stats;
+          });
+        };
+
+        angular.forEach(svcData, function (svc) {
+          getStats(svc);
+        });
 
         $scope.toggleCategories = function(category) {
           var index = $scope.currentCategories.indexOf(category);
