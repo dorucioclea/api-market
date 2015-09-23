@@ -347,6 +347,7 @@
         $scope.responseHistogramData = [];
         $scope.summary = {};
         $scope.marketInfo = {};
+        $scope.uptime = [];
 
         $scope.fromDt = new Date();
         $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
@@ -366,6 +367,7 @@
 
         ServiceMarketInfo.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (reply) {
           $scope.marketInfo = reply;
+          $scope.uptime.push(reply);
         });
 
         var updateMetrics = function () {
@@ -431,10 +433,12 @@
           {"id": "latency_proxy", 'name': 'Proxy latency', "type": "line", 'color': 'blue'},
           {"id": "latency_request", 'name': 'Request latency', "type": "line", 'color': 'red'},
           {"id": "requests_count", 'name': 'Requests', "type": "line", 'color': 'orange'},
-          {"id": "requests_wrong", 'name': 'Wrong requests', "type": "line", 'color': 'magenta'},
-          {"id": "response_wrong", 'name': 'Wrong responses', "type": "line", 'color': 'purple'}
+          {"id": "requests_wrong", 'name': 'Malformed requests', "type": "line", 'color': 'magenta'},
+          {"id": "response_wrong", 'name': 'Service errors', "type": "line", 'color': 'purple'}
         ];
         $scope.responseHistogramX = {'id': 'x'};
+
+        $scope.gaugeColumns = [{"id": "uptime", 'name': 'Uptime %', "type": "gauge", 'color': 'green'}];
 
       }]);
 

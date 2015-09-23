@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-11">
     <h4>Metrics</h4>
     <hr>
   </div>
@@ -63,88 +63,77 @@
     </div>
   </div>
 
-  <div class="col-sm-6 mt20">
-    <div class="panel panel-primary">
-      <div class="panel-heading metric-heading text-center">Market Info</div>
+  <div class="col-sm-4 mt5">
+    <div class="panel panel-default mini-box text-center panel-hovered">
       <div class="panel-body">
-        <div class="col-sm-12">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Uptime
-            </div>
-            <div class="panel-body">
-              <c3chart bindto-id="gauge-plot1-chart">
-                <chart-column column-id="Uptime %"
-                              column-values="100"
-                              column-type="gauge"
-                              column-color="green"/>
-                <chart-gauge min="0"
-                             max="100"
-                             width="40"/>
-              </c3chart>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 mt20">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Developers
-            </div>
-            <div class="panel-body">
-              {{marketInfo.developers}}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 mt20">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Followers
-            </div>
-            <div class="panel-body">
-              {{marketInfo.followers}}
-            </div>
-          </div>
-        </div>
+        {{summary.requestsCount}}
+      </div>
+      <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+        <span class="left text-bold">Total requests</span>
+        <span class="right fa fa-envelope"></span>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-6 mt20">
-    <div class="panel panel-primary">
-      <div class="panel-heading metric-heading text-center">Period Totals</div>
+  <div class="col-sm-4 mt5">
+    <div class="panel panel-default mini-box text-center panel-hovered">
       <div class="panel-body">
-        <div class="col-sm-8 col-sm-offset-2">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Requests
-            </div>
-            <div class="panel-body">
-              {{summary.requestsCount}}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8 col-sm-offset-2 mt20">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Requests Wrong
-            </div>
-            <div class="panel-body">
-              {{summary.requestsWrong}}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8 col-sm-offset-2 mt20">
-          <div class="panel panel-default text-center">
-            <div class="panel-heading">
-              Responses Wrong
-            </div>
-            <div class="panel-body">
-              {{summary.responseWrong}}
-            </div>
-          </div>
-        </div>
+        {{summary.requestsWrong}}
+      </div>
+      <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+        <span class="left text-bold">Malformed requests</span>
+        <span class="right fa fa-undo"></span>
       </div>
     </div>
   </div>
 
+  <div class="col-sm-4 mt5">
+    <div class="panel panel-default mini-box text-center panel-hovered">
+      <div class="panel-body">
+        {{summary.responseWrong}}
+      </div>
+      <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+        <span class="left text-bold">Service errors</span>
+        <span class="right fa fa-exclamation-triangle"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-sm-12 mt10">
+      <div class="panel text-center">
+        <div class="panel-body">
+            <c3chart bindto-id="gauge-plot1-chart" chart-data="uptime" chart-columns="gaugeColumns">
+              <chart-gauge min="0"
+                           max="100"
+                           units="uptime"
+                           width="35"/>
+            </c3chart>
+          </div>
+        </div>
+    </div>
+  <div class="col-sm-3 col-sm-push-2">
+    <div class="panel panel-default mini-box text-center panel-hovered">
+      <div class="panel-body">
+        {{marketInfo.developers}}
+      </div>
+      <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+        <span class="left text-bold">Developers</span>
+        <span class="right fa fa-users"></span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-sm-push-4">
+    <div class="panel panel-default mini-box text-center panel-hovered">
+      <div class="panel-body">
+        {{marketInfo.followers}}
+      </div>
+      <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+        <span class="left text-bold">Followers</span>
+        <span class="right fa fa-star"></span>
+      </div>
+    </div>
+  </div>
+
+  </div>
 </div>
