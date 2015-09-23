@@ -104,11 +104,51 @@
     }])
 
     /// ==== Metrics Controller
-    .controller("AppMetricsCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
+    .controller("AppMetricsCtrl", ["$scope", "$stateParams", "appScreenModel", "ApplicationMetrics",
+      function ($scope, $stateParams, appScreenModel, ApplicationMetrics) {
 
-      appScreenModel.updateTab('Metrics');
+        appScreenModel.updateTab('Metrics');
+        $scope.responseHistogramData = [];
+        $scope.summary = {};
+        $scope.marketInfo = {};
+        $scope.uptime = [];
 
-    }])
+        $scope.fromDt = new Date();
+        $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
+        $scope.toDt = new Date();
+        $scope.interval = 'day';
+
+        $scope.open = function($event, to) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          if (to) {
+            $scope.toOpened = true;
+          } else {
+            $scope.fromOpened = true;
+          }
+        };
+
+        var updateMetrics = function () {
+          ApplicationMetrics.get({orgId: $stateParams.orgId, appId: $stateParams.appId, versionId: $stateParams.versionId,
+            from: $scope.fromDt, to: $scope.toDt, interval: $scope.interval}, function (stats) {
+            console.log(stats);
+          })
+        };
+
+        $scope.$watch('fromDt', function () {
+          updateMetrics();
+        });
+
+        $scope.$watch('toDt', function () {
+          updateMetrics();
+        });
+
+        $scope.$watch('interval', function () {
+          updateMetrics();
+        });
+
+      }])
 
     /// ==== Overview Controller
     .controller("OverviewCtrl", ["$scope", "appScreenModel", function ($scope, appScreenModel) {
