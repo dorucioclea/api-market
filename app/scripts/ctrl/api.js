@@ -69,12 +69,24 @@
       svcTab.updateTab('Plans');
       $scope.plans = planData;
       $scope.policies = [];
-      $scope.policyDetails = [];
+      $scope.policyConfiguration = [];
 
+
+      var createConfigObject = function (policyDetails) {
+        var configObjects = [];
+        angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
+          var configObject = {
+            key: key,
+            value: value
+          };
+          configObjects.push(configObject);
+        });
+        $scope.policyConfiguration[policyDetails.id] = configObjects;
+      };
 
       var getPolicyDetails = function (policy, plan) {
         PlanVersionPolicy.get({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id}, function (policyDetails) {
-          $scope.policyDetails[policy.id] = policyDetails;
+          createConfigObject(policyDetails);
         });
       };
 

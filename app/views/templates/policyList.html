@@ -16,12 +16,14 @@
           <span>{{ policy.createdOn | date:'yyyy-MM-dd' }}</span>
         </div>
         <div class="description apiman-label-faded">
-          <b>{{ctrl.policyDetails[policy.id].configuration}}</b>
+          <div ng-repeat="config in ctrl.policyConfiguration[policy.id]">
+            <p class="text-bold">{{config.key}}: {{config.value}}</p>
+          </div>
           {{ policy.description }}
         </div>
       </div>
       <div class="col pull-right">
-        <button class="btn btn-default btn-sm" ng-click="ctrl.remove( policy )">Remove</button>
+        <button class="btn btn-default btn-sm" ng-click="ctrl.remove( policy )" ng-show="ctrl.canEdit">Remove</button>
       </div>
     </div>
 

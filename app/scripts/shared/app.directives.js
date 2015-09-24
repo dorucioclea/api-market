@@ -250,7 +250,8 @@
         restrict: 'E',
         scope: {
           policies: "=",
-          policyDetails: "=",
+          policyConfiguration: "=",
+          canEdit: "=",
           remove: "=removeFunction",
           reorder: "=reorderFunction",
           type: "@",

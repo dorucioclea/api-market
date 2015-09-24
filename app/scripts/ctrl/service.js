@@ -292,11 +292,11 @@
 
       }])
     /// ==== Policies Controller
-    .controller("ServicePoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyDetails", "svcScreenModel", "ServiceVersionPolicy",
-      function ($scope, $modal, $stateParams, policyData, policyDetails, svcScreenModel, ServiceVersionPolicy) {
+    .controller("ServicePoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyConfiguration", "svcScreenModel", "ServiceVersionPolicy",
+      function ($scope, $modal, $stateParams, policyData, policyConfiguration, svcScreenModel, ServiceVersionPolicy) {
 
         $scope.policies = policyData;
-        $scope.policyDetails = policyDetails;
+        $scope.policyDetails = policyConfiguration;
         svcScreenModel.updateTab('Policies');
 
 

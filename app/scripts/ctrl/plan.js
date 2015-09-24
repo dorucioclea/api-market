@@ -45,11 +45,11 @@
 
     }])
     /// ==== Policies Controller
-    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyDetails", "planScreenModel", "PlanVersionPolicy",
-      function ($scope, $modal, $stateParams, policyData, planPolicyDetails, planScreenModel, PlanVersionPolicy) {
+    .controller("PlanPoliciesCtrl", ["$scope", "$modal", "$stateParams", "policyData", "policyConfiguration", "planScreenModel", "PlanVersionPolicy",
+      function ($scope, $modal, $stateParams, policyData, policyConfiguration, planScreenModel, PlanVersionPolicy) {
 
         $scope.policies = policyData;
-        $scope.policyDetails = planPolicyDetails;
+        $scope.policyDetails = policyConfiguration;
         planScreenModel.updateTab('Policies');
 
 
