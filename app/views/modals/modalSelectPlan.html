@@ -57,8 +57,10 @@
     </div>
     <div ng-repeat="policy in selectedPlanPolicies">
       <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}:
-      <span class="text-bold">{{selectedPlanPolicyDetails[policy.id].configuration}}</span>
-    </div> <!-- TODO implement policy details -->
+      <div ng-repeat="config in selectedPlanPolicyConfig[policy.id]">
+        <p class="text-bold">{{config.key}}: {{config.value}}</p>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
