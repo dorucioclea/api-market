@@ -116,10 +116,32 @@
         headerModel.setIsButtonVisible(false, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
-        $scope.availableAPIs = svcData;
+        $scope.availableAPIs = [];
         $scope.currentCategories = [];
         $scope.availableCategories = categories;
         $scope.svcStats = [];
+
+        var filterAPIVersions = function (apis) {
+          angular.forEach(apis, function (api) {
+            var found = false;
+            for (var i = 0; i < $scope.availableAPIs.length; i++) {
+              if ($scope.availableAPIs[i].service.id === api.service.id) {
+                found = true;
+                // Service already has a version in the array, check if this one is newer
+                if ($scope.availableAPIs[i].createdOn < api.createdOn) {
+                   // Newer, so replace the existing version with this one
+                  $scope.availableAPIs[i] = api;
+                }
+                break;
+              }
+            }
+            // If after going through the entire array we have not found a service with this ID, add it.
+            if (!found) {
+              $scope.availableAPIs.push(api);
+            }
+          });
+        };
+        filterAPIVersions(svcData);
 
         var getStats = function (svc) {
           ServiceMarketInfo.get({
