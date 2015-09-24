@@ -80,7 +80,16 @@
 
 
         if ($scope.contractApps.length > 0) {
-          $scope.selectedContract = $scope.contractApps[0];
+          if (docTester.preferredContract) {
+            if ($scope.contractApps.indexOf(docTester.preferredContract > -1)) {
+              $scope.selectedContract = docTester.preferredContract;
+            } else {
+              $scope.selectedContract = $scope.contractApps[0];
+            }
+          } else {
+            $scope.selectedContract = $scope.contractApps[0];
+          }
+          docTester.setPreferredContract($scope.selectedContract);
           docTester.setApiKey($scope.selectedContract.apikey);
         } else {
           $scope.selectedContract = undefined;

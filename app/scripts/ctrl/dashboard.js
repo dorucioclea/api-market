@@ -6,10 +6,10 @@
 
     /// ==== MarketDash Controller
     .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData', 'orgScreenModel',
-      'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp',
+      'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'docTester',
       'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
       function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                appData, appVersions, appContracts, headerModel, selectedApp,
+                appData, appVersions, appContracts, headerModel, selectedApp, docTester,
                 toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.updateOrganization(orgData);
@@ -40,6 +40,11 @@
         $scope.newContract = function (appVersion) {
           selectedApp.updateApplication(appVersion);
           $state.go('root.apis.grid');
+        };
+
+        $scope.toApiDoc = function (contract) {
+          $state.go('root.api.documentation', ({orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion}));
+          docTester.setPreferredContract(contract);
         };
 
         $scope.confirmPublishApp = function (appVersion) {

@@ -101,7 +101,12 @@
         });
         function addApiKeyAuthorization(){
           //TODO add key var - replace with var
-          var key = encodeURIComponent($sessionStorage.apikey);
+          var key;
+          if (docTester.preferredContract) {
+            key = docTester.apikey;
+          } else {
+            key = encodeURIComponent($sessionStorage.apikey);
+          }
           if(key && key.trim() !== "") {
             $scope.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("apikey", key, "header"));
           }

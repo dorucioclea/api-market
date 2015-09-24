@@ -40,6 +40,10 @@
         API Key for Testing
       </div>
       <div class="panel-body">
+        <div ng-if="contractApps.length === 0">
+          <p>No contracts exist for this service.</p>
+          <p>You can create a contract for this service using the button above.</p>
+        </div>
         <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
           <span>Use the API key from this application for testing:</span>
           <div class="btn-group dropdown" dropdown>
