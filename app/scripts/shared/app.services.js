@@ -360,6 +360,15 @@
 
     })
 
+    // DOCUMENTATION TESTING HELPER
+    .service('docTester', function () {
+      this.apikey = undefined;
+
+      this.setApiKey = function (key) {
+        this.apikey = key;
+      };
+    })
+
     // POLICY CONFIG DETAILS
     .service('policyConfig', function () {
       this.createConfigObject = function (policyDetails) {

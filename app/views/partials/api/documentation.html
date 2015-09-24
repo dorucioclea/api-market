@@ -3,52 +3,72 @@
   <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
   <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
 
-      <!-- Swagger API documentation panel -->
-      <div class="col-md-9">
-        <div class="panel panel-default mb15">
-          <div class="panel-heading">
-            Swagger specification
-          </div>
-          <div class="panel-body">
-            <div class="swagger-section">
-              <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
-            </div>
-          </div>
+  <!-- Swagger API documentation panel -->
+  <div class="col-md-9">
+    <div class="panel panel-default mb15">
+      <div class="panel-heading">
+        Swagger specification
+      </div>
+      <div class="panel-body">
+        <div class="swagger-section">
+          <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
         </div>
-      </div><!-- end Swagger Documentation panel -->
+      </div>
+    </div>
+  </div><!-- end Swagger Documentation panel -->
 
-      <!-- Sidebar panels -->
-      <div class="col-md-3">
+  <!-- Sidebar panels -->
+  <div class="col-md-3">
 
-        <!-- API URL panel -->
-        <div class="panel panel-default mb15">
-          <div class="panel-heading text-center">
-            API URL
+    <!-- API URL panel -->
+    <div class="panel panel-default mb15">
+      <div class="panel-heading text-center">
+        API URL
+      </div>
+      <div class="panel-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <input readonly type="text" class="form-control" value="{{endpoint.managedEndpoint}}">
           </div>
-          <div class="panel-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <input readonly type="text" class="form-control" value="{{endpoint.managedEndpoint}}">
-              </div>
-            </form>
-          </div>
-        </div><!-- end API URL panel -->
+        </form>
+      </div>
+    </div><!-- end API URL panel -->
 
-        <!-- Authorization panel -->
-        <div class="panel panel-default">
-          <div class="panel-heading text-center">
-            Additional Authorization Required
+    <!-- Existing Contracts panel -->
+    <div class="panel panel-default mb15">
+      <div class="panel-heading text-center">
+        API Key for Testing
+      </div>
+      <div class="panel-body">
+        <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
+          <span>Use the API key from this application for testing:</span>
+          <div class="btn-group dropdown" dropdown>
+            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+              {{selectedContract ? selectedContract.appOrganizationName + ': ' + selectedContract.appName + ' ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-left">
+              <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)"><a>{{contract.appOrganizationName}}: {{contract.appName}} {{contract.appVersion}}</a></li>
+            </ul>
           </div>
-          <div class="panel-body">
-            <!-- #start accordion -->
-            <accordion class="accordion-panel">
-              <auth-accordion-group heading="'OAuth 2.0'"><oauth2></oauth2></auth-accordion-group>
-              <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
-            </accordion>
-            <!-- #end accordion -->
-          </div>
-        </div><!-- end authorization panel -->
+        </form>
+      </div>
+    </div><!-- end Existing Contracts panel -->
 
-      </div> <!-- end sidebar panels -->
+    <!-- Authorization panel -->
+    <div class="panel panel-default">
+      <div class="panel-heading text-center">
+        Additional Authorization Required
+      </div>
+      <div class="panel-body">
+        <!-- #start accordion -->
+        <accordion class="accordion-panel">
+          <auth-accordion-group heading="'OAuth 2.0'"><oauth2></oauth2></auth-accordion-group>
+          <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
+        </accordion>
+        <!-- #end accordion -->
+      </div>
+    </div><!-- end authorization panel -->
+
+  </div> <!-- end sidebar panels -->
 
 </div>

@@ -53,13 +53,48 @@
 
 
 /// ==== Service Swagger Documentation Controller
-    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcTab", "ServiceVersionDefinition",
-      function($scope, $modal, $stateParams, endpoint, svcTab, ServiceVersionDefinition) {
+    .controller("DocumentationCtrl", ["$scope", "$modal", "$stateParams", "endpoint", "svcContracts", "userApps",
+      "docTester", "svcTab", "ServiceVersionDefinition",
+      function($scope, $modal, $stateParams, endpoint, svcContracts, userApps,
+               docTester, svcTab, ServiceVersionDefinition) {
         svcTab.updateTab('Documentation');
         $scope.endpoint = endpoint;
+        $scope.contractApps = [];
+        var currentDefinitionSpec;
+
+        var filterApplications = function (apps, contracts) {
+          var match = function (app, contract) {
+            return (app.id === contract.appId && app.organizationId === contract.appOrganizationId);
+          };
+
+          for (var i = 0; i < contracts.length; i++) {
+            for (var j = 0; j < apps.length; j++) {
+              if (match(apps[j], contracts[i])) {
+                $scope.contractApps.push(contracts[i]);
+                break;
+              }
+            }
+          }
+        };
+        filterApplications(userApps, svcContracts);
+
+
+        if ($scope.contractApps.length > 0) {
+          $scope.selectedContract = $scope.contractApps[0];
+          docTester.setApiKey($scope.selectedContract.apikey);
+        } else {
+          $scope.selectedContract = undefined;
+        }
+
+        $scope.selectContract = function (contract) {
+          $scope.selectedContract = contract;
+          docTester.setApiKey(contract.apikey);
+          $scope.updateSwaggerHeader();
+        };
 
         ServiceVersionDefinition.get({orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId}, function (definitionSpec) {
-          $scope.loadSwaggerUi(definitionSpec, "swagger-ui-container",endpoint);
+          currentDefinitionSpec = definitionSpec;
+          $scope.loadSwaggerUi(currentDefinitionSpec, "swagger-ui-container",endpoint);
         });
       }])
 
@@ -67,32 +102,32 @@
     .controller("SvcPlanCtrl", ["$scope", "$stateParams", "svcTab", "planData", "policyConfig", "PlanVersionPolicy",
       function($scope, $stateParams, svcTab, planData, policyConfig, PlanVersionPolicy) {
 
-      svcTab.updateTab('Plans');
-      $scope.plans = planData;
-      $scope.policies = [];
-      $scope.policyConfiguration = [];
+        svcTab.updateTab('Plans');
+        $scope.plans = planData;
+        $scope.policies = [];
+        $scope.policyConfiguration = [];
 
 
-      var getPolicyDetails = function (policy, plan) {
-        PlanVersionPolicy.get({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id}, function (policyDetails) {
-          $scope.policyConfiguration[policyDetails.id] = policyConfig.createConfigObject(policyDetails);
-        });
-      };
-
-      var getPlanPolicies = function (plan) {
-        PlanVersionPolicy.query({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version}, function (policies) {
-          $scope.policies[plan.planId] = policies;
-          angular.forEach(policies, function (policy) {
-            getPolicyDetails(policy, plan);
+        var getPolicyDetails = function (policy, plan) {
+          PlanVersionPolicy.get({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id}, function (policyDetails) {
+            $scope.policyConfiguration[policyDetails.id] = policyConfig.createConfigObject(policyDetails);
           });
+        };
+
+        var getPlanPolicies = function (plan) {
+          PlanVersionPolicy.query({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version}, function (policies) {
+            $scope.policies[plan.planId] = policies;
+            angular.forEach(policies, function (policy) {
+              getPolicyDetails(policy, plan);
+            });
+          });
+        };
+
+        angular.forEach($scope.plans, function (plan) {
+          getPlanPolicies(plan);
         });
-      };
 
-      angular.forEach($scope.plans, function (plan) {
-        getPlanPolicies(plan);
-      });
-
-    }])
+      }])
 
     /// ==== Service Announcements Controller
     .controller("AnnouncementCtrl", ["$scope", "svcTab", function($scope, svcTab) {

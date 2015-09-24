@@ -291,6 +291,14 @@
             ServiceEndpoint: 'ServiceEndpoint',
             endpoint: function (ServiceEndpoint, organizationId, serviceId, versionId) {
               return ServiceEndpoint.get({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            },
+            ServiceVersionContracts: 'ServiceVersionContracts',
+            svcContracts: function (ServiceVersionContracts, organizationId, serviceId, versionId) {
+              return ServiceVersionContracts.query({orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+            },
+            CurrentUserApps: 'CurrentUserApps',
+            userApps: function (CurrentUserApps) {
+              return CurrentUserApps.query().$promise;
             }
           },
           controller: 'DocumentationCtrl'

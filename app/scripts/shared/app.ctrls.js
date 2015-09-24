@@ -5,8 +5,12 @@
   angular.module("app.ctrls", [])
 
 // Root Controller
-    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout", "Action", "ACTIONS", "currentUserModel", "toastService", "TOAST_TYPES", "$sessionStorage",
-      function($rs, $scope, $state, $modal, $timeout, Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, $sessionStorage) {
+    .controller("AppCtrl", ["$rootScope", "$scope", "$state", "$modal", "$timeout",
+      "Action", "ACTIONS", "currentUserModel", "toastService", "TOAST_TYPES", "docTester",
+      "$sessionStorage",
+      function($rs, $scope, $state, $modal, $timeout,
+               Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester,
+               $sessionStorage) {
       var mm = window.matchMedia("(max-width: 767px)");
 
       $rs.isMobile = mm.matches ? true: false;
@@ -103,6 +107,10 @@
           }
         }
         $scope.swaggerUi.load();
+      };
+
+      $scope.updateSwaggerHeader = function () {
+        $scope.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("apikey", docTester.apikey, "header"));
       };
 
       $scope.navFull = true;

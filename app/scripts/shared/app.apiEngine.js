@@ -115,6 +115,9 @@
     .factory('ServiceVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');
     }])
+    .factory('ServiceVersionContracts', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts');
+    }])
     .factory('ServiceEndpoint', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
       return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
     }])
