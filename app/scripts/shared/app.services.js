@@ -360,6 +360,21 @@
 
     })
 
+    // POLICY CONFIG DETAILS
+    .service('policyConfig', function () {
+      this.createConfigObject = function (policyDetails) {
+        var configObjects = [];
+        angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
+          var configObject = {
+            key: key,
+            value: value
+          };
+          configObjects.push(configObject);
+        });
+        return configObjects;
+      };
+    })
+
 
     // CURRENT USER MODEL
     .service('currentUserModel', [ "orgScreenModel", "CurrentUserInfo", function (orgScreenModel, CurrentUserInfo) {

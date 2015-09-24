@@ -443,21 +443,10 @@
             policyData: function (PlanVersionPolicy, organizationId, planId, versionId) {
               return PlanVersionPolicy.query({orgId: organizationId, planId: planId, versionId: versionId}).$promise;
             },
-            policyConfiguration: function ($q, policyData, organizationId, planId, versionId, PlanVersionPolicy) {
+            policyConfig: 'policyConfig',
+            policyConfiguration: function ($q, policyData, organizationId, planId, policyConfig, versionId, PlanVersionPolicy) {
               var policyConfiguration = [];
               var promises = [];
-
-              var createConfigObject = function (policyDetails) {
-                var configObjects = [];
-                angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
-                  var configObject = {
-                    key: key,
-                    value: value
-                  };
-                  configObjects.push(configObject);
-                });
-                policyConfiguration[policyDetails.id] = configObjects;
-              };
 
               angular.forEach(policyData, function (policy) {
                 promises.push(PlanVersionPolicy.get({orgId: organizationId, planId: planId, versionId: versionId, policyId: policy.id}).$promise);
@@ -465,7 +454,7 @@
 
               return $q.all(promises).then(function (results) {
                 angular.forEach(results, function (value) {
-                  createConfigObject(value);
+                  policyConfiguration[value.id] = policyConfig.createConfigObject(value);
                 });
                 return policyConfiguration;
               });
@@ -651,21 +640,10 @@
                 versionId: versionId
               }).$promise;
             },
-            policyConfiguration: function ($q, policyData, organizationId, serviceId, versionId, ServiceVersionPolicy) {
+            policyConfig: 'policyConfig',
+            policyConfiguration: function ($q, policyData, organizationId, serviceId, versionId, policyConfig, ServiceVersionPolicy) {
               var policyConfiguration = [];
               var promises = [];
-
-              var createConfigObject = function (policyDetails) {
-                var configObjects = [];
-                angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
-                  var configObject = {
-                    key: key,
-                    value: value
-                  };
-                  configObjects.push(configObject);
-                });
-                policyConfiguration[policyDetails.id] = configObjects;
-              };
 
               angular.forEach(policyData, function (policy) {
                 promises.push(ServiceVersionPolicy.get({orgId: organizationId, svcId: serviceId, versionId: versionId, policyId: policy.id}).$promise);
@@ -673,7 +651,7 @@
 
               return $q.all(promises).then(function (results) {
                 angular.forEach(results, function (value) {
-                  createConfigObject(value);
+                  policyConfiguration[value.id] = policyConfig.createConfigObject(value);
                 });
                 return policyConfiguration;
               });

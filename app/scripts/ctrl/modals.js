@@ -103,9 +103,9 @@
 
 /// ==== Contract creation: Plan Selection Controller
     .controller("PlanSelectCtrl",
-    ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "orgScreenModel", "svcModel",
+    ["$scope", "$modal", "$state", "$stateParams", "$timeout", "selectedApp", "orgScreenModel", "svcModel", "policyConfig",
       "toastService", "TOAST_TYPES", "Application", "ApplicationContract", "ApplicationVersion", "CurrentUserAppOrgs", "PlanVersion", "PlanVersionPolicy",
-      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel, svcModel,
+      function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel, svcModel, policyConfig,
                 toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion, CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy) {
 
         $scope.service = svcModel.getService();
@@ -178,21 +178,9 @@
           });
         };
 
-        var createConfigObject = function (policyDetails) {
-          var configObjects = [];
-          angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
-            var configObject = {
-              key: key,
-              value: value
-            };
-            configObjects.push(configObject);
-          });
-          $scope.selectedPlanPolicyConfig[policyDetails.id] = configObjects;
-        };
-
         var getPlanPolicyDetails = function (policy) {
           PlanVersionPolicy.get({orgId: $scope.selectedPlan.plan.organization.id, planId: $scope.selectedPlan.plan.id, versionId: $scope.selectedPlan.version, policyId: policy.id}, function (deets) {
-            createConfigObject(deets);
+            $scope.selectedPlanPolicyConfig[deets.id] = policyConfig.createConfigObject(deets);
           });
         };
 

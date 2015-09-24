@@ -64,7 +64,8 @@
       }])
 
     /// ==== Service Plans Controller
-    .controller("SvcPlanCtrl", ["$scope", "$stateParams", "svcTab", "planData", "PlanVersionPolicy", function($scope, $stateParams, svcTab, planData, PlanVersionPolicy) {
+    .controller("SvcPlanCtrl", ["$scope", "$stateParams", "svcTab", "planData", "policyConfig", "PlanVersionPolicy",
+      function($scope, $stateParams, svcTab, planData, policyConfig, PlanVersionPolicy) {
 
       svcTab.updateTab('Plans');
       $scope.plans = planData;
@@ -72,21 +73,9 @@
       $scope.policyConfiguration = [];
 
 
-      var createConfigObject = function (policyDetails) {
-        var configObjects = [];
-        angular.forEach(angular.fromJson(policyDetails.configuration), function (value, key) {
-          var configObject = {
-            key: key,
-            value: value
-          };
-          configObjects.push(configObject);
-        });
-        $scope.policyConfiguration[policyDetails.id] = configObjects;
-      };
-
       var getPolicyDetails = function (policy, plan) {
         PlanVersionPolicy.get({orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id}, function (policyDetails) {
-          createConfigObject(policyDetails);
+          $scope.policyConfiguration[policyDetails.id] = policyConfig.createConfigObject(policyDetails);
         });
       };
 
