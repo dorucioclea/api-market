@@ -250,7 +250,8 @@
         };
 
         $scope.toMarketDash = function () {
-          if ($scope.orgScreenModel.organization.id === undefined) {
+          console.log('toMarketDash called');
+          if ($scope.orgScreenModel.organization === undefined) {
             $state.go('root.myOrganizations');
           } else {
             $state.go('root.market-dash', {orgId: $scope.orgScreenModel.organization.id});

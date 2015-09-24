@@ -120,7 +120,7 @@
         var noPlanSelected = true;
 
         var checkOrgContext = function () {
-          if (orgScreenModel.organization.id === undefined) {
+          if (orgScreenModel.organization === undefined) {
             // No org context, get user's AppOrgs
             $scope.hasOrgContext = false;
             CurrentUserAppOrgs.query({}, function (reply) {
