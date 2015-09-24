@@ -531,6 +531,7 @@
         $scope.flow = flowFactory.create({
           singleFile: true
         });
+        $scope.basePathPattern = /^[[a-z\-]+$/;
 
         $scope.readFile = function ($file) {
           if(imageService.checkFileType($file)) {
@@ -555,6 +556,8 @@
           } else {
             svc.base64logo = "";
           }
+          var basePathStart = '/';
+          svc.basepath = basePathStart.concat(svc.basepath);
           svc.categories = cats;
 
           Service.save({ orgId: $stateParams.orgId }, svc, function (newSvc) {

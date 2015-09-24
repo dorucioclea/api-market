@@ -30,8 +30,10 @@
       <div class="form-group mt30">
         <div class="col-md-6 col-sm-6 col-xs-7">
           <label class="control-label text-primary">Endpoint</label>
-          <input type="text" name="basepath" class="form-control" maxlength="20" placeholder="Ex.: /yourendpoint" ng-model="ctrl.service.basepath" required>
-          <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.required" ng-if="serviceForm.basepath.$touched">Basepath is required.</p>
+          <input type="text" name="basepath" class="form-control" maxlength="20" placeholder="Ex.: yourendpoint" ng-model="ctrl.service.basepath" required ng-pattern="basePathPattern">
+          <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.required" ng-if="serviceForm.basepath.$touched">Endpoint is required.</p>
+          <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.pattern">Endpoint can only contain lowercase letters. No spaces, slashes, etc.</p>
+
         </div>
         <div class="col-md-5 col-md-offset-1" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
           <label class="control-label text-primary">Service Logo</label>

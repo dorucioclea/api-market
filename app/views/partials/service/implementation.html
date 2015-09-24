@@ -10,11 +10,13 @@
     <hr>
   </div>
   <div class="col-sm-12">
-    <div class="form form-horizontal" data-field="form">
+    <form class="form form-horizontal" name="impForm" data-field="form">
       <div class="form-group">
         <label class="col-md-3 control-label">API Endpoint</label>
         <div class="col-md-7">
-          <input ng-model="updatedService.endpoint" class="form-control" type="text" placeholder="ex. http://path.to/your/service" ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+          <input ng-model="updatedService.endpoint" class="form-control" type="url"  name="implementation" placeholder="ex. http://path.to/your/service"
+                 ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+          <p class="text-danger xsmall" ng-show="impForm.implementation.$error.url">This is not a valid endpoint url. Please check for errors.</p>
         </div>
       </div>
       <div class="form-group">
@@ -43,11 +45,11 @@
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
-    </div>
+    </form>
   </div>
 </div>
 <div class="col-sm-12 mt20" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
   <hr>
   <button ng-disabled="!isDirty" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
-  <button ng-disabled="!isDirty || !isValid" ng-click="saveService()" class="btn btn-primary btn-sm" placeholder="Saving...">Save</button>
+  <button ng-disabled="!isDirty || !isValid" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
 </div>
