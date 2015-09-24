@@ -353,6 +353,7 @@
         $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
         $scope.toDt = new Date();
         $scope.interval = 'day';
+        $scope.isIntervalMinute = false;
 
         $scope.open = function($event, to) {
           $event.preventDefault();
@@ -383,16 +384,33 @@
           });
         };
 
+        var getMinuteMetrics = function () {
+          $scope.fromDt = new Date();
+          $scope.fromDt.setDate($scope.fromDt.getDate() - 1); // Only get minute statistics for the last day.
+          $scope.toDt = new Date();
+          updateMetrics();
+        };
+
 
         $scope.$watch('fromDt', function () {
-          updateMetrics();
+          if (!$scope.isIntervalMinute) {
+            updateMetrics();
+          }
         });
 
         $scope.$watch('toDt', function () {
-          updateMetrics();
+          if (!$scope.isIntervalMinute) {
+            updateMetrics();
+          }
         });
 
         $scope.$watch('interval', function () {
+          if ($scope.interval === 'minute') {
+            $scope.isIntervalMinute = true;
+            getMinuteMetrics();
+          } else {
+            $scope.isIntervalMinute = false;
+          }
           updateMetrics();
         });
 
