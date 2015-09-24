@@ -5,8 +5,8 @@
   angular.module("app.ctrl.user", [])
 
     /// ==== User Controller
-    .controller("UserCtrl", ["$scope", "currentUserModel", "headerModel", "userScreenModel", "toastService",
-      function ($scope, currentUserModel, headerModel, userScreenModel, toastService) {
+    .controller("UserCtrl", ["$scope", "currentUserModel", "headerModel", "userScreenModel", "toastService", "CurrentUserInfo",
+      function ($scope, currentUserModel, headerModel, userScreenModel, toastService, CurrentUserInfo) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -14,20 +14,12 @@
         $scope.selectedTab = 1;
 
         $scope.currentUserModel = currentUserModel;
+        console.log(currentUserModel);
         $scope.updatedInfo = currentUserModel.currentUser;
 
         $scope.isActive = function (tabName) {
           return tabName === userScreenModel.selectedTab;
         };
-      }])
-
-    .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
-      userScreenModel.updateTab('Email');
-    }])
-
-    .controller("UserProfileCtrl", ["$scope", "$state", "userScreenModel", "CurrentUserInfo", "toastService",
-      function($scope, $state, userScreenModel, CurrentUserInfo, toastService) {
-        userScreenModel.updateTab('Profile');
 
         $scope.saveUserDetails = function (details) {
           var updateObject = {
@@ -36,6 +28,7 @@
             location: details.location,
             bio: details.bio,
             website: details.website,
+            email: details.email,
             pic: $scope.currentUserModel.currentUser.base64pic
           };
           CurrentUserInfo.update({}, updateObject, function (reply) {
@@ -44,7 +37,15 @@
             toastService.createErrorToast(error, 'Could not update your Profile. ');
           });
         };
+      }])
 
+    .controller("UserEmailCtrl", ["userScreenModel", function(userScreenModel) {
+      userScreenModel.updateTab('Email');
+    }])
+
+    .controller("UserProfileCtrl", ["$scope", "$state", "userScreenModel",
+      function($scope, $state, userScreenModel) {
+        userScreenModel.updateTab('Profile');
 
       }])
     .controller("UserNotificationsCtrl", ["userScreenModel", function(userScreenModel) {

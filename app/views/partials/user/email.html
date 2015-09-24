@@ -5,49 +5,19 @@
       Email Settings
     </div>
     <div class="panel-body">
-      <div class="email-list">
-        <div class="row">
-          <div class="col-xs-12">
-            <div data-email="maarten.somers@gmail.com" class="email-row primary  ">
-              <div class="pull-right email-actions">
-                <a data-loading-text="Loading..." class="btn btn-line-primary email-make-primary">
-                  <span class="btn-text">Make Primary</span>
-                  <span class="loader-icon fa fa-spinner fa-spin"></span>
-                </a>
-                <a data-method="DELETE" data-loading-text="Loading..." class="btn btn-line-default email-remove has-icon">
-                  <span class="fa fa-trash-o"></span>
-                  &nbsp;
-                  <span class="btn-text">Remove</span>
-                  <span class="loader-icon fa fa-spinner fa-spin"></span>
-                </a>
-              </div>
-              <div>
-                <span data-driver="div-email-address" class="email-address">maarten.somers@gmail.com</span>
-                <span class="label label-primary">PRIMARY</span>
-                <span data-driver="div-email-unverified" class="label label-unverified label-warning">UNVERIFIED</span>
-                <a href="#" class="email-resend-activation">Resend activation link</a>
-                <i class="fa fa-spinner fa-spin email-resending"></i>
-                <span class="email-sent"><i class="fa fa-check"></i>Sent</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <hr>
-      </div>
       <div class="col-sm-4">
-        <form role="form" class="form-horizontal">
+        <form role="form" name="emailForm" class="form-horizontal">
             <div class="form-group">
               <label for="email-add">
                 <span class="fa fa-envelope"></span>
-                <span>Add New Email</span>
+                <span>Email Address</span>
               </label>
-              <input id="email-add" type="email" name="email" class="form-control">
+              <input id="email-add" type="email" ng-model="currentUserModel.currentUser.email" name="email" class="form-control" required>
+              <p class="text-danger xsmall" ng-show="emailForm.email.$error.required" ng-if="appForm.appName.$touched">Please provide your email address.</p>
+              <p class="text-danger xsmall" ng-show="emailForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
             </div>
-          <button data-processing-text="processing..." type="submit" data-loading-text="Loading..." class="btn btn-default submit">
-            <span class="btn-text">Add New Email</span>
-            <span class="loader-icon fa fa-spinner fa-spin"></span>
+          <button ng-click="saveUserDetails(currentUserModel.currentUser)" type="submit" class="btn btn-line-primary submit" ng-disabled="emailForm.$invalid">
+            Update Email
           </button>
         </form>
       </div>
