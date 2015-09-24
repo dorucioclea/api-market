@@ -428,9 +428,41 @@
 
           angular.forEach(dataArray, function (data) {
             var date = new Date(data.dateInterval);
+            var display = '';
+
+            switch ($scope.interval) {
+              case 'month':
+                display = date.getMonth();
+                break;
+              case 'week':
+                display = date.getDate() + '/' + (date.getMonth() + 1);
+                break;
+              case 'day':
+                display = date.getDate() + '/' + (date.getMonth() + 1);
+                break;
+              case 'hour':
+                display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
+                if (date.getHours < 10) {
+                  display += '0';
+                }
+                display += date.getHours() + ':00';
+                break;
+              case 'minute':
+                display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
+                if (date.getHours() < 10) {
+                  display += '0';
+                }
+                display += date.getHours() + ':';
+                if (date.getMinutes() < 10) {
+                  display += '0';
+                }
+                display += date.getMinutes();
+                break;
+            }
 
             var graphObject = {
               'x': date,
+              'displayDate': display,
               'latency_kong': setBlanksToZero(data.latencyKong),
               'latency_proxy': setBlanksToZero(data.latencyProxy),
               'latency_request': setBlanksToZero(data.latencyRequest),
@@ -454,7 +486,7 @@
           {"id": "requests_wrong", 'name': 'Malformed requests', "type": "line", 'color': 'magenta'},
           {"id": "response_wrong", 'name': 'Service errors', "type": "line", 'color': 'purple'}
         ];
-        $scope.responseHistogramX = {'id': 'x'};
+        $scope.responseHistogramX = {'id': 'displayDate'};
 
         $scope.gaugeColumns = [{"id": "uptime", 'name': 'Uptime %', "type": "gauge", 'color': 'green'}];
 

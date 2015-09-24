@@ -56,7 +56,10 @@
         <c3chart bindto-id="response" chart-data="responseHistogramData" chart-columns="responseHistogramColumns" chart-x="responseHistogramX">
           <chart-axis>
             <chart-axis-x axis-position="outer-center"
-                          axis-type="category"/>
+                          axis-type="category">
+              <chart-axis-x-tick tick-culling-max="10" tick-culling="true">
+              </chart-axis-x-tick>
+              </chart-axis-x>
           </chart-axis>
         </c3chart>
       </div>
