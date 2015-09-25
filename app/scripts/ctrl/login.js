@@ -1,11 +1,10 @@
 ;(function(angular) {
-  "use strict";
+    'use strict';
 
-
-  angular.module("app.ctrl.login", [])
-    /// ==== Login Controller
-    .controller("LoginCtrl", ["$scope", "$state", function($scope, $state) {
+    angular.module('app.ctrl.login', [])
+      /// ==== Login Controller
+    .controller('LoginCtrl', ['$scope', '$state', function($scope, $state) {
 
     }]);
-  // #end
+    // #end
 })(window.angular);
