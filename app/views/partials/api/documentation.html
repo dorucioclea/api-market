@@ -39,19 +39,22 @@
       <div class="panel-heading text-center">
         API Key for Testing
       </div>
-      <div class="panel-body">
+      <div class="panel-body text-center">
         <div ng-if="contractApps.length === 0">
           <p>No contracts exist for this service.</p>
           <p>You can create a contract for this service using the button above.</p>
         </div>
         <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
-          <span>Use the API key from this application for testing:</span>
+          <p>Application API key to use for testing:</p>
           <div class="btn-group dropdown" dropdown>
-            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
-              {{selectedContract ? selectedContract.appOrganizationName + ': ' + selectedContract.appName + ' ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span>
+            <button type="button" class="btn btn-line-info dropdown-toggle" dropdown-toggle>
+              <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
+              <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
             </button>
-            <ul class="dropdown-menu dropdown-menu-left">
-              <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)"><a>{{contract.appOrganizationName}}: {{contract.appName}} {{contract.appVersion}}</a></li>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)">
+                <a><span class="xsmall">{{contract.appOrganizationName}}</span><br><b>{{contract.appName}} - {{contract.appVersion}}</b></a>
+              </li>
             </ul>
           </div>
         </form>
