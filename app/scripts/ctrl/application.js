@@ -96,12 +96,19 @@
 
     }])
     /// ==== Contracts Controller
-    .controller("ContractsCtrl", ["$scope", "contractData", "appScreenModel", function ($scope, contractData, appScreenModel) {
+    .controller("ContractsCtrl", ["$scope", "$state", "contractData", "appScreenModel", "docTester",
+      function ($scope, $state, contractData, appScreenModel, docTester) {
 
-      $scope.contracts = contractData;
-      appScreenModel.updateTab('Contracts');
+        docTester.reset();
+        $scope.contracts = contractData;
+        appScreenModel.updateTab('Contracts');
 
-    }])
+        $scope.toApiDoc = function (contract) {
+          $state.go('root.api.documentation', ({orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion}));
+          docTester.setPreferredContract(contract);
+        };
+
+      }])
 
     /// ==== Metrics Controller
     .controller("AppMetricsCtrl", ["$scope", "$stateParams", "appScreenModel", "ApplicationMetrics",

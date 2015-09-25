@@ -7,8 +7,8 @@
 
   <div class="col-sm-12">
     <div class="col-sm-10 col-sm-offset-1" ng-repeat="contract in contracts">
-      <span class="text-primary"><a ui-sref="root.api({orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion})">{{contract.serviceOrganizationName}}</a></span> /
-      <span><a ui-sref="root.api({orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion})">{{contract.serviceName}}</a></span>
+      <span class="text-primary"><a href ng-click="toApiDoc(contract)">{{contract.serviceOrganizationName}}</a></span> /
+      <span><a href ng-click="toApiDoc(contract)">{{contract.serviceName}}</a></span>
       <button class="btn btn-xs btn-line-warning pull-right" ng-show="!isRegistered" ng-click="breakContract(contract)">Break Contract</button>
       <div class="versionAndPlan">
         <span>Service version</span>
