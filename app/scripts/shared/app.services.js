@@ -313,6 +313,10 @@
       this.updateApplication = function (newApp) {
         this.appVersion = newApp;
       };
+
+      this.reset = function () {
+        this.appVersion = undefined;
+      };
     })
 
     // APPLICATION SCREEN MODEL
@@ -371,6 +375,10 @@
 
       this.setPreferredContract = function (contract) {
         this.preferredContract = contract;
+      };
+
+      this.reset = function () {
+        this.preferredContract = undefined;
       };
     })
 

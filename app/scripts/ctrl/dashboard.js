@@ -13,7 +13,8 @@
                 toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.updateOrganization(orgData);
-        selectedApp.updateApplication(undefined);
+        selectedApp.reset();
+        docTester.reset();
         $scope.orgScreenModel = orgScreenModel;
         $scope.applications = appData;
         $scope.applicationVersions = appVersions;
