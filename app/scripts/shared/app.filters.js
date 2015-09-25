@@ -1,52 +1,51 @@
 ;(function() {
-  "use strict";
+    'use strict';
 
-
-  angular.module("app.filters", [])
+    angular.module('app.filters', [])
 
     .filter('joinBy', function () {
-      return function (input, delimiter) {
-        return (input || []).join(delimiter || ',');
-      };
+        return function (input, delimiter) {
+            return (input || []).join(delimiter || ',');
+        };
     })
 
     .filter('pricing', function () {
-      return function(apis, currentPricingFilter) {
-        var out = [];
-        for (var i = 0; i < apis.length; i++) {
-          var api = apis[i];
-          if (currentPricingFilter.toLowerCase() == 'all') {
-            out.push(api)
-          } else {
-            if (currentPricingFilter.toLowerCase() == api.pricing.toLowerCase()) {
-              out.push(api)
+        return function(apis, currentPricingFilter) {
+            var out = [];
+            for (var i = 0; i < apis.length; i++) {
+                var api = apis[i];
+                if (currentPricingFilter.toLowerCase() === 'all') {
+                    out.push(api);
+                } else {
+                    if (currentPricingFilter.toLowerCase() === api.pricing.toLowerCase()) {
+                        out.push(api);
+                    }
+                }
             }
-          }
-        }
-        return out;
-      }
+            return out;
+        };
     })
 
     .filter('categories', function () {
-      return function(apis, currentCategories) {
-        if (currentCategories.length == 0) {
-          return apis;
-        } else {
-          var out = [];
-          for (var i = 0; i < apis.length; i++) {
-            var api = apis[i];
-            for (var j = 0; j < api.tags.length; j++) {
-              var tag = api.tags[j];
-              if (currentCategories.indexOf(tag) > -1) {
-                out.push(api);
-                break;
-              }
+        return function(apis, currentCategories) {
+            if (currentCategories.length === 0) {
+                return apis;
+            } else {
+                var out = [];
+                for (var i = 0; i < apis.length; i++) {
+                    var api = apis[i];
+                    for (var j = 0; j < api.tags.length; j++) {
+                        var tag = api.tags[j];
+                        if (currentCategories.indexOf(tag) > -1) {
+                            out.push(api);
+                            break;
+                        }
+                    }
+                }
+                return out;
             }
-          }
-          return out;
-        }
-      }
+        };
     });
 
-  // #end
+    // #end
 })();

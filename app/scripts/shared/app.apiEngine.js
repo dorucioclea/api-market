@@ -1,205 +1,202 @@
 ;(function(angular) {
-  "use strict";
+    'use strict';
 
+    angular.module('app.apiEngine', ['ngResource'])
 
-  angular.module("app.apiEngine", ["ngResource"])
-
-
-  /// ########## API Engine BaseUrl ######################
+    /// ########## API Engine BaseUrl ######################
     .factory('EngineUrl', function () {
-      return "http://apim.t1t.be:8000/dev/apiengine/v1";
+        return 'http://apim.t1t.be:8000/dev/apiengine/v1';
     })
-
-
 
   /// ########### ENDPOINT FACTORIES #####################
 
   /// ========== ACTIONS ==========================================================================
     .factory('Action', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/actions');
+        return $resource(EngineUrl + '/actions');
     }])
-
 
   /// ========== ORGANIZATION =====================================================================
 
     .factory('Organization', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:id', { id: '@id' }, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:id', {id: '@id'}, {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('OrganizationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:id/activity');
+        return $resource(EngineUrl + '/organizations/:id/activity');
     }])
     .factory('OrganizationMembers', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/members/:memberId');
+        return $resource(EngineUrl + '/organizations/:orgId/members/:memberId');
     }])
     .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', { orgId: '@organizationId', planId: '@id' }, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:orgId/plans/:planId', {orgId: '@organizationId', planId: '@id'}, {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('PlanActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/activity');
     }])
     .factory('PlanVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId');
+        return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId');
     }])
     .factory('PlanVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/activity');
     }])
     .factory('PlanVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
+        return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
     }])
     .factory('Member', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/members');
+        return $resource(EngineUrl + '/organizations/:orgId/members');
     }])
     .factory('Application', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId', { orgId: '@organizationId', appId: '@id' }, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId',
+          {orgId: '@organizationId', appId: '@id'},
+          {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('ApplicationVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId', { orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId',
+          {orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
     }])
     .factory('ApplicationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/activity');
     }])
     .factory('ApplicationVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/activity');
     }])
     .factory('ApplicationContract', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/:contractId');
     }])
     .factory('ApplicationMetrics', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/metrics/serviceUsage');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/metrics/serviceUsage');
     }])
     .factory('ApplicationApiRegistryJson', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
     }])
     .factory('ApplicationApiRegistryXml', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
+        return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
     }])
     .factory('Service', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', { orgId: '@organizationId', svcId: '@id' }, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId', {orgId: '@organizationId', svcId: '@id'},
+          {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('ServiceActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');
     }])
     .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId', {}, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId', {}, {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('ServiceVersionDefinition', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/definition', {}, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/definition', {}, {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('ServiceVersionPolicy', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
     }])
     .factory('ServiceVersionActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');
     }])
     .factory('ServiceVersionContracts', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts');
     }])
     .factory('ServiceEndpoint', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
     }])
     .factory('ServicePlans', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
     }])
     .factory('ServiceMetricsResponse', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/responseStats');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/responseStats');
     }])
     .factory('ServiceMetricsResponseSummary', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/summaryResponseStats');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/summaryResponseStats');
     }])
     .factory('ServiceMetricsUsage', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
     }])
     .factory('ServiceMarketInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+        return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
     }])
 
   /// ========== CURRENTUSER ======================================================================
 
     .factory('CurrentUserInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/info', {}, {
-        update: {
-          method: 'PUT'
-        }
-      });
+        return $resource(EngineUrl + '/currentuser/info', {}, {
+            update: {
+                method: 'PUT'
+            }
+        });
     }])
     .factory('CurrentUserApps', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/applications');
+        return $resource(EngineUrl + '/currentuser/applications');
     }])
 
     .factory('CurrentUserAppOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/apporgs');
+        return $resource(EngineUrl + '/currentuser/apporgs');
     }])
 
     .factory('CurrentUserPlanOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/planorgs');
+        return $resource(EngineUrl + '/currentuser/planorgs');
     }])
 
     .factory('CurrentUserServices', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/services');
+        return $resource(EngineUrl + '/currentuser/services');
     }])
 
     .factory('CurrentUserSvcOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/currentuser/svcorgs');
+        return $resource(EngineUrl + '/currentuser/svcorgs');
     }])
-
 
   /// ========== POLICYDEFS =======================================================================
 
     .factory('PolicyDefs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/policyDefs/:policyId');
+        return $resource(EngineUrl + '/policyDefs/:policyId');
     }])
 
   /// ========== SEARCH ===========================================================================
 
     .factory('SearchApps', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/applications');
+        return $resource(EngineUrl + '/search/applications');
     }])
     .factory('Categories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/service/categories/all');
+        return $resource(EngineUrl + '/search/service/categories/all');
     }])
     .factory('PublishedCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/service/categories/published');
+        return $resource(EngineUrl + '/search/service/categories/published');
     }])
     .factory('SearchOrgs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/organizations');
+        return $resource(EngineUrl + '/search/organizations');
     }])
     .factory('SearchSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/services');
+        return $resource(EngineUrl + '/search/services');
     }])
     .factory('SearchPublishedSvcsInCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/services/versions', {}, {
-        query: {
-          method: 'POST', isArray: true
-        }
-      });
+        return $resource(EngineUrl + '/search/services/versions', {}, {
+            query: {
+                method: 'POST', isArray: true
+            }
+        });
     }])
     .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-      return $resource(EngineUrl + '/search/services/:status');
+        return $resource(EngineUrl + '/search/services/:status');
     }]);
-
 
 })(window.angular);
