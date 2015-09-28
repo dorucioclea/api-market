@@ -14,7 +14,6 @@
           $scope.selectedTab = 1;
 
           $scope.currentUserModel = currentUserModel;
-          console.log(currentUserModel);
           $scope.updatedInfo = currentUserModel.currentUser;
 
           $scope.isActive = function (tabName) {
