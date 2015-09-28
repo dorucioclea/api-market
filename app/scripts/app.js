@@ -207,6 +207,26 @@
                         return appVersions;
                     });
                 },
+                appVersionDetails: function ($q, appVersions, ApplicationVersion) {
+                    var appVersionDetails = {};
+                    var promises = [];
+
+                    angular.forEach(appVersions, function (value) {
+                        promises.push(
+                            ApplicationVersion.get({
+                                orgId: value.organizationId,
+                                appId: value.id,
+                                versionId: value.version}).$promise);
+                    });
+
+                    return $q.all(promises).then(function (results) {
+                        angular.forEach(results, function (value) {
+                            appVersionDetails[value.application.id] = value;
+                        });
+                        console.log(appVersionDetails);
+                        return appVersionDetails;
+                    });
+                },
                 appContracts: function ($q, appVersions, ApplicationContract) {
                     var appContracts = {};
                     var promises = [];

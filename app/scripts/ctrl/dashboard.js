@@ -5,10 +5,10 @@
 
       /// ==== MarketDash Controller
       .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData',
-        'orgScreenModel', 'appData', 'appVersions', 'appContracts', 'headerModel', 'selectedApp', 'docTester',
+        'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel', 'selectedApp', 'docTester',
         'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
       function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                appData, appVersions, appContracts, headerModel, selectedApp, docTester,
+                appData, appVersions, appVersionDetails, appContracts, headerModel, selectedApp, docTester,
                 toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
           headerModel.setIsButtonVisible(true, false);
           orgScreenModel.updateOrganization(orgData);
@@ -17,6 +17,7 @@
           $scope.orgScreenModel = orgScreenModel;
           $scope.applications = appData;
           $scope.applicationVersions = appVersions;
+          $scope.applicationVersionDetails = appVersionDetails;
           $scope.applicationContracts = appContracts;
           $scope.toasts = toastService.toasts;
           $scope.toastService = toastService;
@@ -27,6 +28,13 @@
 
           $scope.canCreateContract = function (appVersion) {
               return !!(appVersion.status === 'Created' || appVersion.status === 'Ready');
+          };
+
+          $scope.canConfigureOAuth = function (appVersion) {
+              //TODO determine whether or not to show OAuth button
+              return $scope.canCreateContract(appVersion) &&
+                  appVersionDetails[appVersion.id].oAuthClientId !== null &&
+                  appVersionDetails[appVersion.id].oAuthClientId.length > 0;
           };
 
           $scope.canPublish = function (appVersion) {
@@ -95,6 +103,16 @@
           $scope.toMetrics = function (appVersion) {
               $state.go('root.application.metrics',
                 {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version});
+          };
+
+          $scope.showOAuthConfig = function () {
+              $modal.open({
+                  templateUrl: 'views/modals/modalOAuthConfig.html',
+                  size: 'lg',
+                  controller: 'OAuthConfigCtrl as ctrl',
+                  resolve: function() {},
+                  windowClass: $scope.modalAnim	// Animation Class put here.
+              });
           };
 
           $scope.breakContract = function (contract) {

@@ -314,6 +314,22 @@
 
       }])
 
+/// ==== OAuthConfig Controller
+    .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal',
+        function ($scope, $rootScope, $modal) {
+
+            $scope.updateCallback = updateCallback;
+
+            $scope.modalClose = function() {
+                $scope.$close();	// this method is associated with $modal scope which is this.
+            };
+
+            function updateCallback(url) {
+
+            }
+
+        }])
+
 /// ==== NewApplication Controller
     .controller('NewApplicationCtrl', ['$scope', '$modal', '$state', 'flowFactory', 'alertService', 'imageService',
         'orgScreenModel', 'toastService', 'TOAST_TYPES', 'Application',
