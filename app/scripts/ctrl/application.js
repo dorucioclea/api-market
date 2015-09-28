@@ -127,15 +127,18 @@
     /// ==== Metrics Controller
     .controller('AppMetricsCtrl', ['$scope', '$stateParams', '$parse', 'appScreenModel', 'ApplicationMetrics',
       function ($scope, $stateParams, $parse, appScreenModel, ApplicationMetrics) {
+          init();
+          function init() {
+              appScreenModel.updateTab('Metrics');
+              $scope.responseHistogramData = {};
 
-          appScreenModel.updateTab('Metrics');
-          $scope.responseHistogramData = {};
-
-          $scope.fromDt = new Date();
-          $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
-          $scope.toDt = new Date();
-          $scope.interval = 'day';
-          $scope.isIntervalMinute = false;
+              $scope.fromDt = new Date();
+              $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
+              $scope.toDt = new Date();
+              $scope.interval = 'day';
+              $scope.isIntervalMinute = false;
+              updateMetrics();
+          }
 
           $scope.open = function($event, to) {
               $event.preventDefault();
@@ -157,30 +160,38 @@
                         var key = serviceKey.split('.').join('_');
                         createResponseHistogram(serviceData.data, key);
                     });
-                  console.log($scope.responseHistogramData);
+                    console.log(stats);
                 });
           }
 
-          $scope.$watch('fromDt', function () {
-              if (!$scope.isIntervalMinute) {
-                  updateMetrics();
+          $scope.$watch('fromDt', function (newValue, oldValue) {
+              console.log(newValue);
+              console.log(oldValue);
+              if (newValue !== oldValue) {
+                  if (!$scope.isIntervalMinute) {
+                      updateMetrics();
+                  }
               }
           });
 
-          $scope.$watch('toDt', function () {
-              if (!$scope.isIntervalMinute) {
-                  updateMetrics();
+          $scope.$watch('toDt', function (newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  if (!$scope.isIntervalMinute && initComplete) {
+                      updateMetrics();
+                  }
               }
           });
 
-          $scope.$watch('interval', function () {
-              if ($scope.interval === 'minute') {
-                  $scope.isIntervalMinute = true;
-                  getMinuteMetrics();
-              } else {
-                  $scope.isIntervalMinute = false;
+          $scope.$watch('interval', function (newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  if ($scope.interval === 'minute') {
+                      $scope.isIntervalMinute = true;
+                      getMinuteMetrics();
+                  } else {
+                      $scope.isIntervalMinute = false;
+                  }
+                  updateMetrics();
               }
-              updateMetrics();
           });
 
           function getMinuteMetrics() {
@@ -248,7 +259,6 @@
               $parse(propertyId).assign($scope, dataArrayId);
               $parse(propertyName).assign($scope, dataArrayId.split('_').join(' '));
               $parse(propertyEntries).assign($scope, entries);
-              //$scope.responseHistogramData.dataArrayId = entries;
           }
 
           $scope.responseHistogramColumns = [
