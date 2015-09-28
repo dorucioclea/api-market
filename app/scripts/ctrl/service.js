@@ -396,7 +396,7 @@
               $scope.uptime.push(reply);
           });
 
-          var updateMetrics = function () {
+          function updateMetrics() {
               ServiceMetricsResponse.get(
                 {orgId: $stateParams.orgId,
                   svcId: $stateParams.svcId,
@@ -416,14 +416,14 @@
                 function (metrics) {
                   $scope.summary = metrics.data[0];
               });
-          };
+          }
 
-          var getMinuteMetrics = function () {
+          function getMinuteMetrics() {
               $scope.fromDt = new Date();
               $scope.fromDt.setDate($scope.fromDt.getDate() - 1); // Only get minute statistics for the last day.
               $scope.toDt = new Date();
               updateMetrics();
-          };
+          }
 
           $scope.$watch('fromDt', function (newValue, oldValue) {
               if (newValue !== oldValue) {
@@ -457,11 +457,11 @@
               return x.getDay();
           };
 
-          var setBlanksToZero = function (property) {
+          function setBlanksToZero(property) {
               return angular.isDefined(property) ? property : 0;
-          };
+          }
 
-          var createResponseHistogram = function (dataArray) {
+          function createResponseHistogram(dataArray) {
               $scope.responseHistogramData = [];
 
               angular.forEach(dataArray, function (data) {
@@ -514,7 +514,7 @@
               $scope.responseHistogramData.sort(function(a, b) {
                   return a.x - b.x;
               });
-          };
+          }
 
           $scope.responseHistogramColumns = [
             {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': 'green'},
