@@ -2,10 +2,10 @@
 <div class="col-md-12" ng-hide="availableAPIs.length === 0">
   <div class="panel panel-lined mb20 table-responsive">
     <table class="table table-bordered text-center">
-      <tr ng-repeat="api in availableAPIs">
+      <tr ng-repeat="api in availableAPIs" class="api-list">
         <td>
           <div class="media media-middle">
-            <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><base64-logo logo-class="entity-logo" logo="{{api.service.base64logo}}"></base64-logo></a>
+            <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><base64-logo logo-class="entity-logo-list" logo="{{api.service.base64logo}}"></base64-logo></a>
           </div>
         </td>
         <td class="text-left">

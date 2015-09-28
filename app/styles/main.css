@@ -9760,6 +9760,9 @@ fieldset[disabled] .btn-danger.active {
   height: 420px;
   width: 320px;
 }
+.api-list {
+  height: 130px;
+}
 .small-warning {
   font-size: 75%;
   font-weight: normal;
@@ -12383,9 +12386,13 @@ tags-input .autocomplete .suggestion-item.selected em {
   max-height: 25px;
   max-width: 25px;
 }
-.page .entity-logo {
-  max-height: 100px;
+.page .entity-logo-grid {
+  height: 100px;
+  max-width: 250px;
+}
+.page .entity-logo-list {
   max-width: 100px;
+  max-height: 100px;
 }
 .page .base64logo {
   position: relative;
