@@ -96,22 +96,22 @@
                     var config = {};
 
                     $http.get('apimConfig.json')
-                .success(function (response) {
-                    var deferred = $q.defer();
-                    config = response;
+                      .success(function (response) {
+                          var deferred = $q.defer();
+                          config = response;
 
-                    if (!$sessionStorage.apikey) {
-                        var apikey = getParameterByName(config.Base.ApiKeyName);
-                        var clientUrl = window.location.origin;
+                          if (!$sessionStorage.apikey) {
+                              var apikey = getParameterByName(config.Base.ApiKeyName);
+                              var clientUrl = window.location.origin;
 
-                        if (!apikey) {
-                            var url = config.Base.Url + config.Security.RedirectUrl;
-                            var data = '{"idpUrl": "' + config.Security.IdpUrl + '", "spUrl": "' +
-                              config.Security.SpUrl + '", "spName": "' + config.Security.SpName +
-                              '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
-                              config.Security.ClientToken + '"}';
+                              if (!apikey) {
+                                  var url = config.Base.Url + config.Security.RedirectUrl;
+                                  var data = '{"idpUrl": "' + config.Security.IdpUrl + '", "spUrl": "' +
+                                    config.Security.SpUrl + '", "spName": "' + config.Security.SpName +
+                                    '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
+                                    config.Security.ClientToken + '"}';
 
-                            $.ajax({
+                                  $.ajax({
                                 method: 'POST',
                                 url: url,
                                 data: data,
@@ -131,15 +131,18 @@
                                     console.log(jqXHR);
                                 }
                             });
-                        } else {
-                            $sessionStorage.apikey = apikey;
-                            window.location.href = clientUrl;
-                        }
-                        return deferred.reject('NOT_AUTHENTICATED');
-                    } else {
-                        deferred.resolve('AUTHENTICATED');
-                    }
-                });
+                              } else {
+                                  $sessionStorage.apikey = apikey;
+                                  var ttl = new Date();
+                                  ttl.setMinutes(ttl.getMinutes() + 15);
+                                  $sessionStorage.ttl = ttl;
+                                  window.location.href = clientUrl;
+                              }
+                              return deferred.reject('NOT_AUTHENTICATED');
+                          } else {
+                              deferred.resolve('AUTHENTICATED');
+                          }
+                      });
 
                     function getParameterByName(name) {
                         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -743,6 +746,7 @@
                     default:
                         $state.get('error').error = error;
                         $state.go('error');
+                        break;
                 }
             }
             else {
@@ -753,10 +757,18 @@
     })
 
     // Make sure we use always the api key
-    .factory('sessionInjector', ['$sessionStorage', function ($sessionStorage) {
+    .factory('sessionInjector', ['$sessionStorage', '$window', function ($sessionStorage, $window) {
         return {
             request: function (config) {
                 config.headers.apikey = $sessionStorage.apikey;
+                if (Date.parse($sessionStorage.ttl) < Date.parse(new Date())) {
+                    console.log('ttl expired');
+                    delete $sessionStorage.apikey;
+                    $window.location.reload();
+                }
+                var ttl = new Date();
+                ttl.setMinutes(ttl.getMinutes() + 15);
+                $sessionStorage.ttl = ttl;
                 return config;
             }
         };
