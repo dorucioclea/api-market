@@ -13,7 +13,12 @@
 
           $scope.modalAnim = 'default';
 
-          $scope.modalNewTicketOpen = function() {
+          $scope.modalNewTicketOpen = modalNewTicketOpen;
+          $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
+          $scope.modalClose = modalClose;
+          $scope.openTicket = openTicket;
+
+          function modalNewTicketOpen() {
               $modal.open({
                   templateUrl: 'views/modals/modalCreateTicket.html',
                   size: 'lg',
@@ -22,9 +27,9 @@
                   windowClass: $scope.modalAnim	// Animation Class put here.
               });
 
-          };
+          }
 
-          $scope.modalSelectApplicationForContract = function() {
+          function modalSelectApplicationForContract() {
               $modal.open({
                   templateUrl: 'views/modals/modalSelectPlan.html',
                   size: 'lg',
@@ -33,13 +38,13 @@
                   windowClass: $scope.modalAnim	// Animation Class put here.
               });
 
-          };
+          }
 
-          $scope.modalClose = function() {
+          function modalClose() {
               $scope.$close();	// this method is associated with $modal scope which is this.
-          };
+          }
 
-          $scope.openTicket = function() {
+          function openTicket() {
               $modal.open({
                   templateUrl: 'views/modals/modalViewTicket.html',
                   size: 'lg',
@@ -47,7 +52,7 @@
                   resolve: function() {},
                   windowClass: $scope.modalAnim
               });
-          };
+          }
       }])
 
 /// ==== Service Swagger Documentation Controller

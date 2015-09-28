@@ -125,19 +125,17 @@
       }])
 
     /// ==== Metrics Controller
-    .controller('AppMetricsCtrl', ['$scope', '$stateParams', 'appScreenModel', 'ApplicationMetrics',
-      function ($scope, $stateParams, appScreenModel, ApplicationMetrics) {
+    .controller('AppMetricsCtrl', ['$scope', '$stateParams', '$parse', 'appScreenModel', 'ApplicationMetrics',
+      function ($scope, $stateParams, $parse, appScreenModel, ApplicationMetrics) {
 
           appScreenModel.updateTab('Metrics');
-          $scope.responseHistogramData = [];
-          $scope.summary = {};
-          $scope.marketInfo = {};
-          $scope.uptime = [];
+          $scope.responseHistogramData = {};
 
           $scope.fromDt = new Date();
           $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
           $scope.toDt = new Date();
           $scope.interval = 'day';
+          $scope.isIntervalMinute = false;
 
           $scope.open = function($event, to) {
               $event.preventDefault();
@@ -150,26 +148,113 @@
               }
           };
 
-          var updateMetrics = function () {
+          function updateMetrics() {
               ApplicationMetrics.get({orgId: $stateParams.orgId, appId: $stateParams.appId,
                 versionId: $stateParams.versionId, from: $scope.fromDt, to: $scope.toDt, interval: $scope.interval},
                 function (stats) {
-                    console.log(stats);
+                    $scope.serviceIds = [];
+                    angular.forEach(stats.data, function (serviceData, serviceKey) {
+                        var key = serviceKey.split('.').join('_');
+                        createResponseHistogram(serviceData.data, key);
+                    });
+                  console.log($scope.responseHistogramData);
                 });
-          };
+          }
 
           $scope.$watch('fromDt', function () {
-              updateMetrics();
+              if (!$scope.isIntervalMinute) {
+                  updateMetrics();
+              }
           });
 
           $scope.$watch('toDt', function () {
-              updateMetrics();
+              if (!$scope.isIntervalMinute) {
+                  updateMetrics();
+              }
           });
 
           $scope.$watch('interval', function () {
+              if ($scope.interval === 'minute') {
+                  $scope.isIntervalMinute = true;
+                  getMinuteMetrics();
+              } else {
+                  $scope.isIntervalMinute = false;
+              }
               updateMetrics();
           });
 
+          function getMinuteMetrics() {
+              $scope.fromDt = new Date();
+              $scope.fromDt.setDate($scope.fromDt.getDate() - 1); // Only get minute statistics for the last day.
+              $scope.toDt = new Date();
+              updateMetrics();
+          }
+
+          function setBlanksToZero(property) {
+              return angular.isDefined(property) ? property : 0;
+          }
+
+          function createResponseHistogram(dataArray, dataArrayId) {
+              var property = 'responseHistogramData.' + dataArrayId;
+              var propertyId = property + '.id';
+              var propertyName = property + '.name';
+              var propertyEntries = property + '.entries';
+              var entries = [];
+
+              angular.forEach(dataArray, function(data) {
+                  var date = new Date(data.interval);
+                  var display = '';
+
+                  switch ($scope.interval) {
+                      case 'month':
+                          display = date.getMonth();
+                          break;
+                      case 'week':
+                          display = date.getDate() + '/' + (date.getMonth() + 1);
+                          break;
+                      case 'day':
+                          display = date.getDate() + '/' + (date.getMonth() + 1);
+                          break;
+                      case 'hour':
+                          display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
+                          if (date.getHours < 10) {
+                              display += '0';
+                          }
+                          display += date.getHours() + ':00';
+                          break;
+                      case 'minute':
+                          display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
+                          if (date.getHours() < 10) {
+                              display += '0';
+                          }
+                          display += date.getHours() + ':';
+                          if (date.getMinutes() < 10) {
+                              display += '0';
+                          }
+                          display += date.getMinutes();
+                          break;
+                  }
+
+                  entries.push({
+                      'x': date,
+                      'displayDate': display,
+                      'count': setBlanksToZero(data.count)
+                  });
+              });
+
+              entries.sort(function(a, b) {
+                  return a.x - b.x;
+              });
+              $parse(propertyId).assign($scope, dataArrayId);
+              $parse(propertyName).assign($scope, dataArrayId.split('_').join(' '));
+              $parse(propertyEntries).assign($scope, entries);
+              //$scope.responseHistogramData.dataArrayId = entries;
+          }
+
+          $scope.responseHistogramColumns = [
+            {'id': 'count', 'name': 'Requests', 'type': 'spline', 'color': 'blue'}
+          ];
+          $scope.responseHistogramX = {'id': 'displayDate'};
       }])
 
     /// ==== Overview Controller
