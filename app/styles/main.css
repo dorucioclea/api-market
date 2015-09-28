@@ -12394,6 +12394,10 @@ tags-input .autocomplete .suggestion-item.selected em {
   max-width: 100px;
   max-height: 100px;
 }
+.page .entity-logo-overview {
+  max-width: 150px;
+  max-height: 150px;
+}
 .page .base64logo {
   position: relative;
   display: inline-block;
