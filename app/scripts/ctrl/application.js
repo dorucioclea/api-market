@@ -160,13 +160,10 @@
                         var key = serviceKey.split('.').join('_');
                         createResponseHistogram(serviceData.data, key);
                     });
-                    console.log(stats);
                 });
           }
 
           $scope.$watch('fromDt', function (newValue, oldValue) {
-              console.log(newValue);
-              console.log(oldValue);
               if (newValue !== oldValue) {
                   if (!$scope.isIntervalMinute) {
                       updateMetrics();
@@ -176,7 +173,7 @@
 
           $scope.$watch('toDt', function (newValue, oldValue) {
               if (newValue !== oldValue) {
-                  if (!$scope.isIntervalMinute && initComplete) {
+                  if (!$scope.isIntervalMinute) {
                       updateMetrics();
                   }
               }

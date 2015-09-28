@@ -362,17 +362,21 @@
       function($scope, $stateParams, svcScreenModel,
                ServiceMetricsResponse, ServiceMetricsResponseSummary, ServiceMarketInfo) {
 
-          svcScreenModel.updateTab('Metrics');
-          $scope.responseHistogramData = [];
-          $scope.summary = {};
-          $scope.marketInfo = {};
-          $scope.uptime = [];
+          init();
+          function init() {
+              svcScreenModel.updateTab('Metrics');
+              $scope.responseHistogramData = [];
+              $scope.summary = {};
+              $scope.marketInfo = {};
+              $scope.uptime = [];
 
-          $scope.fromDt = new Date();
-          $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
-          $scope.toDt = new Date();
-          $scope.interval = 'day';
-          $scope.isIntervalMinute = false;
+              $scope.fromDt = new Date();
+              $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
+              $scope.toDt = new Date();
+              $scope.interval = 'day';
+              $scope.isIntervalMinute = false;
+              updateMetrics();
+          }
 
           $scope.open = function($event, to) {
               $event.preventDefault();
@@ -393,9 +397,6 @@
           });
 
           var updateMetrics = function () {
-              console.log($scope.fromDt);
-              console.log($scope.toDt);
-              console.log($scope.interval);
               ServiceMetricsResponse.get(
                 {orgId: $stateParams.orgId,
                   svcId: $stateParams.svcId,
@@ -413,7 +414,6 @@
                   from: $scope.fromDt,
                   to: $scope.toDt},
                 function (metrics) {
-                  console.log(metrics);
                   $scope.summary = metrics.data[0];
               });
           };
@@ -425,26 +425,32 @@
               updateMetrics();
           };
 
-          $scope.$watch('fromDt', function () {
-              if (!$scope.isIntervalMinute) {
-                  updateMetrics();
+          $scope.$watch('fromDt', function (newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  if (!$scope.isIntervalMinute) {
+                      updateMetrics();
+                  }
               }
           });
 
-          $scope.$watch('toDt', function () {
-              if (!$scope.isIntervalMinute) {
-                  updateMetrics();
+          $scope.$watch('toDt', function (newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  if (!$scope.isIntervalMinute) {
+                      updateMetrics();
+                  }
               }
           });
 
-          $scope.$watch('interval', function () {
-              if ($scope.interval === 'minute') {
-                  $scope.isIntervalMinute = true;
-                  getMinuteMetrics();
-              } else {
-                  $scope.isIntervalMinute = false;
+          $scope.$watch('interval', function (newValue, oldValue) {
+              if (newValue !== oldValue) {
+                  if ($scope.interval === 'minute') {
+                      $scope.isIntervalMinute = true;
+                      getMinuteMetrics();
+                  } else {
+                      $scope.isIntervalMinute = false;
+                  }
+                  updateMetrics();
               }
-              updateMetrics();
           });
 
           $scope.formatFunction = function (x) {
