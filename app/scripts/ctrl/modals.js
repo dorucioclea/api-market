@@ -315,9 +315,10 @@
       }])
 
 /// ==== OAuthConfig Controller
-    .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal',
-        function ($scope, $rootScope, $modal) {
+    .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal', 'appVersionDetails',
+        function ($scope, $rootScope, $modal, appVersionDetails) {
 
+            $scope.callback = appVersionDetails.oauthClientRedirect;
             $scope.updateCallback = updateCallback;
 
             $scope.modalClose = function() {
@@ -325,7 +326,7 @@
             };
 
             function updateCallback(url) {
-
+                //TODO Implement update call
             }
 
         }])

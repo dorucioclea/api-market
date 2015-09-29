@@ -223,7 +223,6 @@
                         angular.forEach(results, function (value) {
                             appVersionDetails[value.application.id] = value;
                         });
-                        console.log(appVersionDetails);
                         return appVersionDetails;
                     });
                 },

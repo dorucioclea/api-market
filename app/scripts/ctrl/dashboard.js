@@ -31,7 +31,6 @@
           };
 
           $scope.canConfigureOAuth = function (appVersion) {
-              //TODO determine whether or not to show OAuth button
               return $scope.canCreateContract(appVersion) &&
                   appVersionDetails[appVersion.id].oAuthClientId !== null &&
                   appVersionDetails[appVersion.id].oAuthClientId.length > 0;
@@ -105,12 +104,16 @@
                 {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version});
           };
 
-          $scope.showOAuthConfig = function () {
+          $scope.showOAuthConfig = function (appVersion) {
               $modal.open({
                   templateUrl: 'views/modals/modalOAuthConfig.html',
                   size: 'lg',
                   controller: 'OAuthConfigCtrl as ctrl',
-                  resolve: function() {},
+                  resolve: {
+                      appVersionDetails: function () {
+                          return $scope.applicationVersionDetails[appVersion.id];
+                      }
+                  },
                   windowClass: $scope.modalAnim	// Animation Class put here.
               });
           };

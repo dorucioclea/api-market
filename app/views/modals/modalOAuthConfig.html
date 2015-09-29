@@ -1,37 +1,37 @@
 <div class="page">
 
 
-  <div class="modal-header">
-    <h4 class="modal-title">OAuth 2.0 Configuration</h4>
-    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
-  </div>
-  <div class="modal-body">
-    <div class="col-sm-12">
-      <p class="text-light">You can configure the Application's OAuth2.0 callback path here.</p>
-      <hr>
+    <div class="modal-header">
+        <h4 class="modal-title">OAuth 2.0 Configuration</h4>
+        <span class="close ion ion-android-close" ng-click="modalClose()"></span>
     </div>
-    <div class="panel">
-      <div class="panel-body">
+    <div class="modal-body">
         <div class="col-sm-12">
-          <form role="form" name="callbackForm" class="form-horizontal">
-            <div class="form-group">
-              <div class="col-md-12">
-                <label class="control-label text-primary">Callback path</label>
-              </div>
-              <div class="col-md-12">
-                <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="ctrl.callback" required>
-                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
-                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url">This is not a valid callback url. Please check for errors.</p>
-              </div>
-            </div>
-          </form>
-
+            <p class="text-light">You can configure the Application's OAuth2.0 callback path here.</p>
+            <hr>
         </div>
-      </div>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <form role="form" name="callbackForm" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label text-primary">Callback path</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required>
+                                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
+                                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url">This is not a valid callback url. Please check for errors.</p>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-click="updateCallback(ctrl.callback)" ng-disabled="callbackForm.$invalid">Update Configuration</button>
-  </div>
+    <div class="modal-footer">
+        <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+        <button class="btn btn-primary" ng-click="updateCallback(ctrl.callback)" ng-disabled="callbackForm.$invalid">Update Configuration</button>
+    </div>
 </div>
