@@ -2,20 +2,20 @@
   <div class="form-group mb30">
     <div class="input-group mb5">
       <span class="input-group-addon ion ion-person"></span>
-      <input type="text" class="form-control" placeholder="Client ID">
+      <input type="text" class="form-control" placeholder="Client ID" ng-model="clientId">
     </div>
     <div class="input-group">
       <span class="input-group-addon ion ion-locked"></span>
-      <input type="text" class="form-control" placeholder="Client Secret">
+      <input type="text" class="form-control" placeholder="Client Secret" ng-model="clientSecret">
     </div>
   </div>
   <div class="ui-checkbox ui-checkbox-circle">
     <p class="small text-muted text-uppercase mb5">Scopes</p>
-    <label>
+    <label ng-repeat="scope in scopes">
       <input type="checkbox" checked>
-      <span>r_write</span>
+      <span>{{scope}}</span>
     </label>
   </div>
 </form>
-<button class="btn btn-warning btn-block">Authenticate</button>
+<button class="btn btn-warning btn-block">Grant Authentication</button>
 

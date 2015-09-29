@@ -62,14 +62,17 @@
     </div><!-- end Existing Contracts panel -->
 
     <!-- Authorization panel -->
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-if="hasOAuth">
       <div class="panel-heading text-center">
         Additional Authorization Required
       </div>
       <div class="panel-body">
         <!-- #start accordion -->
         <accordion class="accordion-panel">
-          <auth-accordion-group heading="'OAuth 2.0'"><oauth2></oauth2></auth-accordion-group>
+          <auth-accordion-group heading="'OAuth 2.0'">
+              <!-- TODO provide id & secret -->
+              <oauth2 client-id="appVersion.oAuthClientId" client-secret="appVersion.oauthClientSecret" scopes="serviceVersion.oauthScopes"></oauth2>
+          </auth-accordion-group>
           <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
         </accordion>
         <!-- #end accordion -->

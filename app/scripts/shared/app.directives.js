@@ -126,6 +126,11 @@
 
     .directive('oauth2', function() {
         return {
+            scope: {
+                clientId: '=',
+                clientSecret: '=',
+                scopes: '='
+            },
             templateUrl: '/views/templates/auth/oauth2.html'
         };
     })
