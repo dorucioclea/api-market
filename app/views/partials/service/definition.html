@@ -57,13 +57,13 @@
     </div>
   </div><!-- end Swagger Documentation panel -->
 
-  <div class="col-sm-12 mt30" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
+  <div class="col-sm-12 mt30" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
     <h5>Update Swagger definiton</h5>
     <input type="file" accept="application/json" definition-select="loadDefinition($fileContent)" />
   </div>
 
   <div class="col-sm-12">
-    <div class="mt20" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
+    <div class="mt20" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
       <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
       <button ng-disabled="invalid" ng-click="saveDefinition()" class="btn btn-primary btn-sm">Save</button>
     </div>
