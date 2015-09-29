@@ -3,6 +3,9 @@
     "ApiKeyName": "apikey",
     "Url": "http://apim.t1t.be:8000/dev/apiengine/v1"
   },
+  "Auth": {
+    "Url": "http://api.t1t.be/API-Engine-auth/v1"
+  },
   "Storage": {
     "LocalStorage": "apim-",
     "SessionStorage": "apim_session-"

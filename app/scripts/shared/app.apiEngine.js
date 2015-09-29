@@ -8,6 +8,11 @@
             return 'http://apim.t1t.be:8000/dev/apiengine/v1';
         })
 
+        /// ################## Auth Url ########################
+        .factory('AuthUrl', function () {
+            return 'http://api.t1t.be/API-Engine-auth/v1';
+        })
+
         /// ########### ENDPOINT FACTORIES #####################
 
         /// ========== ACTIONS ==========================================================================
@@ -33,10 +38,10 @@
         .factory('Plan', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/plans/:planId',
                 {orgId: '@organizationId', planId: '@id'}, {
-                update: {
-                    method: 'PUT'
-                }
-            });
+                    update: {
+                        method: 'PUT'
+                    }
+                });
         }])
         .factory('PlanActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/plans/:planId/activity');
@@ -209,6 +214,13 @@
         }])
         .factory('SearchSvcsWithStatus', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/search/services/:status');
+        }])
+
+        /// ========== OAUTH ============================================================================
+
+        .factory('ConsumerAuth', ['$resource', 'AuthUrl', function ($resource, AuthUrl) {
+            return $resource(AuthUrl + '/policyDefs/:policyId');
         }]);
+
 
 })(window.angular);

@@ -3,7 +3,7 @@
     <div class="oauth-container col-sm-10 col-md-8 col-md-offset-2 col-sm-offset-1">
         <div class="oauth-panel panel panel-lined panel-hovered">
             <div class="panel-body">
-                <img src="images/yeoman.png" class="entity-logo-overview pull-right">
+                <img src="images/yeoman.png" class="entity-logo-list pull-right">
                 <h2 class="mb30">OAuthTestApp - v3</h2>
                 <p class="text-desc">Do you want to grant the following permissions to <b>OAuthTestApp</b>, published by <b>admin</b>?</p>
 
@@ -11,7 +11,7 @@
                     <p class="text-desc">OAuthTestApp would like to receive the following permissions:</p>
 
 
-                    <div class="col-sm-12 col-md-9 col-lg-6">
+                    <div class="col-sm-12 col-md-9 col-lg-7">
                         <div class="row">
                             <div class="col-sm-4 col-md-5 col-lg-4">
                                 <p class="text-bold text-muted">delete_profile</p>
@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="panel-body">
-                    <button class="btn btn-default">Cancel</button>
-                    <button class="btn btn-primary">Grant</button>
+                    <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
+                    <button class="btn btn-primary" ng-click="doGrant()">Grant</button>
                 </div>
             </div>
             <div class="panel-footer text-muted text-normal small">
