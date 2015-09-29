@@ -315,8 +315,10 @@
       }])
 
 /// ==== OAuthConfig Controller
-    .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal', 'appVersionDetails',
-        function ($scope, $rootScope, $modal, appVersionDetails) {
+    .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal', '$state', 'appVersionDetails',
+            'ApplicationOAuthCallback', 'toastService', 'TOAST_TYPES',
+        function ($scope, $rootScope, $modal, $state, appVersionDetails,
+                  ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
             $scope.callback = appVersionDetails.oauthClientRedirect;
             $scope.updateCallback = updateCallback;
@@ -326,7 +328,28 @@
             };
 
             function updateCallback(url) {
-                //TODO Implement update call
+                var updateObject = {
+                    uri: url
+                };
+
+                ApplicationOAuthCallback.save(
+                    {orgId: appVersionDetails.application.organization.id,
+                        appId: appVersionDetails.application.id,
+                        versionId: appVersionDetails.version},
+                    updateObject,
+                    function (reply) {
+                        $scope.modalClose();
+                        $state.forceReload();
+                        toastService.createToast(TOAST_TYPES.SUCCESS,
+                            'Callback URL for <b>' + appVersionDetails.application.name +  '</b> updated!',
+                            true);
+                    }, function (error) {
+                        if (error.status !== 409) {
+                            $scope.modalClose();
+                        }
+                        toastService.createErrorToast(error, 'Could not update the callback URL.');
+                    }
+                );
             }
 
         }])
