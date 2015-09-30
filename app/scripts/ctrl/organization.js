@@ -51,7 +51,7 @@
   .controller('MyOrganizationsCtrl', ['$scope', '$modal', 'appOrgData', 'svcOrgData', 'toastService', 'headerModel',
     function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
 
-        headerModel.setIsButtonVisible(false, false);
+        headerModel.setIsButtonVisible(false, false, false);
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
 

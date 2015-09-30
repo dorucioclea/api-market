@@ -10,7 +10,7 @@
       function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                 appData, appVersions, appVersionDetails, appContracts, headerModel, selectedApp, docTester,
                 toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
-          headerModel.setIsButtonVisible(true, false);
+          headerModel.setIsButtonVisible(true, false, false);
           orgScreenModel.updateOrganization(orgData);
           selectedApp.reset();
           docTester.reset();
@@ -150,7 +150,7 @@
       'SearchSvcsWithStatus', 'SearchPublishedSvcsInCategories', 'ServiceMarketInfo',
       function($scope, svcData, categories, headerModel,
                SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {
-          headerModel.setIsButtonVisible(false, true);
+          headerModel.setIsButtonVisible(false, true, true);
           $scope.currentSorting = 'Popular';
           $scope.currentPricing = 'All';
           $scope.availableAPIs = [];

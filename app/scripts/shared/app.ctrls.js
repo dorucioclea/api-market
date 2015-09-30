@@ -244,6 +244,7 @@
           $scope.$on('buttonToggle', function (event, data) {
               $scope.showExplore = headerModel.showExplore;
               $scope.showDash = headerModel.showDash;
+              $scope.showSearch = headerModel.showSearch;
           });
 
           $scope.goFullScreen = function() {

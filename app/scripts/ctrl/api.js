@@ -6,7 +6,7 @@
         /// ==== Service Doc Main Controller
         .controller('ApiDocCtrl', ['$scope', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab', 'headerModel',
             function($scope, $stateParams, $modal, svcData, svcModel, svcTab, headerModel) {
-                headerModel.setIsButtonVisible(true, true);
+                headerModel.setIsButtonVisible(true, true, true);
                 svcModel.setService(svcData);
                 $scope.serviceVersion = svcData;
                 $scope.hasOAuth = svcData.provisionKey !== null && svcData.provisionKey.length > 0;

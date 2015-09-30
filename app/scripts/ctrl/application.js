@@ -10,7 +10,7 @@
       function ($scope, $modal, $state, $stateParams, appData, appVersions,
                 appScreenModel, orgData, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES,
                 Application, ApplicationContract) {
-          headerModel.setIsButtonVisible(true, true);
+          headerModel.setIsButtonVisible(true, true, false);
           orgScreenModel.updateOrganization(orgData);
           $scope.applicationVersion = appData;
           appScreenModel.updateApplication(appData);
