@@ -128,24 +128,35 @@
             }])
 
         /// ==== Service Plans Controller
-        .controller('SvcPlanCtrl', ['$scope', '$stateParams', 'svcTab', 'planData', 'policyConfig', 'PlanVersionPolicy',
-            function($scope, $stateParams, svcTab, planData, policyConfig, PlanVersionPolicy) {
+        .controller('SvcPlanCtrl', ['$scope', '$stateParams', 'svcTab', 'svcPolicies', 'ServiceVersionPolicy',
+            'planData', 'policyConfig', 'PlanVersionPolicy',
+            function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
+                     planData, policyConfig, PlanVersionPolicy) {
 
                 svcTab.updateTab('Plans');
+                $scope.svcPolicies = svcPolicies;
                 $scope.plans = planData;
                 $scope.policies = [];
                 $scope.policyConfiguration = [];
 
-                var getPolicyDetails = function (policy, plan) {
+                angular.forEach($scope.svcPolicies, function (policy) {
+                    getSvcPolicyDetails(policy);
+                });
+
+                angular.forEach($scope.plans, function (plan) {
+                    getPlanPolicies(plan);
+                });
+
+                function getPolicyDetails(policy, plan) {
                     PlanVersionPolicy.get(
                         {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id},
                         function (policyDetails) {
                             $scope.policyConfiguration[policyDetails.id] =
                                 policyConfig.createConfigObject(policyDetails);
                         });
-                };
+                }
 
-                var getPlanPolicies = function (plan) {
+                function getPlanPolicies(plan) {
                     PlanVersionPolicy.query(
                         {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version},
                         function (policies) {
@@ -154,11 +165,19 @@
                                 getPolicyDetails(policy, plan);
                             });
                         });
-                };
+                }
 
-                angular.forEach($scope.plans, function (plan) {
-                    getPlanPolicies(plan);
-                });
+                function getSvcPolicyDetails(policy) {
+                    ServiceVersionPolicy.get(
+                        {orgId: $stateParams.orgId,
+                            svcId: $stateParams.svcId,
+                            versionId: $stateParams.versionId,
+                            policyId: policy.id},
+                        function (policyDetails) {
+                            $scope.policyConfiguration[policyDetails.id] =
+                                policyConfig.createConfigObject(policyDetails);
+                        });
+                }
 
             }])
 

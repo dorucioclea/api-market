@@ -346,6 +346,11 @@
                     url: '/plans',
                     templateUrl: 'views/partials/api/plans.html',
                     resolve: {
+                        ServiceVersionPolicy: 'ServiceVersionPolicy',
+                        svcPolicies: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
+                            return ServiceVersionPolicy.query(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        },
                         ServicePlans: 'ServicePlans',
                         PlanVersionPolicy: 'PlanVersionPolicy',
                         planData: function (ServicePlans, organizationId, serviceId, versionId) {
