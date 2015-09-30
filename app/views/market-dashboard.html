@@ -36,8 +36,19 @@
 
                             <!-- Applications Tab Content -->
                             <div class="col-sm-12">
-                                <input id="apps-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by application name..." class="ng-pristine ng-untouched ng-valid">
-                                <button id="apps-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
+                                <form role="form" class="form-horizontal">
+                                    <!-- button addon -->
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ng-model="searchText" placeholder="Filter by application name...">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-default btn-sm fa fa-search"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                                 <hr>
                             </div>
                             <!-- The list of applications in the org -->
@@ -53,7 +64,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-12" ng-show="applications.length > 0 && filteredApps.length == 0">
+                            <div class="col-sm-12" ng-show="(applications | filter:{name:searchText}).length == 0">
                                 <div class="row">
                                     <div class="col-sm-10 col-sm-offset-1 well">
                                         No applications found matching your filter criteria - please try searching for something different.
@@ -62,7 +73,7 @@
                             </div>
 
 
-                            <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0">
+                            <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0 || (applications | filter:{name:searchText}).length === 0">
                                 <table class="table table-bordered table-condensed">
                                     <thead>
                                     <tr>
@@ -75,7 +86,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat-start="application in applications">
+                                    <tr ng-repeat-start="application in applications | filter:{name:searchText}">
                                         <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></i></td>
                                         <td>
                                             <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
