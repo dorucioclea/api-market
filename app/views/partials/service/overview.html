@@ -9,6 +9,42 @@
       information below).
     </p><br>
 
+    <h4>Applications contracted to use this service</h4>
+    <p ng-if="!(isPublished || isRetired)">This service is not yet published, and therefore cannot have any contracts yet.</p>
+    <p ng-if="isRetired">This service was retired. All existing contracts have been voided.</p>
+    <p ng-if="contractCount === 0 && isPublished && !isRetired">No applications are currently contracted to use this service.</p>
+    <p ng-if="contractCount > 0">Total contracts with applications: <span class="text-bold text-primary">{{contractCount}}</span>.</p>
+    <div class="row mt10" ng-repeat="orgId in contractOrgIds">
+      <div class="col-sm-12">
+        <p>In organization <span class="text-primary text-bold">{{contractOrgs[orgId].name}}</span>:</p>
+          <div class="col-sm-6">
+            <table class="table table-bordered table-striped table-condensed">
+              <thead>
+              <tr>
+              <th nowrap="nowrap" width="70%">
+                Application
+              </th>
+              <th nowrap="nowrap" width="30%">
+                Version
+              </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="contract in contractOrgs[orgId].contracts">
+                <td>
+                  {{contract.appName}}
+                </td>
+                <td>
+                  {{contract.appVersion}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div><br>
+
+
     <h4>Implementation</h4>
     <p>
       The 'Implementation' tab is where you go to configure the details of the real service

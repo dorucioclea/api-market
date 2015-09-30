@@ -374,11 +374,31 @@
             }])
 
         /// ==== Overview Controller
-        .controller('ServiceOverviewCtrl', ['$scope', 'svcScreenModel', function ($scope, svcScreenModel) {
+        .controller('ServiceOverviewCtrl', ['$scope', 'svcContracts', 'svcScreenModel',
+            function ($scope, svcContracts, svcScreenModel) {
 
-            svcScreenModel.updateTab('Overview');
+                svcScreenModel.updateTab('Overview');
+                $scope.contractCount = svcContracts.length;
+                classifyContracts(svcContracts);
 
-        }])
+                function classifyContracts(contracts) {
+                    $scope.contractOrgIds = [];
+                    $scope.contractOrgs = [];
+                    angular.forEach(contracts, function (contract) {
+                        if (!$scope.contractOrgs[contract.appOrganizationId]) {
+                            $scope.contractOrgs[contract.appOrganizationId] = {
+                                name: contract.appOrganizationName,
+                                contracts: []
+                            };
+                        }
+                        if ($scope.contractOrgIds.indexOf(contract.appOrganizationId) === -1) {
+                            $scope.contractOrgIds.push(contract.appOrganizationId);
+                        }
+                        $scope.contractOrgs[contract.appOrganizationId].contracts.push(contract);
+                    });
+                }
+
+            }])
 
         // ==== Metrics Controller
         .controller('ServiceMetricsController', ['$scope', '$stateParams', 'svcScreenModel',

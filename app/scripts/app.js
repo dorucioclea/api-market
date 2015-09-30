@@ -661,6 +661,13 @@
                 .state('root.service.overview', {
                     url: '/overview',
                     templateUrl: 'views/partials/service/overview.html',
+                    resolve: {
+                        ServiceVersionContracts: 'ServiceVersionContracts',
+                        svcContracts: function (ServiceVersionContracts, organizationId, serviceId, versionId) {
+                            return ServiceVersionContracts.query(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        }
+                    },
                     controller: 'ServiceOverviewCtrl'
                 })
                 // Implementation Tab

@@ -222,5 +222,4 @@
             return $resource(AuthUrl + '/policyDefs/:policyId');
         }]);
 
-
 })(window.angular);
