@@ -236,6 +236,11 @@
           $scope.currentUserModel = currentUserModel;
           $scope.orgScreenModel = orgScreenModel;
           currentUserModel.setCurrentUserInfo(currentUser);
+          $scope.doSearch = doSearch;
+
+          function doSearch(query) {
+              $state.go('root.search', {query: query});
+          }
 
           $scope.toggleFloatingSidebar = function() {
               $scope.floatingSidebar = $scope.floatingSidebar ? false : true;

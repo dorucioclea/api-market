@@ -291,6 +291,32 @@
                     templateUrl: 'views/templates/apilist.html'
                 })
 
+                // MARKETPLACE API SEARCH AND NESTED VIEWS =======================================
+                .state('root.search', {
+                    url: '/search?query',
+                    templateUrl: '/views/search.html',
+                    resolve: {
+                        SearchSvcs: 'SearchSvcs',
+                        svcData: function (SearchSvcs, $stateParams) {
+                            return SearchSvcs.query({},
+                                {filters: [{name: 'name', value:$stateParams.query, operator: 'like'}]}
+                            ).$promise;
+                        }
+                    },
+                    controller: 'ApiSearchCtrl'
+                })
+                // API Grid View
+                .state('root.search.grid', {
+                    url: '/grid',
+                    templateUrl: 'views/templates/apigrid.html'
+
+                })
+                // API List View
+                .state('root.search.list', {
+                    url: '/list',
+                    templateUrl: 'views/templates/apilist.html'
+                })
+
                 // API MARKETPLACE PAGE AND NESTED VIEWS ==============================================
                 .state('root.api', {
                     url: '/org/:orgId/api/:svcId/:versionId',

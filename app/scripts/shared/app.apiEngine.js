@@ -203,7 +203,11 @@
             return $resource(EngineUrl + '/search/organizations');
         }])
         .factory('SearchSvcs', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-            return $resource(EngineUrl + '/search/services');
+            return $resource(EngineUrl + '/search/services', {}, {
+                query: {
+                    method: 'POST'
+                }
+            });
         }])
         .factory('SearchPublishedSvcsInCategories', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/search/services/versions', {}, {

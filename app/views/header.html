@@ -7,8 +7,8 @@
   <!-- Search box -->
   <li ng-show="showSearch">
     <div class="form-search hidden-xs">
-      <form id="site-search" action="#na">
-        <input type="search" class="form-control" placeholder="Search APIs">
+      <form id="site-search" ng-submit="doSearch(query)">
+        <input type="search" class="form-control" ng-model="query" placeholder="Search APIs">
         <button type="submit" class="ion ion-ios-search-strong"></button>
       </form>
     </div>

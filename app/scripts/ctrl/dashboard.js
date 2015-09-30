@@ -5,11 +5,11 @@
 
       /// ==== MarketDash Controller
       .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData',
-        'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel', 'selectedApp', 'docTester',
-        'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
+        'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel', 'selectedApp',
+            'docTester', 'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
       function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                appData, appVersions, appVersionDetails, appContracts, headerModel, selectedApp, docTester,
-                toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
+                appData, appVersions, appVersionDetails, appContracts, headerModel, selectedApp,
+                docTester, toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
           headerModel.setIsButtonVisible(true, false, false);
           orgScreenModel.updateOrganization(orgData);
           selectedApp.reset();
@@ -144,6 +144,53 @@
               toastService.createToast(type, msg, true);
           };
       }])
+
+        /// ==== API Search Controller
+        .controller('ApiSearchCtrl', ['$scope', '$stateParams', 'svcData', 'headerModel',
+            'ServiceVersion', 'ServiceMarketInfo',
+            function($scope, $stateParams, svcData, headerModel,
+                     ServiceVersion, ServiceMarketInfo) {
+                headerModel.setIsButtonVisible(true, true, true);
+                $scope.availableAPIs = [];
+                $scope.svcStats = [];
+                $scope.queryString = $stateParams.query;
+
+                angular.forEach(svcData.beans, function (data) {
+                    getServiceVersions(data);
+                });
+
+                function getServiceVersions(data) {
+                    ServiceVersion.query({orgId: data.organizationId, svcId: data.id}, function (reply) {
+                        angular.forEach(reply, function (version) {
+                            getDetailsIfPublished(version);
+                        });
+                    });
+                }
+
+                function getDetailsIfPublished(version) {
+                    if (version.status === 'Published') {
+                        ServiceVersion.get(
+                            {orgId: version.organizationId,
+                                svcId: version.id,
+                                versionId: version.version},
+                            function (reply) {
+                                $scope.availableAPIs.push(reply);
+                                getStats(reply);
+                            });
+                    }
+                }
+
+                function getStats(svc) {
+                    ServiceMarketInfo.get({
+                        orgId: svc.service.organization.id,
+                        svcId: svc.service.id,
+                        versionId: svc.version
+                    }, function (stats) {
+                        $scope.svcStats[svc.service.id] = stats;
+                    });
+                }
+
+            }])
 
 /// ==== Dashboard Controller
     .controller('DashboardCtrl', ['$scope', 'svcData', 'categories', 'headerModel',
