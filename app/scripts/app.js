@@ -282,16 +282,16 @@
                 // API Grid View
                 .state('root.apis.grid', {
                     url: '/grid',
-                    templateUrl: 'views/templates/apigrid.html'
+                    templateUrl: 'views/partials/dashboard/grid.html'
 
                 })
                 // API List View
                 .state('root.apis.list', {
                     url: '/list',
-                    templateUrl: 'views/templates/apilist.html'
+                    templateUrl: 'views/partials/dashboard/list.html'
                 })
 
-                // MARKETPLACE API SEARCH AND NESTED VIEWS =======================================
+                // MARKETPLACE API SEARCH ============================================================
                 .state('root.search', {
                     url: '/search?query',
                     templateUrl: '/views/search.html',
@@ -304,17 +304,6 @@
                         }
                     },
                     controller: 'ApiSearchCtrl'
-                })
-                // API Grid View
-                .state('root.search.grid', {
-                    url: '/grid',
-                    templateUrl: 'views/templates/apigrid.html'
-
-                })
-                // API List View
-                .state('root.search.list', {
-                    url: '/list',
-                    templateUrl: 'views/templates/apilist.html'
                 })
 
                 // API MARKETPLACE PAGE AND NESTED VIEWS ==============================================

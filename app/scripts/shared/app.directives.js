@@ -344,6 +344,28 @@
         };
     })
 
+        .directive('apiList', function () {
+            return {
+                retrict: 'E',
+                scope: {
+                    apis: '=',
+                    stats: '='
+                },
+                templateUrl: 'views/templates/apilist.html'
+            };
+        })
+
+        .directive('apiGrid', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    apis: '=',
+                    stats: '='
+                },
+                templateUrl: 'views/templates/apigrid.html'
+            };
+        })
+
 // add full body class for custom pages.
     .directive('customPage', ['$location',function($location) {
         return {

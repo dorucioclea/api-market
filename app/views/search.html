@@ -14,37 +14,7 @@
     </div>
 
     <div class="col-md-12" ng-hide="availableAPIs.length === 0">
-      <div class="panel panel-lined mb20 table-responsive">
-        <table class="table table-bordered text-center">
-          <tr ng-repeat="api in availableAPIs" class="api-list">
-            <td>
-              <div class="media media-middle">
-                <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><base64-logo logo-class="entity-logo-list" logo="{{api.service.base64logo}}"></base64-logo></a>
-              </div>
-            </td>
-            <td class="text-left">
-              <div>
-                <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
-                <span class="text-default text-light"> by </span><a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.organization.name}}</a>
-              </div>
-              <div class="description">
-                {{api.service.description}}
-              </div>
-            </td>
-            <td>
-              <div class="text-bold text-uppercase">{{api.version}}</div>
-            </td>
-            <td>
-              <div class="fa-hover col-xs-4"><b>{{svcStats[api.service.id].developers}}</b><br>developers</div>
-              <div class="fa-hover col-xs-4"><b>{{svcStats[api.service.id].followers}}</b><br>followers<br></div>
-              <div class="fa-hover col-xs-4"><b>{{svcStats[api.service.id].uptime}}%</b><br>uptime</div>
-            </td>
-            <td>
-              <div class="fa-hover"><a href=""><i class="text-primary follow-icon fa fa-star-o"></i></a></div>
-            </td>
-          </tr>
-        </table>
-      </div>
+        <api-list apis="availableAPIs" stats="svcStats"></api-list>
     </div>
   </div>
 </div>
