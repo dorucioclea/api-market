@@ -10,7 +10,11 @@
 
           $scope.toasts = toastService.toasts;
           $scope.toastService = toastService;
-          headerModel.setIsButtonVisible(true, true);
+          if ($scope.publisherMode) {
+              headerModel.setIsButtonVisible(false, false);
+          } else {
+              headerModel.setIsButtonVisible(true, true);
+          }
           $scope.selectedTab = 1;
 
           $scope.currentUserModel = currentUserModel;
