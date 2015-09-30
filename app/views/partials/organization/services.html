@@ -3,9 +3,19 @@
     <div class="panel-body">
       <!-- Services Tab Content -->
       <div class="col-sm-12">
-        <input id="services-filter-f" ng-model="value" ng-change="doSearch()" value="" type="text" placeholder="Filter by service name..." class="ng-pristine ng-untouched ng-valid">
-        <button id="services-filter-b" ng-click="onClick()" class="btn btn-default btn-sm"><i class="fa fa-fw fa-search"></i></button>
-        <a class="btn btn-line-primary pull-right" ng-click="modalNewService()" ng-if="User.isAuthorizedFor('svcEdit')">New Service</a>
+        <form role="form" class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="searchText" placeholder="Filter by service name...">
+                <div class="input-group-btn">
+                  <button class="btn btn-default btn-sm fa fa-search"></button>
+                </div>
+              </div>
+            </div>
+            <a class="btn btn-line-primary pull-right" ng-click="modalNewService()" ng-if="User.isAuthorizedFor('svcEdit')">New Service</a>
+          </div>
+        </form>
         <hr>
       </div>
       <!-- The list of services the user has access to -->
@@ -26,7 +36,7 @@
         </div>
       </div>
 
-      <div class="col-sm-12" ng-show="services.length > 0 && filteredServices.length == 0">
+      <div class="col-sm-12" ng-show="(services | filter:{name:searchText}).length == 0">
         <div class="row">
           <div class="col-sm-10 col-sm-offset-1 well">
             No services found matching your filter criteria - please try searching for something different.
@@ -34,7 +44,7 @@
         </div>
       </div>
 
-      <div class="col-sm-12" ng-repeat="service in services">
+      <div class="col-sm-12" ng-repeat="service in services | filter:{name:searchText}">
         <div class="col-sm-12">
           <span class="title"><a href ng-click="goToSvc(service)">{{service.name}}</a></span>
           <a class="apiman-summaryrow-icon pull-right">
