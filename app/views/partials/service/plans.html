@@ -15,7 +15,7 @@
           <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
             <label>
               <input type="checkbox" ng-model="plan.checked" ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
-              <span class="title"><a ui-sref="root.plan.overview({orgId: plan.organizationId, planId: plan.id, versionId: plan.selectedVersion})" title="{{ plan.description }}">{{ plan.name }}</a></span>
+              <span class="title"><a ui-sref="root.plan({orgId: plan.organizationId, planId: plan.id, versionId: plan.selectedVersion})" title="{{ plan.description }}">{{ plan.name }}</a></span>
             </label>
           </div>
           <div class="col-sm-6">

@@ -1,12 +1,65 @@
 <div class="row">
-  <div class="col-sm-12">
-    <h3>Application Details</h3>
-    <p>This is the application details page. Here you can find a summary of the Application's meta-data and contracts. Please note that you will need to fill out a minimum amount of data before the Application can be registered with the Gateway. In particular, the Application must have at least one Service Contract (see the "Contracts" tab).</p><br>
-    <h4>Contracts</h4>
-    <p>The 'Contracts' tab provides a list of all the Service Contracts for this Application. A Service Contract is simply a link between this Application and a provided Service the the Application consumes.</p><br>
-    <h4>APIs</h4>
-    <p>The 'APIs' tab lists all of the Services consumed by this Application, including showing the API Key and live endpoint for each. Go here if you want to figure out how to invoke a Service once you have a Contract for it.</p><br>
-    <h4>Activity</h4>
-    <p>The 'Activity' tab shows a history of all the changes made to the Application. Essentially it is an audit log.</p>
-  </div>
+    <div class="col-sm-12">
+        <h3>Application Details</h3><br>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Application Identifiers</h4>
+            </div>
+            <div class="col-sm-6">
+                <table class="mt5 table table-bordered table-striped table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Organization ID</span>
+                        </td>
+                        <td>
+                            {{applicationVersion.application.organization.id}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Application ID</span>
+                        </td>
+                        <td>
+                            {{applicationVersion.application.id}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Version ID</span>
+                        </td>
+                        <td>
+                            {{applicationVersion.version}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt30 row" ng-if="applicationVersion.oAuthClientId !== null && applicationVersion.oAuthClientId.length > 0">
+            <div class="col-sm-12">
+                <h4>OAuth Credentials</h4>
+            </div>
+            <div class="col-sm-10">
+                <table class="mt5 table table-bordered table-striped table-condensed">
+                    <tr>
+                        <td>
+                            <span class="text-bold">Client ID</span>
+                        </td>
+                        <td>
+                            {{applicationVersion.oAuthClientId}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Client Secret</span>
+                        </td>
+                        <td>
+                            {{applicationVersion.oauthClientSecret}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

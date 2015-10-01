@@ -20,7 +20,7 @@
               <span class="text-light fa fa-user">&nbsp;{{serviceVersion.createdBy}}</span>
               <a href="{{serviceVersion.onlinedoc}}" class="ml10 fa fa-globe" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0">&nbsp;Online documentation</a>
               <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0">&nbsp;{{serviceVersion.service.categories.join(', ')}}</i>
-              <span class="ml10 text-light fa fa-clock-o">&nbsp;Created: {{serviceVersion.createdOn | date }}</span>
+              <span class="ml10 text-light fa fa-clock-o">&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}</span>
             </div>
             <div class="col-sm-12">
               <hr>

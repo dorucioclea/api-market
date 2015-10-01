@@ -77,6 +77,20 @@
                         });
                 };
 
+                $scope.showInfoModal = function() {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalHelp.html',
+                        size: 'lg',
+                        controller: 'HelpCtrl as ctrl',
+                        resolve: {
+                            type: function () {
+                                return 'service';
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                };
+
             }])
 
         // +++ Service Screen Subcontrollers +++

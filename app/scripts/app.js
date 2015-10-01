@@ -79,7 +79,7 @@
             $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}',
                 '/org/{orgId}/service/{svcId}/{versionId}/overview');
             $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}',
-                '/org/{orgId}/plan/{planId}/{versionId}/overview');
+                '/org/{orgId}/plan/{planId}/{versionId}/policies');
 
             $stateProvider
 
@@ -530,12 +530,6 @@
                         }]
                     },
                     controller: 'PlanCtrl'
-                })
-                // Overview Tab
-                .state('root.plan.overview', {
-                    url: '/overview',
-                    templateUrl: 'views/partials/plan/overview.html',
-                    controller: 'PlanOverviewCtrl'
                 })
                 // Policies Tab
                 .state('root.plan.policies', {

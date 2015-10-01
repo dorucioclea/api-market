@@ -1,100 +1,82 @@
 <div class="row">
-  <div class="col-sm-12">
-    <h3>Service Details</h3>
-    <p>
-      This is the service details page.  Use this page to modify the meta-data, plans, and
-      policies for the service.  There is no need to follow the tabs in order, but note that
-      you will need to fill out a minimum amount of data before the service can be published
-      to the Gateway.  In particular, the Implementation, Definition and Plans tabs are important (more
-      information below).
-    </p><br>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Service Identifiers</h4>
+            </div>
+            <div class="col-sm-6">
+                <table class="mt5 table table-bordered table-striped table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Organization ID</span>
+                        </td>
+                        <td>
+                            {{serviceVersion.service.organization.id}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Service ID</span>
+                        </td>
+                        <td>
+                            {{serviceVersion.service.id}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text-bold">Version ID</span>
+                        </td>
+                        <td>
+                            {{serviceVersion.version}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <h4>Applications contracted to use this service</h4>
-    <p ng-if="!(isPublished || isRetired)">This service is not yet published, and therefore cannot have any contracts yet.</p>
-    <p ng-if="isRetired">This service was retired. All existing contracts have been voided.</p>
-    <p ng-if="contractCount === 0 && isPublished && !isRetired">No applications are currently contracted to use this service.</p>
-    <p ng-if="contractCount > 0">Total contracts with applications: <span class="text-bold text-primary">{{contractCount}}</span>.</p>
-    <div class="row mt10" ng-repeat="orgId in contractOrgIds">
-      <div class="col-sm-12">
-        <p>In organization <span class="text-primary text-bold">{{contractOrgs[orgId].name}}</span>:</p>
-          <div class="col-sm-6">
-            <table class="table table-bordered table-striped table-condensed">
-              <thead>
-              <tr>
-              <th nowrap="nowrap" width="70%">
-                Application
-              </th>
-              <th nowrap="nowrap" width="30%">
-                Version
-              </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="contract in contractOrgs[orgId].contracts">
-                <td>
-                  {{contract.appName}}
-                </td>
-                <td>
-                  {{contract.appVersion}}
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-      </div>
-    </div><br>
+        <div class="row mt30">
+            <div class="col-sm-12">
+                <h4>Applications contracted to use this service</h4>
+            </div>
+            <div class="col-sm-12">
+                <p ng-if="!(isPublished || isRetired)">This service is not yet published, and therefore cannot have any contracts yet.</p>
+                <p ng-if="isRetired">This service was retired. All existing contracts have been voided.</p>
+                <p ng-if="contractCount === 0 && isPublished && !isRetired">No applications are currently contracted to use this service.</p>
+                <p ng-if="contractCount > 0">Total contracts with applications: <span class="text-bold text-primary">{{contractCount}}</span>.</p>
+                <div class="row mt10" ng-repeat="orgId in contractOrgIds">
+                    <div class="col-sm-12">
+                        <p>In organization <span class="text-primary text-bold">{{contractOrgs[orgId].name}}</span>:</p>
+                        <div class="col-sm-6">
+                            <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                <tr>
+                                    <th nowrap="nowrap" width="70%">
+                                        Application
+                                    </th>
+                                    <th nowrap="nowrap" width="30%">
+                                        Version
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="contract in contractOrgs[orgId].contracts">
+                                    <td>
+                                        {{contract.appName}}
+                                    </td>
+                                    <td>
+                                        {{contract.appVersion}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-    <h4>Implementation</h4>
-    <p>
-      The 'Implementation' tab is where you go to configure the details of the real service
-      being managed.  This is where you tell us where the service is, so that we can
-      actually invoke it at runtime.
-    </p><br>
-
-    <h4>Definition</h4>
-    <p>
-      The 'Definition' tab allows you to configure a Service Definition document
-      for your service.  A Service Definition is a detailed description of the capabilities
-      of your Service (operation names, http verbs, data models).  For example, you might
-      add a Swagger spec document as your Service Definition.
-    </p><br>
-
-    <h4>Plans</h4>
-    <p>
-      The 'Plans' tab is used to configure which Plans (already defined in the Organization)
-      are available when an Application wishes to create a Service Contract with this
-      Service.  Optionally, a Service can also be marked as "Public", which means that no
-      Service Contract is required (the Service can be invoked without sending an API Key).
-    </p><br>
-
-    <h4>Policies</h4>
-    <p>
-      The 'Policies' tab is where you go if you wish to configure any policies that should
-      be enforced for *all* requests to the Service, regardless of which user, application,
-      or plan is being used.  In other words, Service-level policies.
-    </p><br>
-
-    <h4>Contracts</h4>
-    <p>
-      The 'Contracts' tab will show a table of all Applications that have created Service
-      Contracts to this Service.  In other words, it shows all of the registered
-      consumers of the Service.  Note that if the Service is marked as "Public", this tab
-      will likely be empty.
-    </p><br>
-
-    <h4>Endpoint</h4>
-    <p>
-      The 'Endpoint' tab will show you information about how to invoke the Service once
-      it is published to the API Gateway.
-    </p><br>
-
-    <h4>Activity</h4>
-    <p>
-      The 'Activity' tab shows a history of all the changes made to the Service.  Essentially
-      it is an audit log.
-    </p>
-
-  </div>
+    </div>
 </div>
-

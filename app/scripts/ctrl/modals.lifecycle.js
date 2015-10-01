@@ -107,7 +107,7 @@
                 $scope.createPlan = function (plan) {
                     Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
                         $scope.modalClose();
-                        $state.go('root.plan.overview',
+                        $state.go('root.plan',
                             {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Plan <b>' + newPlan.name + '</b> created!', true);
@@ -297,7 +297,7 @@
                                 {orgId: $stateParams.orgId, planId: $stateParams.planId}, newVersion,
                                 function (newPlanVersion) {
                                     $scope.modalClose();
-                                    $state.go('root.plan.overview',
+                                    $state.go('root.plan',
                                         {orgId: $stateParams.orgId,
                                             planId: newPlanVersion.plan.id,
                                             versionId: newPlanVersion.version});

@@ -23,13 +23,50 @@
     <!-- API URL panel -->
     <div class="panel panel-default mb15">
       <div class="panel-heading text-center">
-        API URL
+        API Information
       </div>
       <div class="panel-body">
         <form class="form-horizontal">
-          <div class="form-group">
-            <input readonly type="text" class="form-control" value="{{endpoint.managedEndpoint}}">
-          </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label text-primary">API URL</label>
+                </div>
+                <div class="col-md-12">
+                    <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label text-primary">Organization ID</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label text-primary">Service ID</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label class="control-label text-primary">Version ID</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
+                </div>
+            </div>
+            <div class="form-group" ng-if="hasOAuth">
+                <div class="col-md-12">
+                    <label class="control-label text-primary">OAuth Provision Key</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
+                </div>
+            </div>
         </form>
       </div>
     </div><!-- end API URL panel -->
@@ -72,7 +109,6 @@
           <auth-accordion-group heading="'OAuth 2.0'">
               <oauth2 client-id="appVersion.oAuthClientId" client-secret="appVersion.oauthClientSecret" scopes="serviceVersion.oauthScopes"></oauth2>
           </auth-accordion-group>
-          <auth-accordion-group heading="'Basic'"><basic-auth></basic-auth></auth-accordion-group>
         </accordion>
         <!-- #end accordion -->
       </div>

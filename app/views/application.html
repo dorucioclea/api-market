@@ -11,6 +11,7 @@
     </div>
     <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
     <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appEdit')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
+
   </overview-header>
 
   <overview-tabs>
@@ -19,5 +20,6 @@
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis" ng-if="isRegistered">APIs</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isRegistered">Metrics</label>
+    <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
   </overview-tabs>
 </overview>

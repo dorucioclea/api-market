@@ -165,7 +165,6 @@
 
                 $scope.services = svcData;
                 $scope.serviceVersions = svcVersions;
-                console.log(svcVersions);
                 orgScreenModel.updateTab('Services');
                 $scope.canPublish = canPublish;
                 $scope.canRetire = canRetire;

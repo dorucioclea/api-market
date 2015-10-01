@@ -7288,6 +7288,9 @@ a.text-white:hover {
 .xsmall {
   font-size: 10px;
 }
+.xlarge {
+  font-size: 20px;
+}
 .form-control {
   box-shadow: none;
   -webkit-transition: 0.2s ease-in-out;
