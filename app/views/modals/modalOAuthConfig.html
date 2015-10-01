@@ -6,13 +6,37 @@
         <span class="close ion ion-android-close" ng-click="modalClose()"></span>
     </div>
     <div class="modal-body">
-        <div class="col-sm-12">
             <p class="text-light">You can configure the Application's OAuth2.0 callback path here.</p>
             <hr>
-        </div>
         <div class="panel">
             <div class="panel-body">
-                <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="panel panel-primary mini-box">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label class="control-label text-primary">Client Id</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="url" name="id" class="form-control" ng-model="id" disabled>
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label class="control-label text-primary">Client Secret</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="url" name="secret" class="form-control" ng-model="secret" disabled>
+                                    </div>
+                                </div>
+                            </div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt30"></div>
                     <form role="form" name="callbackForm" class="form-horizontal">
                         <div class="form-group">
                             <div class="col-md-12">
@@ -26,7 +50,6 @@
                         </div>
                     </form>
 
-                </div>
             </div>
         </div>
     </div>

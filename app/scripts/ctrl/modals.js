@@ -281,6 +281,8 @@
                   ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
             $scope.callback = appVersionDetails.oauthClientRedirect;
+            $scope.id = appVersionDetails.oAuthClientId;
+            $scope.secret = appVersionDetails.oauthClientSecret;
             $scope.updateCallback = updateCallback;
 
             $scope.modalClose = function() {
