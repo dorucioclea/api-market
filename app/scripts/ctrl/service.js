@@ -5,10 +5,10 @@
 
         /// ==== Service Controller
         .controller('ServiceCtrl',
-        ['$scope', '$state', '$stateParams', 'orgData', 'orgScreenModel',
+        ['$scope', '$state', '$stateParams', '$modal', 'orgData', 'orgScreenModel',
             'svcData', 'svcVersions', 'svcScreenModel', 'toastService', 'TOAST_TYPES', 'actionService',
             'Service', 'ServiceVersionDefinition',
-            function ($scope, $state, $stateParams, orgData, orgScreenModel,
+            function ($scope, $state, $stateParams, $modal, orgData, orgScreenModel,
                       svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService,
                       Service, ServiceVersionDefinition) {
 
@@ -24,6 +24,8 @@
                 $scope.tabStatus = svcScreenModel.tabStatus;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.confirmPublishSvc = confirmPublishSvc;
+                $scope.confirmRetireSvc = confirmRetireSvc;
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -38,13 +40,33 @@
                         {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
                 };
 
-                $scope.publishService = function () {
-                    actionService.publishService($scope.serviceVersion, true);
-                };
+                function confirmPublishSvc() {
+                    $modal.open({
+                                templateUrl: 'views/modals/modalPublishService.html',
+                                size: 'lg',
+                                controller: 'PublishServiceCtrl as ctrl',
+                                resolve: {
+                                    svcVersion: function () {
+                                        return $scope.serviceVersion;
+                                    }
+                                },
+                                windowClass: $scope.modalAnim	// Animation Class put here.
+                            });
+                }
 
-                $scope.retireService = function () {
-                    actionService.retireService($scope.serviceVersion, true);
-                };
+                function confirmRetireSvc() {
+                    $modal.open({
+                                templateUrl: 'views/modals/modalRetireService.html',
+                                size: 'lg',
+                                controller: 'RetireServiceCtrl as ctrl',
+                                resolve: {
+                                    svcVersion: function () {
+                                        return $scope.serviceVersion;
+                                    }
+                                },
+                                windowClass: $scope.modalAnim	// Animation Class put here.
+                            });
+                }
 
                 $scope.updateDesc = function (newValue) {
                     Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, {description: newValue},

@@ -9,7 +9,7 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked && User.isAuthorizedFor('planEdit')" ng-click="lockPlan()">Lock Plan</button>
+    <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked && User.isAuthorizedFor('planEdit')" ng-click="confirmLockPlan()">Lock Plan</button>
 
   </overview-header>
 

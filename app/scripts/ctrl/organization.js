@@ -122,7 +122,6 @@
                 $scope.canLock = canLock;
                 $scope.confirmLockPlan = confirmLockPlan;
 
-
                 $scope.modalNewPlan = function() {
                     $modal.open({
                         templateUrl: 'views/modals/modalNewPlan.html',
@@ -216,7 +215,6 @@
                     ServiceVersion.get(
                         {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                         function (reply) {
-                            console.log(reply);
                             $modal.open({
                                 templateUrl: 'views/modals/modalRetireService.html',
                                 size: 'lg',

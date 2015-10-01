@@ -64,8 +64,6 @@
                 };
 
                 var doAction = function (action, shouldReload, type, msg) {
-                    console.log('Performing Action: ');
-                    console.log(action);
                     Action.save(action, function (reply) {
                         if (shouldReload) {
                             $state.forceReload();

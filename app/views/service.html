@@ -11,8 +11,8 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
-    <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="publishService()">Publish</button>
-    <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="retireService()">Retire</button>
+    <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc()">Publish</button>
+    <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc()">Retire</button>
   </overview-header>
 
   <overview-tabs>
