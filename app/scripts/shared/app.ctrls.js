@@ -228,9 +228,10 @@
         };
     })
 
-    .controller('HeadCtrl', ['$scope', '$state', 'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel',
-        'Fullscreen',
-      function($scope, $state, currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
+    .controller('HeadCtrl', ['$scope', '$state',
+            'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel', 'Fullscreen',
+      function($scope, $state,
+               currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
           $scope.currentUserModel = currentUserModel;

@@ -299,7 +299,7 @@
                         SearchSvcs: 'SearchSvcs',
                         svcData: function (SearchSvcs, $stateParams) {
                             return SearchSvcs.query({},
-                                {filters: [{name: 'name', value:$stateParams.query, operator: 'like'}]}
+                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'}]}
                             ).$promise;
                         }
                     },
