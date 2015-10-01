@@ -126,7 +126,23 @@
             }])
 
 /// ==== LockPlan Controller
-        //TODO Implement
+        .controller('LockPlanCtrl', ['$scope', '$modal',
+            'planVersion', 'actionService',
+            function ($scope, $modal,
+                      planVersion, actionService) {
+
+                $scope.planVersion = planVersion;
+
+                $scope.modalClose = function() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                };
+
+                $scope.doLock = function () {
+                    actionService.lockPlan($scope.planVersion, true);
+                    $scope.modalClose();
+                };
+
+            }])
 
 /// ==== NewService Controller
         .controller('NewServiceCtrl', ['$scope', '$modal', '$state', '$stateParams', 'flowFactory', 'alertService',

@@ -44,8 +44,19 @@
       </div>
 
       <div class="col-sm-12" ng-repeat="plan in plans | filter:{name:searchText}">
-        <div class="col-sm-12">
-          <span><a href ng-click="goToPlan(plan)">{{plan.name }}</a></span>
+        <div class="col-sm-3">
+          <span><a href ui-sref="root.plan({orgId: planVersions[plan.id].organizationId, planId: plan.id, versionId: planVersions[plan.id].version})">{{plan.name }}</a></span>
+        </div>
+        <div class="col-sm-2 text-center">
+          <span>{{planVersions[plan.id].version}}</span>
+        </div>
+        <div class="col-sm-2 text-center">
+          <status-label status="{{planVersions[plan.id].status}}"></status-label>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3">
+          <div class="btn-group-xs">
+            <button class="btn btn-success action-icon fa fa-check" title="Lock {{plan.name}} - {{planVersions[plan.id].version}}" ng-if="canLock(planVersions[plan.id]) && User.isAuthorizedFor('planEdit')" ng-click="confirmLockPlan(planVersions[plan.id])"></button>
+          </div>
         </div>
         <div class="col-sm-12">
           <span class="text-light">{{ plan.description }}</span>

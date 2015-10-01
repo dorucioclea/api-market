@@ -111,20 +111,17 @@
 
         // +++ Organization Screen Subcontrollers +++
         /// ==== Plans Controller
-        .controller('PlansCtrl', ['$scope', '$state', '$modal', 'planData', 'orgScreenModel', 'PlanVersion',
-            function ($scope, $state, $modal, planData, orgScreenModel, PlanVersion) {
+        .controller('PlansCtrl', ['$scope', '$state', '$modal', 'planData', 'planVersions',
+            'orgScreenModel', 'PlanVersion',
+            function ($scope, $state, $modal, planData, planVersions, orgScreenModel, PlanVersion) {
 
                 $scope.plans = planData;
-                console.log(planData);
+                $scope.planVersions = planVersions;
                 orgScreenModel.updateTab('Plans');
                 $scope.modalAnim = 'default';
+                $scope.canLock = canLock;
+                $scope.confirmLockPlan = confirmLockPlan;
 
-                $scope.goToPlan = function (plan) {
-                    PlanVersion.query({orgId: plan.organizationId, planId: plan.id}, function (versions) {
-                        $state.go('root.plan.overview',
-                            {orgId: plan.organizationId, planId: plan.id, versionId: versions[0].version});
-                    });
-                };
 
                 $scope.modalNewPlan = function() {
                     $modal.open({
@@ -136,6 +133,28 @@
                     });
 
                 };
+
+                function canLock(planVersion) {
+                    return planVersion.status === 'Created';
+                }
+
+                function confirmLockPlan(planVersion) {
+                    PlanVersion.get(
+                        {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
+                        function (reply) {
+                            $modal.open({
+                                templateUrl: 'views/modals/modalLockPlan.html',
+                                size: 'lg',
+                                controller: 'LockPlanCtrl as ctrl',
+                                resolve: {
+                                    planVersion: function () {
+                                        return reply;
+                                    }
+                                },
+                                windowClass: $scope.modalAnim	// Animation Class put here.
+                            });
+                        });
+                }
 
             }])
 

@@ -444,6 +444,23 @@
                         Plan: 'Plan',
                         planData: function (Plan, organizationId) {
                             return Plan.query({orgId: organizationId}).$promise;
+                        },
+                        PlanVersion: 'PlanVersion',
+                        planVersions: function ($q, planData, PlanVersion) {
+                            var planVersions = {};
+                            var promises = [];
+
+                            angular.forEach(planData, function (plan) {
+                                promises.push(PlanVersion.query(
+                                    {orgId: plan.organizationId, planId: plan.id}).$promise);
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (value) {
+                                    planVersions[value[0].id] = value[0];
+                                });
+                                return planVersions;
+                            });
                         }
                     },
                     controller: 'PlansCtrl'

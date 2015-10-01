@@ -1,0 +1,39 @@
+<div class="page">
+
+  <div class="modal-header clearfix">
+    <h4 class="modal-title">Are you sure you want to lock <span class="text-primary">{{planVersion.plan.name}} {{planVersion.version}}</span>?</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+  </div>
+  <!-- Application Create panel -->
+  <div class="modal-body">
+    <p>When a plan version is locked, <span class="text-primary text-bold">it is no longer possible to changed any of the policies defined in the plan</span>!</p>
+    <p>If at a later point you do wish to make changes, you will need to create a new version of this plan.</p>
+
+    <p>Do you wish to proceed?</p>
+
+    <!--<table class="table table-condensed">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th nowrap="nowrap" width="10%">#</th>-->
+        <!--<th nowrap="nowrap" width="20%">To Service</th>-->
+        <!--<th nowrap="nowrap" width="20%">Using Plan</th>-->
+        <!--<th nowrap="nowrap" width="50%">API Key</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr ng-repeat="contract in contracts">-->
+        <!--<td>{{$index+1}}</td>-->
+        <!--<td>{{contract.serviceName}} - {{contract.serviceVersion}}</td>-->
+        <!--<td>{{contract.planName}} - {{contract.planVersion}}</td>-->
+        <!--<td>{{contract.apikey}}</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-line-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-line-primary" ng-click="doLock()">Lock Plan</button>
+  </div>
+
+</div>
