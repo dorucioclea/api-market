@@ -45,16 +45,26 @@
       </div>
 
       <div class="col-sm-12" ng-repeat="service in services | filter:{name:searchText}">
-        <div class="col-sm-12">
-          <span class="title"><a href ng-click="goToSvc(service)">{{service.name}}</a></span>
-          <a class="apiman-summaryrow-icon pull-right">
-            <i class="fa fa-clock-o fa-fw"></i>
-            <span class="title-summary-item">Created on</span>
-            <span class="title-summary-item">{{service.createdOn | date}}</span>
-          </a>
+        <div class="col-sm-3">
+          <span class="title">
+            <a href ui-sref="root.service({orgId: serviceVersions[service.id].organizationId, svcId: service.id, versionId: serviceVersions[service.id].version})">{{service.name}}</a>
+          </span>
+        </div>
+        <div class="col-sm-2 text-center">
+          <span>{{serviceVersions[service.id].version}}</span>
+        </div>
+        <div class="col-sm-2 text-center">
+          <status-label status="{{serviceVersions[service.id].status}}"></status-label>
+        </div>
+        <div class="col-sm-2 col-sm-offset-3">
+          <div class="btn-group-xs">
+            <button class="btn btn-success action-icon fa fa-check" title="Publish {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canPublish(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc(serviceVersions[service.id])"></button>
+            <button class="btn btn-warning action-icon fa fa-trash" title="Retire {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc(serviceVersions[service.id])"></button>
+            <button class="btn btn-info action-icon fa fa-pie-chart" title="Service Metrics" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="toMetrics(serviceVersions[service.id])"></button>
+          </div>
         </div>
         <div class="col-sm-12">
-          <span class="description">{{service.description}}</span>
+          <span class="text-light">{{service.description}}</span>
         </div>
         <div class="col-sm-12">
           <hr>

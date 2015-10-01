@@ -13,7 +13,7 @@
   <div class="row">
 
     <!-- Organization Basic Settings panel -->
-    <div class="col col-md-4 col-md-offset-1 mb30">
+    <div class="col col-md-4 mb30">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-12">
@@ -49,7 +49,7 @@
     </div><!-- end Organization Basic Settings panel -->
 
     <!-- Organization Actions panels -->
-    <div class="col-md-6 mb20" ng-init="activeTab = 1">
+    <div class="col-md-8 mb20" ng-init="activeTab = 1">
       <div class="btn-group btn-radio">
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans" ng-if="User.isAuthorizedFor('planView')">Plans</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" ui-sref=".services" ng-if="User.isAuthorizedFor('svcView')">Services</label>

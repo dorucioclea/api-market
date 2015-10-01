@@ -33,6 +33,7 @@
         'app.ctrl.login',
         'app.ctrl.dashboard',
         'app.ctrl.modals',
+        'app.ctrl.modals.lifecycle',
         'app.ctrl.api',
         'app.ctrl.service',
         'app.ctrl.application',
@@ -414,6 +415,23 @@
                         Service: 'Service',
                         svcData: function (Service, organizationId) {
                             return Service.query({orgId: organizationId}).$promise;
+                        },
+                        ServiceVersion: 'ServiceVersion',
+                        svcVersions: function ($q, svcData, ServiceVersion) {
+                            var svcVersions = {};
+                            var promises = [];
+
+                            angular.forEach(svcData, function (svc) {
+                                promises.push(ServiceVersion.query(
+                                    {orgId: svc.organizationId, svcId: svc.id}).$promise);
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (value) {
+                                    svcVersions[value[0].id] = value[0];
+                                });
+                                return svcVersions;
+                            });
                         }
                     },
                     controller: 'ServicesCtrl'
