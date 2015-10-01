@@ -3,14 +3,14 @@
 
     angular.module('app.ctrl.dashboard', [])
 
-/// ==== MarketDash Controller
+        /// ==== MarketDash Controller
         .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData',
-            'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel', 'selectedApp',
-            'docTester', 'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
+            'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel',
+            'selectedApp', 'docTester', 'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                      appData, appVersions, appVersionDetails, appContracts, headerModel, selectedApp,
-                      docTester, toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
-                headerModel.setIsButtonVisible(true, false, false);
+                      appData, appVersions, appVersionDetails, appContracts, headerModel,
+                      selectedApp, docTester, toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
+                headerModel.setIsButtonVisible(true, false);
                 orgScreenModel.updateOrganization(orgData);
                 selectedApp.reset();
                 docTester.reset();
@@ -140,7 +140,13 @@
 
                 $scope.copyKey = function (apikey) {
                     var type = TOAST_TYPES.INFO;
-                    var msg = '<b>Key copied to clipboard!</b><br>' + apikey;
+                    var msg = '<b>API key copied to clipboard!</b><br>' + apikey;
+                    toastService.createToast(type, msg, true);
+                };
+
+                $scope.copyProvisionKey = function (provKey) {
+                    var type = TOAST_TYPES.INFO;
+                    var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
                     toastService.createToast(type, msg, true);
                 };
             }])
