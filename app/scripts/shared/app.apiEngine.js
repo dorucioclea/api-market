@@ -10,7 +10,7 @@
 
         /// ################## Auth Url ########################
         .factory('AuthUrl', function () {
-            return 'http://api.t1t.be/API-Engine-auth/v1';
+            return 'http://apim.t1t.be:8000/dev/apiengineauth/consent/v1';
         })
 
         /// ########### ENDPOINT FACTORIES #####################
@@ -151,6 +151,12 @@
         }])
         .factory('ServiceMarketInfo', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+        }])
+        .factory('ServiceOAuthAuthorize', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/oauth2/authorize');
+        }])
+        .factory('ServiceOAuthToken', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/oauth2/token');
         }])
 
         /// ========== CURRENTUSER ======================================================================
