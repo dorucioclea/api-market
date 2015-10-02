@@ -6,8 +6,8 @@
         <span class="close ion ion-android-close" ng-click="modalClose()"></span>
     </div>
     <div class="modal-body">
-            <p class="text-light">You can configure the Application's OAuth2.0 callback path here.</p>
-            <hr>
+        <p class="text-light">You can configure the Application's OAuth2.0 callback path here.</p>
+        <hr>
         <div class="panel">
             <div class="panel-body">
                 <div class="row">
@@ -19,42 +19,52 @@
                                         <label class="control-label text-primary">Client Id</label>
                                     </div>
                                     <div class="col-md-12">
-                                        <input type="url" name="id" class="form-control" ng-model="id" disabled>
+                                        <div class="input-group">
+                                            <input type="url" name="id" class="form-control" ng-model="id" disabled>
+                                            <div class="input-group-btn">
+                                                <button clipboard text="id" on-copied="toastService.timedClose()" class="btn btn-line-default fa fa-copy" ng-click="copyId(id)" title="Click to copy Client Id to clipboard!"></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label class="control-label text-primary">Client Secret</label>
                                     </div>
                                     <div class="col-md-12">
-                                        <input type="url" name="secret" class="form-control" ng-model="secret" disabled>
+                                        <div class="input-group">
+                                            <input type="url" name="secret" class="form-control" ng-model="secret" disabled>
+                                            <div class="input-group-btn">
+                                                <button clipboard text="secret" on-copied="toastService.timedClose()" class="btn btn-line-default fa fa-copy" ng-click="copySecret(secret)" title="Click to copy Client Secret to clipboard!"></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div></div>
-                        </div>
                     </div>
                 </div>
-                <div class="row mt30"></div>
-                    <form role="form" name="callbackForm" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="control-label text-primary">Callback path</label>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required>
-                                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
-                                <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url">This is not a valid callback url. Please check for errors.</p>
-                            </div>
-                        </div>
-                    </form>
-
             </div>
+            <div class="row mt30"></div>
+            <form role="form" name="callbackForm" class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label text-primary">Callback path</label>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required>
+                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
+                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url">This is not a valid callback url. Please check for errors.</p>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-        <button class="btn btn-primary" ng-click="updateCallback(callback)" ng-disabled="callbackForm.$invalid">Update Configuration</button>
-    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="updateCallback(callback)" ng-disabled="callbackForm.$invalid">Update Configuration</button>
+</div>
 </div>

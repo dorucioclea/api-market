@@ -305,6 +305,17 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
+                $scope.copyId = function (id) {
+                    var type = TOAST_TYPES.INFO;
+                    var msg = '<b>Client Id copied to clipboard!</b><br>' + id;
+                    toastService.createToast(type, msg, true);
+                };
+                $scope.copySecret = function (secret) {
+                    var type = TOAST_TYPES.INFO;
+                    var msg = '<b>Client Secret copied to clipboard!</b><br>' + secret;
+                    toastService.createToast(type, msg, true);
+                };
+
                 function updateCallback(url) {
                     var updateObject = {
                         uri: url
