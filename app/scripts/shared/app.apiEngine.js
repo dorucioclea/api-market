@@ -222,8 +222,9 @@
 
         /// ========== OAUTH ============================================================================
 
-        .factory('ConsumerAuth', ['$resource', 'AuthUrl', function ($resource, AuthUrl) {
-            return $resource(AuthUrl + '/policyDefs/:policyId');
+        .factory('ApplicationOAuth', ['$resource', 'AuthUrl', function ($resource, AuthUrl) {
+            return $resource(AuthUrl +
+                '/oauth/application/:clientId/target/organization/:orgId/service/:svcId/version/:versionId');
         }]);
 
 })(window.angular);
