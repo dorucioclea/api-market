@@ -228,9 +228,9 @@
         };
     })
 
-    .controller('HeadCtrl', ['$scope', '$state',
+    .controller('HeadCtrl', ['$scope', '$state', 'docTester',
             'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel', 'Fullscreen',
-      function($scope, $state,
+      function($scope, $state, docTester,
                currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
@@ -260,6 +260,11 @@
               else {
                   Fullscreen.all();
               }
+          };
+
+          $scope.toApis = function () {
+              docTester.reset();
+              $state.go('root.apis.grid');
           };
 
           $scope.toMarketDash = function () {
