@@ -440,7 +440,79 @@
             };
         }])
 
-        // USER SCREEN MODEL
+        // OAUTH SERVICE
+        .service('oAuthService', ['$http', 'ApplicationOAuth',
+            'OAuthConsumer',
+            function ($http, ApplicationOAuth,
+                      OAuthConsumer) {
+
+                this.grant = grant;
+                this.getAppOAuthInfo = getAppOAuthInfo;
+                this.createOAuthConsumer = createOAuthConsumer;
+
+                function getAppOAuthInfo(clientId, orgId, svcId, versionId) {
+                    return ApplicationOAuth.get({clientId: clientId,
+                        orgId: orgId,
+                        svcId: svcId,
+                        versionId: versionId
+                    }).$promise;
+                }
+
+                function createOAuthConsumer(clientId, clientSecret, userName) {
+                    var consumer = {
+                        appOAuthId: clientId,
+                        appOAuthSecret: clientSecret,
+                        uniqueUserName: userName
+                    };
+                    return OAuthConsumer.create(consumer, function (reply) {
+                    }).$promise;
+                }
+
+                function constructGrantObject(clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                    return {
+                        //client_id: clientId,
+                        client_id: 'bcf7f7bb-8537-4054-a2c7-b1cbcf238d04',
+                        client_secret: clientSecret,
+                        response_type: responseType,
+                        scope: '',
+                        //scope: scope,
+                        provision_key: provisionKey,
+                        authenticated_userid: userId
+                    };
+                }
+
+                function constructUrl(orgId, svcId, versionId) {
+                    return 'https://apim.t1t.be:8443/' +
+                        orgId.toLowerCase() + '/' +
+                        svcId.toLowerCase() + '/' +
+                        versionId.toLowerCase() + '/oauth2/authorize';
+                }
+
+                function grant(orgId, svcId, versionId,
+                               clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                    var url = constructUrl(orgId, svcId, versionId);
+                    var grantObject = constructGrantObject(clientId,
+                        clientSecret, responseType, scope, provisionKey, userId);
+                    return postFormEncoded(url, grantObject);
+                }
+
+                function postFormEncoded(url, data) {
+                    return $http({
+                        method: 'POST',
+                        url: url,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for(var p in obj)
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            return str.join("&");
+                        },
+                        data: data
+                    });
+                }
+            }])
+
+                // USER SCREEN MODEL
         .service('userScreenModel', function () {
             this.selectedTab = 'Profile';
 

@@ -14,10 +14,14 @@
 
 
                     <div class="col-sm-12 col-md-9 col-lg-7">
-                        <div class="row" ng-repeat="scope in appOAuthInfo.scopes">
-                            <div class="col-sm-12">
-                                <p class="text-bold text-muted">{{scope}}</p>
+                        <div class="row" ng-repeat="scope in requestedScopes">
+                            <div class="col-sm-8 col-md-7 col-lg-8">
+                                <p class="text-bold">{{appOAuthInfo.scopes[scope]}}</p>
                             </div>
+                            <div class="col-sm-4 col-md-5 col-lg-4">
+                                <p class="text-muted">{{scope}}</p>
+                            </div>
+
                         </div>
                     </div>
 
@@ -25,7 +29,7 @@
 
                 <div class="panel-body">
                     <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
-                    <button class="btn btn-primary" ng-click="doGrant()">Grant</button>
+                    <button class="btn btn-success" ng-click="doGrant()">Grant</button>
                 </div>
             </div>
             <div class="panel-footer text-muted text-normal small">

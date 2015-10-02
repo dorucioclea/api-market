@@ -231,6 +231,14 @@
         .factory('ApplicationOAuth', ['$resource', 'AuthUrl', function ($resource, AuthUrl) {
             return $resource(AuthUrl +
                 '/oauth/application/:clientId/target/organization/:orgId/service/:svcId/version/:versionId');
+        }])
+        .factory('OAuthConsumer', ['$resource', 'AuthUrl', function ($resource, AuthUrl) {
+            return $resource(AuthUrl +
+                '/oauth/consumer', {}, {
+                create: {
+                    method: 'POST'
+                }
+            });
         }]);
 
 })(window.angular);

@@ -58,12 +58,13 @@
 
 /// ==== Service Swagger Documentation Controller
         .controller('DocumentationCtrl', ['$scope', '$modal', '$stateParams', 'endpoint', 'svcContracts', 'userApps',
-            'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition',
+            'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition', 'oAuthService',
             function($scope, $modal, $stateParams, endpoint, svcContracts, userApps,
-                     docTester, svcTab, ApplicationVersion, ServiceVersionDefinition) {
+                     docTester, svcTab, ApplicationVersion, ServiceVersionDefinition, oAuthService) {
                 svcTab.updateTab('Documentation');
                 $scope.endpoint = endpoint;
                 $scope.contractApps = [];
+                $scope.doGrant = doGrant;
                 var currentDefinitionSpec;
 
                 var filterApplications = function (apps, contracts) {
@@ -117,6 +118,22 @@
                             $scope.appVersion = reply;
                         }
                     );
+                }
+
+                function doGrant() {
+                    oAuthService.grant(
+                        $scope.serviceVersion.service.organization.id,
+                        $scope.serviceVersion.service.id,
+                        $scope.serviceVersion.version,
+                        $scope.appVersion.oAuthClientId,
+                        $scope.appVersion.oauthClientSecret,
+                        'token',
+                        $scope.serviceVersion.oauthScopes,
+                        $scope.serviceVersion.provisionKey,
+                        $scope.User.currentUser.username
+                    ).then(function (response) {
+                            console.log(response.data.redirect_uri);
+                        });
                 }
 
                 ServiceVersionDefinition.get(
