@@ -72,7 +72,7 @@
                 {orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
         }])
         .factory('ApplicationOAuthCallback', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
-            return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/version/:versionId');
+            return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/versions/:versionId');
         }])
         .factory('ApplicationActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/applications/:appId/activity');
