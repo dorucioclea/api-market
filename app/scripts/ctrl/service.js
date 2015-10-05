@@ -409,6 +409,41 @@
                 };
             }])
 
+        /// ==== Terms Controller
+        .controller('ServiceTermsCtrl', ['$scope', '$state', 'svcScreenModel', 'ServiceTerms',
+            'toastService', 'TOAST_TYPES',
+            function ($scope, $state, svcScreenModel, ServiceTerms, toastService, TOAST_TYPES) {
+
+                svcScreenModel.updateTab('Terms');
+                $scope.htmlTerms = $scope.serviceVersion.service.terms;
+                $scope.doSave = doSave;
+                $scope.reset = reset;
+
+                function doSave() {
+                    var termsObject = {terms: $scope.htmlTerms};
+                    ServiceTerms.update({orgId: $scope.serviceVersion.service.organization.id,
+                        svcId: $scope.serviceVersion.service.id}, termsObject,
+                        function (reply) {
+                            $state.forceReload();
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'Terms & Conditions for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                                true);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not update the terms & conditions.');
+                        });
+                }
+
+                function reset() {
+                    $scope.htmlTerms = $scope.serviceVersion.service.terms;
+                }
+
+                $scope.$watch('htmlTerms', function (terms) {
+                    $scope.changed = (terms !== $scope.serviceVersion.service.terms);
+                    $scope.invalid = (terms === $scope.serviceVersion.service.terms);
+                }, true);
+
+            }])
+
         /// ==== Overview Controller
         .controller('ServiceOverviewCtrl', ['$scope', 'svcContracts', 'svcScreenModel',
             function ($scope, svcContracts, svcScreenModel) {

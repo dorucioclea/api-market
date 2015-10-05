@@ -10,7 +10,7 @@
 
         /// ################## Auth Url ########################
         .factory('AuthUrl', function () {
-            return 'http://apim.t1t.be:8000/dev/apiengine/v1';
+            return 'http://apim.t1t.be:8000/dev/apiengineauth/v1';
         })
 
         /// ########### ENDPOINT FACTORIES #####################
@@ -107,6 +107,13 @@
         }])
         .factory('ServiceActivity', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/activity');
+        }])
+        .factory('ServiceTerms', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/terms', {}, {
+                update: {
+                    method: 'PUT'
+                }
+            });
         }])
         .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId', {}, {

@@ -21,6 +21,7 @@
         'angular-clipboard',
         'flow',
         'gridshore.c3js.chart',
+        'textAngular',
 
         /* custom modules */
         'app.ctrls',
@@ -780,6 +781,12 @@
                     },
                     controller: 'ServicePoliciesCtrl'
                 })
+                // Terms Tab
+                .state('root.service.terms', {
+                    url: '/terms',
+                    templateUrl: 'views/partials/service/terms.html',
+                    controller: 'ServiceTermsCtrl'
+                })
                 // Activity Tab
                 .state('root.service.activity', {
                     url: '/activity',
@@ -851,10 +858,10 @@
         .factory('sessionInjector', ['$sessionStorage', '$window', function ($sessionStorage, $window) {
             return {
                 request: function (config) {
-                    if (config.url === '/views/oauth.html') {
-                        // Don't inject the session for the grant page, it is not needed
-                        return config;
-                    }
+                    //if (config.url === '/views/oauth.html') {
+                    //    // Don't inject the session for the grant page, it is not needed
+                    //    return config;
+                    //}
                     config.headers.apikey = $sessionStorage.apikey;
                     if (Date.parse($sessionStorage.ttl) < Date.parse(new Date())) {
                         console.log('ttl expired');

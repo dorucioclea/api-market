@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Service Terms & Conditions</h4>
+                <p>Below you can specify the Terms & Conditions that apply to use of the Service.</p>
+                <hr>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <!-- text editor -->
+            <div class="col-md-12">
+                <div class="panel panel-default mb20">
+                    <div class="panel-heading">Editor</div>
+                    <div class="panel-body">
+                        <div text-angular ng-model="htmlTerms"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- #end row -->
+
+    </div>
+    <div class="col-sm-12">
+        <div class="mt20" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
+            <button ng-disabled="!changed" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
+            <button ng-disabled="invalid" ng-click="doSave()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+    </div>
+</div>

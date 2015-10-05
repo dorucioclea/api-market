@@ -21,6 +21,12 @@
                 $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
                 $scope.modalClose = modalClose;
                 $scope.openTicket = openTicket;
+                $scope.hasTerms = hasTerms;
+
+                function hasTerms() {
+                    return $scope.serviceVersion.service.terms !== null &&
+                        $scope.serviceVersion.service.terms.length > 0;
+                }
 
                 function modalNewTicketOpen() {
                     $modal.open({
