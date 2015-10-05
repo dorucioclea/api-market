@@ -115,6 +115,11 @@
                 new SwaggerClient.ApiKeyAuthorization('apikey', docTester.apikey, 'header'));
           };
 
+          $scope.addSwaggerTokenHeader = function (token) {
+              $scope.swaggerUi.api.clientAuthorizations.add('token',
+                new SwaggerClient.ApiKeyAuthorization('Authorization', token, 'header'));
+          };
+
           $scope.navFull = true;
           $scope.toggleNav = function() {
               $scope.navFull = $scope.navFull ? false : true;

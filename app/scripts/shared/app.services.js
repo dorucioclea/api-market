@@ -79,17 +79,21 @@
                 this.publishService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, TOAST_TYPES.SUCCESS, msg);
+                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
+                        shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.retireService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was retired.';
-                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, TOAST_TYPES.WARNING, msg);
+                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
+                        shouldReload, TOAST_TYPES.WARNING, msg);
                 };
 
                 this.lockPlan = function (planVersion, shouldReload) {
-                    var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version + '</b> was successfully locked!';
-                    doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, TOAST_TYPES.SUCCESS, msg);
+                    var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version +
+                        '</b> was successfully locked!';
+                    doAction(this.createAction(planVersion, ACTIONS.LOCK),
+                        shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.publishApp = function (applicationVersion, shouldReload) {
@@ -470,8 +474,7 @@
 
                 function constructGrantObject(clientId, clientSecret, responseType, scope, provisionKey, userId) {
                     return {
-                        //client_id: clientId,
-                        client_id: 'bcf7f7bb-8537-4054-a2c7-b1cbcf238d04',
+                        client_id: clientId,
                         client_secret: clientSecret,
                         response_type: responseType,
                         scope: '',
@@ -503,9 +506,10 @@
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                         transformRequest: function(obj) {
                             var str = [];
-                            for(var p in obj)
-                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                            return str.join("&");
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+                            }
+                            return str.join('&');
                         },
                         data: data
                     });

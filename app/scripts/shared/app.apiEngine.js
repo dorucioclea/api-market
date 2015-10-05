@@ -10,7 +10,7 @@
 
         /// ################## Auth Url ########################
         .factory('AuthUrl', function () {
-            return 'http://apim.t1t.be:8000/dev/apiengineauth/consent/v1';
+            return 'http://apim.t1t.be:8000/dev/apiengine/v1';
         })
 
         /// ########### ENDPOINT FACTORIES #####################

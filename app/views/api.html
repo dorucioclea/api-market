@@ -1,4 +1,9 @@
-<div class="page page-api">
+<div class="page page-api page-ui-notifications">
+    <div class="toast toast-bottomRight">
+      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <div ng-bind-html="toast.msg">Test Toast</div>
+      </alert>
+    </div>
   <div class="page-wrap">
 
     <div class="row">
