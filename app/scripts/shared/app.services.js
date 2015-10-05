@@ -473,12 +473,15 @@
                 }
 
                 function constructGrantObject(clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                    var scopeKeys = [];
+                    angular.forEach(scope, function (value, key) {
+                        scopeKeys.push(key);
+                    });
                     return {
                         client_id: clientId,
                         client_secret: clientSecret,
                         response_type: responseType,
-                        scope: '',
-                        //scope: scope,
+                        scope: scopeKeys.join(','),
                         provision_key: provisionKey,
                         authenticated_userid: userId
                     };
@@ -504,14 +507,7 @@
                         method: 'POST',
                         url: url,
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        transformRequest: function(obj) {
-                            var str = [];
-                            for (var p in obj) {
-                                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-                            }
-                            return str.join('&');
-                        },
-                        data: data
+                        data: $.param(data)
                     });
                 }
             }])
