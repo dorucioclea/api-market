@@ -280,6 +280,31 @@ module.exports = function (grunt) {
         wrap: ';(function(angular){\n"use strict";\n\n{%= __ngModule %} \n\n})(window.angular);',
         space: '  '
       },
+      local: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://localhost:8080/API-Engine-web/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://localhost:8080/API-Engine-web/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'IDP_URL': 'https://idp.t1t.be:9443/samlsso',
+              'SP_URL': 'http://localhost:8080/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apimarketlocal',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      },
       dev: {
         constants: {
           'CONFIG': {
