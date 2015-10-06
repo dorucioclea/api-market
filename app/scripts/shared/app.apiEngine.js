@@ -198,6 +198,12 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/svcorgs');
         }])
 
+        /// ========== USER LOGOUT ======================================================================
+
+        .factory('LogOutRedirect', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/users/idp/logout');
+        }])
+
         /// ========== POLICYDEFS =======================================================================
 
         .factory('PolicyDefs', ['$resource', 'CONFIG', function ($resource, CONFIG) {

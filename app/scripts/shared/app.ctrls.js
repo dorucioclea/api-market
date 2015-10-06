@@ -228,9 +228,9 @@
         };
     })
 
-    .controller('HeadCtrl', ['$scope', '$state',
+    .controller('HeadCtrl', ['$scope', '$state', '$sessionStorage', 'LogOutRedirect', 'CONFIG',
             'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel', 'Fullscreen',
-      function($scope, $state,
+      function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG,
                currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
@@ -238,9 +238,29 @@
           $scope.orgScreenModel = orgScreenModel;
           currentUserModel.setCurrentUserInfo(currentUser);
           $scope.doSearch = doSearch;
+          $scope.doLogOut = doLogOut;
 
           function doSearch(query) {
               $state.go('root.search', {query: query});
+          }
+
+          function doLogOut() {
+              var logOutObject = {
+                  idpUrl: CONFIG.SECURITY.IDP_URL,
+                  spName: CONFIG.SECURITY.SP_NAME,
+                  username: $scope.User.currentUser.username
+              };
+              LogOutRedirect.save({}, logOutObject, function (reply) {
+                  var string = '';
+                  angular.forEach(reply, function (value) {
+                      if (typeof value === 'string') {
+                          string += value;
+                      }
+                  });
+                  console.log(string);
+                  delete $sessionStorage.apikey;
+                  window.location.href = string;
+              });
           }
 
           $scope.toggleFloatingSidebar = function() {

@@ -97,6 +97,12 @@
                     controller: 'OAuthCtrl'
                 })
 
+                // LOGOUT PAGE ====================================================================
+                .state('logout', {
+                    url: '/logout',
+                    templateUrl: '/views/logout.html'
+                })
+
                 // ROOT STATE =====================================================================
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
