@@ -444,9 +444,47 @@
             };
         }])
 
-        // OAUTH SERVICE
-        .service('oAuthService', ['$http', 'ApplicationOAuth',
-            'OAuthConsumer',
+        // FOLLOWER SERVICE
+        .service('followerService', ['$state', 'currentUserModel', 'toastService', 'TOAST_TYPES',
+            'ServiceFollowerAdd', 'ServiceFollowerRemove',
+            function ($state, currentUserModel, toastService, TOAST_TYPES,
+                      ServiceFollowerAdd, ServiceFollowerRemove) {
+                this.addFollower = addFollower;
+                this.removeFollower = removeFollower;
+
+                function addFollower(svcVersion) {
+                    ServiceFollowerAdd.save({orgId: svcVersion.service.organization.id,
+                            svcId: svcVersion.service.id,
+                            userId: currentUserModel.currentUser.username},
+                        {},
+                        function (reply) {
+                            $state.forceReload();
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'You are now following <b>' + svcVersion.service.name + '</b>.', true);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not follow this service');
+                        });
+                }
+
+                function removeFollower(svcVersion) {
+                    ServiceFollowerRemove.save({orgId: svcVersion.service.organization.id,
+                            svcId: svcVersion.service.id,
+                            userId: currentUserModel.currentUser.username},
+                        {},
+                        function (reply) {
+                            $state.forceReload();
+                            toastService.createToast(TOAST_TYPES.WARNING,
+                                'You are no longer following <b>' + svcVersion.service.name + '</b>.',
+                                true);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not unfollow this service');
+                        });
+                }
+            }])
+
+            // OAUTH SERVICE
+            .service('oAuthService', ['$http', 'ApplicationOAuth',
+                'OAuthConsumer',
             function ($http, ApplicationOAuth,
                       OAuthConsumer) {
 

@@ -351,6 +351,26 @@
                     apis: '=',
                     stats: '='
                 },
+                controller: ['$scope', 'currentUserModel', 'followerService',
+                    function ($scope, currentUserModel, followerService) {
+                    $scope.followAction = followAction;
+                    $scope.userIsFollowing = userIsFollowing;
+
+                    function followAction(api) {
+                        if (userIsFollowing(api)) {
+                            // Already following, so unfollow
+                            followerService.removeFollower(api);
+
+                        } else {
+                            // Not yet following, so add follower
+                            followerService.addFollower(api);
+                        }
+                    }
+
+                    function userIsFollowing(api) {
+                        return (api.service.followers.indexOf(currentUserModel.currentUser.username) > -1);
+                    }
+                }],
                 templateUrl: 'views/templates/apilist.html'
             };
         })
@@ -362,6 +382,26 @@
                     apis: '=',
                     stats: '='
                 },
+                controller: ['$scope', 'currentUserModel', 'followerService',
+                    function ($scope, currentUserModel, followerService) {
+                        $scope.followAction = followAction;
+                        $scope.userIsFollowing = userIsFollowing;
+
+                        function followAction(api) {
+                            if (userIsFollowing(api)) {
+                                // Already following, so unfollow
+                                followerService.removeFollower(api);
+
+                            } else {
+                                // Not yet following, so add follower
+                                followerService.addFollower(api);
+                            }
+                        }
+
+                        function userIsFollowing(api) {
+                            return (api.service.followers.indexOf(currentUserModel.currentUser.username) > -1);
+                        }
+                    }],
                 templateUrl: 'views/templates/apigrid.html'
             };
         })

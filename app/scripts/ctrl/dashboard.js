@@ -199,9 +199,9 @@
             }])
 
 /// ==== Dashboard Controller
-        .controller('DashboardCtrl', ['$scope', 'svcData', 'categories', 'headerModel',
+        .controller('DashboardCtrl', ['$scope', '$state', 'svcData', 'categories', 'headerModel', 'toastService',
             'SearchSvcsWithStatus', 'SearchPublishedSvcsInCategories', 'ServiceMarketInfo',
-            function($scope, svcData, categories, headerModel,
+            function($scope, $state, svcData, categories, headerModel, toastService,
                      SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(false, true, true);
                 $scope.currentSorting = 'Popular';
@@ -210,6 +210,17 @@
                 $scope.currentCategories = [];
                 $scope.availableCategories = categories;
                 $scope.svcStats = [];
+                $scope.toasts = toastService.toasts;
+                $scope.toastService = toastService;
+                $scope.getInitialDisplayMode = getInitialDisplayMode;
+
+                function getInitialDisplayMode() {
+                    if ($state.current.url === '/grid') {
+                        return 'Grid';
+                    } else {
+                        return 'List';
+                    }
+                }
 
                 var filterAPIVersions = function (apis) {
                     angular.forEach(apis, function (api) {

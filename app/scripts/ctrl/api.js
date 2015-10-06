@@ -4,9 +4,10 @@
     angular.module('app.ctrl.api', [])
 
         /// ==== Service Doc Main Controller
-        .controller('ApiDocCtrl', ['$scope', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab', 'headerModel',
-            'toastService',
-            function($scope, $stateParams, $modal, svcData, svcModel, svcTab, headerModel, toastService) {
+        .controller('ApiDocCtrl', ['$scope', '$state', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab',
+            'headerModel', 'toastService', 'followerService',
+            function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
+                     headerModel, toastService, followerService) {
                 headerModel.setIsButtonVisible(true, true, true);
                 svcModel.setService(svcData);
                 $scope.serviceVersion = svcData;
@@ -22,6 +23,9 @@
                 $scope.modalClose = modalClose;
                 $scope.openTicket = openTicket;
                 $scope.hasTerms = hasTerms;
+                $scope.userIsFollowing =
+                    $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
+                $scope.followAction = followAction;
 
                 function hasTerms() {
                     return $scope.serviceVersion.service.terms !== null &&
@@ -62,6 +66,14 @@
                         resolve: function() {},
                         windowClass: $scope.modalAnim
                     });
+                }
+
+                function followAction() {
+                    if ($scope.userIsFollowing) {
+                        followerService.removeFollower($scope.serviceVersion);
+                    } else {
+                        followerService.addFollower($scope.serviceVersion);
+                    }
                 }
             }])
 

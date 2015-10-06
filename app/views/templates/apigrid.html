@@ -1,34 +1,39 @@
 <div ng-repeat="api in apis"
-     class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12"
+     class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12 clickable"
      ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
-  <div class="panel panel-primary panel-hovered mb20 text-center">
-    <div class="panel-heading">
-      <h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4>
-    </div>
-    <div class="panel-body">
-      <div class="clearfix">
-        <div class="info">
-          <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
-            <img class="img img-circle publisher-img" src="images/digipolis-logo.svg">
-            <span class="mt0 text-primary publisher-text text-uppercase">{{api.service.organization.name}}</span>
-          </a>
+    <div class="panel panel-primary panel-hovered mb20 text-center">
+        <div class="panel-heading">
+            <h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4>
         </div>
-        <div class="media media-middle">
-          <base64-logo logo-class="entity-logo-grid" logo="{{api.service.base64logo}}"></base64-logo>
+        <div class="panel-body">
+            <div class="pull-right">
+                <a ng-click="followAction(api)" class="clickable pull-right">
+                    <i class="text-primary follow-icon-grid fa" ng-class="{'fa-star-o': !userIsFollowing(api), 'fa-star': userIsFollowing(api)}"></i>
+                </a>
+            </div>
+            <div class="clearfix">
+                <div class="info">
+                    <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
+                        <img class="img img-circle publisher-img" src="images/digipolis-logo.svg">
+                        <span class="mt0 text-primary publisher-text text-uppercase">{{api.service.organization.name}}</span>
+                    </a>
+                </div>
+                <div class="media media-middle">
+                    <base64-logo logo-class="entity-logo-grid" logo="{{api.service.base64logo}}"></base64-logo>
+                </div>
+                <div class="info mt10">
+                    <p class="description text-light text-nowrap text-ellipsis">{{api.service.description}}</p>
+                </div>
+            </div>
         </div>
-        <div class="info mt10">
-          <p class="description text-light text-nowrap text-ellipsis">{{api.service.description}}</p>
+        <div class="panel-footer clearfix">
+            <div class="text-uppercase">{{api.version}}</div>
         </div>
-      </div>
+        <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
+            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> {{stats[api.service.id].developers}}</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> {{stats[api.service.id].followers}}</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> {{stats[api.service.id].uptime}}%</div>
+        </div>
     </div>
-    <div class="panel-footer clearfix">
-      <div class="text-uppercase">{{api.version}}</div>
-    </div>
-    <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-      <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> {{stats[api.service.id].developers}}</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> {{stats[api.service.id].followers}}</div>
-      <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> {{stats[api.service.id].uptime}}%</div>
-    </div>
-  </div>
 </div>
 

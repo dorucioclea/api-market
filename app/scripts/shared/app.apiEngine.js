@@ -6,11 +6,13 @@
         /// ########## API Engine BaseUrl ######################
         .factory('EngineUrl', function () {
             return 'http://apim.t1t.be:8000/dev/apiengine/v1';
+            //return 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1';
         })
 
         /// ################## Auth Url ########################
         .factory('AuthUrl', function () {
             return 'http://apim.t1t.be:8000/dev/apiengineauth/v1';
+            //return 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1';
         })
 
         /// ########### ENDPOINT FACTORIES #####################
@@ -114,6 +116,15 @@
                     method: 'PUT'
                 }
             });
+        }])
+        .factory('ServiceFollowers', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/followers');
+        }])
+        .factory('ServiceFollowerAdd', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/followers/add/:userId');
+        }])
+        .factory('ServiceFollowerRemove', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
+            return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/followers/remove/:userId');
         }])
         .factory('ServiceVersion', ['$resource', 'EngineUrl', function ($resource, EngineUrl) {
             return $resource(EngineUrl + '/organizations/:orgId/services/:svcId/versions/:versionId', {}, {
