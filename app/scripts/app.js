@@ -24,6 +24,7 @@
 
         /* custom modules */
         'app.ctrls',
+        'app.config',
         'app.constants',
         'app.directives',
         'app.services',
@@ -100,58 +101,52 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        security: function ($q, $http, $sessionStorage) {
-                            var config = {};
+                        CONFIG: 'CONFIG',
+                        security: function ($q, $sessionStorage, CONFIG) {
+                            var deferred = $q.defer();
 
-                            $http.get('apimConfig.json')
-                                .success(function (response) {
-                                    var deferred = $q.defer();
-                                    config = response;
+                            if (!$sessionStorage.apikey) {
+                                var apikey = getParameterByName(CONFIG.BASE.API_KEY_NAME);
+                                var clientUrl = window.location.origin;
 
-                                    if (!$sessionStorage.apikey) {
-                                        var apikey = getParameterByName(config.Base.ApiKeyName);
-                                        var clientUrl = window.location.origin;
+                                if (!apikey) {
+                                    var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
+                                    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
+                                        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
+                                        '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
+                                        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
 
-                                        if (!apikey) {
-                                            var url = config.Base.Url + config.Security.RedirectUrl;
-                                            var data = '{"idpUrl": "' + config.Security.IdpUrl + '", "spUrl": "' +
-                                                config.Security.SpUrl + '", "spName": "' + config.Security.SpName +
-                                                '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
-                                                config.Security.ClientToken + '"}';
-
-                                            $.ajax({
-                                                method: 'POST',
-                                                url: url,
-                                                data: data,
-                                                dataType: 'text',
-                                                crossOrigin: true,
-                                                contentType: 'application/json',
-                                                headers: {
-                                                    'apikey': config.Security.ApiKey
-                                                },
-                                                async: false,
-                                                success: function (data) {
-                                                    window.location.href = data;
-                                                },
-                                                error: function (jqXHR, textStatus, errorThrown) {
-                                                    console.log('Request failed with error code:', textStatus);
-                                                    console.log(errorThrown);
-                                                    console.log(jqXHR);
-                                                }
-                                            });
-                                        } else {
-                                            $sessionStorage.apikey = apikey;
-                                            var ttl = new Date();
-                                            ttl.setMinutes(ttl.getMinutes() + 15);
-                                            $sessionStorage.ttl = ttl;
-                                            window.location.href = clientUrl;
+                                    $.ajax({
+                                        method: 'POST',
+                                        url: url,
+                                        data: data,
+                                        dataType: 'text',
+                                        crossOrigin: true,
+                                        contentType: 'application/json',
+                                        headers: {
+                                            'apikey': CONFIG.SECURITY.API_KEY
+                                        },
+                                        async: false,
+                                        success: function (data) {
+                                            window.location.href = data;
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.log('Request failed with error code:', textStatus);
+                                            console.log(errorThrown);
+                                            console.log(jqXHR);
                                         }
-                                        return deferred.reject('NOT_AUTHENTICATED');
-                                    } else {
-                                        deferred.resolve('AUTHENTICATED');
-                                    }
-                                });
+                                    });
+                                } else {
+                                    $sessionStorage.apikey = apikey;
+                                    var ttl = new Date();
+                                    ttl.setMinutes(ttl.getMinutes() + 15);
+                                    $sessionStorage.ttl = ttl;
+                                    window.location.href = clientUrl;
+                                }
+                                return deferred.reject('NOT_AUTHENTICATED');
+                            } else {
+                                deferred.resolve('AUTHENTICATED');
+                            }
 
                             function getParameterByName(name) {
                                 name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -160,6 +155,7 @@
                                 return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
                             }
                         },
+                        CurrentUserInfo: 'CurrentUserInfo',
                         currentUser: function (CurrentUserInfo) {
                             return CurrentUserInfo.get().$promise;
                         }

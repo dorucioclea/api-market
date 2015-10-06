@@ -8,6 +8,7 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     replace: 'grunt-text-replace',
+    ngconstant: 'grunt-ng-constant'
   });
 
   // Configurable paths for the application
@@ -181,8 +182,7 @@ module.exports = function (grunt) {
             'fonts/**/*.*',
             'views/**/*.*',
             'scripts/plugins/*.js',
-            'styles/plugins/swagger/*.css',
-            'apimConfig.json'
+            'styles/plugins/swagger/*.css'
           ]
         }]
       }
@@ -268,6 +268,70 @@ module.exports = function (grunt) {
       }
     }, // End Angular Annotate
 
+    // ================ //
+    // Angular Constant //
+    // ================ //
+    // ng-constant will create an Angular .constant that comprises config variables such as
+    // the backend URLs, IDP server location, etc...
+    ngconstant: {
+      options: {
+        name: 'app.config',
+        dest: '<%= config.app %>/scripts/shared/app.config.js',
+        wrap: ';(function(angular){\n"use strict";\n\n{%= __ngModule %} \n\n})(window.angular);',
+        space: '  '
+      },
+      dev: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://apim.t1t.be:8000/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://api.t1t.be/API-Engine-auth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'IDP_URL': 'https://idp.t1t.be:9443/samlsso',
+              'SP_URL': 'http://api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apimarket',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      },
+      prod: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      }
+    },
+
     // ===== //
     // Karma //
     // ===== //
@@ -336,6 +400,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'connect:livereload',
+      'ngconstant:dev',
       'watch'
     ]);
   });
@@ -343,6 +408,7 @@ module.exports = function (grunt) {
   grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
+    'ngconstant:prod',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -359,6 +425,7 @@ module.exports = function (grunt) {
   grunt.registerTask('mkt', [
     'clean:dist',
     'wiredep',
+    'ngconstant:prod',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
