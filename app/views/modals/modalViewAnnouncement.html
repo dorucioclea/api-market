@@ -1,0 +1,15 @@
+<div class="page">
+
+    <div class="modal-header clearfix">
+        <h4 class="modal-title">{{announcement.title}}</h4>
+        <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+    </div>
+    <!-- Application Create panel -->
+    <div class="modal-body" ng-bind-html="announcement.description">
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default ml15" ng-click="modalClose()">OK</button>
+        <button class="btn btn-danger pull-left" ng-click="deleteAnnouncement()">Delete</button>
+    </div>
+
+</div>

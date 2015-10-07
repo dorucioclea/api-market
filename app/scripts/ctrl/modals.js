@@ -119,6 +119,63 @@
 
             }])
 
+/// ==== NewAnnouncement Controller
+        .controller('NewAnnouncementCtrl', ['$scope', '$modal', '$state', 'svcVersion', 'ServiceAnnouncements',
+            'toastService', 'TOAST_TYPES',
+            function ($scope, $modal, $state, svcVersion, ServiceAnnouncements,
+                      toastService, TOAST_TYPES) {
+
+                $scope.serviceVersion = svcVersion;
+                $scope.announcement = {
+                    title: '',
+                    description: ''
+                };
+                $scope.createAnnouncement = createAnnouncement;
+
+                function createAnnouncement(announcement) {
+                    console.log(announcement);
+                    ServiceAnnouncements.save({
+                            orgId: $scope.serviceVersion.service.organization.id,
+                            svcId: $scope.serviceVersion.service.id},
+                        announcement,
+                        function (newAnnouncement) {
+                            $scope.modalClose();
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'Announcement <b>' + newAnnouncement.title + '</b> created!', true);
+                            $state.forceReload();
+                        }, function (error) {
+                            if (error.status !== 409) {
+                                $scope.modalClose();
+                            }
+                            toastService.createErrorToast(error, 'Could not create announcement.');
+                        });
+                }
+
+                $scope.modalClose = function() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                };
+
+            }])
+
+        /// ==== ViewAnnouncement Controller
+        .controller('ViewAnnouncementCtrl', ['$scope', '$modal', 'announcement', 'ServiceAnnouncements',
+            'toastService', 'TOAST_TYPES',
+            function ($scope, $modal, announcement, ServiceAnnouncements,
+                      toastService, TOAST_TYPES) {
+
+                $scope.announcement = announcement;
+                $scope.deleteAnnouncement = deleteAnnouncement;
+
+                function deleteAnnouncement() {
+                    console.log('delete');
+                }
+
+                $scope.modalClose = function() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                };
+
+            }])
+
 /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
         ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'selectedApp', 'orgScreenModel', 'svcModel',

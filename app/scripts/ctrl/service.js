@@ -444,6 +444,46 @@
 
             }])
 
+        /// ==== Announcements Controller
+        .controller('ServiceAnnouncementsCtrl', ['$scope', '$modal', '$state', 'svcScreenModel', 'announcements',
+            'toastService', 'TOAST_TYPES',
+            function ($scope, $modal, $state, svcScreenModel, announcements, toastService, TOAST_TYPES) {
+
+                svcScreenModel.updateTab('Announcements');
+                $scope.modalNewAnnouncement = modalNewAnnouncement;
+                $scope.modalViewAnnouncement = modalViewAnnouncement;
+                $scope.announcements = announcements;
+
+                function modalNewAnnouncement() {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalNewAnnouncement.html',
+                        size: 'lg',
+                        controller: 'NewAnnouncementCtrl as ctrl',
+                        resolve: {
+                            svcVersion: function () {
+                                return $scope.serviceVersion;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+                function modalViewAnnouncement(announcement) {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalViewAnnouncement.html',
+                        size: 'lg',
+                        controller: 'ViewAnnouncementCtrl as ctrl',
+                        resolve: {
+                            announcement: function () {
+                                return announcement;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+            }])
+
         /// ==== Overview Controller
         .controller('ServiceOverviewCtrl', ['$scope', 'svcContracts', 'svcScreenModel',
             function ($scope, svcContracts, svcScreenModel) {

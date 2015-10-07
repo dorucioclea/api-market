@@ -22,6 +22,7 @@
         'flow',
         'gridshore.c3js.chart',
         'textAngular',
+        'relativeDate',
 
         /* custom modules */
         'app.ctrls',
@@ -794,6 +795,18 @@
                     url: '/terms',
                     templateUrl: 'views/partials/service/terms.html',
                     controller: 'ServiceTermsCtrl'
+                })
+                // Announcements Tab
+                .state('root.service.announcements', {
+                    url: '/announcements',
+                    templateUrl: 'views/partials/service/announcements.html',
+                    resolve: {
+                        ServiceAnnouncementsAll: 'ServiceAnnouncementsAll',
+                        announcements: function (ServiceAnnouncementsAll, organizationId, serviceId) {
+                            return ServiceAnnouncementsAll.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        }
+                    },
+                    controller: 'ServiceAnnouncementsCtrl'
                 })
                 // Activity Tab
                 .state('root.service.activity', {
