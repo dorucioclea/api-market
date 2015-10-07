@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="col-sm-12" ng-show="(plans | filter:{name:searchText}).length == 0">
+      <div class="col-sm-12" ng-show="plans.length > 0 && (plans | filter:{name:searchText}).length == 0">
         <div class="row">
           <div class="col-sm-10 col-sm-offset-1 well">
             No plans found matching your filter criteria - please try searching for something different.
