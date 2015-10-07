@@ -336,6 +336,12 @@
                 .state('root.api.announcements', {
                     url: '/announcements',
                     templateUrl: 'views/partials/api/announcements.html',
+                    resolve: {
+                        ServiceAnnouncementsAll: 'ServiceAnnouncementsAll',
+                        announcements: function (ServiceAnnouncementsAll, organizationId, serviceId) {
+                            return ServiceAnnouncementsAll.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        }
+                    },
                     controller: 'AnnouncementCtrl'
                 })
                 // Documentation Tab

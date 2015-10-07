@@ -244,9 +244,10 @@
             }])
 
         /// ==== Service Announcements Controller
-        .controller('AnnouncementCtrl', ['$scope', 'svcTab', function($scope, svcTab) {
+        .controller('AnnouncementCtrl', ['$scope', 'svcTab', 'announcements', function($scope, svcTab, annoucements) {
 
             svcTab.updateTab('Announcements');
+            console.log(annoucements);
 
             $scope.selectedAnnouncement = 0;
 

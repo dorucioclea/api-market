@@ -107,6 +107,12 @@
                 }
             });
         }])
+        .factory('ServiceAnnouncements', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/announcement/:announcementId');
+        }])
+        .factory('ServiceAnnouncementsAll', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/announcement/all');
+        }])
         .factory('ServiceFollowers', ['$resource', 'CONFIG', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/followers');
         }])
