@@ -3,11 +3,10 @@
 
     angular.module('app.ctrl.auth.oauth', [])
 
-        .controller('OAuthCtrl', ['$scope', '$http', '$window','$stateParams', 'appConfig', 'AppConfig', 'oAuthService',
+        .controller('OAuthCtrl', ['$scope', '$http', '$window','$stateParams', 'oAuthService',
             'alertService', 'ALERT_TYPES',
-            function ($scope, $http, $window, $stateParams, appConfig, AppConfig, oAuthService,
+            function ($scope, $http, $window, $stateParams, oAuthService,
                       alertService, ALERT_TYPES) {
-                AppConfig.updateConfig(appConfig.data);
                 alertService.resetAllAlerts();
                 $scope.isValid = false;
                 if ($stateParams.scopes) {
