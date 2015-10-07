@@ -96,6 +96,25 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 };
+
+                $scope.canConfigureOAuth = function () {
+                    return $scope.applicationVersion.oAuthClientId !== null &&
+                        $scope.applicationVersion.oAuthClientId.length > 0;
+                };
+
+                $scope.showOAuthConfig = function (appVersion) {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalOAuthConfig.html',
+                        size: 'lg',
+                        controller: 'OAuthConfigCtrl as ctrl',
+                        resolve: {
+                            appVersionDetails: function () {
+                                return appVersion;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                };
             }])
 
         // +++ Application Screen Subcontrollers +++

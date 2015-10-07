@@ -30,8 +30,12 @@
 
 </aside>
 
-<div class="page page-dashboard" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
-
+<div class="page page-dashboard page-ui-notifications" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
+  <div class="toast toast-bottomRight">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg">Test Toast</div>
+    </alert>
+  </div>
 	<div class="page-wrap">
     <div class="row">
       <!-- dashboard header -->
@@ -45,7 +49,7 @@
             </button>
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9 hidden-xs right">
-            <div class="mt5 mb5 ml10 mr10 pull-right btn-group" ng-init="displayMode='Grid'">
+            <div class="mt5 mb5 ml10 mr10 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
               <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
               <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
             </div>

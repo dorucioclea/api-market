@@ -79,17 +79,21 @@
                 this.publishService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH), shouldReload, TOAST_TYPES.SUCCESS, msg);
+                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
+                        shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.retireService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was retired.';
-                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE), shouldReload, TOAST_TYPES.WARNING, msg);
+                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
+                        shouldReload, TOAST_TYPES.WARNING, msg);
                 };
 
                 this.lockPlan = function (planVersion, shouldReload) {
-                    var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version + '</b> was successfully locked!';
-                    doAction(this.createAction(planVersion, ACTIONS.LOCK), shouldReload, TOAST_TYPES.SUCCESS, msg);
+                    var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version +
+                        '</b> was successfully locked!';
+                    doAction(this.createAction(planVersion, ACTIONS.LOCK),
+                        shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.publishApp = function (applicationVersion, shouldReload) {
@@ -440,7 +444,113 @@
             };
         }])
 
-        // USER SCREEN MODEL
+        // FOLLOWER SERVICE
+        .service('followerService', ['$state', 'currentUserModel', 'toastService', 'TOAST_TYPES',
+            'ServiceFollowerAdd', 'ServiceFollowerRemove',
+            function ($state, currentUserModel, toastService, TOAST_TYPES,
+                      ServiceFollowerAdd, ServiceFollowerRemove) {
+                this.addFollower = addFollower;
+                this.removeFollower = removeFollower;
+
+                function addFollower(svcVersion) {
+                    ServiceFollowerAdd.save({orgId: svcVersion.service.organization.id,
+                            svcId: svcVersion.service.id,
+                            userId: currentUserModel.currentUser.username},
+                        {},
+                        function (reply) {
+                            $state.forceReload();
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'You are now following <b>' + svcVersion.service.name + '</b>.', true);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not follow this service');
+                        });
+                }
+
+                function removeFollower(svcVersion) {
+                    ServiceFollowerRemove.save({orgId: svcVersion.service.organization.id,
+                            svcId: svcVersion.service.id,
+                            userId: currentUserModel.currentUser.username},
+                        {},
+                        function (reply) {
+                            $state.forceReload();
+                            toastService.createToast(TOAST_TYPES.WARNING,
+                                'You are no longer following <b>' + svcVersion.service.name + '</b>.',
+                                true);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not unfollow this service');
+                        });
+                }
+            }])
+
+            // OAUTH SERVICE
+            .service('oAuthService', ['$http', 'ApplicationOAuth',
+                'OAuthConsumer',
+            function ($http, ApplicationOAuth,
+                      OAuthConsumer) {
+
+                this.grant = grant;
+                this.getAppOAuthInfo = getAppOAuthInfo;
+                this.createOAuthConsumer = createOAuthConsumer;
+
+                function getAppOAuthInfo(clientId, orgId, svcId, versionId) {
+                    return ApplicationOAuth.get({clientId: clientId,
+                        orgId: orgId,
+                        svcId: svcId,
+                        versionId: versionId
+                    }).$promise;
+                }
+
+                function createOAuthConsumer(clientId, clientSecret, userName) {
+                    var consumer = {
+                        appOAuthId: clientId,
+                        appOAuthSecret: clientSecret,
+                        uniqueUserName: userName
+                    };
+                    return OAuthConsumer.create(consumer, function (reply) {
+                    }).$promise;
+                }
+
+                function constructGrantObject(clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                    var scopeKeys = [];
+                    angular.forEach(scope, function (value, key) {
+                        scopeKeys.push(key);
+                    });
+                    return {
+                        client_id: clientId,
+                        client_secret: clientSecret,
+                        response_type: responseType,
+                        scope: scopeKeys.join(','),
+                        provision_key: provisionKey,
+                        authenticated_userid: userId
+                    };
+                }
+
+                function constructUrl(orgId, svcId, versionId) {
+                    return 'https://apim.t1t.be:8443/' +
+                        orgId.toLowerCase() + '/' +
+                        svcId.toLowerCase() + '/' +
+                        versionId.toLowerCase() + '/oauth2/authorize';
+                }
+
+                function grant(orgId, svcId, versionId,
+                               clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                    var url = constructUrl(orgId, svcId, versionId);
+                    var grantObject = constructGrantObject(clientId,
+                        clientSecret, responseType, scope, provisionKey, userId);
+                    return postFormEncoded(url, grantObject);
+                }
+
+                function postFormEncoded(url, data) {
+                    return $http({
+                        method: 'POST',
+                        url: url,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        data: $.param(data)
+                    });
+                }
+            }])
+
+                // USER SCREEN MODEL
         .service('userScreenModel', function () {
             this.selectedTab = 'Profile';
 

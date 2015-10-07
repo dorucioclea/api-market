@@ -4,13 +4,17 @@
     angular.module('app.ctrl.api', [])
 
         /// ==== Service Doc Main Controller
-        .controller('ApiDocCtrl', ['$scope', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab', 'headerModel',
-            function($scope, $stateParams, $modal, svcData, svcModel, svcTab, headerModel) {
+        .controller('ApiDocCtrl', ['$scope', '$state', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab',
+            'headerModel', 'toastService', 'followerService',
+            function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
+                     headerModel, toastService, followerService) {
                 headerModel.setIsButtonVisible(true, true, true);
                 svcModel.setService(svcData);
                 $scope.serviceVersion = svcData;
                 $scope.hasOAuth = svcData.provisionKey !== null && svcData.provisionKey.length > 0;
                 $scope.displayTab = svcTab;
+                $scope.toasts = toastService.toasts;
+                $scope.toastService = toastService;
 
                 $scope.modalAnim = 'default';
 
@@ -18,6 +22,15 @@
                 $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
                 $scope.modalClose = modalClose;
                 $scope.openTicket = openTicket;
+                $scope.hasTerms = hasTerms;
+                $scope.userIsFollowing =
+                    $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
+                $scope.followAction = followAction;
+
+                function hasTerms() {
+                    return $scope.serviceVersion.service.terms !== null &&
+                        $scope.serviceVersion.service.terms.length > 0;
+                }
 
                 function modalNewTicketOpen() {
                     $modal.open({
@@ -54,16 +67,28 @@
                         windowClass: $scope.modalAnim
                     });
                 }
+
+                function followAction() {
+                    if ($scope.userIsFollowing) {
+                        followerService.removeFollower($scope.serviceVersion);
+                    } else {
+                        followerService.addFollower($scope.serviceVersion);
+                    }
+                }
             }])
 
 /// ==== Service Swagger Documentation Controller
         .controller('DocumentationCtrl', ['$scope', '$modal', '$stateParams', 'endpoint', 'svcContracts', 'userApps',
-            'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition',
+            'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition', 'oAuthService',
+            'toastService', 'TOAST_TYPES',
             function($scope, $modal, $stateParams, endpoint, svcContracts, userApps,
-                     docTester, svcTab, ApplicationVersion, ServiceVersionDefinition) {
+                     docTester, svcTab, ApplicationVersion, ServiceVersionDefinition, oAuthService,
+                     toastService, TOAST_TYPES) {
                 svcTab.updateTab('Documentation');
                 $scope.endpoint = endpoint;
                 $scope.contractApps = [];
+                $scope.doGrant = doGrant;
+                $scope.hasGrant = false;
                 var currentDefinitionSpec;
 
                 var filterApplications = function (apps, contracts) {
@@ -117,6 +142,43 @@
                             $scope.appVersion = reply;
                         }
                     );
+                }
+
+                function doGrant() {
+                    oAuthService.grant(
+                        $scope.serviceVersion.service.organization.id,
+                        $scope.serviceVersion.service.id,
+                        $scope.serviceVersion.version,
+                        $scope.appVersion.oAuthClientId,
+                        $scope.appVersion.oauthClientSecret,
+                        'token',
+                        $scope.serviceVersion.oauthScopes,
+                        $scope.serviceVersion.provisionKey,
+                        $scope.User.currentUser.username
+                    ).then(function (response) {
+                            if (processUri(response.data.redirect_uri)) {
+                                toastService.createToast(TOAST_TYPES.SUCCESS,
+                                    '<b>Grant successful!</b><br>You can now use the try-out functionality.', true);
+                                $scope.hasGrant = true;
+                            } else {
+                                toastService.createErrorToast(new Error('Could not process redirect URI'),
+                                    'Could not complete grant process');
+                            }
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not complete grant process');
+                        });
+                }
+
+                function processUri(uri) {
+                    var paramStart = uri.indexOf('access_token=');
+
+                    if (paramStart > -1) {
+                        var paramString = uri.substr(paramStart + 13);
+                        $scope.addSwaggerTokenHeader('Bearer ' + paramString);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
 
                 ServiceVersionDefinition.get(

@@ -3,30 +3,29 @@
     <div class="oauth-container col-sm-10 col-md-8 col-md-offset-2 col-sm-offset-1">
         <div class="oauth-panel panel panel-lined panel-hovered">
             <div class="panel-body">
-                <img src="images/yeoman.png" class="entity-logo-list pull-right">
-                <h2 class="mb30">OAuthTestApp - v3</h2>
-                <p class="text-desc">Do you want to grant the following permissions to <b>OAuthTestApp</b>, published by <b>admin</b>?</p>
+                <div class="pull-right">
+                    <base64-logo logo="{{appOAuthInfo.base64AppLogo}}" logo-class="entity-logo-list"></base64-logo>
+                </div>
+                <h2 class="mb30">{{appOAuthInfo.consumerResponse.name}} - {{appOAuthInfo.appVersion}}</h2>
+                <p class="text-desc">Do you want to grant the following permissions to <b>{{appOAuthInfo.consumerResponse.name}}</b>, published by <b>{{appOAuthInfo.consumer.customId}}</b>?</p>
 
                 <div class="panel-body">
-                    <p class="text-desc">OAuthTestApp would like to receive the following permissions:</p>
+                    <p class="text-desc">{{appOAuthInfo.consumerResponse.name}} would like to receive the following permissions:</p>
 
+                    <div class="row well" ng-if="requestedScopes.length === 0">
+                        No scopes were requested. Please double check that you are passing the redirect url along correctly.
+                    </div>
 
                     <div class="col-sm-12 col-md-9 col-lg-7">
-                        <div class="row">
-                            <div class="col-sm-4 col-md-5 col-lg-4">
-                                <p class="text-bold text-muted">delete_profile</p>
-                            </div>
+
+                        <div class="row" ng-repeat="scope in requestedScopes">
                             <div class="col-sm-8 col-md-7 col-lg-8">
-                                <p>Permission to delete your profile</p>
+                                <p class="text-bold">{{appOAuthInfo.scopes[scope]}}</p>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-4 col-md-5 col-lg-4">
-                                <p class="text-bold text-muted">test_profile</p>
+                                <p class="text-muted">{{scope}}</p>
                             </div>
-                            <div class="col-sm-8 col-md-7 col-lg-8">
-                                <p>Permission to test your user profile</p>
-                            </div>
+
                         </div>
                     </div>
 
@@ -34,7 +33,10 @@
 
                 <div class="panel-body">
                     <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
-                    <button class="btn btn-primary" ng-click="doGrant()">Grant</button>
+                    <button class="btn btn-success" ng-click="doGrant()" ng-disabled="!isValid">Grant</button>
+                    <alert class="mt10" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                        <div ng-bind-html="alert.msg"></div>
+                    </alert>
                 </div>
             </div>
             <div class="panel-footer text-muted text-normal small">

@@ -15,10 +15,10 @@
   </li>	<!-- #end search-box -->
 
   <li ng-show="showExplore">
-    <button ui-sref="root.apis.grid" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
+    <button ng-click="toApis()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
   </li>
   <li ng-show="showDash">
-    <button href ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</button>
+    <button ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>My Marketplace</button>
   </li>
 
 </ul>

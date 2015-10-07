@@ -107,7 +107,28 @@
         <!-- #start accordion -->
         <accordion class="accordion-panel">
           <auth-accordion-group heading="'OAuth 2.0'">
-              <oauth2 client-id="appVersion.oAuthClientId" client-secret="appVersion.oauthClientSecret" scopes="serviceVersion.oauthScopes"></oauth2>
+              <form role="form" class="form">
+                  <div class="form-group mb30">
+                      <div class="input-group mb5">
+                          <span class="input-group-addon ion ion-person"></span>
+                          <input type="text" class="form-control" placeholder="Client ID" ng-model="appVersion.oAuthClientId">
+                      </div>
+                      <div class="input-group">
+                          <span class="input-group-addon ion ion-locked"></span>
+                          <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
+                      </div>
+                  </div>
+                  <div class="ui-checkbox ui-checkbox-circle">
+                      <p class="small text-muted text-uppercase mb5">Scopes</p>
+                      <label ng-repeat="scope in serviceVersion.oauthScopes">
+                          <input class="col-sm-2" type="checkbox" checked>
+                          <span class="col-sm-12">{{scope}}</span>
+                      </label>
+                  </div>
+              </form>
+              <div class="text-center">
+                  <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant">Grant</button>
+              </div>
           </auth-accordion-group>
         </accordion>
         <!-- #end accordion -->

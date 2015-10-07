@@ -1,4 +1,9 @@
-<div class="page page-api">
+<div class="page page-api page-ui-notifications">
+    <div class="toast toast-bottomRight">
+      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <div ng-bind-html="toast.msg">Test Toast</div>
+      </alert>
+    </div>
   <div class="page-wrap">
 
     <div class="row">
@@ -10,7 +15,8 @@
           </div>
           <div class="pl30 col-sm-11">
             <div class="col-sm-9">
-              <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href=""> <i class="text-info follow-icon fa fa-star-o"></i></a></h3>
+              <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href ng-click="followAction()">&nbsp;&nbsp;
+                  <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
             </div>
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-primary text-nowrap text-ellipsis">Version: {{serviceVersion.version}}</label></h3>
@@ -41,7 +47,7 @@
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans & Policies</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold">22</span></label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms">API Terms</label>
+          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API Terms</label>
         </div>
       </div>
       <div>
