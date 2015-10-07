@@ -330,7 +330,7 @@ module.exports = function (grunt) {
           }
         }
       },
-      prod: {
+      digiDevPub: {
         constants: {
           'CONFIG': {
             'BASE': {
@@ -346,7 +346,32 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/users/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      },
+      digiDevMkt: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
@@ -433,7 +458,7 @@ module.exports = function (grunt) {
   grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
-    'ngconstant:prod',
+    'ngconstant:digiDevPub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -450,7 +475,7 @@ module.exports = function (grunt) {
   grunt.registerTask('mkt', [
     'clean:dist',
     'wiredep',
-    'ngconstant:prod',
+    'ngconstant:digiDevMkt',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
