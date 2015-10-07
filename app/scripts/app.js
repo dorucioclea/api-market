@@ -56,7 +56,7 @@
         // disable spinner in loading-bar
         .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = false;
-            cfpLoadingBarProvider.latencyThreshold = 500;
+            cfpLoadingBarProvider.latencyThreshold = 50;
         }])
 
         // ngStorage key config
