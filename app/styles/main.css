@@ -12927,6 +12927,10 @@ md-input-container {
 .pr30 {
   padding-right: 30px;
 }
+.follow-icon {
+  font-weight: bolder;
+  font-size: 22px;
+}
 .no-entities-arrow {
   float: right;
   background: url('/images/new-entity-arrow-stad.png') top left;
@@ -13671,10 +13675,6 @@ md-input-container {
   transition: all 0.3s ease-out;
   font-weight: bolder;
   font-size: 15px;
-}
-.page-dashboard .follow-icon {
-  font-weight: bolder;
-  font-size: 22px;
 }
 .page-api .img-ticket-user {
   width: 20px;

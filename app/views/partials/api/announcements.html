@@ -22,7 +22,7 @@
           <h3>{{selected.announcement.title}}</h3>
           <p class="text-light small mb20">Published {{selected.announcement.createdOn | relativeDate}} by
             <base64-logo logo="{{selected.user.base64pic}}" logo-class="ml5 media-middle img-ticket-user img-circle"></base64-logo>
-            {{selected.user.fullName}}</p>
+            &nbsp;{{selected.user.fullName}}</p>
           <div ng-bind-html="selected.announcement.description"></div>
         </div>
       </div>

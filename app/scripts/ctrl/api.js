@@ -250,16 +250,18 @@
                 svcTab.updateTab('Announcements');
                 $scope.announcements = announcements;
                 $scope.selected = {
-                    announcement: announcements[0],
+                    announcement: null,
                     user: null
                 };
 
-                Users.get({userId: announcements[0].createdBy}, function (reply) {
-                    $scope.selected = {
-                        announcement: announcements[0],
-                        user: reply
-                    };
-                });
+                if (announcements.length > 0) {
+                    Users.get({userId: announcements[0].createdBy}, function (reply) {
+                        $scope.selected = {
+                            announcement: announcements[0],
+                            user: reply
+                        };
+                    });
+                }
 
                 $scope.switchNotification = function(announcement) {
                     Users.get({userId: announcement.createdBy}, function (reply) {
