@@ -12,8 +12,12 @@
                 <div class="panel-body">
                     <p class="text-desc">{{appOAuthInfo.consumerResponse.name}} would like to receive the following permissions:</p>
 
+                    <div class="row well" ng-if="requestedScopes.length === 0">
+                        No scopes were requested. Please double check that you are passing the redirect url along correctly.
+                    </div>
 
                     <div class="col-sm-12 col-md-9 col-lg-7">
+
                         <div class="row" ng-repeat="scope in requestedScopes">
                             <div class="col-sm-8 col-md-7 col-lg-8">
                                 <p class="text-bold">{{appOAuthInfo.scopes[scope]}}</p>
@@ -29,7 +33,10 @@
 
                 <div class="panel-body">
                     <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
-                    <button class="btn btn-success" ng-click="doGrant()">Grant</button>
+                    <button class="btn btn-success" ng-click="doGrant()" ng-disabled="!isValid">Grant</button>
+                    <alert class="mt10" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                        <div ng-bind-html="alert.msg"></div>
+                    </alert>
                 </div>
             </div>
             <div class="panel-footer text-muted text-normal small">
