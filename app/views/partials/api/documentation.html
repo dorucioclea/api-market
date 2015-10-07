@@ -127,7 +127,17 @@
                   </div>
               </form>
               <div class="text-center">
-                  <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant">Grant</button>
+                  <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0">Grant</button>
+                  <div class="mt10" ng-show="appVersion.oauthClientRedirect.length == 0">
+                      <p class="text-justified text-warning xsmall">
+                          The grant button is disabled because the selected Application does not
+                          have a OAuth Callback URL defined. Without a callback URL the grant
+                          process cannot be completed.
+                      </p>
+                      <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
+                          <p class="text-warning xsmall">You can set the Callback URL here.</p>
+                      </a>
+                  </div>
               </div>
           </auth-accordion-group>
         </accordion>
