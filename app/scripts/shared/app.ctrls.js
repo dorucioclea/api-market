@@ -233,11 +233,9 @@
         };
     })
 
-    .controller('HeadCtrl', ['$scope', '$state', '$sessionStorage', 'LogOutRedirect', 'CONFIG',
-    .controller('HeadCtrl', ['$scope', '$state', 'docTester',
+    .controller('HeadCtrl', ['$scope', '$state', '$sessionStorage', 'LogOutRedirect', 'CONFIG', 'docTester',
             'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel', 'Fullscreen',
-      function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG,
-      function($scope, $state, docTester,
+      function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
