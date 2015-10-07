@@ -262,7 +262,6 @@
                           string += value;
                       }
                   });
-                  console.log(string);
                   delete $sessionStorage.apikey;
                   window.location.href = string;
               });
