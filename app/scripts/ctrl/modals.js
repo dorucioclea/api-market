@@ -158,9 +158,9 @@
             }])
 
         /// ==== ViewAnnouncement Controller
-        .controller('ViewAnnouncementCtrl', ['$scope', '$modal', 'announcement', 'ServiceAnnouncements',
+        .controller('ViewAnnouncementCtrl', ['$scope', '$modal', '$state', 'announcement', 'ServiceAnnouncements',
             'toastService', 'TOAST_TYPES',
-            function ($scope, $modal, announcement, ServiceAnnouncements,
+            function ($scope, $modal, $state, announcement, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
 
                 $scope.announcement = announcement;
@@ -168,6 +168,15 @@
 
                 function deleteAnnouncement() {
                     console.log('delete');
+                    console.log(announcement);
+                    ServiceAnnouncements.remove({orgId: $scope.announcement.organizationId,
+                        svcId: $scope.announcement.serviceId, announcementId: $scope.announcement.id},
+                        function (reply) {
+                            $scope.modalClose();
+                            var msg = '<b>Announcement deleted!</b>';
+                            toastService.createToast(TOAST_TYPES.INFO, msg, true);
+                            $state.forceReload();
+                        });
                 }
 
                 $scope.modalClose = function() {
