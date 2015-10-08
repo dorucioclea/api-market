@@ -491,6 +491,42 @@ module.exports = function (grunt) {
     'replace:pub'
   ]);
 
+  grunt.registerTask('digiDevPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiDevPub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress'
+  ]);
+
+  grunt.registerTask('digiDevMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiDevMkt',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:pub'
+  ]);
+
 
   grunt.registerTask('test', [
     'clean',
