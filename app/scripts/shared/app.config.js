@@ -9,7 +9,7 @@
                 API_KEY_NAME:'apikey'
             },
             AUTH: {
-                URL:'http://api.t1t.be/API-Engine-auth/v1'
+                URL: 'http://apim.t1t.be:8000/dev/apiengineauth/v1'
             },
             STORAGE: {
                 LOCAL_STORAGE: 'apim-',
