@@ -313,7 +313,7 @@ module.exports = function (grunt) {
               'API_KEY_NAME': 'apikey'
             },
             'AUTH': {
-              'URL': 'http://api.t1t.be/API-Engine-auth/v1'
+              'URL': 'http://apim.t1t.be:8000/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -458,7 +458,7 @@ module.exports = function (grunt) {
   grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
-    'ngconstant:digiDevPub',
+    'ngconstant:dev',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -475,7 +475,7 @@ module.exports = function (grunt) {
   grunt.registerTask('mkt', [
     'clean:dist',
     'wiredep',
-    'ngconstant:digiDevMkt',
+    'ngconstant:dev',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
