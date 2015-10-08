@@ -735,7 +735,13 @@
                 .state('root.service.definition', {
                     url: '/definition',
                     templateUrl: 'views/partials/service/definition.html',
-                    resolve: {},
+                    resolve: {
+                        ServiceEndpoint: 'ServiceEndpoint',
+                        endpoint: function (ServiceEndpoint, organizationId, serviceId, versionId) {
+                            return ServiceEndpoint.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        }
+                    },
                     controller: 'ServiceDefinitionCtrl'
                 })
                 // Plans Tab
