@@ -18,15 +18,15 @@
 
                     <div class="col-sm-12 col-md-9 col-lg-7">
 
-                        <div class="row" ng-repeat="scope in requestedScopes">
+                        <div class="row" ng-repeat="scope in selectedScopes">
                             <div class="col-sm-8 col-md-7 col-lg-8 ui-checkbox ui-checkbox-success ui-checkbox-circle">
                                 <label>
-                                    <input type="checkbox" ng-checked="isSelected(scope)" ng-click="toggle(scope)">
-                                    <span class="text-bold">{{appOAuthInfo.scopes[scope]}}</span>
+                                    <input type="checkbox" ng-model="scope.checked">
+                                    <span class="text-bold">{{scope.desc}}</span>
                                 </label>
                             </div>
                             <div class="col-sm-4 col-md-5 col-lg-4">
-                                <p class="text-muted">{{scope}}</p>
+                                <p class="text-muted">{{scope.scope}}</p>
                             </div>
 
                         </div>
@@ -36,7 +36,7 @@
 
                 <div class="panel-body">
                     <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
-                    <button class="btn btn-success" ng-click="doGrant()" ng-disabled="selectedScopes.length == 0">Grant</button>
+                    <button class="btn btn-success" ng-click="doGrant()" ng-disabled="!canGrant()">Grant</button>
                     <alert class="mt10" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
                         <div ng-bind-html="alert.msg"></div>
                     </alert>

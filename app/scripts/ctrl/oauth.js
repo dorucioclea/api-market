@@ -15,17 +15,11 @@
                 } else {
                     $scope.requestedScopes = [];
                 }
+                $scope.canGrant = canGrant;
                 $scope.doCancel = doCancel;
                 $scope.doGrant = doGrant;
-                $scope.isSelected = isSelected;
-                $scope.toggle = toggle;
                 $scope.closeAlert = alertService.closeAlert;
-
                 $scope.selectedScopes = [];
-                // Initially all requested scopes will be selected
-                angular.forEach($scope.requestedScopes, function (value) {
-                    $scope.selectedScopes.push(value);
-                });
                 $scope.appOAuthInfo = {};
                 $scope.alerts = alertService.alerts;
 
@@ -35,31 +29,20 @@
                     $stateParams.version)
                     .then(function (value) {
                         $scope.appOAuthInfo = value;
+                        // Initially all requested scopes will be selected
+                        angular.forEach(value.scopes, function (value, key) {
+                            $scope.selectedScopes.push({scope: key, desc: value, checked: true});
+                        });
                     });
 
-                function toggle(scope) {
-                    var found = false;
-                    for (var i = 0; i < $scope.selectedScopes.length; i++) {
-                        var selectedScope = $scope.selectedScopes[i];
-                        if (selectedScope === scope) {
-                            $scope.selectedScopes.splice(i,1);
-                            found = true;
-                            break;
+                function canGrant() {
+                    var canDoGrant = false;
+                    angular.forEach($scope.selectedScopes, function (value) {
+                        if (value.checked) {
+                            canDoGrant = true;
                         }
-                    }
-                    if (!found) {
-                        $scope.selectedScopes.push(scope);
-                    }
-                }
-
-                function isSelected(scope) {
-                    for (var i = 0; i < $scope.selectedScopes.length; i++) {
-                        var selectedScope = $scope.selectedScopes[i];
-                        if (selectedScope === scope) {
-                            return true;
-                        }
-                    }
-                    return false;
+                    });
+                    return canDoGrant;
                 }
 
                 function doCancel() {
@@ -72,12 +55,11 @@
                         $scope.appOAuthInfo.consumerResponse.clientId,
                         $scope.appOAuthInfo.consumerResponse.clientSecret,
                         $stateParams.response_type,
-                        $stateParams.scopes,
+                        $scope.selectedScopes,
                         $scope.appOAuthInfo.serviceProvisionKey,
                         $stateParams.authenticatedUserId
                     ).then(function (value) {
-                            console.log(value);
-                            $window.location.go(value.data.redirect_uri);
+                            window.location.href = value.data.redirect_uri;
                         }, function (error) {
                             alertService.addAlert(ALERT_TYPES.DANGER,
                                 '<b>Uh-oh...</b> Something went wrong, we could not complete the grant process.');

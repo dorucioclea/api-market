@@ -510,24 +510,29 @@
                     }).$promise;
                 }
 
-                function constructGrantObject(clientId, clientSecret, responseType, scope, provisionKey, userId) {
-                    var scopeKeys = [];
-                    angular.forEach(scope, function (value, key) {
-                        scopeKeys.push(key);
-                    });
+                function constructGrantObject(clientId, clientSecret, responseType, scopeString, provisionKey, userId) {
                     return {
                         client_id: clientId,
                         client_secret: clientSecret,
                         response_type: responseType,
-                        scope: scopeKeys.join(','),
+                        scope: scopeString,
                         provision_key: provisionKey,
                         authenticated_userid: userId
                     };
                 }
 
-                function grant(grantUrl, clientId, clientSecret, responseType, scope, provisionKey, userId) {
+                function constructScopeString(scopesToGrant) {
+                    var keysToConcat = [];
+                    angular.forEach(scopesToGrant, function (scope) {
+                        keysToConcat.push(scope.scope);
+                    });
+                    return keysToConcat.join(',');
+                }
+
+                function grant(grantUrl, clientId, clientSecret, responseType, scopes, provisionKey, userId) {
+                    var scopesToGrant = constructScopeString(scopes);
                     var grantObject = constructGrantObject(clientId,
-                        clientSecret, responseType, scope, provisionKey, userId);
+                        clientSecret, responseType, scopesToGrant, provisionKey, userId);
                     return postFormEncoded(grantUrl, grantObject);
                 }
 

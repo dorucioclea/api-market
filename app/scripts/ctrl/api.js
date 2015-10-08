@@ -87,8 +87,14 @@
                 svcTab.updateTab('Documentation');
                 $scope.endpoint = endpoint;
                 $scope.contractApps = [];
+                $scope.canGrant = canGrant;
                 $scope.doGrant = doGrant;
                 $scope.hasGrant = false;
+                $scope.selectedScopes = [];
+                // Initially all requested scopes will be selected
+                angular.forEach($scope.serviceVersion.oauthScopes, function (value, key) {
+                    $scope.selectedScopes.push({scope: key, desc: value, checked: true});
+                });
                 var currentDefinitionSpec;
 
                 var filterApplications = function (apps, contracts) {
@@ -144,15 +150,23 @@
                     );
                 }
 
+                function canGrant() {
+                    var canDoGrant = false;
+                    angular.forEach($scope.selectedScopes, function (value) {
+                        if (value.checked) {
+                            canDoGrant = true;
+                        }
+                    });
+                    return canDoGrant;
+                }
+
                 function doGrant() {
                     oAuthService.grant(
-                        $scope.serviceVersion.service.organization.id,
-                        $scope.serviceVersion.service.id,
-                        $scope.serviceVersion.version,
+                        $scope.endpoint.oauth2AuthorizeEndpoint,
                         $scope.appVersion.oAuthClientId,
                         $scope.appVersion.oauthClientSecret,
                         'token',
-                        $scope.serviceVersion.oauthScopes,
+                        $scope.selectedScopes,
                         $scope.serviceVersion.provisionKey,
                         $scope.User.currentUser.username
                     ).then(function (response) {
@@ -185,7 +199,7 @@
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                     function (definitionSpec) {
                         currentDefinitionSpec = definitionSpec;
-                        $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container',endpoint);
+                        $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container', endpoint);
                     });
             }])
 
