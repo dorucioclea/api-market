@@ -1,150 +1,195 @@
 <div class="row">
-  <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
-  <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
-  <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+    <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+    <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+    <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
 
-  <!-- Swagger API documentation panel -->
-  <div class="col-md-9">
-    <div class="panel panel-default mb15">
-      <div class="panel-heading">
-        Swagger specification
-      </div>
-      <div class="panel-body">
-        <div class="swagger-section">
-          <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
+    <!-- Swagger API documentation panel -->
+    <div class="col-md-9">
+        <div class="panel panel-default mb15">
+            <div class="panel-heading">
+                Swagger specification
+            </div>
+            <div class="panel-body">
+                <div class="swagger-section">
+                    <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div><!-- end Swagger Documentation panel -->
+    </div><!-- end Swagger Documentation panel -->
 
-  <!-- Sidebar panels -->
-  <div class="col-md-3">
+    <!-- Sidebar panels -->
+    <div class="col-md-3">
 
-    <!-- API URL panel -->
-    <div class="panel panel-default mb15">
-      <div class="panel-heading text-center">
-        API Information
-      </div>
-      <div class="panel-body">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <label class="control-label text-primary">API URL</label>
-                </div>
-                <div class="col-md-12">
-                    <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
-                </div>
+        <!-- API URL panel -->
+        <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+                API Information
             </div>
-            <div class="form-group">
-                <div class="col-md-12">
-                    <label class="control-label text-primary">Organization ID</label>
-                </div>
-                <div class="col-md-12">
-                    <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
-                </div>
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label text-primary">API URL</label>
+                        </div>
+                        <div class="col-md-12">
+                            <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label text-primary">Organization ID</label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label text-primary">Service ID</label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label text-primary">Version ID</label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="hasOAuth">
+                        <div class="col-md-12">
+                            <label class="control-label text-primary">OAuth Provision Key</label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <div class="col-md-12">
-                    <label class="control-label text-primary">Service ID</label>
-                </div>
-                <div class="col-md-12">
-                    <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-12">
-                    <label class="control-label text-primary">Version ID</label>
-                </div>
-                <div class="col-md-12">
-                    <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
-                </div>
-            </div>
-            <div class="form-group" ng-if="hasOAuth">
-                <div class="col-md-12">
-                    <label class="control-label text-primary">OAuth Provision Key</label>
-                </div>
-                <div class="col-md-12">
-                    <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
-                </div>
-            </div>
-        </form>
-      </div>
-    </div><!-- end API URL panel -->
+        </div><!-- end API URL panel -->
 
-    <!-- Existing Contracts panel -->
-    <div class="panel panel-default mb15">
-      <div class="panel-heading text-center">
-        API Key for Testing
-      </div>
-      <div class="panel-body text-center">
-        <div ng-if="contractApps.length === 0">
-          <p>No contracts exist for this service.</p>
-          <p>You can create a contract for this service using the button above.</p>
-        </div>
-        <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
-          <p>Application API key to use for testing:</p>
-          <div class="btn-group dropdown" dropdown>
-            <button type="button" class="btn btn-line-info dropdown-toggle" dropdown-toggle>
-              <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
-              <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)">
-                <a><span class="xsmall">{{contract.appOrganizationName}}</span><br><b>{{contract.appName}} - {{contract.appVersion}}</b></a>
-              </li>
-            </ul>
-          </div>
-        </form>
-      </div>
-    </div><!-- end Existing Contracts panel -->
+        <!-- Existing Contracts panel -->
+        <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+                API Key for Testing
+            </div>
+            <div class="panel-body text-center">
+                <div ng-if="contractApps.length === 0">
+                    <p>No contracts exist for this service.</p>
+                    <p>You can create a contract for this service using the button above.</p>
+                </div>
+                <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
+                    <p>Application API key to use for testing:</p>
+                    <div class="btn-group dropdown" dropdown>
+                        <button type="button" class="btn btn-line-info dropdown-toggle" dropdown-toggle>
+                            <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
+                            <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)">
+                                <a><span class="xsmall">{{contract.appOrganizationName}}</span><br><b>{{contract.appName}} - {{contract.appVersion}}</b></a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div><!-- end Existing Contracts panel -->
 
-    <!-- Authorization panel -->
-    <div class="panel panel-default" ng-if="hasOAuth">
-      <div class="panel-heading text-center">
-        Additional Authorization Required
-      </div>
-      <div class="panel-body">
-        <!-- #start accordion -->
-        <accordion class="accordion-panel">
-          <auth-accordion-group heading="'OAuth 2.0'">
-              <form role="form" class="form">
-                  <div class="form-group mb30">
-                      <div class="input-group mb5">
-                          <span class="input-group-addon ion ion-person"></span>
-                          <input type="text" class="form-control" placeholder="Client ID" ng-model="appVersion.oAuthClientId">
-                      </div>
-                      <div class="input-group">
-                          <span class="input-group-addon ion ion-locked"></span>
-                          <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
-                      </div>
-                  </div>
-                  <div class="ui-checkbox ui-checkbox-circle">
-                      <p class="small text-muted text-uppercase mb5">Scopes</p>
-                      <label ng-repeat="scope in selectedScopes">
-                          <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
-                          <span class="col-sm-12">{{scope.desc}}</span>
-                      </label>
-                  </div>
-              </form>
-              <div class="text-center">
-                  <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0 || !canGrant()">Grant</button>
-                  <div class="mt10" ng-show="appVersion.oauthClientRedirect.length == 0">
-                      <p class="text-justified text-warning xsmall">
-                          The grant button is disabled because the selected Application does not
-                          have a OAuth Callback URL defined. Without a callback URL the grant
-                          process cannot be completed.
-                      </p>
-                      <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
-                          <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
-                      </a>
-                  </div>
-              </div>
-          </auth-accordion-group>
-        </accordion>
-        <!-- #end accordion -->
-      </div>
-    </div><!-- end authorization panel -->
+        <!-- Enabled OAuth Types panel -->
+        <div class="panel panel-default mb15" ng-if="hasOAuth">
+            <div class="panel-heading text-center">
+                Enabled OAuth2 Profiles
+            </div>
+            <div class="panel-body text-center">
+                <table class="table">
+                    <tbody>
+                    <tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">
+                        <td>
+                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>
+                        </td>
+                        <td>
+                            <span class="text-bold">Authorization Code</span>
+                        </td>
+                    </tr>
+                    <tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">
+                        <td>
+                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>
+                        </td>
+                        <td>
+                            <span class="text-bold">Client Credentials</span>
+                        </td>
+                    </tr>
+                    <tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">
+                        <td>
+                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>
+                        </td>
+                        <td>
+                            <span class="text-bold">Implicit Grant</span>
+                        </td>
+                    </tr>
+                    <tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">
+                        <td>
+                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>
+                        </td>
+                        <td>
+                            <span class="text-bold">Password Grant</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- end Enabled OAuth Types panel -->
 
-  </div> <!-- end sidebar panels -->
+        <!-- Authorization panel -->
+        <div class="panel panel-default" ng-if="hasOAuth">
+            <div class="panel-heading text-center">
+                Additional Authorization Required
+            </div>
+            <div class="panel-body">
+                <!-- #start accordion -->
+                <accordion class="accordion-panel">
+                    <auth-accordion-group heading="'OAuth 2.0'">
+                        <form role="form" class="form">
+                            <div class="form-group mb30">
+                                <div class="input-group mb5">
+                                    <span class="input-group-addon ion ion-person"></span>
+                                    <input type="text" class="form-control" placeholder="Client ID" ng-model="appVersion.oAuthClientId">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon ion ion-locked"></span>
+                                    <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
+                                </div>
+                            </div>
+                            <div class="ui-checkbox ui-checkbox-circle">
+                                <p class="small text-muted text-uppercase mb5">Scopes</p>
+                                <label ng-repeat="scope in selectedScopes">
+                                    <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
+                                    <span class="col-sm-12">{{scope.desc}}</span>
+                                </label>
+                            </div>
+                        </form>
+                        <div class="text-center">
+                            <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0 || !canGrant()">Grant</button>
+                            <div class="mt10" ng-show="appVersion.oauthClientRedirect.length == 0">
+                                <p class="text-justified text-warning xsmall">
+                                    The grant button is disabled because the selected Application does not
+                                    have a OAuth Callback URL defined. Without a callback URL the grant
+                                    process cannot be completed.
+                                </p>
+                                <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
+                                    <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </auth-accordion-group>
+                </accordion>
+                <!-- #end accordion -->
+            </div>
+        </div><!-- end authorization panel -->
+
+    </div> <!-- end sidebar panels -->
 
 </div>

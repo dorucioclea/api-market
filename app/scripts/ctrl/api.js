@@ -78,13 +78,14 @@
             }])
 
 /// ==== Service Swagger Documentation Controller
-        .controller('DocumentationCtrl', ['$scope', '$modal', '$stateParams', 'endpoint', 'svcContracts', 'userApps',
-            'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition', 'oAuthService',
-            'toastService', 'TOAST_TYPES',
-            function($scope, $modal, $stateParams, endpoint, svcContracts, userApps,
-                     docTester, svcTab, ApplicationVersion, ServiceVersionDefinition, oAuthService,
-                     toastService, TOAST_TYPES) {
+        .controller('DocumentationCtrl', ['$scope', '$modal', '$stateParams', 'endpoint', 'svcContracts',
+            'oAuthPolicy', 'userApps', 'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition',
+            'oAuthService', 'toastService', 'TOAST_TYPES',
+            function($scope, $modal, $stateParams, endpoint, svcContracts,
+                     oAuthPolicy, userApps, docTester, svcTab, ApplicationVersion, ServiceVersionDefinition,
+                     oAuthService, toastService, TOAST_TYPES) {
                 svcTab.updateTab('Documentation');
+                $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
                 $scope.endpoint = endpoint;
                 $scope.contractApps = [];
                 $scope.canGrant = canGrant;

@@ -360,6 +360,33 @@
                             return ServiceVersionContracts.query(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         },
+                        ServiceVersionPolicy: 'ServiceVersionPolicy',
+                        oAuthPolicy: function ($q, ServiceVersionPolicy, organizationId, serviceId, versionId) {
+                            return ServiceVersionPolicy.query(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise
+                                .then(function (result) {
+                                    var oAuthPolicy = {};
+                                    var promises = [];
+
+                                    angular.forEach(result, function (policy) {
+                                        if (policy.policyDefinitionId === 'OAuth2') {
+                                            promises.push(ServiceVersionPolicy.get(
+                                                {orgId: organizationId,
+                                                    svcId: serviceId,
+                                                    versionId: versionId,
+                                                    policyId: policy.id}).$promise);
+                                        }
+                                    });
+
+                                    return $q.all(promises).then(function (results) {
+                                        angular.forEach(results, function (details) {
+                                            oAuthPolicy = details;
+                                        });
+                                        return oAuthPolicy;
+                                    });
+
+                                });
+                        },
                         CurrentUserApps: 'CurrentUserApps',
                         userApps: function (CurrentUserApps) {
                             return CurrentUserApps.query().$promise;
