@@ -176,9 +176,9 @@
             }])
 
         /// ==== Definition Controller
-        .controller('ServiceDefinitionCtrl', ['$scope', '$state', '$stateParams', 'toastService', 'TOAST_TYPES',
-            'ServiceVersionDefinition', 'svcScreenModel',
-            function ($scope, $state, $stateParams, toastService, TOAST_TYPES,
+        .controller('ServiceDefinitionCtrl', ['$scope', '$state', '$stateParams', 'endpoint',
+            'toastService', 'TOAST_TYPES', 'ServiceVersionDefinition', 'svcScreenModel',
+            function ($scope, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
                       ServiceVersionDefinition, svcScreenModel) {
 
                 svcScreenModel.updateTab('Definition');
@@ -191,7 +191,7 @@
                         $scope.currentDefinition = reply;
                         if (angular.isDefined($scope.currentDefinition)) {
                             $scope.updatedDefinition = $scope.currentDefinition;
-                            $scope.loadSwaggerUi($scope.currentDefinition, 'original-swagger-ui-container');
+                            $scope.loadSwaggerUi($scope.currentDefinition, 'original-swagger-ui-container', endpoint);
                         } else {
                             $scope.noDefinition = true;
                         }
@@ -238,7 +238,7 @@
 
                 $scope.loadPreview = function (spec) {
                     $scope.definitionLoaded = true;
-                    $scope.loadSwaggerUi(spec, 'swagger-ui-container');
+                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint);
                 };
             }])
 
