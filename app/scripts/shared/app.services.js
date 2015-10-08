@@ -525,19 +525,10 @@
                     };
                 }
 
-                function constructUrl(orgId, svcId, versionId) {
-                    return 'https://apim.t1t.be:8443/' +
-                        orgId.toLowerCase() + '/' +
-                        svcId.toLowerCase() + '/' +
-                        versionId.toLowerCase() + '/oauth2/authorize';
-                }
-
-                function grant(orgId, svcId, versionId,
-                               clientId, clientSecret, responseType, scope, provisionKey, userId) {
-                    var url = constructUrl(orgId, svcId, versionId);
+                function grant(grantUrl, clientId, clientSecret, responseType, scope, provisionKey, userId) {
                     var grantObject = constructGrantObject(clientId,
                         clientSecret, responseType, scope, provisionKey, userId);
-                    return postFormEncoded(url, grantObject);
+                    return postFormEncoded(grantUrl, grantObject);
                 }
 
                 function postFormEncoded(url, data) {

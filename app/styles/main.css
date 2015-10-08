@@ -10872,7 +10872,7 @@ fieldset[disabled] .btn-danger.active {
 .ui-radio label > i {
   position: relative;
   padding-left: 28px;
-  padding-top: 2.5px;
+  padding-top: 4px;
 }
 .ui-checkbox label > span:before,
 .ui-checkbox label > i:before,

@@ -17,10 +17,18 @@
                 }
                 $scope.doCancel = doCancel;
                 $scope.doGrant = doGrant;
+                $scope.isSelected = isSelected;
+                $scope.toggle = toggle;
                 $scope.closeAlert = alertService.closeAlert;
 
+                $scope.selectedScopes = [];
+                // Initially all requested scopes will be selected
+                angular.forEach($scope.requestedScopes, function (value) {
+                    $scope.selectedScopes.push(value);
+                });
                 $scope.appOAuthInfo = {};
                 $scope.alerts = alertService.alerts;
+
                 oAuthService.getAppOAuthInfo($stateParams.client_id,
                     $stateParams.org_id,
                     $stateParams.service_id,
@@ -29,16 +37,38 @@
                         $scope.appOAuthInfo = value;
                     });
 
+                function toggle(scope) {
+                    var found = false;
+                    for (var i = 0; i < $scope.selectedScopes.length; i++) {
+                        var selectedScope = $scope.selectedScopes[i];
+                        if (selectedScope === scope) {
+                            $scope.selectedScopes.splice(i,1);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        $scope.selectedScopes.push(scope);
+                    }
+                }
+
+                function isSelected(scope) {
+                    for (var i = 0; i < $scope.selectedScopes.length; i++) {
+                        var selectedScope = $scope.selectedScopes[i];
+                        if (selectedScope === scope) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
                 function doCancel() {
                     $window.location.href = $scope.appOAuthInfo.consumerResponse.redirectUri + '?error=cancelled';
                 }
                 function doGrant() {
                     alertService.resetAllAlerts();
-                    console.log('Granting...');
                     oAuthService.grant(
-                        $stateParams.org_id,
-                        $stateParams.service_id,
-                        $stateParams.version,
+                        $scope.appOAuthInfo.authorizationUrl,
                         $scope.appOAuthInfo.consumerResponse.clientId,
                         $scope.appOAuthInfo.consumerResponse.clientSecret,
                         $stateParams.response_type,
