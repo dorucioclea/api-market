@@ -5,10 +5,10 @@
 
         /// ==== Service Controller
         .controller('ServiceCtrl',
-        ['$scope', '$state', '$stateParams', '$modal', 'orgData', 'orgScreenModel',
+        ['$scope', '$state', '$stateParams', '$modal', 'orgData', 'orgScreenModel', 'support',
             'svcData', 'svcVersions', 'svcScreenModel', 'toastService', 'TOAST_TYPES', 'actionService',
             'Service', 'ServiceVersionDefinition',
-            function ($scope, $state, $stateParams, $modal, orgData, orgScreenModel,
+            function ($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
                       svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService,
                       Service, ServiceVersionDefinition) {
 
@@ -17,6 +17,7 @@
                 svcScreenModel.updateService(svcData);
                 $scope.displayTab = svcScreenModel;
                 $scope.versions = svcVersions;
+                $scope.support = support;
                 $scope.isReady = $scope.serviceVersion.status === 'Ready';
                 $scope.isPublished =
                     $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
@@ -26,6 +27,7 @@
                 $scope.toastService = toastService;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
+                $scope.modalNewTicketOpen = modalNewTicketOpen;
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -39,6 +41,19 @@
                     $state.go($state.$current.name,
                         {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
                 };
+
+                function modalNewTicketOpen() {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalCreateTicket.html',
+                        size: 'lg',
+                        controller: 'CreateSupportTicketCtrl',
+                        resolve: {
+                            serviceVersion: $scope.serviceVersion
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                }
 
                 function confirmPublishSvc() {
                     $modal.open({
@@ -453,6 +468,45 @@
                 $scope.modalNewAnnouncement = modalNewAnnouncement;
                 $scope.modalViewAnnouncement = modalViewAnnouncement;
                 $scope.announcements = announcements;
+
+                function modalNewAnnouncement() {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalNewAnnouncement.html',
+                        size: 'lg',
+                        controller: 'NewAnnouncementCtrl as ctrl',
+                        resolve: {
+                            svcVersion: function () {
+                                return $scope.serviceVersion;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+                function modalViewAnnouncement(announcement) {
+                    $modal.open({
+                        templateUrl: 'views/modals/modalViewAnnouncement.html',
+                        size: 'lg',
+                        controller: 'ViewAnnouncementCtrl as ctrl',
+                        resolve: {
+                            announcement: function () {
+                                return announcement;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+            }])
+
+        /// ==== Support Controller
+        .controller('ServiceSupportCtrl', ['$scope', '$modal', '$state', 'svcScreenModel',
+            'toastService', 'TOAST_TYPES',
+            function ($scope, $modal, $state, svcScreenModel, toastService, TOAST_TYPES) {
+
+                svcScreenModel.updateTab('Support');
+                $scope.modalNewAnnouncement = modalNewAnnouncement;
+                $scope.modalViewAnnouncement = modalViewAnnouncement;
 
                 function modalNewAnnouncement() {
                     $modal.open({

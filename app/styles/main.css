@@ -12938,6 +12938,14 @@ md-input-container {
   height: 69px;
   margin-right: 45px;
 }
+.img-ticket-user {
+  width: 20px;
+  height: 20px;
+}
+.img-comment-user {
+  width: 20px;
+  height: 20px;
+}
 .organization-item {
   position: relative;
   padding: 10px;

@@ -1,0 +1,11 @@
+<div class="panel panel-default mt5">
+    <div class="panel-body">
+        {{comment.comment}}
+    </div>
+    <div class="panel-footer panel-footer-sm">
+        <img class="img-comment-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
+        <img class="img-comment-user img-cirlce" src="images/no-image-available.svg" ng-if="user.base64pic.length === 0 || user.base64pic === null">
+        &nbsp;{{user.fullName}} <span class="text-muted">({{comment.createdBy}})</span>
+        <span class="small right text-light">{{comment.createdOn | relativeDate}}</span>
+    </div>
+</div>

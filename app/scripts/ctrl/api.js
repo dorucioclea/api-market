@@ -5,9 +5,9 @@
 
         /// ==== Service Doc Main Controller
         .controller('ApiDocCtrl', ['$scope', '$state', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab',
-            'headerModel', 'toastService', 'followerService',
+            'headerModel', 'toastService', 'followerService', 'support',
             function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
-                     headerModel, toastService, followerService) {
+                     headerModel, toastService, followerService, support) {
                 headerModel.setIsButtonVisible(true, true, true);
                 svcModel.setService(svcData);
                 $scope.serviceVersion = svcData;
@@ -15,13 +15,13 @@
                 $scope.displayTab = svcTab;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.support = support;
 
                 $scope.modalAnim = 'default';
 
                 $scope.modalNewTicketOpen = modalNewTicketOpen;
                 $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
                 $scope.modalClose = modalClose;
-                $scope.openTicket = openTicket;
                 $scope.hasTerms = hasTerms;
                 $scope.userIsFollowing =
                     $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
@@ -36,8 +36,10 @@
                     $modal.open({
                         templateUrl: 'views/modals/modalCreateTicket.html',
                         size: 'lg',
-                        controller: 'ModalDemoCtrl',
-                        resolve: function() {},
+                        controller: 'CreateSupportTicketCtrl',
+                        resolve: {
+                            serviceVersion: $scope.serviceVersion
+                        },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -56,16 +58,6 @@
 
                 function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                }
-
-                function openTicket() {
-                    $modal.open({
-                        templateUrl: 'views/modals/modalViewTicket.html',
-                        size: 'lg',
-                        controller: 'ModalDemoCtrl',
-                        resolve: function() {},
-                        windowClass: $scope.modalAnim
-                    });
                 }
 
                 function followAction() {

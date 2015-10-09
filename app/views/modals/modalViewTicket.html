@@ -1,14 +1,42 @@
 <div class="modal-header clearfix">
-  <h4 class="modal-title">Ticket Short Description</h4>
-  <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+    <h4 class="modal-title">{{ticket.title}}</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 
 <div class="modal-body">
-    <p>Ticket long description</p>
+    <div class="panel panel-default mt5">
+        <div class="panel-body" ng-bind-html="ticket.description">
+            {{comment.comment}}
+        </div>
+        <div class="panel-footer">
+            <status-label status="{{ticket.status}}" class="mr10"></status-label>
+            <img class="img-ticket-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
+            <img class="img-ticket-user img-cirlce" src="images/no-image-available.svg" ng-if="user.base64pic.length === 0 || user.base64pic === null">
+            &nbsp;{{user.fullName}} <span class="text-muted">({{ticket.createdBy}})</span>
+            <span class="small right text-light">{{ticket.createdOn | relativeDate}}</span>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <hr>
+    <p class="text-bold text-primary">Comments</p>
+    <div class="well" ng-if="comments.length == 0">
+        No comments yet. You can add one below!
+    </div>
+    <div ng-repeat="comment in comments">
+        <support-ticket-comment comment="comment"></support-ticket-comment>
+    </div>
 </div>
 <div class="modal-footer">
-  <div class="col-sm-10 col-sm-offset-1">
-    <textarea rows="2" class="form-control resize-v"></textarea>
-    <button class="mt5 btn btn-success" ng-click="createTicket()">Add Comment</button>
-  </div>
+    <div class="col-sm-10 col-sm-offset-1">
+        <form role="form" name="commentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label text-primary left">Add Comment</label>
+                <input type="text" name="comment" class="form-control" ng-model="comment" required>
+                <p class="text-danger xsmall" ng-show="commentForm.comment.$error.required" ng-if="commentForm.comment.$touched">An empty comment would not add much to the discussion, don't you think?</p>
+            </div>
+        </form>
+
+        <button class="mt5 btn btn-success" ng-click="addComment()" ng-disabled="commentForm.$invalid">Add Comment</button>
+    </div>
 </div>

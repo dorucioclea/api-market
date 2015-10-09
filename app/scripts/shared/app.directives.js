@@ -337,8 +337,9 @@
             scope: {status: '@'},
             template: '<label class=\"label text-uppercase\" ' +
             'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\'' +
-            ' || status === \'Locked\',' +
+            ' || status === \'Locked\' || status === \'OPEN\',' +
             '\'label-warning\': status === \'Ready\' || status === \'Created\', ' +
+            '\'label-danger\': status === \'CLOSED\',' +
             '\'label-muted\': status === \'Retired\'}\">' +
             '{{status}}</label>'
         };
@@ -403,6 +404,63 @@
                         }
                     }],
                 templateUrl: 'views/templates/apigrid.html'
+            };
+        })
+
+        .directive('supportTicket', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    ticket: '='
+                },
+                controller: ['$scope', '$modal', 'Users', 'ServiceTicketComments',
+                    function ($scope, $modal, Users, ServiceTicketComments) {
+                        $scope.openTicket = openTicket;
+                        $scope.user = {};
+                        $scope.comments = [];
+
+                        Users.get({userId: $scope.ticket.createdBy}, function (reply) {
+                            $scope.user = reply;
+                        });
+
+                        ServiceTicketComments.query({supportId: $scope.ticket.id},
+                            function (reply) {
+                                $scope.comments = reply;
+                            }
+                        );
+
+                        function openTicket() {
+                            $modal.open({
+                                templateUrl: 'views/modals/modalViewTicket.html',
+                                size: 'lg',
+                                controller: 'ViewSupportTicketCtrl',
+                                resolve: {
+                                    ticket: $scope.ticket,
+                                    user: $scope.user
+                                },
+                                windowClass: $scope.modalAnim
+                            });
+                        }
+                    }],
+                templateUrl: 'views/templates/ticket.html'
+            };
+        })
+        .directive('supportTicketComment', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    comment: '='
+                },
+                controller: ['$scope', '$modal', 'Users',
+                    function ($scope, $modal, Users) {
+                        $scope.user = {};
+                        $scope.comments = [];
+
+                        Users.get({userId: $scope.comment.createdBy}, function (reply) {
+                            $scope.user = reply;
+                        });
+                    }],
+                templateUrl: 'views/templates/comment.html'
             };
         })
 

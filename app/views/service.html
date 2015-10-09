@@ -31,6 +31,7 @@
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" ui-sref=".policies">Policies</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms">Terms</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="support.length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
         <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>

@@ -37,6 +37,7 @@
         'app.ctrl.dashboard',
         'app.ctrl.modals',
         'app.ctrl.modals.lifecycle',
+        'app.ctrl.modals.support',
         'app.ctrl.api',
         'app.ctrl.service',
         'app.ctrl.application',
@@ -329,7 +330,11 @@
                         }],
                         versionId: ['$stateParams', function ($stateParams) {
                             return $stateParams.versionId;
-                        }]
+                        }],
+                        ServiceSupportTickets: 'ServiceSupportTickets',
+                        support: function (ServiceSupportTickets, organizationId, serviceId) {
+                            return ServiceSupportTickets.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        }
                     },
                     controller: 'ApiDocCtrl'
                 })
@@ -734,7 +739,11 @@
                         }],
                         versionId: ['$stateParams', function ($stateParams) {
                             return $stateParams.versionId;
-                        }]
+                        }],
+                        ServiceSupportTickets: 'ServiceSupportTickets',
+                        support: function (ServiceSupportTickets, organizationId, serviceId) {
+                            return ServiceSupportTickets.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        }
                     },
                     controller: 'ServiceCtrl'
                 })
@@ -841,6 +850,14 @@
                     },
                     controller: 'ServiceAnnouncementsCtrl'
                 })
+                // Support Tab
+                .state('root.service.support', {
+                    url: '/support',
+                    templateUrl: 'views/partials/service/support.html',
+                    resolve: {
+                    },
+                    controller: 'ServiceSupportCtrl'
+                })
                 // Activity Tab
                 .state('root.service.activity', {
                     url: '/activity',
@@ -912,10 +929,6 @@
         .factory('sessionInjector', ['$sessionStorage', '$window', function ($sessionStorage, $window) {
             return {
                 request: function (config) {
-                    //if (config.url === '/views/oauth.html') {
-                    //    // Don't inject the session for the grant page, it is not needed
-                    //    return config;
-                    //}
                     config.headers.apikey = $sessionStorage.apikey;
                     if (Date.parse($sessionStorage.ttl) < Date.parse(new Date())) {
                         console.log('ttl expired');

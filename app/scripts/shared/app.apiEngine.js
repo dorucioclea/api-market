@@ -176,9 +176,9 @@
                     }
                 });
         }])
-        .factory('ServiceSupportComments', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+        .factory('ServiceTicketComments', ['$resource', 'CONFIG', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/services/:svcId/support/:supportId/comments/:commentId' , {},
+                '/organizations/services/support/:supportId/comments/:commentId' , {},
                 {
                     update: {
                         method: 'PUT'
