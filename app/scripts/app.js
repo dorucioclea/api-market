@@ -94,7 +94,7 @@
 
                 // OAUTH GRANT PAGE ===============================================================
                 .state('oauth', {
-                    url: '/oauth?response_type&client_id&org_id&service_id&version&authenticatedUserId&scopes',
+                    url: '/oauth?response_type&client_id&org_id&service_id&version&authenticatedUserId&scopes&apikey',
                     templateUrl: '/views/oauth.html',
                     controller: 'OAuthCtrl'
                 })

@@ -3,9 +3,9 @@
 
     angular.module('app.ctrl.auth.oauth', [])
 
-        .controller('OAuthCtrl', ['$scope', '$http', '$window','$stateParams', 'oAuthService',
+        .controller('OAuthCtrl', ['$scope', '$http', '$window','$stateParams', '$sessionStorage', 'oAuthService',
             'alertService', 'ALERT_TYPES',
-            function ($scope, $http, $window, $stateParams, oAuthService,
+            function ($scope, $http, $window, $stateParams, $sessionStorage, oAuthService,
                       alertService, ALERT_TYPES) {
                 alertService.resetAllAlerts();
                 $scope.isValid = false;
@@ -14,6 +14,9 @@
                     $scope.isValid = true;
                 } else {
                     $scope.requestedScopes = [];
+                }
+                if ($stateParams.apikey) {
+                    $sessionStorage.apikey = $stateParams.apikey;
                 }
                 $scope.canGrant = canGrant;
                 $scope.doCancel = doCancel;
