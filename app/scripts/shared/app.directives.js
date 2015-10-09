@@ -407,11 +407,41 @@
             };
         })
 
+        .directive('supportList', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    currentUser: '=',
+                    tickets: '=',
+                    serviceVersion: '=',
+                    publisherMode: '='
+                },
+                controller: ['$scope', '$modal',
+                    function ($scope, $modal) {
+                        $scope.modalNewTicketOpen = modalNewTicketOpen;
+
+                        function modalNewTicketOpen() {
+                            $modal.open({
+                                templateUrl: 'views/modals/modalCreateTicket.html',
+                                size: 'lg',
+                                controller: 'CreateSupportTicketCtrl',
+                                resolve: {
+                                    serviceVersion: $scope.serviceVersion
+                                },
+                                windowClass: $scope.modalAnim	// Animation Class put here.
+                            });
+                        }
+                    }],
+                templateUrl: 'views/templates/support/supportlist.html'
+            };
+        })
         .directive('supportTicket', function () {
             return {
                 restrict: 'E',
                 scope: {
-                    ticket: '='
+                    ticket: '=',
+                    publisherMode: '=',
+                    currentUser: '='
                 },
                 controller: ['$scope', '$modal', 'Users', 'ServiceTicketComments',
                     function ($scope, $modal, Users, ServiceTicketComments) {
@@ -435,32 +465,82 @@
                                 size: 'lg',
                                 controller: 'ViewSupportTicketCtrl',
                                 resolve: {
+                                    currentUser: $scope.currentUser,
                                     ticket: $scope.ticket,
-                                    user: $scope.user
+                                    user: $scope.user,
+                                    publisherMode: $scope.publisherMode
                                 },
                                 windowClass: $scope.modalAnim
                             });
                         }
                     }],
-                templateUrl: 'views/templates/ticket.html'
+                templateUrl: 'views/templates/support/ticket.html'
+            };
+        })
+        .directive('commentList', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    comments: '=',
+                    currentUser: '=',
+                    publisherMode: '='
+                },
+                controller: ['$scope', '$modal', 'ServiceTicketComments', 'CurrentUserInfo',
+                    'toastService', 'TOAST_TYPES',
+                    function ($scope, $modal, ServiceTicketComments, CurrentUserInfo,
+                              toastService, TOAST_TYPES) {
+                        this.deleteComment = deleteComment;
+                        this.isOwnComment = isOwnComment;
+
+                        function isOwnComment(comment) {
+                            console.log(comment.createdBy === $scope.currentUser.username);
+                            return comment.createdBy === $scope.currentUser.username;
+                        }
+
+                        function deleteComment(comment) {
+                            ServiceTicketComments.remove({supportId: comment.supportId, commentId: comment.id},
+                                function (reply) {
+                                    for (var i = 0; i < $scope.comments.length; i++) {
+                                        var checkedComment = $scope.comments[i];
+                                        if (checkedComment.id === comment.id) {
+                                            $scope.comments.splice(i, 1);
+                                            break;
+                                        }
+                                    }
+                                    toastService.createToast(TOAST_TYPES.WARNING, '<b>Comment deleted.</b>', true);
+                                }, function (error) {
+                                    toastService.createErrorToast(error, 'Could not delete comment');
+                                });
+                        }
+                    }],
+                templateUrl: 'views/templates/support/commentlist.html'
             };
         })
         .directive('supportTicketComment', function () {
             return {
                 restrict: 'E',
+                require: '^commentList',
                 scope: {
-                    comment: '='
+                    comment: '=',
+                    publisherMode: '='
+                },
+                link: function ($scope, iElement, iAttrs, commentListCtrl) {
+                    $scope.deleteComment = function (comment) {
+                        commentListCtrl.deleteComment(comment);
+                    };
+                    $scope.ownComment = function (comment) {
+                        commentListCtrl.isOwnComment(comment);
+                    };
                 },
                 controller: ['$scope', '$modal', 'Users',
                     function ($scope, $modal, Users) {
                         $scope.user = {};
-                        $scope.comments = [];
 
                         Users.get({userId: $scope.comment.createdBy}, function (reply) {
                             $scope.user = reply;
                         });
                     }],
-                templateUrl: 'views/templates/comment.html'
+                templateUrl: 'views/templates/support/comment.html'
             };
         })
 

@@ -3,14 +3,12 @@
     <div>
       <h4 class="text-bold list-group-item-heading">{{ticket.title}}
         <span class="right text-light fa fa-comment">&nbsp;{{comments.length}}</span>
-        <!--<span class="right">&nbsp;&nbsp;</span><span class="text-success right fa fa-plus-circle"></span>-->
         </h4>
     </div>
     <div class="mt15">
         <status-label status="{{ticket.status}}" class="mr10"></status-label>
       <base64-logo logo="{{user.base64pic}}" logo-class="img-ticket-user img-circle"></base64-logo>&nbsp;{{user.fullName}} <span class="text-muted">({{ticket.createdBy}})</span>
       <span class="small right text-light">{{ticket.createdOn | relativeDate}}</span>
-      <!--<span class="right text-light">#{{ticket.id}}</span>-->
     </div>
   </a>
 </div>

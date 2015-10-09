@@ -1,46 +1,11 @@
 <div class="row">
 
-    <div class="panel panel-default">
-        <div class="panel-heading">Support tickets for {{serviceVersion.service.name}}</div>
-
-        <div class="panel-body">
-            <div class="col-sm-10 col-sm-offset-1 mt30">
-                <div class="form-group col-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon fa fa-search"></span>
-                        <input type="email" class="form-control" placeholder="Search through the tickets">
-                    </div>
-                </div>
-                <div class="right col-sm-2">
-                    <button class="btn btn-primary" ng-click="modalNewTicketOpen()">Create new ticket</button>
-                </div>
-            </div>
-
-            <tabset class="col-sm-10 col-sm-offset-1 mt30">
-                <tab>
-                    <tab-heading>
-                        <span class="text-success">Open ({{(support | filter:{status: 'OPEN'}).length}})</span>
-                    </tab-heading>
-                    <div class="list-group col-sm-12">
-                        <div ng-repeat="supportTicket in support | filter:{status: 'OPEN'}">
-                            <support-ticket ticket="supportTicket"></support-ticket>
-                        </div>
-                    </div>
-                </tab>
-                <tab>
-                    <tab-heading>
-                        <span class="text-primary">Closed ({{(support | filter:{status: 'CLOSED'}).length}})</span>
-                    </tab-heading>
-                    <div class="list-group col-sm-12">
-                        <div ng-repeat="supportTicket in support | filter:{status: 'CLOSED'}">
-                            <support-ticket ticket="supportTicket"></support-ticket>
-                        </div>
-                    </div>
-                </tab>
-            </tabset>
-
-        </div>
-
+    <div class="col-sm-12">
+        <h4>Service Support Issues</h4>
+        <p>Below is a list of all Support Tickets that have been opened for this Service.</p>
+        <hr>
     </div>
 
+    <support-list service-version="serviceVersion" tickets="support" publisher-mode="publisherMode" current-user="User"></support-list>
 </div>
+

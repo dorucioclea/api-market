@@ -16,10 +16,7 @@
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.support = support;
-
                 $scope.modalAnim = 'default';
-
-                $scope.modalNewTicketOpen = modalNewTicketOpen;
                 $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
                 $scope.modalClose = modalClose;
                 $scope.hasTerms = hasTerms;
@@ -30,19 +27,6 @@
                 function hasTerms() {
                     return $scope.serviceVersion.service.terms !== null &&
                         $scope.serviceVersion.service.terms.length > 0;
-                }
-
-                function modalNewTicketOpen() {
-                    $modal.open({
-                        templateUrl: 'views/modals/modalCreateTicket.html',
-                        size: 'lg',
-                        controller: 'CreateSupportTicketCtrl',
-                        resolve: {
-                            serviceVersion: $scope.serviceVersion
-                        },
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
                 }
 
                 function modalSelectApplicationForContract() {
