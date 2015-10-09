@@ -168,6 +168,23 @@
         .factory('ServiceMarketInfo', ['$resource', 'CONFIG', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
         }])
+        .factory('ServiceSupportTickets', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/support/:supportId', {},
+                {
+                    update: {
+                        method: 'PUT'
+                    }
+                });
+        }])
+        .factory('ServiceSupportComments', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+                '/organizations/:orgId/services/:svcId/support/:supportId/comments/:commentId' , {},
+                {
+                    update: {
+                        method: 'PUT'
+                    }
+                });
+        }])
         .factory('ServiceOAuthAuthorize', ['$resource', 'CONFIG', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/oauth2/authorize');
         }])
