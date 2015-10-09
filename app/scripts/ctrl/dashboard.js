@@ -31,13 +31,18 @@
                 };
 
                 $scope.canConfigureOAuth = function (appVersion) {
-                    return $scope.canCreateContract(appVersion) &&
+                    return $scope.isNotRetired(appVersion) &&
                         appVersionDetails[appVersion.id].oAuthClientId !== null &&
                         appVersionDetails[appVersion.id].oAuthClientId.length > 0;
                 };
 
                 $scope.canPublish = function (appVersion) {
                     return appVersion.status === 'Ready';
+                };
+
+                $scope.isNotRetired = function (appVersion) {
+                    return appVersion.status === 'Created' ||
+                        appVersion.status === 'Ready' || appVersion.status === 'Registered';
                 };
 
                 $scope.canRetire = function (appVersion) {
