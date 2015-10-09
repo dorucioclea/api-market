@@ -493,8 +493,10 @@
                         this.isOwnComment = isOwnComment;
 
                         function isOwnComment(comment) {
-                            console.log(comment.createdBy === $scope.currentUser.username);
-                            return comment.createdBy === $scope.currentUser.username;
+                            console.log($scope.currentUser);
+                            console.log(comment);
+                            console.log(comment.createdBy === $scope.currentUser.currentUser.username);
+                            return comment.createdBy === $scope.currentUser.currentUser.username;
                         }
 
                         function deleteComment(comment) {
@@ -528,9 +530,7 @@
                     $scope.deleteComment = function (comment) {
                         commentListCtrl.deleteComment(comment);
                     };
-                    $scope.ownComment = function (comment) {
-                        commentListCtrl.isOwnComment(comment);
-                    };
+                    $scope.ownComment = commentListCtrl.isOwnComment($scope.comment);
                 },
                 controller: ['$scope', '$modal', 'Users',
                     function ($scope, $modal, Users) {

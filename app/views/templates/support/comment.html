@@ -2,7 +2,7 @@
     <div class="panel-body">
         {{comment.comment}}
         <span class="right btn btn-danger btn-xs fa fa-times-circle" title="Delete comment" ng-click="deleteComment(comment)"
-              ng-hide="publisherMode || ownComment(comment)"></span>
+              ng-if="publisherMode || ownComment"></span>
     </div>
     <div class="panel-footer panel-footer-sm">
         <img class="img-comment-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
