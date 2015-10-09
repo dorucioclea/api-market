@@ -64,6 +64,7 @@
                         $scope.appOAuthInfo.serviceProvisionKey,
                         $stateParams.authenticatedUserId
                     ).then(function (value) {
+                            $sessionStorage.ttl = new Date();
                             window.location.href = value.data.redirect_uri;
                         }, function (error) {
                             alertService.addAlert(ALERT_TYPES.DANGER,
