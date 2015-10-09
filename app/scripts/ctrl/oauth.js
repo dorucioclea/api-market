@@ -31,7 +31,9 @@
                         $scope.appOAuthInfo = value;
                         // Initially all requested scopes will be selected
                         angular.forEach(value.scopes, function (value, key) {
-                            $scope.selectedScopes.push({scope: key, desc: value, checked: true});
+                            if ($scope.requestedScopes.length > 0 && $scope.requestedScopes.indexOf(key) > -1) {
+                                $scope.selectedScopes.push({scope: key, desc: value, checked: true});
+                            }
                         });
                     });
 
