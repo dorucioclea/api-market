@@ -493,9 +493,6 @@
                         this.isOwnComment = isOwnComment;
 
                         function isOwnComment(comment) {
-                            console.log($scope.currentUser);
-                            console.log(comment);
-                            console.log(comment.createdBy === $scope.currentUser.currentUser.username);
                             return comment.createdBy === $scope.currentUser.currentUser.username;
                         }
 
