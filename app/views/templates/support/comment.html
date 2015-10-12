@@ -1,20 +1,18 @@
 <div class="panel panel-default mt5">
     <div class="panel-body">
         <div ng-class="{'col-sm-12': !(ownComment || isServiceOwner || publisherMode), 'col-sm-10': ownComment || isServiceOwner || publisherMode}" ng-if="!editMode">
-          {{comment.comment}}
+            {{comment.comment}}
         </div>
         <div ng-class="{'col-sm-12': !(ownComment || isServiceOwner || publisherMode), 'col-sm-10': ownComment || isServiceOwner || publisherMode}" ng-if="editMode">
             <input type="text" name="comment" class="form-control" ng-model="comment.comment" required>
             <span class="btn btn-default btn-xs fa fa-check" title="Save comment" ng-click="saveComment(comment)"
-                              ng-show="ownComment"></span>
+                  ng-show="ownComment"></span>
         </div>
-        <div class="col-sm-2" ng-if="publisherMode || ownComment || isServiceOwner">
-            <div class="right">
+        <div class="right" ng-if="publisherMode || ownComment || isServiceOwner">
             <span class="btn btn-default btn-xs fa fa-pencil" title="Edit comment" ng-click="editComment()"
-                          ng-show="(ownComment || isServiceOwner) && !editMode"></span>
+                      ng-show="(ownComment || isServiceOwner) && !editMode"></span>
             <span class="btn btn-danger btn-xs fa fa-times-circle" title="Delete comment" ng-click="deleteComment(comment)"
-              ng-show="publisherMode || ownComment || isServiceOwner"></span>
-            </div>
+                      ng-show="publisherMode || ownComment || isServiceOwner"></span>
         </div>
 
     </div>
@@ -22,6 +20,8 @@
         <img class="img-comment-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
         <img class="img-comment-user img-cirlce" src="images/no-image-available.svg" ng-if="user.base64pic.length === 0 || user.base64pic === null">
         &nbsp;{{user.fullName}} <span class="text-muted">({{comment.createdBy}})</span>
-        <span class="small right text-light">{{comment.createdOn | relativeDate}}</span>
+        <div class="right">
+            <span class="small text-light">{{comment.createdOn | relativeDate}}</span>
+        </div>
     </div>
 </div>
