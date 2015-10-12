@@ -35,7 +35,7 @@
 </div>
 <div class="modal-footer">
     <button class="mt5 btn btn-default" ng-click="modalClose()">Close</button>
-    <div class="left" ng-if="publisherMode">
+    <div class="left" ng-if="publisherMode || isServiceOwner">
         <button class="btn btn-line-danger" ng-click="deleteIssue()">Delete Issue</button>
         <button class="btn btn-line-warning" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN'">Mark as Closed</button>
         <button class="btn btn-line-warning" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED'">Reopen Issue</button>
