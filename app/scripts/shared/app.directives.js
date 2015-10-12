@@ -491,6 +491,7 @@
                               toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
+                        this.saveComment = saveComment;
 
                         function isOwnComment(comment) {
                             return comment.createdBy === $scope.currentUser.currentUser.username;
@@ -511,6 +512,27 @@
                                     toastService.createErrorToast(error, 'Could not delete comment');
                                 });
                         }
+
+                        function saveComment(comment) {
+                            var updatedCommentObject = {
+                                comment: comment.comment
+                            };
+                            console.log(comment);
+                            ServiceTicketComments.update({supportId: comment.supportId, commentId: comment.id},
+                                updatedCommentObject,
+                                function (reply) {
+                                    for (var i = 0; i < $scope.comments.length; i++) {
+                                        var checkedComment = $scope.comments[i];
+                                        if (checkedComment.id === comment.id) {
+                                            $scope.comments[i] = comment;
+                                            break;
+                                        }
+                                    }
+                                    toastService.createToast(TOAST_TYPES.INFO, '<b>Comment updated.</b>', true);
+                                }, function (error) {
+                                    toastService.createErrorToast(error, 'Could not update comment');
+                                });
+                        }
                     }],
                 templateUrl: 'views/templates/support/commentlist.html'
             };
@@ -528,14 +550,25 @@
                         commentListCtrl.deleteComment(comment);
                     };
                     $scope.ownComment = commentListCtrl.isOwnComment($scope.comment);
+
+                    $scope.saveComment = function (comment) {
+                        commentListCtrl.saveComment(comment);
+                        $scope.editMode = !$scope.editMode;
+                    };
                 },
                 controller: ['$scope', '$modal', 'Users',
                     function ($scope, $modal, Users) {
                         $scope.user = {};
+                        $scope.editMode = false;
+                        $scope.editComment = editComment;
 
                         Users.get({userId: $scope.comment.createdBy}, function (reply) {
                             $scope.user = reply;
                         });
+
+                        function editComment() {
+                            $scope.editMode = !$scope.editMode;
+                        }
                     }],
                 templateUrl: 'views/templates/support/comment.html'
             };

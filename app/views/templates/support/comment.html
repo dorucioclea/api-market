@@ -1,8 +1,22 @@
 <div class="panel panel-default mt5">
     <div class="panel-body">
-        {{comment.comment}}
-        <span class="right btn btn-danger btn-xs fa fa-times-circle" title="Delete comment" ng-click="deleteComment(comment)"
-              ng-if="publisherMode || ownComment"></span>
+        <div ng-class="{'col-sm-12': !ownComment && !publisherMode, 'col-sm-10': ownComment || publisherMode}" ng-if="!editMode">
+          {{comment.comment}}
+        </div>
+        <div ng-class="{'col-sm-12': !ownComment && !publisherMode, 'col-sm-10': ownComment || publisherMode}" ng-if="editMode">
+            <input type="text" name="comment" class="form-control" ng-model="comment.comment" required>
+            <span class="btn btn-default btn-xs fa fa-check" title="Save comment" ng-click="saveComment(comment)"
+                              ng-show="ownComment"></span>
+        </div>
+        <div class="col-sm-2" ng-if="publisherMode || ownComment">
+            <div class="right">
+            <span class="btn btn-default btn-xs fa fa-pencil" title="Edit comment" ng-click="editComment()"
+                          ng-show="ownComment && !editMode"></span>
+            <span class="btn btn-danger btn-xs fa fa-times-circle" title="Delete comment" ng-click="deleteComment(comment)"
+              ng-show="publisherMode || ownComment"></span>
+            </div>
+        </div>
+
     </div>
     <div class="panel-footer panel-footer-sm">
         <img class="img-comment-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
