@@ -441,7 +441,8 @@
                 scope: {
                     ticket: '=',
                     publisherMode: '=',
-                    currentUser: '='
+                    currentUser: '=',
+                    serviceVersion: '='
                 },
                 controller: ['$scope', '$modal', 'Users', 'ServiceTicketComments',
                     function ($scope, $modal, Users, ServiceTicketComments) {
@@ -468,7 +469,8 @@
                                     currentUser: $scope.currentUser,
                                     ticket: $scope.ticket,
                                     user: $scope.user,
-                                    publisherMode: $scope.publisherMode
+                                    publisherMode: $scope.publisherMode,
+                                    serviceVersion: $scope.serviceVersion
                                 },
                                 windowClass: $scope.modalAnim
                             });
@@ -483,7 +485,8 @@
                 scope: {
                     comments: '=',
                     currentUser: '=',
-                    publisherMode: '='
+                    publisherMode: '=',
+                    serviceVersion: '='
                 },
                 controller: ['$scope', '$modal', 'ServiceTicketComments', 'CurrentUserInfo',
                     'toastService', 'TOAST_TYPES',
@@ -491,10 +494,15 @@
                               toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
+                        this.isServiceOwner = isServiceOwner;
                         this.saveComment = saveComment;
 
                         function isOwnComment(comment) {
                             return comment.createdBy === $scope.currentUser.currentUser.username;
+                        }
+
+                        function isServiceOwner() {
+                            return $scope.serviceVersion.createdBy === $scope.currentUser.currentUser.username;
                         }
 
                         function deleteComment(comment) {
@@ -517,7 +525,6 @@
                             var updatedCommentObject = {
                                 comment: comment.comment
                             };
-                            console.log(comment);
                             ServiceTicketComments.update({supportId: comment.supportId, commentId: comment.id},
                                 updatedCommentObject,
                                 function (reply) {
@@ -550,7 +557,7 @@
                         commentListCtrl.deleteComment(comment);
                     };
                     $scope.ownComment = commentListCtrl.isOwnComment($scope.comment);
-
+                    $scope.isServiceOwner = commentListCtrl.isServiceOwner();
                     $scope.saveComment = function (comment) {
                         commentListCtrl.saveComment(comment);
                         $scope.editMode = !$scope.editMode;

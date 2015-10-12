@@ -17,7 +17,7 @@
         </tab-heading>
         <div class="list-group col-sm-12">
             <div ng-repeat="supportTicket in tickets | filter:{status: 'OPEN'}">
-                <support-ticket current-user="currentUser" ticket="supportTicket" publisher-mode="publisherMode"></support-ticket>
+                <support-ticket current-user="currentUser" ticket="supportTicket" publisher-mode="publisherMode" service-version="serviceVersion"></support-ticket>
             </div>
         </div>
     </tab>
@@ -27,7 +27,7 @@
         </tab-heading>
         <div class="list-group col-sm-12">
             <div ng-repeat="supportTicket in tickets | filter:{status: 'CLOSED'}">
-                <support-ticket current-user="currentUser" ticket="supportTicket" publisher-mode="publisherMode"></support-ticket>
+                <support-ticket current-user="currentUser" ticket="supportTicket" publisher-mode="publisherMode" service-version="serviceVersion"></support-ticket>
             </div>
         </div>
     </tab>

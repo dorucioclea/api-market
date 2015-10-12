@@ -38,9 +38,10 @@
             }])
 
     /// ==== ViewSupportTicket Controller
-    .controller('ViewSupportTicketCtrl', ['$scope', '$modal', '$state', 'currentUser', 'ticket', 'user', 'publisherMode',
+    .controller('ViewSupportTicketCtrl', ['$scope', '$modal', '$state', 'currentUser', 'ticket', 'user',
+            'publisherMode', 'serviceVersion',
             'ServiceTicketComments', 'ServiceSupportTickets', 'toastService', 'TOAST_TYPES',
-        function ($scope, $modal, $state, currentUser, ticket, user, publisherMode,
+        function ($scope, $modal, $state, currentUser, ticket, user, publisherMode, serviceVersion,
                   ServiceTicketComments, ServiceSupportTickets, toastService, TOAST_TYPES) {
 
             $scope.modalClose = modalClose;
@@ -50,6 +51,7 @@
             $scope.ticket = ticket;
             $scope.user = user;
             $scope.publisherMode = publisherMode;
+            $scope.serviceVersion = serviceVersion;
             $scope.addComment = addComment;
             $scope.deleteIssue = deleteIssue;
             $scope.closeIssue = closeIssue;
