@@ -51,6 +51,7 @@
                 }
 
                 function doCancel() {
+                    $sessionStorage.ttl = new Date();
                     $window.location.href = $scope.appOAuthInfo.consumerResponse.redirectUri + '?error=cancelled';
                 }
                 function doGrant() {
