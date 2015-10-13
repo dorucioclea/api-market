@@ -56,7 +56,15 @@
                 $scope.deleteIssue = deleteIssue;
                 $scope.closeIssue = closeIssue;
                 $scope.reOpenIssue = reOpenIssue;
+                $scope.editIssue = editIssue;
+                $scope.saveIssue = saveIssue;
+                $scope.cancelEdit = cancelEdit;
                 $scope.isServiceOwner = isServiceOwner;
+                $scope.isOwnIssue = isOwnIssue;
+                $scope.editMode = false;
+                var originalTitle = ticket.title;
+                var originalDescription = ticket.description;
+                $scope.isUnedited = isUnedited;
 
                 ServiceTicketComments.query({supportId: $scope.ticket.id}, function (reply) {
                     $scope.comments = reply;
@@ -86,29 +94,65 @@
                 }
 
                 function closeIssue() {
-                    var ticketObject = {
-                        title: $scope.ticket.title,
-                        description: $scope.ticket.description,
-                        status: 'CLOSED'
-                    };
-                    ServiceSupportTickets.update({orgId: $scope.ticket.organizationId,
-                        svcId: $scope.ticket.serviceId, supportId: $scope.ticket.id}, ticketObject, function (reply) {
-                        $scope.modalClose();
-                        toastService.createToast(TOAST_TYPES.INFO, '<b>Ticket closed.</b>', true);
-                    });
+                    updateIssue('CLOSED', true);
                 }
 
                 function reOpenIssue() {
-                    var ticketObject = {
-                        title: $scope.ticket.title,
-                        description: $scope.ticket.description,
-                        status: 'OPEN'
-                    };
+                    updateIssue('OPEN', true);
+                }
+
+                function editIssue() {
+                    $scope.editMode = !$scope.editMode;
+                }
+
+                function saveIssue() {
+                    updateIssue(null, false);
+                    editIssue();
+                }
+
+                function updateIssue(status, closeAndReload) {
+                    var ticketObject;
+                    if (status === null || status === undefined || status.length === 0) {
+                        ticketObject = {
+                            title: $scope.ticket.title,
+                            description: $scope.ticket.description,
+                            status: $scope.ticket.status
+                        };
+                    } else {
+                        ticketObject = {
+                            title: $scope.ticket.title,
+                            description: $scope.ticket.description,
+                            status: status
+                        };
+                    }
                     ServiceSupportTickets.update({orgId: $scope.ticket.organizationId,
-                        svcId: $scope.ticket.serviceId, supportId: $scope.ticket.id}, ticketObject, function (reply) {
-                        $scope.modalClose();
-                        toastService.createToast(TOAST_TYPES.INFO, '<b>Ticket reopened!</b>', true);
-                    });
+                            svcId: $scope.ticket.serviceId, supportId: $scope.ticket.id}, ticketObject,
+                        function (reply) {
+                            if (closeAndReload) {
+                                $scope.modalClose();
+                            }
+                            if (status === null || status === undefined || status.length === 0) {
+                                toastService.createToast(TOAST_TYPES.INFO, '<b>Ticket updated.</b>', true);
+                            } else {
+                                switch (status) {
+                                    case 'OPEN':
+                                        toastService.createToast(TOAST_TYPES.INFO, '<b>Ticket reopened!</b>', true);
+                                        break;
+                                    case 'CLOSED':
+                                        toastService.createToast(TOAST_TYPES.INFO, '<b>Ticket closed.</b>', true);
+                                        break;
+                                }
+                            }
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not update issue');
+                        }
+                    );
+                }
+
+                function cancelEdit() {
+                    $scope.ticket.title = originalTitle;
+                    $scope.ticket.description = originalDescription;
+                    editIssue();
                 }
 
                 function modalClose() {
@@ -118,6 +162,14 @@
 
                 function isServiceOwner() {
                     return $scope.serviceVersion.createdBy === $scope.currentUser.currentUser.username;
+                }
+
+                function isOwnIssue() {
+                    return $scope.ticket.createdBy === $scope.currentUser.currentUser.username;
+                }
+
+                function isUnedited() {
+                    return $scope.ticket.title === originalTitle && $scope.ticket.description === originalDescription;
                 }
 
             }]);

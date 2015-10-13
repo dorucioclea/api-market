@@ -4,10 +4,8 @@
 </div>
 
 <div class="modal-body">
-    <div class="panel panel-default mt5">
-        <div class="panel-body" ng-bind-html="ticket.description">
-            {{comment.comment}}
-        </div>
+    <div class="panel panel-default mt5" ng-if="!editMode">
+        <div class="panel-body" ng-bind-html="ticket.description"></div>
         <div class="panel-footer">
             <status-label status="{{ticket.status}}" class="mr10"></status-label>
             <img class="img-ticket-user img-circle" ng-src="data:image/png;base64,{{user.base64pic}}" ng-if="user.base64pic.length > 0">
@@ -15,6 +13,32 @@
             &nbsp;{{user.fullName}} <span class="text-muted">({{ticket.createdBy}})</span>
             <span class="small right text-light">{{ticket.createdOn | relativeDate}}</span>
         </div>
+    </div>
+    <div class="right" ng-if="!editMode">
+        <button class="btn btn-default btn-xs fa fa-pencil" title="Edit issue" ng-click="editIssue()" ng-if="isOwnIssue() || isServiceOwner()">&nbsp;Edit</button>
+        <button class="btn btn-line-warning btn-xs fa fa-lock" title="Close issue" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN' && (publisherMode || isServiceOwner())">&nbsp;Close</button>
+        <button class="btn btn-line-warning btn-xs fa fa-folder-open" title="Reopen issue" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED' && (publisherMode || isServiceOwner())">&nbsp;Reopen</button>
+        <button class="btn btn-line-danger btn-xs fa fa-ban" title="Delete issue" ng-click="deleteIssue()" ng-if="publisherMode || isServiceOwner()">&nbsp;Delete</button>
+    </div>
+
+    <div class="ml10 mr10" ng-if="editMode">
+        <form role="form" name="ticketForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label text-primary">Issue Summary</label>
+                <input type="text" name="summary" class="form-control" ng-model="ticket.title" required>
+                <p class="text-danger xsmall" ng-show="ticketForm.summary.$error.required" ng-if="ticketForm.summary.$touched">Ticket summary is required.</p>
+            </div>
+            <div class="form-group mt30 mb30">
+                <label class="control-label text-primary">Issue Description</label>
+                <div name="description" text-angular ng-model="ticket.description" ng-required="true">
+                </div>
+                <p class="text-danger xsmall" ng-show="ticketForm.description.$error.required" ng-if="ticketForm.description.$touched">Please provide a detailed description of the issue.</p>
+            </div>
+        </form>
+    </div>
+    <div class="right" ng-if="editMode">
+        <button class="btn btn-default fa fa-undo" ng-click="cancelEdit()">&nbsp;&nbsp;Cancel</button>
+        <button class="btn btn-success fa fa-check" ng-click="saveIssue()" ng-disabled="isUnedited()">&nbsp;&nbsp;Save</button>
     </div>
 </div>
 <div class="modal-body">
@@ -34,10 +58,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="mt5 btn btn-default" ng-click="modalClose()">Close</button>
-    <div class="left" ng-if="publisherMode || isServiceOwner">
-        <button class="btn btn-line-danger" ng-click="deleteIssue()">Delete Issue</button>
-        <button class="btn btn-line-warning" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN'">Mark as Closed</button>
-        <button class="btn btn-line-warning" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED'">Reopen Issue</button>
-    </div>
+    <button class="btn btn-default" title="Close this dialog" ng-click="modalClose()">OK</button>
 </div>
