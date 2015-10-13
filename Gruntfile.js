@@ -245,10 +245,17 @@ module.exports = function (grunt) {
     // ====== //
     uglify: {
       options: {
-        mangle: {
-          exceptionsFiles: ['concat/scripts/vendor.js']
-        },
+        preserveComments: false,
+        mangle: true,
         screwIE8: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.dist %>/scripts',
+          src: '**/*.js',
+          dest: '<%= config.dist %>/scripts'
+      }]
       }
     }, // End Uglify
 
@@ -258,12 +265,15 @@ module.exports = function (grunt) {
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
     ngAnnotate: {
+      options: {
+        singleQuotes: true
+      },
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
+          cwd: '<%= config.dist %>/scripts',
+          src: '**/*.js',
+          dest: '<%= config.dist %>/scripts'
         }]
       }
     }, // End Angular Annotate
@@ -439,7 +449,7 @@ module.exports = function (grunt) {
         cwd: '<%=config.dist%>',
         src: ['**/*']
       }
-    }, // End Compresss
+    } // End Compresss
   });
 
 
