@@ -165,14 +165,14 @@
                             </div>
                             <div class="ui-checkbox ui-checkbox-circle">
                                 <p class="small text-muted text-uppercase mb5">Scopes</p>
-                                <label ng-repeat="scope in selectedScopes">
+                                <label class="col-sm-12" ng-repeat="scope in selectedScopes">
                                     <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
                                     <span class="col-sm-12">{{scope.desc}}</span>
                                 </label>
                             </div>
                         </form>
                         <div class="text-center">
-                            <button class="btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0 || !canGrant()">Grant</button>
+                            <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0 || !canGrant()">Grant</button>
                             <div class="mt10" ng-show="appVersion.oauthClientRedirect.length == 0">
                                 <p class="text-justified text-warning xsmall">
                                     The grant button is disabled because the selected Application does not
