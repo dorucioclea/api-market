@@ -44,13 +44,7 @@
         'app.ctrl.organization',
         'app.ctrl.plan',
         'app.ctrl.policy',
-        'app.ctrl.user',
-        'app.ui.ctrls',
-        'app.ui.directives',
-        'app.form.ctrls',
-        'app.table.ctrls',
-        'app.email.ctrls',
-        'app.todo'
+        'app.ctrl.user'
 
     ])
 
