@@ -34,7 +34,16 @@
                         templateUrl: 'views/modals/modalSelectPlan.html',
                         size: 'lg',
                         controller: 'PlanSelectCtrl as ctrl',
-                        resolve: function() {},
+                        resolve: {
+                            serviceVersion: $scope.serviceVersion,
+                            ServiceVersionPolicy: 'ServiceVersionPolicy',
+                            svcPolicies: function (ServiceVersionPolicy) {
+                                return ServiceVersionPolicy.query(
+                                    {orgId: $scope.serviceVersion.service.organization.id,
+                                        svcId: $scope.serviceVersion.service.id,
+                                        versionId: $scope.serviceVersion.version}).$promise;
+                            }
+                        },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 

@@ -187,22 +187,26 @@
 
 /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
-        ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'selectedApp', 'orgScreenModel', 'svcModel',
+        ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'selectedApp', 'orgScreenModel',
             'policyConfig', 'toastService', 'TOAST_TYPES', 'Application', 'ApplicationContract', 'ApplicationVersion',
-            'CurrentUserAppOrgs', 'PlanVersion', 'PlanVersionPolicy',
-            function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel, svcModel,
+            'CurrentUserAppOrgs', 'PlanVersion', 'PlanVersionPolicy', 'ServiceVersionPolicy',
+            'serviceVersion', 'svcPolicies',
+            function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion,
-                      CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy) {
+                      CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
+                      serviceVersion, svcPolicies) {
 
-                $scope.service = svcModel.getService();
+                $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
+                $scope.servicePolicies = svcPolicies;
+                getServicePolicyDetails(svcPolicies);
                 var hasAppContext = false;
                 if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
                     $scope.selectedAppVersion = selectedApp.appVersion;
                     hasAppContext = true;
                 }
                 $scope.availablePlans = [];
-                $scope.selectedPlanPolicyConfig = [];
+                $scope.policyConfig = [];
                 var noPlanSelected = true;
 
                 var checkOrgContext = function () {
@@ -278,9 +282,22 @@
                             versionId: $scope.selectedPlan.version,
                             policyId: policy.id},
                         function (deets) {
-                            $scope.selectedPlanPolicyConfig[deets.id] = policyConfig.createConfigObject(deets);
+                            $scope.policyConfig[deets.id] = policyConfig.createConfigObject(deets);
                         });
                 };
+
+                function getServicePolicyDetails(policies) {
+                    angular.forEach(policies, function (policy) {
+                        ServiceVersionPolicy.get({orgId: $scope.service.service.organization.id,
+                                svcId: $scope.service.service.id,
+                                versionId: $scope.service.version,
+                                policyId: policy.id},
+                            function (deets) {
+                                $scope.policyConfig[deets.id] = policyConfig.createConfigObject(deets);
+                            }
+                        );
+                    });
+                }
 
                 $scope.selectOrg = function (organization) {
                     orgScreenModel.getOrgDataForId(orgScreenModel, organization.id);
