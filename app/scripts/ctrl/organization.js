@@ -36,7 +36,7 @@
                     };
 
                     var search = {};
-                    search.filters = [{name: 'name', value: searchString, operator: 'like'}];
+                    search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'}];
                     search.orderBy = {ascending: true, name: 'name'};
                     search.paging = {page: 1, pageSize: 100};
 
