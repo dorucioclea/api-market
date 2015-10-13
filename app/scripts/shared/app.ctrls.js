@@ -209,7 +209,7 @@
           };
       }])
 
-    .controller('EditLogoCtrl', ['$scope', '$modal', function($scope, $modal) {
+    .controller('EditLogoCtrl', function($scope, $modal) {
 
         $scope.modalEditLogo = function() {
             $modal.open({
@@ -221,7 +221,7 @@
             });
 
         };
-    }])
+    })
 
     .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
         $scope.error = $state.current.error;
@@ -233,8 +233,7 @@
         };
     })
 
-    .controller('HeadCtrl', ['$scope', '$state', '$sessionStorage', 'LogOutRedirect', 'CONFIG', 'docTester',
-            'currentUser', 'currentUserModel', 'headerModel', 'orgScreenModel', 'Fullscreen',
+    .controller('HeadCtrl',
       function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
           $scope.showExplore = headerModel.showExplore;
@@ -299,7 +298,7 @@
               }
           };
 
-      }]);
+      });
 
     // #end
 })(window.angular);

@@ -4,7 +4,7 @@
     angular.module('app.services', [])
 
         // ACTION SERVICE
-        .service('actionService', ['$state', 'toastService', 'TOAST_TYPES', 'Action', 'ACTIONS',
+        .service('actionService',
             function ($state, toastService, TOAST_TYPES, Action, ACTIONS) {
 
                 this.createAction = function (entityVersion, type) {
@@ -113,7 +113,7 @@
                         shouldReload,
                         TOAST_TYPES.WARNING, msg);
                 };
-            }])
+            })
 
         // ALERT SERVICE
         .service('alertService', function () {
@@ -146,7 +146,7 @@
         })
 
         // IMAGE SERVICE
-        .service('imageService', ['alertService', 'ALERT_TYPES', function (alertService, ALERT_TYPES) {
+        .service('imageService', function (alertService, ALERT_TYPES) {
 
             var image = {
                 isValid: true,
@@ -192,10 +192,10 @@
                 image.fileData = data;
             };
 
-        }])
+        })
 
         // TOAST SERVICE
-        .service('toastService', ['$timeout', 'TOAST_TYPES', function ($timeout, TOAST_TYPES) {
+        .service('toastService', function ($timeout, TOAST_TYPES) {
             var toasts = [];
             this.toasts = toasts;
 
@@ -240,7 +240,7 @@
                     closeToastAtIndex(0);
                 }, 5000);
             };
-        }])
+        })
 
         // HEADER MODEL
         .service('headerModel', function ($rootScope) {
@@ -257,7 +257,7 @@
         })
 
         // ORGANIZATION SCREEN MODEL
-        .service('orgScreenModel', ['Organization', function (Organization) {
+        .service('orgScreenModel', function (Organization) {
 
             this.selectedTab = 'Plans';
             this.organization = undefined;
@@ -275,7 +275,7 @@
                     orgScreenModel.updateOrganization(reply);
                 });
             };
-        }])
+        })
 
         // SERVICE DOCUMENTATION TAB HELPER
         .service('svcTab', function () {
@@ -405,7 +405,7 @@
         })
 
         // CURRENT USER MODEL
-        .service('currentUserModel', ['orgScreenModel', 'CurrentUserInfo', function (orgScreenModel, CurrentUserInfo) {
+        .service('currentUserModel', function (orgScreenModel, CurrentUserInfo) {
             var permissionTree = [];
             this.currentUser = {};
 
@@ -442,11 +442,10 @@
                 }
                 return false;
             };
-        }])
+        })
 
         // FOLLOWER SERVICE
-        .service('followerService', ['$state', 'currentUserModel', 'toastService', 'TOAST_TYPES',
-            'ServiceFollowerAdd', 'ServiceFollowerRemove',
+        .service('followerService',
             function ($state, currentUserModel, toastService, TOAST_TYPES,
                       ServiceFollowerAdd, ServiceFollowerRemove) {
                 this.addFollower = addFollower;
@@ -480,11 +479,10 @@
                             toastService.createErrorToast(error, 'Could not unfollow this service');
                         });
                 }
-            }])
+            })
 
             // OAUTH SERVICE
-            .service('oAuthService', ['$http', 'ApplicationOAuth',
-                'OAuthConsumer',
+            .service('oAuthService',
             function ($http, ApplicationOAuth,
                       OAuthConsumer) {
 
@@ -544,7 +542,7 @@
                         data: $.param(data)
                     });
                 }
-            }])
+            })
 
                 // USER SCREEN MODEL
         .service('userScreenModel', function () {

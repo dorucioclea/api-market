@@ -5,9 +5,6 @@
 
         /// ==== Service Controller
         .controller('ServiceCtrl',
-        ['$scope', '$state', '$stateParams', '$modal', 'orgData', 'orgScreenModel', 'support',
-            'svcData', 'svcVersions', 'svcScreenModel', 'toastService', 'TOAST_TYPES', 'actionService',
-            'Service', 'ServiceVersionDefinition',
             function ($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
                       svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService,
                       Service, ServiceVersionDefinition) {
@@ -106,21 +103,20 @@
                     });
                 };
 
-            }])
+            })
 
         // +++ Service Screen Subcontrollers +++
         /// ==== Activity Controller
-        .controller('ServiceActivityCtrl', ['$scope', 'activityData', 'svcScreenModel',
+        .controller('ServiceActivityCtrl',
             function ($scope, activityData, svcScreenModel) {
 
                 $scope.activities = activityData.beans;
                 svcScreenModel.updateTab('Activity');
 
-            }])
+            })
 
         /// ==== Implementation Controller
-        .controller('ServiceImplementationCtrl', ['$scope', '$state', '$stateParams', 'toastService', 'TOAST_TYPES',
-            'ServiceVersion', 'svcScreenModel',
+        .controller('ServiceImplementationCtrl',
             function ($scope, $state, $stateParams, toastService, TOAST_TYPES,
                       ServiceVersion, svcScreenModel) {
 
@@ -188,11 +184,10 @@
                         });
                 };
 
-            }])
+            })
 
         /// ==== Definition Controller
-        .controller('ServiceDefinitionCtrl', ['$scope', '$state', '$stateParams', 'endpoint',
-            'toastService', 'TOAST_TYPES', 'ServiceVersionDefinition', 'svcScreenModel',
+        .controller('ServiceDefinitionCtrl',
             function ($scope, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
                       ServiceVersionDefinition, svcScreenModel) {
 
@@ -255,11 +250,10 @@
                     $scope.definitionLoaded = true;
                     $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint);
                 };
-            }])
+            })
 
         /// ==== Plans Controller
-        .controller('ServicePlansCtrl', ['$scope', '$state', '$stateParams', '$q', 'planData', 'svcScreenModel',
-            'toastService', 'TOAST_TYPES', 'PlanVersion', 'ServiceVersion',
+        .controller('ServicePlansCtrl',
             function ($scope, $state, $stateParams, $q, planData, svcScreenModel,
                       toastService, TOAST_TYPES, PlanVersion, ServiceVersion) {
 
@@ -380,10 +374,9 @@
                         });
                 };
 
-            }])
+            })
         /// ==== Policies Controller
-        .controller('ServicePoliciesCtrl', ['$scope', '$modal', '$stateParams', 'policyData', 'policyConfiguration',
-            'svcScreenModel', 'ServiceVersionPolicy',
+        .controller('ServicePoliciesCtrl',
             function ($scope, $modal, $stateParams, policyData, policyConfiguration,
                       svcScreenModel, ServiceVersionPolicy) {
 
@@ -422,11 +415,10 @@
                     });
 
                 };
-            }])
+            })
 
         /// ==== Terms Controller
-        .controller('ServiceTermsCtrl', ['$scope', '$state', 'svcScreenModel', 'ServiceTerms',
-            'toastService', 'TOAST_TYPES',
+        .controller('ServiceTermsCtrl',
             function ($scope, $state, svcScreenModel, ServiceTerms, toastService, TOAST_TYPES) {
 
                 svcScreenModel.updateTab('Terms');
@@ -457,12 +449,11 @@
                     $scope.invalid = (terms === $scope.serviceVersion.service.terms);
                 }, true);
 
-            }])
+            })
 
         /// ==== Announcements Controller
-        .controller('ServiceAnnouncementsCtrl', ['$scope', '$modal', '$state', 'svcScreenModel', 'announcements',
-            'toastService', 'TOAST_TYPES',
-            function ($scope, $modal, $state, svcScreenModel, announcements, toastService, TOAST_TYPES) {
+        .controller('ServiceAnnouncementsCtrl',
+            function ($scope, $modal, $state, svcScreenModel, announcements) {
 
                 svcScreenModel.updateTab('Announcements');
                 $scope.modalNewAnnouncement = modalNewAnnouncement;
@@ -497,12 +488,11 @@
                     });
                 }
 
-            }])
+            })
 
         /// ==== Support Controller
-        .controller('ServiceSupportCtrl', ['$scope', '$modal', '$state', 'svcScreenModel',
-            'toastService', 'TOAST_TYPES',
-            function ($scope, $modal, $state, svcScreenModel, toastService, TOAST_TYPES) {
+        .controller('ServiceSupportCtrl',
+            function ($scope, $modal, $state, svcScreenModel) {
 
                 svcScreenModel.updateTab('Support');
                 $scope.modalNewAnnouncement = modalNewAnnouncement;
@@ -536,10 +526,10 @@
                     });
                 }
 
-            }])
+            })
 
         /// ==== Overview Controller
-        .controller('ServiceOverviewCtrl', ['$scope', 'svcContracts', 'svcScreenModel',
+        .controller('ServiceOverviewCtrl',
             function ($scope, svcContracts, svcScreenModel) {
 
                 svcScreenModel.updateTab('Overview');
@@ -563,11 +553,10 @@
                     });
                 }
 
-            }])
+            })
 
         // ==== Metrics Controller
-        .controller('ServiceMetricsController', ['$scope', '$stateParams', 'svcScreenModel',
-            'ServiceMetricsResponse', 'ServiceMetricsResponseSummary', 'ServiceMarketInfo',
+        .controller('ServiceMetricsController',
             function($scope, $stateParams, svcScreenModel,
                      ServiceMetricsResponse, ServiceMetricsResponseSummary, ServiceMarketInfo) {
 
@@ -737,7 +726,7 @@
 
                 $scope.gaugeColumns = [{'id': 'uptime', 'name': 'Uptime %', 'type': 'gauge', 'color': 'green'}];
 
-            }]);
+            });
 
     // #end
 })(window.angular);

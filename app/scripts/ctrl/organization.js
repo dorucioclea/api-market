@@ -4,8 +4,7 @@
     angular.module('app.ctrl.organization', [])
 
         /// ==== Organizations Overview & Search Controller
-        .controller('OrganizationsCtrl', ['$scope', 'Organization', 'SearchOrgs', 'CurrentUserAppOrgs',
-            'CurrentUserSvcOrgs',
+        .controller('OrganizationsCtrl',
             function ($scope, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
 
                 var userOrgIds = null;
@@ -45,11 +44,10 @@
                         $scope.orgs = results.beans;
                     });
                 };
-            }])
+            })
 
         /// ==== MyOrganizations Overview Controller
-        .controller('MyOrganizationsCtrl', ['$scope', '$modal', 'appOrgData', 'svcOrgData',
-            'toastService', 'headerModel',
+        .controller('MyOrganizationsCtrl',
             function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
 
                 headerModel.setIsButtonVisible(false, false, false);
@@ -79,11 +77,10 @@
 
                 };
 
-            }])
+            })
 
 /// ==== Organization Controller
-        .controller('OrganizationCtrl', ['$scope', '$state', '$stateParams', 'screenSize', 'orgData',
-            'toastService', 'TOAST_TYPES', 'Organization', 'OrganizationMembers', 'orgScreenModel',
+        .controller('OrganizationCtrl',
             function ($scope, $state, $stateParams, screenSize, orgData,
                       toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
 
@@ -107,12 +104,11 @@
                         toastService.createErrorToast(error, 'Could not update the organization\'s description.');
                     });
                 };
-            }])
+            })
 
         // +++ Organization Screen Subcontrollers +++
         /// ==== Plans Controller
-        .controller('PlansCtrl', ['$scope', '$state', '$modal', 'planData', 'planVersions',
-            'orgScreenModel', 'PlanVersion',
+        .controller('PlansCtrl',
             function ($scope, $state, $modal, planData, planVersions, orgScreenModel, PlanVersion) {
 
                 $scope.plans = planData;
@@ -155,11 +151,10 @@
                         });
                 }
 
-            }])
+            })
 
         /// ==== Services Controller
-        .controller('ServicesCtrl', ['$scope', '$state', '$modal', 'svcData', 'svcVersions',
-            'orgScreenModel', 'ServiceVersion',
+        .controller('ServicesCtrl',
             function ($scope, $state, $modal, svcData, svcVersions,
                       orgScreenModel, ServiceVersion) {
 
@@ -233,11 +228,10 @@
                         {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version});
                 }
 
-            }])
+            })
 
         /// ==== Applications Controller
-        .controller('ApplicationsCtrl', ['$scope', '$state', '$modal', 'appData', 'orgScreenModel',
-            'ApplicationVersion',
+        .controller('ApplicationsCtrl',
             function ($scope, $state, $modal, appData, orgScreenModel, ApplicationVersion) {
 
                 $scope.applications = appData;
@@ -252,16 +246,16 @@
                     });
                 };
 
-            }])
+            })
 
         /// ==== Members Controller
-        .controller('MembersCtrl', ['$scope', 'memberData', 'orgScreenModel',
+        .controller('MembersCtrl',
             function ($scope, memberData, orgScreenModel) {
 
                 $scope.members = memberData;
                 orgScreenModel.updateTab('Members');
 
-            }]);
+            });
     // +++ End Organization Screen Subcontrollers +++
 
     // #end

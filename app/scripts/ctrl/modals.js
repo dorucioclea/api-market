@@ -4,8 +4,7 @@
     angular.module('app.ctrl.modals', [])
 
         /// ==== AddPolicy Controller
-        .controller('AddPolicyCtrl', ['$scope', '$modal', '$state', '$stateParams', 'policyDefs',
-            'toastService', 'TOAST_TYPES', 'PlanVersionPolicy', 'ServiceVersionPolicy',
+        .controller('AddPolicyCtrl',
             function ($scope, $modal, $state, $stateParams, policyDefs,
                       toastService, TOAST_TYPES, PlanVersionPolicy, ServiceVersionPolicy) {
 
@@ -117,11 +116,10 @@
                     }
                 };
 
-            }])
+            })
 
 /// ==== NewAnnouncement Controller
-        .controller('NewAnnouncementCtrl', ['$scope', '$modal', '$state', 'svcVersion', 'ServiceAnnouncements',
-            'toastService', 'TOAST_TYPES',
+        .controller('NewAnnouncementCtrl',
             function ($scope, $modal, $state, svcVersion, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
 
@@ -155,11 +153,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
         /// ==== ViewAnnouncement Controller
-        .controller('ViewAnnouncementCtrl', ['$scope', '$modal', '$state', 'announcement', 'ServiceAnnouncements',
-            'toastService', 'TOAST_TYPES',
+        .controller('ViewAnnouncementCtrl',
             function ($scope, $modal, $state, announcement, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
 
@@ -183,14 +180,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
-        ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'selectedApp', 'orgScreenModel',
-            'policyConfig', 'toastService', 'TOAST_TYPES', 'Application', 'ApplicationContract', 'ApplicationVersion',
-            'CurrentUserAppOrgs', 'PlanVersion', 'PlanVersionPolicy', 'ServiceVersionPolicy',
-            'serviceVersion', 'svcPolicies',
             function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion,
                       CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
@@ -361,21 +354,20 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== Help Dialog Controller
-        .controller('HelpCtrl', ['$scope', '$modal', 'type',
+        .controller('HelpCtrl',
             function ($scope, $modal, type) {
                 $scope.type = type;
 
                 $scope.modalClose = function() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
-            }])
+            })
 
 /// ==== OAuthConfig Controller
-        .controller('OAuthConfigCtrl', ['$scope', '$rootScope', '$modal', '$state', 'appVersionDetails',
-            'ApplicationOAuthCallback', 'toastService', 'TOAST_TYPES',
+        .controller('OAuthConfigCtrl',
             function ($scope, $rootScope, $modal, $state, appVersionDetails,
                       ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
@@ -424,12 +416,10 @@
                     );
                 }
 
-            }])
+            })
 
 /// ==== EditImgCtrl Controller
-        .controller('EditImgCtrl', ['$scope', '$modal', '$state', '$stateParams', 'flowFactory', 'alertService',
-            'imageService', 'toastService', 'TOAST_TYPES', 'appScreenModel', 'currentUserModel', 'svcScreenModel',
-            'Application', 'CurrentUserInfo', 'Service',
+        .controller('EditImgCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
                       Application, CurrentUserInfo, Service) {
@@ -532,7 +522,7 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }]);
+            });
 
     // #end
 })(window.angular);

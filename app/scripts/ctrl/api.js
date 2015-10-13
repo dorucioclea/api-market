@@ -4,9 +4,7 @@
     angular.module('app.ctrl.api', [])
 
         /// ==== Service Doc Main Controller
-        .controller('ApiDocCtrl', ['$scope', '$state', '$stateParams', '$modal', 'svcData', 'svcModel', 'svcTab',
-            'headerModel', 'toastService', 'followerService', 'support',
-            function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
+        .controller('ApiDocCtrl', function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
                      headerModel, toastService, followerService, support) {
                 headerModel.setIsButtonVisible(true, true, true);
                 svcModel.setService(svcData);
@@ -60,13 +58,10 @@
                         followerService.addFollower($scope.serviceVersion);
                     }
                 }
-            }])
+            })
 
 /// ==== Service Swagger Documentation Controller
-        .controller('DocumentationCtrl', ['$scope', '$modal', '$stateParams', 'endpoint', 'svcContracts',
-            'oAuthPolicy', 'userApps', 'docTester', 'svcTab', 'ApplicationVersion', 'ServiceVersionDefinition',
-            'oAuthService', 'toastService', 'TOAST_TYPES',
-            function($scope, $modal, $stateParams, endpoint, svcContracts,
+        .controller('DocumentationCtrl', function($scope, $modal, $stateParams, endpoint, svcContracts,
                      oAuthPolicy, userApps, docTester, svcTab, ApplicationVersion, ServiceVersionDefinition,
                      oAuthService, toastService, TOAST_TYPES) {
                 svcTab.updateTab('Documentation');
@@ -187,12 +182,10 @@
                         currentDefinitionSpec = definitionSpec;
                         $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container', endpoint);
                     });
-            }])
+            })
 
         /// ==== Service Plans Controller
-        .controller('SvcPlanCtrl', ['$scope', '$stateParams', 'svcTab', 'svcPolicies', 'ServiceVersionPolicy',
-            'planData', 'policyConfig', 'PlanVersionPolicy',
-            function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
+        .controller('SvcPlanCtrl', function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
                      planData, policyConfig, PlanVersionPolicy) {
 
                 svcTab.updateTab('Plans');
@@ -241,11 +234,10 @@
                         });
                 }
 
-            }])
+            })
 
         /// ==== Service Announcements Controller
-        .controller('AnnouncementCtrl', ['$scope', 'svcTab', 'announcements', 'Users',
-            function($scope, svcTab, announcements, Users) {
+        .controller('AnnouncementCtrl', function($scope, svcTab, announcements, Users) {
 
                 svcTab.updateTab('Announcements');
                 $scope.announcements = announcements;
@@ -270,21 +262,21 @@
                     });
                 };
 
-            }])
+            })
 
         /// ==== Service Support Controller
-        .controller('SupportCtrl', ['$scope', 'svcTab', function($scope, svcTab) {
+        .controller('SupportCtrl', function($scope, svcTab) {
 
             svcTab.updateTab('Support');
 
-        }])
+        })
 
         /// ==== Service Terms Controller
-        .controller('TermsCtrl', ['$scope', 'svcTab', function($scope, svcTab) {
+        .controller('TermsCtrl', function($scope, svcTab) {
 
             svcTab.updateTab('Terms');
 
-        }]);
+        });
 
     // #end
 })(window.angular);

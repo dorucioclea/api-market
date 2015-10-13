@@ -3,8 +3,7 @@
 
     angular.module('app.ctrl.auth.oauth', [])
 
-        .controller('OAuthCtrl', ['$scope', '$http', '$window','$stateParams', '$sessionStorage', 'oAuthService',
-            'alertService', 'ALERT_TYPES',
+        .controller('OAuthCtrl',
             function ($scope, $http, $window, $stateParams, $sessionStorage, oAuthService,
                       alertService, ALERT_TYPES) {
                 alertService.resetAllAlerts();
@@ -72,7 +71,7 @@
                                 '<b>Uh-oh...</b> Something went wrong, we could not complete the grant process.');
                         });
                 }
-            }]);
+            });
 
     // #end
 })(window.angular);

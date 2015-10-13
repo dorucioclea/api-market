@@ -4,8 +4,7 @@
     angular.module('app.ctrl.modals.support', [])
 
 /// ==== CreateSupportTicket Controller
-        .controller('CreateSupportTicketCtrl', ['$scope', '$modal', '$state', 'serviceVersion', 'ServiceSupportTickets',
-            'currentUserModel', 'toastService', 'TOAST_TYPES',
+        .controller('CreateSupportTicketCtrl',
             function ($scope, $modal, $state, serviceVersion, ServiceSupportTickets,
                       currentUserModel, toastService, TOAST_TYPES) {
 
@@ -35,12 +34,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
 
-            }])
+            })
 
         /// ==== ViewSupportTicket Controller
-        .controller('ViewSupportTicketCtrl', ['$scope', '$modal', '$state', 'currentUser', 'ticket', 'user',
-            'publisherMode', 'serviceVersion',
-            'ServiceTicketComments', 'ServiceSupportTickets', 'toastService', 'TOAST_TYPES',
+        .controller('ViewSupportTicketCtrl',
             function ($scope, $modal, $state, currentUser, ticket, user, publisherMode, serviceVersion,
                       ServiceTicketComments, ServiceSupportTickets, toastService, TOAST_TYPES) {
 
@@ -172,7 +169,7 @@
                     return $scope.ticket.title === originalTitle && $scope.ticket.description === originalDescription;
                 }
 
-            }]);
+            });
 
     // #end
 })(window.angular);

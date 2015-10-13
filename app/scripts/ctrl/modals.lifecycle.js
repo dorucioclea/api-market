@@ -4,8 +4,7 @@
     angular.module('app.ctrl.modals.lifecycle', [])
 
 /// ==== NewApplication Controller
-        .controller('NewApplicationCtrl', ['$scope', '$modal', '$state', 'flowFactory', 'alertService', 'imageService',
-            'orgScreenModel', 'toastService', 'TOAST_TYPES', 'Application',
+        .controller('NewApplicationCtrl',
             function ($scope, $modal, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, TOAST_TYPES, Application) {
 
@@ -54,11 +53,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== PublishApplication Controller
-        .controller('PublishApplicationCtrl', ['$scope', '$rootScope', '$state', '$modal',
-            'appVersion', 'appContracts', 'actionService',
+        .controller('PublishApplicationCtrl',
             function ($scope, $rootScope, $state, $modal,
                       appVersion, appContracts, actionService) {
 
@@ -74,11 +72,10 @@
                     $scope.modalClose();
                 };
 
-            }])
+            })
 
 /// ==== RetireApplication Controller
-        .controller('RetireApplicationCtrl', ['$scope', '$rootScope', '$modal',
-            'appVersion', 'appContracts', 'actionService',
+        .controller('RetireApplicationCtrl',
             function ($scope, $rootScope, $modal,
                       appVersion, appContracts, actionService) {
 
@@ -94,11 +91,10 @@
                     $scope.modalClose();
                 };
 
-            }])
+            })
 
 /// ==== NewPlan Controller
-        .controller('NewPlanCtrl', ['$scope', '$modal', '$state', '$stateParams', 'orgScreenModel',
-            'toastService', 'TOAST_TYPES', 'Plan',
+        .controller('NewPlanCtrl',
             function ($scope, $modal, $state, $stateParams, orgScreenModel,
                       toastService, TOAST_TYPES, Plan) {
 
@@ -123,11 +119,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== LockPlan Controller
-        .controller('LockPlanCtrl', ['$scope', '$modal',
-            'planVersion', 'actionService',
+        .controller('LockPlanCtrl',
             function ($scope, $modal,
                       planVersion, actionService) {
 
@@ -142,11 +137,10 @@
                     $scope.modalClose();
                 };
 
-            }])
+            })
 
 /// ==== NewService Controller
-        .controller('NewServiceCtrl', ['$scope', '$modal', '$state', '$stateParams', 'flowFactory', 'alertService',
-            'imageService', 'orgScreenModel', 'toastService', 'TOAST_TYPES', 'Categories', 'Service',
+        .controller('NewServiceCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, orgScreenModel, toastService, TOAST_TYPES, Categories, Service) {
 
@@ -208,11 +202,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== PublishService Controller
-        .controller('PublishServiceCtrl', ['$scope', '$modal',
-            'svcVersion', 'actionService',
+        .controller('PublishServiceCtrl',
             function ($scope, $modal,
                       svcVersion, actionService) {
 
@@ -227,11 +220,10 @@
                     $scope.modalClose();
                 };
 
-            }])
+            })
 
 /// ==== RetireService Controller
-        .controller('RetireServiceCtrl', ['$scope', '$modal',
-            'svcVersion', 'actionService',
+        .controller('RetireServiceCtrl',
             function ($scope, $modal,
                       svcVersion, actionService) {
 
@@ -248,12 +240,10 @@
                     $scope.modalClose();
                 };
 
-            }])
+            })
 
 /// ==== NewVersion Controller
         .controller('NewVersionCtrl',
-        ['$scope', '$state', '$stateParams', 'appScreenModel', 'planScreenModel', 'svcScreenModel', 'toastService',
-            'ApplicationVersion', 'PlanVersion', 'ServiceVersion',
             function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, toastService,
                       ApplicationVersion, PlanVersion, ServiceVersion) {
                 var type = {};
@@ -332,11 +322,10 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }])
+            })
 
 /// ==== NewOrganization Controller
-        .controller('NewOrganizationCtrl', ['$scope', '$modal', '$state', 'publisherMode',
-            'currentUserModel', 'toastService', 'TOAST_TYPES', 'Organization',
+        .controller('NewOrganizationCtrl',
             function ($scope, $modal, $state, publisherMode,
                       currentUserModel, toastService, TOAST_TYPES, Organization) {
 
@@ -366,7 +355,7 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 };
 
-            }]);
+            });
 
     // #end
 })(window.angular);

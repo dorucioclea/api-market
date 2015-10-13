@@ -4,9 +4,7 @@
     angular.module('app.ctrl.dashboard', [])
 
         /// ==== MarketDash Controller
-        .controller('MarketDashCtrl', ['$scope', '$modal', '$state', '$stateParams', '$timeout', 'orgData',
-            'orgScreenModel', 'appData', 'appVersions', 'appVersionDetails', 'appContracts', 'headerModel',
-            'selectedApp', 'docTester', 'toastService', 'TOAST_TYPES', 'ApplicationContract', 'ApplicationVersion',
+        .controller('MarketDashCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                       appData, appVersions, appVersionDetails, appContracts, headerModel,
                       selectedApp, docTester, toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
@@ -154,11 +152,10 @@
                     var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
                     toastService.createToast(type, msg, true);
                 };
-            }])
+            })
 
 /// ==== API Search Controller
-        .controller('ApiSearchCtrl', ['$scope', '$stateParams', 'svcData', 'headerModel',
-            'ServiceVersion', 'ServiceMarketInfo',
+        .controller('ApiSearchCtrl',
             function($scope, $stateParams, svcData, headerModel,
                      ServiceVersion, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(true, true, true);
@@ -201,11 +198,10 @@
                     });
                 }
 
-            }])
+            })
 
 /// ==== Dashboard Controller
-        .controller('DashboardCtrl', ['$scope', '$state', 'svcData', 'categories', 'headerModel', 'toastService',
-            'SearchSvcsWithStatus', 'SearchPublishedSvcsInCategories', 'ServiceMarketInfo',
+        .controller('DashboardCtrl',
             function($scope, $state, svcData, categories, headerModel, toastService,
                      SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(false, true, true);
@@ -312,7 +308,7 @@
                     refreshServiceList();
                 };
 
-            }]);
+            });
 
     // #end
 })(window.angular);

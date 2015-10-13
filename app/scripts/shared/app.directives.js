@@ -62,7 +62,7 @@
     }])
 
 // highlight active nav
-    .directive('highlightActive', ['$location', function($location) {
+    .directive('highlightActive', function($location) {
         return {
             restrict: 'A',
             link: function(scope, el, attrs) {
@@ -91,10 +91,10 @@
                 });
             }
         };
-    }])
+    })
 
 // perfect-scrollbar simple directive
-    .directive('customScrollbar', ['$interval', function($interval) {
+    .directive('customScrollbar', function($interval) {
         return {
             restrict: 'A',
             link: function(scope, el, attrs) {
@@ -113,7 +113,7 @@
 
             }
         };
-    }])
+    })
 
 // Authentication directives
     .directive('authAccordionGroup', function () {
@@ -352,8 +352,7 @@
                     apis: '=',
                     stats: '='
                 },
-                controller: ['$scope', 'currentUserModel', 'followerService',
-                    function ($scope, currentUserModel, followerService) {
+                controller: function ($scope, currentUserModel, followerService) {
                     $scope.followAction = followAction;
                     $scope.userIsFollowing = userIsFollowing;
 
@@ -371,7 +370,7 @@
                     function userIsFollowing(api) {
                         return (api.service.followers.indexOf(currentUserModel.currentUser.username) > -1);
                     }
-                }],
+                },
                 templateUrl: 'views/templates/apilist.html'
             };
         })
@@ -383,8 +382,7 @@
                     apis: '=',
                     stats: '='
                 },
-                controller: ['$scope', 'currentUserModel', 'followerService',
-                    function ($scope, currentUserModel, followerService) {
+                controller: function ($scope, currentUserModel, followerService) {
                         $scope.followAction = followAction;
                         $scope.userIsFollowing = userIsFollowing;
 
@@ -402,7 +400,7 @@
                         function userIsFollowing(api) {
                             return (api.service.followers.indexOf(currentUserModel.currentUser.username) > -1);
                         }
-                    }],
+                    },
                 templateUrl: 'views/templates/apigrid.html'
             };
         })
@@ -416,7 +414,7 @@
                     serviceVersion: '=',
                     publisherMode: '='
                 },
-                controller: ['$scope', '$modal',
+                controller:
                     function ($scope, $modal) {
                         $scope.modalNewTicketOpen = modalNewTicketOpen;
 
@@ -431,7 +429,7 @@
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         }
-                    }],
+                    },
                 templateUrl: 'views/templates/support/supportlist.html'
             };
         })
@@ -444,7 +442,7 @@
                     currentUser: '=',
                     serviceVersion: '='
                 },
-                controller: ['$scope', '$modal', 'Users', 'ServiceTicketComments',
+                controller:
                     function ($scope, $modal, Users, ServiceTicketComments) {
                         $scope.openTicket = openTicket;
                         $scope.user = {};
@@ -475,7 +473,7 @@
                                 windowClass: $scope.modalAnim
                             });
                         }
-                    }],
+                    },
                 templateUrl: 'views/templates/support/ticket.html'
             };
         })
@@ -488,8 +486,7 @@
                     publisherMode: '=',
                     serviceVersion: '='
                 },
-                controller: ['$scope', '$modal', 'ServiceTicketComments', 'CurrentUserInfo',
-                    'toastService', 'TOAST_TYPES',
+                controller:
                     function ($scope, $modal, ServiceTicketComments, CurrentUserInfo,
                               toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
@@ -540,7 +537,7 @@
                                     toastService.createErrorToast(error, 'Could not update comment');
                                 });
                         }
-                    }],
+                    },
                 templateUrl: 'views/templates/support/commentlist.html'
             };
         })
@@ -563,7 +560,7 @@
                         $scope.editMode = !$scope.editMode;
                     };
                 },
-                controller: ['$scope', '$modal', 'Users',
+                controller:
                     function ($scope, $modal, Users) {
                         $scope.user = {};
                         $scope.editMode = false;
@@ -576,13 +573,13 @@
                         function editComment() {
                             $scope.editMode = !$scope.editMode;
                         }
-                    }],
+                    },
                 templateUrl: 'views/templates/support/comment.html'
             };
         })
 
 // add full body class for custom pages.
-    .directive('customPage', ['$location',function($location) {
+    .directive('customPage', function($location) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -608,7 +605,7 @@
             }
         };
 
-    }]);
+    });
 
 }(window.angular));
 

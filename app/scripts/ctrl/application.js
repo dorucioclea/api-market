@@ -4,9 +4,7 @@
     angular.module('app.ctrl.application', [])
 
         /// ==== Application Controller
-        .controller('ApplicationCtrl', ['$scope', '$modal', '$state', '$stateParams', 'appData', 'appVersions',
-            'appScreenModel', 'orgData', 'orgScreenModel', 'headerModel', 'actionService', 'toastService', 'TOAST_TYPES',
-            'Application', 'ApplicationContract',
+        .controller('ApplicationCtrl',
             function ($scope, $modal, $state, $stateParams, appData, appVersions,
                       appScreenModel, orgData, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES,
                       Application, ApplicationContract) {
@@ -115,19 +113,19 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 };
-            }])
+            })
 
         // +++ Application Screen Subcontrollers +++
         /// ==== Activity Controller
-        .controller('ActivityCtrl', ['$scope', 'activityData', 'appScreenModel',
+        .controller('ActivityCtrl',
             function ($scope, activityData, appScreenModel) {
 
                 $scope.activities = activityData.beans;
                 appScreenModel.updateTab('Activity');
 
-            }])
+            })
         /// ==== APIs Controller
-        .controller('ApisCtrl', ['$scope', 'contractData', 'appScreenModel',
+        .controller('ApisCtrl',
             function ($scope, contractData, appScreenModel) {
 
                 $scope.contracts = contractData;
@@ -137,9 +135,9 @@
                     contract.apiExpanded = !contract.apiExpanded;
                 };
 
-            }])
+            })
         /// ==== Contracts Controller
-        .controller('ContractsCtrl', ['$scope', '$state', 'contractData', 'appScreenModel', 'docTester',
+        .controller('ContractsCtrl',
             function ($scope, $state, contractData, appScreenModel, docTester) {
 
                 docTester.reset();
@@ -154,10 +152,10 @@
                     docTester.setPreferredContract(contract);
                 };
 
-            }])
+            })
 
         /// ==== Metrics Controller
-        .controller('AppMetricsCtrl', ['$scope', '$stateParams', '$parse', 'appScreenModel', 'ApplicationMetrics',
+        .controller('AppMetricsCtrl',
             function ($scope, $stateParams, $parse, appScreenModel, ApplicationMetrics) {
                 init();
                 function init() {
@@ -295,14 +293,15 @@
                     {'id': 'count', 'name': 'Requests', 'type': 'spline', 'color': 'blue'}
                 ];
                 $scope.responseHistogramX = {'id': 'displayDate'};
-            }])
+            })
 
         /// ==== Overview Controller
-        .controller('OverviewCtrl', ['$scope', 'appScreenModel', function ($scope, appScreenModel) {
+        .controller('OverviewCtrl',
+            function ($scope, appScreenModel) {
 
-            appScreenModel.updateTab('Overview');
+                appScreenModel.updateTab('Overview');
 
-        }]);
+            });
 
     // #end
 })(window.angular);

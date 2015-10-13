@@ -4,8 +4,7 @@
     angular.module('app.ctrl.plan', [])
 
         /// ==== Plan Controller
-        .controller('PlanCtrl', ['$scope', '$modal', '$state', '$stateParams', 'orgData', 'orgScreenModel',
-            'planData', 'planVersions', 'planScreenModel', 'actionService', 'toastService', 'TOAST_TYPES', 'Plan',
+        .controller('PlanCtrl',
             function ($scope, $modal, $state, $stateParams, orgData, orgScreenModel,
                       planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
@@ -65,19 +64,18 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 };
-            }])
+            })
 
         // +++ Plan Screen Subcontrollers +++
         /// ==== Activity Controller
-        .controller('PlanActivityCtrl', ['$scope', 'activityData', 'planScreenModel',
+        .controller('PlanActivityCtrl',
             function ($scope, activityData, planScreenModel) {
                 $scope.activities = activityData.beans;
                 planScreenModel.updateTab('Activity');
 
-            }])
+            })
         /// ==== Policies Controller
-        .controller('PlanPoliciesCtrl', ['$scope', '$modal', '$stateParams', 'policyData', 'policyConfiguration',
-            'planScreenModel', 'PlanVersionPolicy',
+        .controller('PlanPoliciesCtrl',
             function ($scope, $modal, $stateParams, policyData, policyConfiguration,
                       planScreenModel, PlanVersionPolicy) {
 
@@ -116,7 +114,7 @@
                     });
 
                 };
-            }]);
+            });
 
     // #end
 })(window.angular);

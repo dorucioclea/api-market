@@ -49,20 +49,18 @@
     ])
 
         // disable spinner in loading-bar
-        .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+        .config(function (cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = false;
             cfpLoadingBarProvider.latencyThreshold = 100;
-        }])
+        })
 
         // ngStorage key config
-        .config(['$localStorageProvider',
-            function ($localStorageProvider) {
+        .config(function ($localStorageProvider) {
                 $localStorageProvider.setKeyPrefix('apim-');
-            }])
-        .config(['$sessionStorageProvider',
-            function ($sessionStorageProvider) {
+            })
+        .config(function ($sessionStorageProvider) {
                 $sessionStorageProvider.setKeyPrefix('apim_session-');
-            }])
+            })
 
         // UI-Router states
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -178,9 +176,9 @@
                         CurrentUserApps: 'CurrentUserApps',
                         ApplicationVersion: 'ApplicationVersion',
                         ApplicationContract: 'ApplicationContract',
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }],
+                        },
                         appData: function ($q, organizationId, CurrentUserApps) {
                             var appData = [];
                             var promises = [];
@@ -316,15 +314,15 @@
                             return ServiceVersion.get(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         },
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }],
-                        serviceId: ['$stateParams', function ($stateParams) {
+                        },
+                        serviceId: function ($stateParams) {
                             return $stateParams.svcId;
-                        }],
-                        versionId: ['$stateParams', function ($stateParams) {
+                        },
+                        versionId: function ($stateParams) {
                             return $stateParams.versionId;
-                        }],
+                        },
                         ServiceSupportTickets: 'ServiceSupportTickets',
                         support: function (ServiceSupportTickets, organizationId, serviceId) {
                             return ServiceSupportTickets.query({orgId: organizationId, svcId: serviceId}).$promise;
@@ -437,9 +435,9 @@
 
                             return Organization.get({id: orgId}).$promise;
                         },
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }]
+                        }
                     },
                     controller: 'OrganizationCtrl'
                 })
@@ -555,15 +553,15 @@
                         planVersions: function (PlanVersion, organizationId, planId) {
                             return PlanVersion.query({orgId: organizationId, planId: planId}).$promise;
                         },
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }],
-                        planId: ['$stateParams', function ($stateParams) {
+                        },
+                        planId: function ($stateParams) {
                             return $stateParams.planId;
-                        }],
-                        versionId: ['$stateParams', function ($stateParams) {
+                        },
+                        versionId: function ($stateParams) {
                             return $stateParams.versionId;
-                        }]
+                        }
                     },
                     controller: 'PlanCtrl'
                 })
@@ -638,15 +636,15 @@
                         appVersions: function (ApplicationVersion, organizationId, applicationId) {
                             return ApplicationVersion.query({orgId: organizationId, appId: applicationId}).$promise;
                         },
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }],
-                        applicationId: ['$stateParams', function ($stateParams) {
+                        },
+                        applicationId: function ($stateParams) {
                             return $stateParams.appId;
-                        }],
-                        versionId: ['$stateParams', function ($stateParams) {
+                        },
+                        versionId: function ($stateParams) {
                             return $stateParams.versionId;
-                        }]
+                        }
                     },
                     controller: 'ApplicationCtrl'
                 })
@@ -725,15 +723,15 @@
                         svcVersions: function (ServiceVersion, organizationId, serviceId) {
                             return ServiceVersion.query({orgId: organizationId, svcId: serviceId}).$promise;
                         },
-                        organizationId: ['$stateParams', function ($stateParams) {
+                        organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        }],
-                        serviceId: ['$stateParams', function ($stateParams) {
+                        },
+                        serviceId: function ($stateParams) {
                             return $stateParams.svcId;
-                        }],
-                        versionId: ['$stateParams', function ($stateParams) {
+                        },
+                        versionId: function ($stateParams) {
                             return $stateParams.versionId;
-                        }],
+                        },
                         ServiceSupportTickets: 'ServiceSupportTickets',
                         support: function (ServiceSupportTickets, organizationId, serviceId) {
                             return ServiceSupportTickets.query({orgId: organizationId, svcId: serviceId}).$promise;
@@ -920,7 +918,7 @@
         })
 
         // Make sure we use always the api key EXCEPT FOR OAUTH GRANT
-        .factory('sessionInjector', ['$sessionStorage', '$window', function ($sessionStorage, $window) {
+        .factory('sessionInjector', function ($sessionStorage, $window) {
             return {
                 request: function (config) {
                     config.headers.apikey = $sessionStorage.apikey;
@@ -935,10 +933,10 @@
                     return config;
                 }
             };
-        }])
-        .config(['$httpProvider', function ($httpProvider) {
+        })
+        .config(function ($httpProvider) {
             $httpProvider.interceptors.push('sessionInjector');
-        }])
+        })
 
         // Define Force Reload
         .config(function ($provide) {
