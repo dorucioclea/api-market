@@ -522,7 +522,9 @@
                 function constructScopeString(scopesToGrant) {
                     var keysToConcat = [];
                     angular.forEach(scopesToGrant, function (scope) {
-                        keysToConcat.push(scope.scope);
+                        if (scope.checked) {
+                            keysToConcat.push(scope.scope);
+                        }
                     });
                     return keysToConcat.join(',');
                 }
