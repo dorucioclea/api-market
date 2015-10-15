@@ -20,30 +20,38 @@
                 $scope.isRetired = $scope.applicationVersion.status === 'Retired';
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.selectVersion = selectVersion;
+                $scope.breakContract = breakContract;
+                $scope.updateDesc = updateDesc;
+                $scope.confirmPublishApp = confirmPublishApp;
+                $scope.confirmRetireApp = confirmRetireApp;
+                $scope.showInfoModal = showInfoModal;
+                $scope.showOAuthConfig = showOAuthConfig;
+                $scope.canConfigureOAuth = canConfigureOAuth;
 
-                $scope.selectVersion = function (version) {
+                function selectVersion(version) {
                     $state.go($state.$current.name,
                         {orgId: $stateParams.orgId, appId: $stateParams.appId, versionId: version.version});
-                };
+                }
 
-                $scope.breakContract = function (contract) {
+                function breakContract (contract) {
                     ApplicationContract.delete(
                         {orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion,
                             contractId: contract.contractId}, function (reply) {
                             $state.forceReload();
                         });
-                };
+                }
 
-                $scope.updateDesc = function (newValue) {
+                function updateDesc(newValue) {
                     Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId}, {description: newValue},
                         function (reply) {
                             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not update the description.');
                         });
-                };
+                }
 
-                $scope.confirmPublishApp = function (appVersion) {
+                function confirmPublishApp(appVersion) {
                     $modal.open({
                         templateUrl: 'views/modals/modalPublishApplication.html',
                         size: 'lg',
@@ -60,9 +68,9 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
 
-                $scope.confirmRetireApp = function (appVersion) {
+                function confirmRetireApp(appVersion) {
                     $modal.open({
                         templateUrl: 'views/modals/modalRetireApplication.html',
                         size: 'lg',
@@ -79,9 +87,9 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
 
-                $scope.showInfoModal = function() {
+                function showInfoModal() {
                     $modal.open({
                         templateUrl: 'views/modals/modalHelp.html',
                         size: 'lg',
@@ -93,14 +101,14 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
 
-                $scope.canConfigureOAuth = function () {
+                function canConfigureOAuth () {
                     return $scope.applicationVersion.oAuthClientId !== null &&
                         $scope.applicationVersion.oAuthClientId.length > 0;
-                };
+                }
 
-                $scope.showOAuthConfig = function (appVersion) {
+                function showOAuthConfig(appVersion) {
                     $modal.open({
                         templateUrl: 'views/modals/modalOAuthConfig.html',
                         size: 'lg',
@@ -112,7 +120,7 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
             })
 
         // +++ Application Screen Subcontrollers +++
@@ -130,28 +138,34 @@
 
                 $scope.contracts = contractData;
                 appScreenModel.updateTab('APIs');
+                $scope.toggle = toggle;
 
-                $scope.toggle = function (contract) {
+                function toggle(contract) {
                     contract.apiExpanded = !contract.apiExpanded;
-                };
+                }
 
             })
         /// ==== Contracts Controller
         .controller('ContractsCtrl',
             function ($scope, $state, contractData, appScreenModel, docTester) {
 
-                docTester.reset();
                 $scope.contracts = contractData;
-                appScreenModel.updateTab('Contracts');
+                $scope.toApiDoc = toApiDoc;
 
-                $scope.toApiDoc = function (contract) {
+                init();
+
+                function init() {
+                    docTester.reset();
+                    appScreenModel.updateTab('Contracts');
+                }
+
+                function toApiDoc(contract) {
                     $state.go('root.api.documentation',
                         ({orgId: contract.serviceOrganizationId,
                             svcId: contract.serviceId,
                             versionId: contract.serviceVersion}));
                     docTester.setPreferredContract(contract);
-                };
-
+                }
             })
 
         /// ==== Metrics Controller
