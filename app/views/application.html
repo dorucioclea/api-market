@@ -9,6 +9,7 @@
         <div ng-bind-html="toast.msg">Test Toast</div>
       </alert>
     </div>
+    <button class="btn btn-line-primary btn-sm" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersion)">New Contract</button>
     <button class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && !isRegistered && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
     <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
     <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appEdit')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>

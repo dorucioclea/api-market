@@ -7,7 +7,7 @@
         .controller('ApplicationCtrl',
             function ($scope, $modal, $state, $stateParams, appData, appVersions,
                       appScreenModel, orgData, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES,
-                      Application, ApplicationContract) {
+                      Application, ApplicationContract, selectedApp) {
                 headerModel.setIsButtonVisible(true, true, false);
                 orgScreenModel.updateOrganization(orgData);
                 $scope.applicationVersion = appData;
@@ -28,6 +28,7 @@
                 $scope.showInfoModal = showInfoModal;
                 $scope.showOAuthConfig = showOAuthConfig;
                 $scope.canConfigureOAuth = canConfigureOAuth;
+                $scope.newContract = newContract;
 
                 function selectVersion(version) {
                     $state.go($state.$current.name,
@@ -49,6 +50,20 @@
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not update the description.');
                         });
+                }
+
+                function newContract(appVersion) {
+                    var appObject = {
+                        description: appVersion.application.description,
+                        id: appVersion.application.id,
+                        name: appVersion.application.name,
+                        organizationId: appVersion.application.organization.id,
+                        organizationName: appVersion.application.organization.name,
+                        status: appVersion.status,
+                        version: appVersion.version
+                    };
+                    selectedApp.updateApplication(appObject);
+                    $state.go('root.apis.grid');
                 }
 
                 function confirmPublishApp(appVersion) {
