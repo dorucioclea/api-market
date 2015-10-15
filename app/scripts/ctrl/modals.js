@@ -391,9 +391,9 @@
                     toastService.createToast(type, msg, true);
                 };
 
-                function updateCallback(url) {
+                function updateCallback() {
                     var updateObject = {
-                        uri: url
+                        uri: $scope.callback
                     };
 
                     ApplicationOAuthCallback.save(
