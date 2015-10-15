@@ -19,48 +19,64 @@
                 $scope.applicationContracts = appContracts;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.toggle = toggle;
+                $scope.canCreateContract = canCreateContract;
+                $scope.canConfigureOAuth = canConfigureOAuth;
+                $scope.canPublish = canPublish;
+                $scope.isNotRetired = isNotRetired;
+                $scope.canRetire = canRetire;
+                $scope.newContract = newContract;
+                $scope.toApiDoc = toApiDoc;
+                $scope.confirmPublishApp = confirmPublishApp;
+                $scope.confirmRetireApp = confirmRetireApp;
+                $scope.toMetrics = toMetrics;
+                $scope.showOAuthConfig = showOAuthConfig;
+                $scope.breakContract = breakContract;
+                $scope.modalNewApplication = modalNewApplication;
+                $scope.copyKey = copyKey;
+                $scope.copyProvisionKey = copyProvisionKey;
 
-                $scope.toggle = function (app) {
+                function toggle(app) {
                     app.contractsExpanded = !app.contractsExpanded;
-                };
+                }
 
-                $scope.canCreateContract = function (appVersion) {
+                function canCreateContract(appVersion) {
                     return !!(appVersion.status === 'Created' || appVersion.status === 'Ready');
-                };
+                }
 
-                $scope.canConfigureOAuth = function (appVersion) {
+                function canConfigureOAuth(appVersion) {
                     return $scope.isNotRetired(appVersion) &&
                         appVersionDetails[appVersion.id].oAuthClientId !== null &&
                         appVersionDetails[appVersion.id].oAuthClientId.length > 0;
-                };
+                }
 
-                $scope.canPublish = function (appVersion) {
+                function canPublish(appVersion) {
                     return appVersion.status === 'Ready';
-                };
+                }
 
-                $scope.isNotRetired = function (appVersion) {
+                function isNotRetired(appVersion) {
                     return appVersion.status === 'Created' ||
                         appVersion.status === 'Ready' || appVersion.status === 'Registered';
-                };
+                }
 
-                $scope.canRetire = function (appVersion) {
+                function canRetire(appVersion) {
                     return appVersion.status === 'Registered';
-                };
+                }
 
-                $scope.newContract = function (appVersion) {
+                function newContract(appVersion) {
                     selectedApp.updateApplication(appVersion);
                     $state.go('root.apis.grid');
-                };
+                }
 
-                $scope.toApiDoc = function (contract) {
+                function toApiDoc(contract) {
                     $state.go('root.api.documentation',
                         ({orgId: contract.serviceOrganizationId,
                             svcId: contract.serviceId,
                             versionId: contract.serviceVersion}));
                     docTester.setPreferredContract(contract);
-                };
+                }
 
-                $scope.confirmPublishApp = function (appVersion) {
+                function confirmPublishApp(appVersion) {
                     ApplicationVersion.get(
                         {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
                         function (reply) {
@@ -79,9 +95,9 @@
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
-                };
+                }
 
-                $scope.confirmRetireApp = function (appVersion) {
+                function confirmRetireApp(appVersion) {
                     ApplicationVersion.get(
                         {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
                         function (reply) {
@@ -100,14 +116,14 @@
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
-                };
+                }
 
-                $scope.toMetrics = function (appVersion) {
+                function toMetrics(appVersion) {
                     $state.go('root.application.metrics',
                         {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version});
-                };
+                }
 
-                $scope.showOAuthConfig = function (appVersion) {
+                function showOAuthConfig(appVersion) {
                     $modal.open({
                         templateUrl: 'views/modals/modalOAuthConfig.html',
                         size: 'lg',
@@ -119,18 +135,18 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
 
-                $scope.breakContract = function (contract) {
+                function breakContract(contract) {
                     ApplicationContract.delete(
                         {orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion,
                             contractId: contract.contractId},
                         function (reply) {
                             $state.forceReload();
                         });
-                };
+                }
 
-                $scope.modalNewApplication = function() {
+                function modalNewApplication() {
                     $modal.open({
                         templateUrl: 'views/modals/modalNewApplication.html',
                         size: 'lg',
@@ -139,19 +155,19 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
-                };
+                }
 
-                $scope.copyKey = function (apikey) {
+                function copyKey(apikey) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>API key copied to clipboard!</b><br>' + apikey;
                     toastService.createToast(type, msg, true);
-                };
+                }
 
-                $scope.copyProvisionKey = function (provKey) {
+                function copyProvisionKey(provKey) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
                     toastService.createToast(type, msg, true);
-                };
+                }
             })
 
 /// ==== API Search Controller
@@ -214,6 +230,19 @@
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.getInitialDisplayMode = getInitialDisplayMode;
+                $scope.toggleCategories = toggleCategories;
+                $scope.isCategorySelected = isCategorySelected;
+                $scope.clearSelectedCategories = clearSelectedCategories;
+
+                init();
+
+                function init() {
+                    filterAPIVersions(svcData);
+
+                    angular.forEach($scope.availableAPIs, function (svc) {
+                        getStats(svc);
+                    });
+                }
 
                 function getInitialDisplayMode() {
                     if ($state.current.url === '/grid') {
@@ -223,7 +252,7 @@
                     }
                 }
 
-                var filterAPIVersions = function (apis) {
+                function filterAPIVersions(apis) {
                     angular.forEach(apis, function (api) {
                         var found = false;
                         for (var i = 0; i < $scope.availableAPIs.length; i++) {
@@ -242,10 +271,9 @@
                             $scope.availableAPIs.push(api);
                         }
                     });
-                };
-                filterAPIVersions(svcData);
+                }
 
-                var getStats = function (svc) {
+                function getStats(svc) {
                     ServiceMarketInfo.get({
                         orgId: svc.service.organization.id,
                         svcId: svc.service.id,
@@ -253,13 +281,9 @@
                     }, function (stats) {
                         $scope.svcStats[svc.service.id] = stats;
                     });
-                };
+                }
 
-                angular.forEach(svcData, function (svc) {
-                    getStats(svc);
-                });
-
-                $scope.toggleCategories = function(category) {
+                function toggleCategories(category) {
                     var index = $scope.currentCategories.indexOf(category);
                     if (index > -1) {
                         // Category was already selected, remove from array
@@ -269,9 +293,9 @@
                         $scope.currentCategories.push(category);
                     }
                     refreshServiceList();
-                };
+                }
 
-                var refreshServiceList = function () {
+                function refreshServiceList() {
                     if ($scope.currentCategories.length === 0) {
                         // No categories selected, refresh all
                         SearchSvcsWithStatus.query({status: 'Published'}, function (data) {
@@ -285,9 +309,9 @@
                             $scope.availableAPIs = data;
                         });
                     }
-                };
+                }
 
-                $scope.isCategorySelected = function (category) {
+                function isCategorySelected(category) {
                     if ($scope.currentCategories.length === 0) {
                         // No filtering on category yet, show all buttons as enabled
                         return 'btn-tag-primary';
@@ -301,12 +325,12 @@
                             return 'btn-tag-default';
                         }
                     }
-                };
+                }
 
-                $scope.clearSelectedCategories = function() {
+                function clearSelectedCategories() {
                     $scope.currentCategories = [];
                     refreshServiceList();
-                };
+                }
 
             });
 
