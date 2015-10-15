@@ -389,6 +389,56 @@ module.exports = function (grunt) {
             }
           }
         }
+      },
+      digiAccPub: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      },
+      digiAccMkt: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
       }
     },
 
@@ -522,6 +572,42 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:digiDevMkt',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:pub'
+  ]);
+
+  grunt.registerTask('digiAccPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiAccPub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress'
+  ]);
+
+  grunt.registerTask('digiAccMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiAccMkt',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
