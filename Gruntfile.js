@@ -394,11 +394,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengine/v1',
+              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
               'API_KEY_NAME': 'apikey'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -419,11 +419,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengine/v1',
+              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
               'API_KEY_NAME': 'apikey'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
