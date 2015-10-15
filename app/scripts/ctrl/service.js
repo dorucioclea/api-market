@@ -715,12 +715,12 @@
                 }
 
                 $scope.responseHistogramColumns = [
-                    {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': 'green'},
-                    {'id': 'latency_proxy', 'name': 'Proxy latency', 'type': 'line', 'color': 'blue'},
-                    {'id': 'latency_request', 'name': 'Request latency', 'type': 'line', 'color': 'red'},
-                    {'id': 'requests_count', 'name': 'Requests', 'type': 'line', 'color': 'orange'},
-                    {'id': 'requests_wrong', 'name': 'Malformed requests', 'type': 'line', 'color': 'magenta'},
-                    {'id': 'response_wrong', 'name': 'Service errors', 'type': 'line', 'color': 'purple'}
+                    {'id': 'latency_request', 'name': 'Request latency', 'type': 'line', 'color': 'blue'},
+                    {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': '#071F82'},
+                    {'id': 'latency_proxy', 'name': 'Proxy latency', 'type': 'line', 'color': '#4F6378'},
+                    {'id': 'requests_count', 'name': 'Requests', 'type': 'line', 'color': '#25A26A'},
+                    {'id': 'requests_wrong', 'name': 'Malformed requests', 'type': 'line', 'color': '#FDBE28'},
+                    {'id': 'response_wrong', 'name': 'Service errors', 'type': 'line', 'color': '#D80303'}
                 ];
                 $scope.responseHistogramX = {'id': 'displayDate'};
 
