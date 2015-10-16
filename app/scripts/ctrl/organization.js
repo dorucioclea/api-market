@@ -7,13 +7,15 @@
         .controller('OrganizationsCtrl',
             function ($scope, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
 
+                $scope.isMember = isMember;
+                $scope.doSearch = doSearch;
                 var userOrgIds = null;
 
-                $scope.isMember = function (org) {
+                function isMember(org) {
                     return userOrgIds.indexOf(org.id) > -1;
-                };
+                }
 
-                $scope.doSearch = function (searchString) {
+                function doSearch(searchString) {
                     if (userOrgIds === null) {
                         userOrgIds = [];
                         if ($scope.publisherMode) {
@@ -43,26 +45,30 @@
                         $scope.totalOrgs = results.totalSize;
                         $scope.orgs = results.beans;
                     });
-                };
+                }
             })
 
         /// ==== MyOrganizations Overview Controller
         .controller('MyOrganizationsCtrl',
             function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
 
-                headerModel.setIsButtonVisible(false, false, false);
+                init();
+
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.modalNewOrganization = modalNewOrganization;
 
-                if ($scope.publisherMode) {
-                    $scope.orgs = svcOrgData;
-                } else {
-                    $scope.orgs = appOrgData;
+                function init() {
+                    headerModel.setIsButtonVisible(false, false, false);
+
+                    if ($scope.publisherMode) {
+                        $scope.orgs = svcOrgData;
+                    } else {
+                        $scope.orgs = appOrgData;
+                    }
                 }
 
-                $scope.modalAnim = 'default';
-
-                $scope.modalNewOrganization = function() {
+                function modalNewOrganization() {
                     $modal.open({
                         templateUrl: 'views/modals/modalNewOrganization.html',
                         size: 'lg',
@@ -75,7 +81,7 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
-                };
+                }
 
             })
 
@@ -84,26 +90,30 @@
             function ($scope, $state, $stateParams, screenSize, orgData,
                       toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
 
+                init();
                 $scope.displayTab = orgScreenModel;
-                orgScreenModel.updateOrganization(orgData);
                 $scope.org = orgData;
-                OrganizationMembers.query({orgId: $scope.org.id}, function (reply) {
-                    $scope.memberCount = reply.length;
-                });
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
-
                 $scope.xs = screenSize.on('xs', function(match) {
                     $scope.xs = match;
                 });
+                $scope.updateOrgDescription = updateOrgDescription;
 
-                $scope.updateOrgDescription = function (newValue) {
+                function init() {
+                    orgScreenModel.updateOrganization(orgData);
+                    OrganizationMembers.query({orgId: $scope.org.id}, function (reply) {
+                        $scope.memberCount = reply.length;
+                    });
+                }
+
+                function updateOrgDescription(newValue) {
                     Organization.update({id: $stateParams.orgId}, {description: newValue}, function (reply) {
                         toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
                     }, function (error) {
                         toastService.createErrorToast(error, 'Could not update the organization\'s description.');
                     });
-                };
+                }
             })
 
         // +++ Organization Screen Subcontrollers +++
@@ -113,12 +123,14 @@
 
                 $scope.plans = planData;
                 $scope.planVersions = planVersions;
-                orgScreenModel.updateTab('Plans');
                 $scope.modalAnim = 'default';
                 $scope.canLock = canLock;
                 $scope.confirmLockPlan = confirmLockPlan;
+                $scope.modalNewPlan = modalNewPlan;
 
-                $scope.modalNewPlan = function() {
+                orgScreenModel.updateTab('Plans');
+
+                function modalNewPlan() {
                     $modal.open({
                         templateUrl: 'views/modals/modalNewPlan.html',
                         size: 'lg',
@@ -127,7 +139,7 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
-                };
+                }
 
                 function canLock(planVersion) {
                     return planVersion.status === 'Created';
@@ -160,15 +172,16 @@
 
                 $scope.services = svcData;
                 $scope.serviceVersions = svcVersions;
-                orgScreenModel.updateTab('Services');
                 $scope.canPublish = canPublish;
                 $scope.canRetire = canRetire;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
                 $scope.toMetrics = toMetrics;
-                $scope.modalAnim = 'default';
+                $scope.modalNewService = modalNewService;
 
-                $scope.modalNewService = function() {
+                orgScreenModel.updateTab('Services');
+
+                function modalNewService() {
                     $modal.open({
                         templateUrl: 'views/modals/modalNewService.html',
                         size: 'lg',
@@ -177,7 +190,7 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
-                };
+                }
 
                 function canPublish(svcVersion) {
                     return svcVersion.status === 'Ready';
@@ -235,16 +248,16 @@
             function ($scope, $state, $modal, appData, orgScreenModel, ApplicationVersion) {
 
                 $scope.applications = appData;
+                $scope.goToApp = goToApp;
+
                 orgScreenModel.updateTab('Applications');
 
-                $scope.modalAnim = 'default';
-
-                $scope.goToApp = function (app) {
+                function goToApp(app) {
                     ApplicationVersion.query({orgId: app.organizationId, appId: app.id}, function (versions) {
                         $state.go('root.application.overview',
                             {orgId: app.organizationId, appId: app.id, versionId: versions[0].version});
                     });
-                };
+                }
 
             })
 
@@ -253,6 +266,7 @@
             function ($scope, memberData, orgScreenModel) {
 
                 $scope.members = memberData;
+
                 orgScreenModel.updateTab('Members');
 
             });
