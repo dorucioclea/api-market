@@ -191,20 +191,21 @@
                 }
 
                 function createService(svc, categories) {
+                    var newSvcObject = angular.copy(svc);
                     var cats = [];
                     for (var i = 0; i < categories.length; i++) {
                         cats.push(categories[i].text);
                     }
                     if (imageService.image.fileData) {
-                        svc.base64logo = imageService.image.fileData;
+                        newSvcObject.base64logo = imageService.image.fileData;
                     } else {
-                        svc.base64logo = '';
+                        newSvcObject.base64logo = '';
                     }
                     var basePathStart = '/';
-                    svc.basepath = basePathStart.concat(svc.basepath);
-                    svc.categories = cats;
+                    newSvcObject.basepath = basePathStart.concat(svc.basepath);
+                    newSvcObject.categories = cats;
 
-                    Service.save({orgId: $stateParams.orgId}, svc, function (newSvc) {
+                    Service.save({orgId: $stateParams.orgId}, newSvcObject, function (newSvc) {
                         $scope.modalClose();
                         $state.go('root.service.overview',
                             {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: svc.initialVersion});
