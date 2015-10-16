@@ -5,7 +5,7 @@
 
         .controller('DefaultPolicyConfigFormCtrl',
         function ($scope) {
-            var validateRaw = function(config) {
+            function validateRaw(config) {
                 var valid = true;
                 try {
                     var parsed = JSON.parse(config);
@@ -14,7 +14,7 @@
                     valid = false;
                 }
                 $scope.setValid(valid);
-            };
+            }
             if ($scope.getConfig()) {
                 $scope.rawConfig = JSON.stringify($scope.getConfig(), null, 2);
             }
