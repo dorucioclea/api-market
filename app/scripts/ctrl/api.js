@@ -29,7 +29,7 @@
 
             function modalSelectApplicationForContract() {
                 $modal.open({
-                    templateUrl: 'views/modals/modalSelectPlan.html',
+                    templateUrl: 'views/modals/planSelect.html',
                     size: 'lg',
                     controller: 'PlanSelectCtrl as ctrl',
                     resolve: {

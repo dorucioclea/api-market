@@ -81,7 +81,7 @@
                         {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
                         function (reply) {
                             $modal.open({
-                                templateUrl: 'views/modals/modalPublishApplication.html',
+                                templateUrl: 'views/modals/applicationPublish.html',
                                 size: 'lg',
                                 controller: 'PublishApplicationCtrl as ctrl',
                                 resolve: {
@@ -102,7 +102,7 @@
                         {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
                         function (reply) {
                             $modal.open({
-                                templateUrl: 'views/modals/modalRetireApplication.html',
+                                templateUrl: 'views/modals/applicationRetire.html',
                                 size: 'lg',
                                 controller: 'RetireApplicationCtrl as ctrl',
                                 resolve: {
@@ -125,7 +125,7 @@
 
                 function showOAuthConfig(appVersion) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalOAuthConfig.html',
+                        templateUrl: 'views/modals/oauthConfigEdit.html',
                         size: 'lg',
                         controller: 'OAuthConfigCtrl as ctrl',
                         resolve: {
@@ -148,7 +148,7 @@
 
                 function modalNewApplication() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewApplication.html',
+                        templateUrl: 'views/modals/applicationCreate.html',
                         size: 'lg',
                         controller: 'NewApplicationCtrl as ctrl',
                         resolve: function() {},

@@ -70,7 +70,7 @@
 
                 function modalNewOrganization() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewOrganization.html',
+                        templateUrl: 'views/modals/organizationCreate.html',
                         size: 'lg',
                         controller: 'NewOrganizationCtrl as ctrl',
                         resolve: {
@@ -132,7 +132,7 @@
 
                 function modalNewPlan() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewPlan.html',
+                        templateUrl: 'views/modals/planCreate.html',
                         size: 'lg',
                         controller: 'NewPlanCtrl as ctrl',
                         resolve: function() {},
@@ -150,7 +150,7 @@
                         {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
                         function (reply) {
                             $modal.open({
-                                templateUrl: 'views/modals/modalLockPlan.html',
+                                templateUrl: 'views/modals/planLock.html',
                                 size: 'lg',
                                 controller: 'LockPlanCtrl as ctrl',
                                 resolve: {
@@ -183,7 +183,7 @@
 
                 function modalNewService() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewService.html',
+                        templateUrl: 'views/modals/serviceCreate.html',
                         size: 'lg',
                         controller: 'NewServiceCtrl as ctrl',
                         resolve: function() {},
@@ -205,7 +205,7 @@
                         {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                         function (reply) {
                             $modal.open({
-                                templateUrl: 'views/modals/modalPublishService.html',
+                                templateUrl: 'views/modals/servicePublish.html',
                                 size: 'lg',
                                 controller: 'PublishServiceCtrl as ctrl',
                                 resolve: {
@@ -223,7 +223,7 @@
                         {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                         function (reply) {
                             $modal.open({
-                                templateUrl: 'views/modals/modalRetireService.html',
+                                templateUrl: 'views/modals/serviceRetire.html',
                                 size: 'lg',
                                 controller: 'RetireServiceCtrl as ctrl',
                                 resolve: {

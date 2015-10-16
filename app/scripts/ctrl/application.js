@@ -68,7 +68,7 @@
 
                 function confirmPublishApp(appVersion) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalPublishApplication.html',
+                        templateUrl: 'views/modals/applicationPublish.html',
                         size: 'lg',
                         controller: 'PublishApplicationCtrl as ctrl',
                         resolve: {
@@ -87,7 +87,7 @@
 
                 function confirmRetireApp(appVersion) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalRetireApplication.html',
+                        templateUrl: 'views/modals/applicationRetire.html',
                         size: 'lg',
                         controller: 'RetireApplicationCtrl as ctrl',
                         resolve: {
@@ -106,7 +106,7 @@
 
                 function showInfoModal() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalHelp.html',
+                        templateUrl: 'views/modals/helpView.html',
                         size: 'lg',
                         controller: 'HelpCtrl as ctrl',
                         resolve: {
@@ -125,7 +125,7 @@
 
                 function showOAuthConfig(appVersion) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalOAuthConfig.html',
+                        templateUrl: 'views/modals/oauthConfigEdit.html',
                         size: 'lg',
                         controller: 'OAuthConfigCtrl as ctrl',
                         resolve: {

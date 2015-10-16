@@ -199,7 +199,7 @@
 
           $scope.modalNewVersion = function() {
               $modal.open({
-                  templateUrl: '/views/modals/modalNewVersion.html',
+                  templateUrl: '/views/modals/versionCreate.html',
                   size: 'lg',
                   controller: 'NewVersionCtrl as ctrl',
                   resolve: function() {},
@@ -215,7 +215,7 @@
 
         function modalEditLogo() {
             $modal.open({
-                templateUrl: 'views/modals/modalEditLogo.html',
+                templateUrl: 'views/modals/logoEdit.html',
                 size: 'lg',
                 controller: 'EditImgCtrl as ctrl',
                 resolve: function() {},

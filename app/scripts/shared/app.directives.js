@@ -420,7 +420,7 @@
 
                         function modalNewTicketOpen() {
                             $modal.open({
-                                templateUrl: 'views/modals/modalCreateTicket.html',
+                                templateUrl: 'views/modals/ticketCreate.html',
                                 size: 'lg',
                                 controller: 'CreateSupportTicketCtrl',
                                 resolve: {
@@ -460,7 +460,7 @@
 
                         function openTicket() {
                             $modal.open({
-                                templateUrl: 'views/modals/modalViewTicket.html',
+                                templateUrl: 'views/modals/ticketView.html',
                                 size: 'lg',
                                 controller: 'ViewSupportTicketCtrl',
                                 resolve: {

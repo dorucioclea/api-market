@@ -46,7 +46,7 @@
 
                 function confirmLockPlan() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalLockPlan.html',
+                        templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
                         resolve: {
@@ -60,7 +60,7 @@
 
                 function showInfoModal() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalHelp.html',
+                        templateUrl: 'views/modals/helpView.html',
                         size: 'lg',
                         controller: 'HelpCtrl as ctrl',
                         resolve: {
@@ -109,7 +109,7 @@
 
                 function modalAddPolicy() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalAddPlanPolicy.html',
+                        templateUrl: 'views/modals/planPolicyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',
                         resolve: {

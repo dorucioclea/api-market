@@ -24,7 +24,6 @@
                 $scope.toastService = toastService;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
-                $scope.modalNewTicketOpen = modalNewTicketOpen;
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -39,22 +38,9 @@
                         {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
                 };
 
-                function modalNewTicketOpen() {
-                    $modal.open({
-                        templateUrl: 'views/modals/modalCreateTicket.html',
-                        size: 'lg',
-                        controller: 'CreateSupportTicketCtrl',
-                        resolve: {
-                            serviceVersion: $scope.serviceVersion
-                        },
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                }
-
                 function confirmPublishSvc() {
                     $modal.open({
-                                templateUrl: 'views/modals/modalPublishService.html',
+                                templateUrl: 'views/modals/servicePublish.html',
                                 size: 'lg',
                                 controller: 'PublishServiceCtrl as ctrl',
                                 resolve: {
@@ -68,7 +54,7 @@
 
                 function confirmRetireSvc() {
                     $modal.open({
-                                templateUrl: 'views/modals/modalRetireService.html',
+                                templateUrl: 'views/modals/serviceRetire.html',
                                 size: 'lg',
                                 controller: 'RetireServiceCtrl as ctrl',
                                 resolve: {
@@ -91,7 +77,7 @@
 
                 $scope.showInfoModal = function() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalHelp.html',
+                        templateUrl: 'views/modals/helpView.html',
                         size: 'lg',
                         controller: 'HelpCtrl as ctrl',
                         resolve: {
@@ -403,7 +389,7 @@
 
                 $scope.modalAddPolicy = function () {
                     $modal.open({
-                        templateUrl: '/views/modals/modalAddServicePolicy.html',
+                        templateUrl: '/views/modals/servicePolicyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',
                         resolve: {
@@ -462,7 +448,7 @@
 
                 function modalNewAnnouncement() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewAnnouncement.html',
+                        templateUrl: 'views/modals/announcementCreate.html',
                         size: 'lg',
                         controller: 'NewAnnouncementCtrl as ctrl',
                         resolve: {
@@ -476,7 +462,7 @@
 
                 function modalViewAnnouncement(announcement) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalViewAnnouncement.html',
+                        templateUrl: 'views/modals/announcementView.html',
                         size: 'lg',
                         controller: 'ViewAnnouncementCtrl as ctrl',
                         resolve: {
@@ -500,7 +486,7 @@
 
                 function modalNewAnnouncement() {
                     $modal.open({
-                        templateUrl: 'views/modals/modalNewAnnouncement.html',
+                        templateUrl: 'views/modals/announcementCreate.html',
                         size: 'lg',
                         controller: 'NewAnnouncementCtrl as ctrl',
                         resolve: {
@@ -514,7 +500,7 @@
 
                 function modalViewAnnouncement(announcement) {
                     $modal.open({
-                        templateUrl: 'views/modals/modalViewAnnouncement.html',
+                        templateUrl: 'views/modals/announcementView.html',
                         size: 'lg',
                         controller: 'ViewAnnouncementCtrl as ctrl',
                         resolve: {
