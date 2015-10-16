@@ -409,7 +409,7 @@ module.exports = function (grunt) {
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_NAME': 'apimarketacc',
               'CLIENT_TOKEN': 'opaque'
             }
           }
@@ -434,7 +434,7 @@ module.exports = function (grunt) {
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_NAME': 'apimarketacc',
               'CLIENT_TOKEN': 'opaque'
             }
           }
