@@ -7,23 +7,29 @@
         .controller('UserCtrl',
         function ($scope, currentUserModel, headerModel, userScreenModel, toastService, CurrentUserInfo) {
 
+            init();
+
             $scope.toasts = toastService.toasts;
             $scope.toastService = toastService;
-            if ($scope.publisherMode) {
-                headerModel.setIsButtonVisible(false, false, false);
-            } else {
-                headerModel.setIsButtonVisible(true, true, true);
-            }
             $scope.selectedTab = 1;
-
             $scope.currentUserModel = currentUserModel;
             $scope.updatedInfo = currentUserModel.currentUser;
+            $scope.isActive = isActive;
+            $scope.saveUserDetails = saveUserDetails;
 
-            $scope.isActive = function (tabName) {
+            function init() {
+                if ($scope.publisherMode) {
+                    headerModel.setIsButtonVisible(false, false, false);
+                } else {
+                    headerModel.setIsButtonVisible(true, true, true);
+                }
+            }
+
+            function isActive(tabName) {
                 return tabName === userScreenModel.selectedTab;
-            };
+            }
 
-            $scope.saveUserDetails = function (details) {
+            function saveUserDetails(details) {
                 var updateObject = {
                     fullName: details.fullName,
                     company: details.company,
@@ -38,7 +44,7 @@
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your Profile. ');
                 });
-            };
+            }
         })
 
         .controller('UserEmailCtrl', function(userScreenModel) {
