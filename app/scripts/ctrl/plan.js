@@ -8,8 +8,6 @@
             function ($scope, $modal, $state, $stateParams, orgData, orgScreenModel,
                       planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
-                init();
-
                 $scope.planVersion = planData;
                 $scope.displayTab = planScreenModel;
                 $scope.versions = planVersions;
@@ -21,6 +19,7 @@
                 $scope.updateDesc = updateDesc;
                 $scope.showInfoModal = showInfoModal;
                 $scope.locked = $scope.planVersion.status === 'Locked';
+                init();
 
                 function init() {
                     orgScreenModel.updateOrganization(orgData);
@@ -121,7 +120,7 @@
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
-                };
+                }
             });
 
     // #end

@@ -52,11 +52,11 @@
         .controller('MyOrganizationsCtrl',
             function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
 
-                init();
-
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.modalNewOrganization = modalNewOrganization;
+
+                init();
 
                 function init() {
                     headerModel.setIsButtonVisible(false, false, false);
@@ -90,7 +90,6 @@
             function ($scope, $state, $stateParams, screenSize, orgData,
                       toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
 
-                init();
                 $scope.displayTab = orgScreenModel;
                 $scope.org = orgData;
                 $scope.toasts = toastService.toasts;
@@ -99,6 +98,7 @@
                     $scope.xs = match;
                 });
                 $scope.updateOrgDescription = updateOrgDescription;
+                init();
 
                 function init() {
                     orgScreenModel.updateOrganization(orgData);

@@ -6,38 +6,44 @@
         .controller('OAuthCtrl',
             function ($scope, $http, $window, $stateParams, $sessionStorage, oAuthService,
                       alertService, ALERT_TYPES) {
-                alertService.resetAllAlerts();
-                $scope.isValid = false;
-                if ($stateParams.scopes) {
-                    $scope.requestedScopes = $stateParams.scopes.split(',');
-                    $scope.isValid = true;
-                } else {
-                    $scope.requestedScopes = [];
-                }
-                if ($stateParams.apikey) {
-                    $sessionStorage.apikey = $stateParams.apikey;
-                }
+
                 $scope.canGrant = canGrant;
                 $scope.doCancel = doCancel;
                 $scope.doGrant = doGrant;
                 $scope.closeAlert = alertService.closeAlert;
+                $scope.isValid = false;
                 $scope.selectedScopes = [];
                 $scope.appOAuthInfo = {};
                 $scope.alerts = alertService.alerts;
 
-                oAuthService.getAppOAuthInfo($stateParams.client_id,
-                    $stateParams.org_id,
-                    $stateParams.service_id,
-                    $stateParams.version)
-                    .then(function (value) {
-                        $scope.appOAuthInfo = value;
-                        // Initially all requested scopes will be selected
-                        angular.forEach(value.scopes, function (value, key) {
-                            if ($scope.requestedScopes.length > 0 && $scope.requestedScopes.indexOf(key) > -1) {
-                                $scope.selectedScopes.push({scope: key, desc: value, checked: true});
-                            }
+                init();
+
+                function init() {
+                    alertService.resetAllAlerts();
+                    if ($stateParams.scopes) {
+                        $scope.requestedScopes = $stateParams.scopes.split(',');
+                        $scope.isValid = true;
+                    } else {
+                        $scope.requestedScopes = [];
+                    }
+                    if ($stateParams.apikey) {
+                        $sessionStorage.apikey = $stateParams.apikey;
+                    }
+
+                    oAuthService.getAppOAuthInfo($stateParams.client_id,
+                        $stateParams.org_id,
+                        $stateParams.service_id,
+                        $stateParams.version)
+                        .then(function (value) {
+                            $scope.appOAuthInfo = value;
+                            // Initially all requested scopes will be selected
+                            angular.forEach(value.scopes, function (value, key) {
+                                if ($scope.requestedScopes.length > 0 && $scope.requestedScopes.indexOf(key) > -1) {
+                                    $scope.selectedScopes.push({scope: key, desc: value, checked: true});
+                                }
+                            });
                         });
-                    });
+                }
 
                 function canGrant() {
                     var canDoGrant = false;
