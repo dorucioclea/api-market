@@ -8,34 +8,42 @@
             function ($scope, $modal, $state, $stateParams, orgData, orgScreenModel,
                       planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
-                orgScreenModel.updateOrganization(orgData);
+                init();
+
                 $scope.planVersion = planData;
-                planScreenModel.updatePlan(planData);
                 $scope.displayTab = planScreenModel;
                 $scope.versions = planVersions;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.confirmLockPlan = confirmLockPlan;
-
+                $scope.lockPlan = lockPlan;
+                $scope.selectVersion = selectVersion;
+                $scope.updateDesc = updateDesc;
+                $scope.showInfoModal = showInfoModal;
                 $scope.locked = $scope.planVersion.status === 'Locked';
 
-                $scope.lockPlan = function () {
-                    actionService.lockPlan($scope.planVersion, true);
-                };
+                function init() {
+                    orgScreenModel.updateOrganization(orgData);
+                    planScreenModel.updatePlan(planData);
+                }
 
-                $scope.selectVersion = function (version) {
+                function lockPlan() {
+                    actionService.lockPlan($scope.planVersion, true);
+                }
+
+                function selectVersion(version) {
                     $state.go($state.$current.name,
                         {orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: version.version});
-                };
+                }
 
-                $scope.updateDesc = function (newValue) {
+                function updateDesc(newValue) {
                     Plan.update({orgId: $stateParams.orgId, planId: $stateParams.planId}, {description: newValue},
                         function (reply) {
                             toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not update plan\'s description.');
                         });
-                };
+                }
 
                 function confirmLockPlan() {
                     $modal.open({
@@ -51,7 +59,7 @@
                     });
                 }
 
-                $scope.showInfoModal = function() {
+                function showInfoModal() {
                     $modal.open({
                         templateUrl: 'views/modals/modalHelp.html',
                         size: 'lg',
@@ -63,7 +71,7 @@
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
-                };
+                }
             })
 
         // +++ Plan Screen Subcontrollers +++
@@ -82,8 +90,10 @@
                 $scope.policies = policyData;
                 $scope.policyDetails = policyConfiguration;
                 planScreenModel.updateTab('Policies');
+                $scope.removePolicy = removePolicy;
+                $scope.modalAddPolicy = modalAddPolicy;
 
-                $scope.removePolicy = function(policy) {
+                function removePolicy(policy) {
                     PlanVersionPolicy.delete(
                         {orgId: $stateParams.orgId,
                             planId: $stateParams.planId,
@@ -96,11 +106,9 @@
                                 }
                             });
                         });
-                };
+                }
 
-                $scope.modalAnim = 'default';
-
-                $scope.modalAddPolicy = function() {
+                function modalAddPolicy() {
                     $modal.open({
                         templateUrl: 'views/modals/modalAddPlanPolicy.html',
                         size: 'lg',
