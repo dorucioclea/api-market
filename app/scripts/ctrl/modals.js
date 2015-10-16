@@ -11,29 +11,39 @@
                 $scope.policyDefs = policyDefs;
                 $scope.valid = false;
                 $scope.selectedPolicy = null;
+                $scope.modalClose = modalClose;
+                $scope.setValid = setValid;
+                $scope.setConfig = setConfig;
+                $scope.getConfig = getConfig;
+                $scope.addPolicy = addPolicy;
+                $scope.selectPolicy = selectPolicy;
 
-                switch ($state.current.data.type) {
-                    case 'plan':
-                        PlanVersionPolicy.query(
-                            {orgId: $stateParams.orgId,
-                                planId: $stateParams.planId,
-                                versionId: $stateParams.versionId},
-                            function (reply) {
-                                removeUsedPolicies(reply);
-                            });
-                        break;
-                    case 'service':
-                        ServiceVersionPolicy.query(
-                            {orgId: $stateParams.orgId,
-                                svcId: $stateParams.svcId,
-                                versionId: $stateParams.versionId},
-                            function(reply) {
-                                removeUsedPolicies(reply);
-                            });
-                        break;
+                init();
+
+                function init() {
+                    switch ($state.current.data.type) {
+                        case 'plan':
+                            PlanVersionPolicy.query(
+                                {orgId: $stateParams.orgId,
+                                    planId: $stateParams.planId,
+                                    versionId: $stateParams.versionId},
+                                function (reply) {
+                                    removeUsedPolicies(reply);
+                                });
+                            break;
+                        case 'service':
+                            ServiceVersionPolicy.query(
+                                {orgId: $stateParams.orgId,
+                                    svcId: $stateParams.svcId,
+                                    versionId: $stateParams.versionId},
+                                function(reply) {
+                                    removeUsedPolicies(reply);
+                                });
+                            break;
+                    }
                 }
 
-                var removeUsedPolicies = function (usedPolicies) {
+                function removeUsedPolicies(usedPolicies) {
                     angular.forEach(usedPolicies, function (policy) {
                         for (var i = 0; i < $scope.policyDefs.length; i++) {
                             if ($scope.policyDefs[i].id === policy.policyDefinitionId) {
@@ -42,24 +52,24 @@
                             }
                         }
                     });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.setValid = function (isValid) {
+                function setValid(isValid) {
                     $scope.valid = isValid;
-                };
+                }
 
-                $scope.setConfig = function(config) {
+                function setConfig(config) {
                     $scope.config = config;
-                };
-                $scope.getConfig = function() {
+                }
+                function getConfig() {
                     return $scope.config;
-                };
+                }
 
-                $scope.addPolicy = function() {
+                function addPolicy() {
                     var config = $scope.getConfig();
                     var newPolicy = {
                         definitionId: $scope.selectedPolicy.id,
@@ -99,9 +109,9 @@
                             break;
                     }
 
-                };
+                }
 
-                $scope.selectPolicy = function (policy) {
+                function selectPolicy(policy) {
                     if (!policy) {
                         $scope.include = undefined;
                     } else {
@@ -114,8 +124,7 @@
                             $scope.include = 'views/modals/partials/policy/Default.html';
                         }
                     }
-                };
-
+                }
             })
 
 /// ==== NewAnnouncement Controller
@@ -129,6 +138,7 @@
                     description: ''
                 };
                 $scope.createAnnouncement = createAnnouncement;
+                $scope.modalClose = modalClose;
 
                 function createAnnouncement(announcement) {
                     console.log(announcement);
@@ -149,10 +159,9 @@
                         });
                 }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
         /// ==== ViewAnnouncement Controller
@@ -162,6 +171,7 @@
 
                 $scope.announcement = announcement;
                 $scope.deleteAnnouncement = deleteAnnouncement;
+                $scope.modalClose = modalClose;
 
                 function deleteAnnouncement() {
                     console.log('delete');
@@ -176,10 +186,9 @@
                         });
                 }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
 /// ==== Contract creation: Plan Selection Controller
@@ -192,17 +201,33 @@
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
-                getServicePolicyDetails(svcPolicies);
-                var hasAppContext = false;
-                if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
-                    $scope.selectedAppVersion = selectedApp.appVersion;
-                    hasAppContext = true;
-                }
+                $scope.selectOrg = selectOrg;
+                $scope.selectApp = selectApp;
+                $scope.selectPlan = selectPlan;
+                $scope.selectVersion = selectVersion;
+                $scope.startCreateContract = startCreateContract;
+                $scope.modalClose = modalClose;
+
                 $scope.availablePlans = [];
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
+                var hasAppContext = false;
+                init();
 
-                var checkOrgContext = function () {
+                function init() {
+                    getServicePolicyDetails(svcPolicies);
+                    if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
+                        $scope.selectedAppVersion = selectedApp.appVersion;
+                        hasAppContext = true;
+                    }
+                    checkOrgContext();
+                    if ($scope.hasOrgContext) {
+                        getOrgApps(orgScreenModel.organization.id);
+                    }
+                    getAvailablePlans();
+                }
+
+                function checkOrgContext() {
                     if (orgScreenModel.organization === undefined) {
                         // No org context, get user's AppOrgs
                         $scope.hasOrgContext = false;
@@ -213,9 +238,9 @@
                         $scope.hasOrgContext = true;
                         $scope.org = orgScreenModel.organization;
                     }
-                };
+                }
 
-                var getOrgApps = function (orgId) {
+                function getOrgApps(orgId) {
                     Application.query({orgId: orgId}, function (data) {
                         $scope.applications = data;
                         if (hasAppContext) {
@@ -224,9 +249,9 @@
                             getAppVersions(data[0].id);
                         }
                     });
-                };
+                }
 
-                var getAppVersions = function (appId) {
+                function getAppVersions(appId) {
                     if (hasAppContext) {
                         appId = $scope.selectedAppVersion.id;
                     }
@@ -237,9 +262,9 @@
                             selectedApp.updateApplication(data[0]);
                         }
                     });
-                };
+                }
 
-                var getAvailablePlans = function () {
+                function getAvailablePlans() {
                     angular.forEach($scope.service.plans, function (value) {
                         PlanVersion.get(
                             {orgId: $scope.service.service.organization.id,
@@ -253,9 +278,9 @@
                                 }
                             });
                     });
-                };
+                }
 
-                var getPlanPolicies = function () {
+                function getPlanPolicies() {
                     PlanVersionPolicy.query(
                         {orgId: $scope.selectedPlan.plan.organization.id,
                             planId: $scope.selectedPlan.plan.id,
@@ -266,9 +291,9 @@
                                 getPlanPolicyDetails(policy);
                             });
                         });
-                };
+                }
 
-                var getPlanPolicyDetails = function (policy) {
+                function getPlanPolicyDetails(policy) {
                     PlanVersionPolicy.get(
                         {orgId: $scope.selectedPlan.plan.organization.id,
                             planId: $scope.selectedPlan.plan.id,
@@ -277,7 +302,7 @@
                         function (deets) {
                             $scope.policyConfig[deets.id] = policyConfig.createConfigObject(deets);
                         });
-                };
+                }
 
                 function getServicePolicyDetails(policies) {
                     angular.forEach(policies, function (policy) {
@@ -292,35 +317,29 @@
                     });
                 }
 
-                $scope.selectOrg = function (organization) {
+                function selectOrg(organization) {
                     orgScreenModel.getOrgDataForId(orgScreenModel, organization.id);
                     $scope.org = organization;
                     $scope.hasOrgContext = true;
                     getOrgApps(organization.id);
-                };
+                }
 
-                $scope.selectApp = function (application) {
+                function selectApp(application) {
                     $scope.selectedAppVersion = application;
                     getAppVersions(application.id);
-                };
+                }
 
-                $scope.selectPlan = function (plan) {
+                function selectPlan(plan) {
                     $scope.selectedPlan = plan;
                     getPlanPolicies();
-                };
+                }
 
-                $scope.selectVersion = function (version) {
+                function selectVersion(version) {
                     $scope.selectedAppVersion = version;
                     selectedApp.updateApplication(version);
-                };
-
-                checkOrgContext();
-                if ($scope.hasOrgContext) {
-                    getOrgApps(orgScreenModel.organization.id);
                 }
-                getAvailablePlans();
 
-                $scope.startCreateContract = function() {
+                function startCreateContract() {
                     var contract = {
                         serviceOrgId: $scope.service.service.organization.id,
                         serviceId: $scope.service.service.id,
@@ -348,22 +367,22 @@
                             $scope.modalClose();
                             toastService.createErrorToast(error, 'Could not create the contract.');
                         });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
 /// ==== Help Dialog Controller
         .controller('HelpCtrl',
             function ($scope, $modal, type) {
                 $scope.type = type;
+                $scope.modalClose = modalClose;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
             })
 
 /// ==== OAuthConfig Controller
@@ -374,22 +393,25 @@
                 $scope.callback = appVersionDetails.oauthClientRedirect;
                 $scope.id = appVersionDetails.oAuthClientId;
                 $scope.secret = appVersionDetails.oauthClientSecret;
+                $scope.modalClose = modalClose;
+                $scope.copyId = copyId;
+                $scope.copySecret = copySecret;
                 $scope.updateCallback = updateCallback;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.copyId = function (id) {
+                function copyId(id) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>Client Id copied to clipboard!</b><br>' + id;
                     toastService.createToast(type, msg, true);
-                };
-                $scope.copySecret = function (secret) {
+                }
+                function copySecret(secret) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>Client Secret copied to clipboard!</b><br>' + secret;
                     toastService.createToast(type, msg, true);
-                };
+                }
 
                 function updateCallback() {
                     var updateObject = {
@@ -423,44 +445,55 @@
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
                       Application, CurrentUserInfo, Service) {
-                var type = {};
-
-                if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
-                    type = 'User';
-                    $scope.currentLogo = currentUserModel.currentUser.base64pic;
-                } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
-                    type = 'Application';
-                    $scope.currentLogo = appScreenModel.application.application.base64logo;
-                } else {
-                    type = 'Service';
-                    $scope.currentLogo = svcScreenModel.service.service.base64logo;
-                }
-                alertService.resetAllAlerts();
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({
                     singleFile: true
                 });
+                $scope.cancel = cancel;
+                $scope.readFile = readFile;
+                $scope.closeAlert = closeAlert;
+                $scope.updateLogo = updateLogo;
+                $scope.modalClose = modalClose;
 
-                $scope.cancel = function () {
+                var type = {};
+
+                init();
+
+                function init() {
+                    if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
+                        type = 'User';
+                        $scope.currentLogo = currentUserModel.currentUser.base64pic;
+                    } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
+                        type = 'Application';
+                        $scope.currentLogo = appScreenModel.application.application.base64logo;
+                    } else {
+                        type = 'Service';
+                        $scope.currentLogo = svcScreenModel.service.service.base64logo;
+                    }
+
+                    alertService.resetAllAlerts();
+                }
+
+                function cancel() {
                     imageService.clear();
                     $scope.flow.cancel();
-                };
+                }
 
-                $scope.readFile = function ($file) {
+                function readFile ($file) {
                     if (imageService.checkFileType($file)) {
                         imageService.readFile($file);
                         return true;
                     } else {
                         return false;
                     }
-                };
+                }
 
-                $scope.closeAlert = function(index) {
+                function closeAlert(index) {
                     alertService.closeAlert(index);
-                };
+                }
 
-                $scope.updateLogo = function () {
+                function updateLogo() {
                     var updateObject = {};
                     if (type === 'User') {
                         if (imageService.image.fileData) {
@@ -505,9 +538,9 @@
                                 });
                             break;
                     }
-                };
+                }
 
-                var handleResult = function (success, msg, error) {
+                function handleResult(success, msg, error) {
                     $scope.modalClose();
                     if (success) {
                         $state.forceReload();
@@ -515,13 +548,12 @@
                     } else {
                         toastService.createErrorToast(error, msg);
                     }
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     imageService.clear();
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             });
 
     // #end
