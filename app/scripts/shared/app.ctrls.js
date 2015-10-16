@@ -211,7 +211,9 @@
 
     .controller('EditLogoCtrl', function($scope, $modal) {
 
-        $scope.modalEditLogo = function() {
+        $scope.modalEditLogo = modalEditLogo;
+
+        function modalEditLogo() {
             $modal.open({
                 templateUrl: 'views/modals/modalEditLogo.html',
                 size: 'lg',
@@ -219,18 +221,18 @@
                 resolve: function() {},
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
-
-        };
+        }
     })
 
     .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
         $scope.error = $state.current.error;
         console.log($scope.error);
+        $scope.retryLogin = retryLogin;
 
-        $scope.retryLogin = function () {
+        function retryLogin() {
             delete $sessionStorage.apikey;
             $state.go('root');
-        };
+        }
     })
 
     .controller('HeadCtrl',
@@ -243,6 +245,9 @@
           currentUserModel.setCurrentUserInfo(currentUser);
           $scope.doSearch = doSearch;
           $scope.doLogOut = doLogOut;
+          $scope.toggleFloatingSidebar = toggleFloatingSidebar;
+          $scope.toApis = toApis;
+          $scope.toMarketDash = toMarketDash;
 
           function doSearch(query) {
               $state.go('root.search', {query: query});
@@ -266,37 +271,28 @@
               });
           }
 
-          $scope.toggleFloatingSidebar = function() {
+          function toggleFloatingSidebar() {
               $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
-          };
+          }
+
+          function toApis() {
+              docTester.reset();
+              $state.go('root.apis.grid');
+          }
+
+          function toMarketDash() {
+              if ($scope.orgScreenModel.organization === undefined) {
+                  $state.go('root.myOrganizations');
+              } else {
+                  $state.go('root.market-dash', {orgId: $scope.orgScreenModel.organization.id});
+              }
+          }
 
           $scope.$on('buttonToggle', function (event, data) {
               $scope.showExplore = headerModel.showExplore;
               $scope.showDash = headerModel.showDash;
               $scope.showSearch = headerModel.showSearch;
           });
-
-          $scope.goFullScreen = function() {
-              if (Fullscreen.isEnabled()) {
-                  Fullscreen.cancel();
-              }
-              else {
-                  Fullscreen.all();
-              }
-          };
-
-          $scope.toApis = function () {
-              docTester.reset();
-              $state.go('root.apis.grid');
-          };
-
-          $scope.toMarketDash = function () {
-              if ($scope.orgScreenModel.organization === undefined) {
-                  $state.go('root.myOrganizations');
-              } else {
-                  $state.go('root.market-dash', {orgId: $scope.orgScreenModel.organization.id});
-              }
-          };
 
       });
 
