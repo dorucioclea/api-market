@@ -53,13 +53,13 @@
           };
           setHeader();
 
-          $scope.loadSwaggerUi = function(spec, domId, endpoint) {
+          $scope.loadSwaggerUi = function(spec, domId, endpoint, disableTryout) {
               $scope.swaggerUi = new SwaggerUi({
                   spec: spec,
                   dom_id: domId,
                   showRequestHeaders: true,
                   url: (endpoint === undefined || endpoint === null) ? '/' : endpoint.managedEndpoint,
-                  supportedSubmitMethods: (endpoint === undefined || endpoint === null) ?
+                  supportedSubmitMethods: (disableTryout || endpoint === undefined || endpoint === null) ?
                     [] : ['get', 'post', 'put', 'delete', 'patch'],
                   validatorUrl: null,
                   apisSorter: 'alpha',

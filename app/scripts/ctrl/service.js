@@ -187,7 +187,8 @@
                         $scope.currentDefinition = reply;
                         if (angular.isDefined($scope.currentDefinition)) {
                             $scope.updatedDefinition = $scope.currentDefinition;
-                            $scope.loadSwaggerUi($scope.currentDefinition, 'original-swagger-ui-container', endpoint);
+                            $scope.loadSwaggerUi($scope.currentDefinition,
+                                'original-swagger-ui-container', endpoint, true);
                         } else {
                             $scope.noDefinition = true;
                         }
@@ -234,7 +235,7 @@
 
                 $scope.loadPreview = function (spec) {
                     $scope.definitionLoaded = true;
-                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint);
+                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
                 };
             })
 
