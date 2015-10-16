@@ -8,28 +8,36 @@
             function ($scope, $modal, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, TOAST_TYPES, Application) {
 
-                alertService.resetAllAlerts();
                 $scope.currentOrg = orgScreenModel.organization;
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({
                     singleFile: true
                 });
+                $scope.readFile = readFile;
+                $scope.closeAlert = closeAlert;
+                $scope.createApplication = createApplication;
+                $scope.modalClose = modalClose;
+                init();
 
-                $scope.readFile = function ($file) {
+                function init() {
+                    alertService.resetAllAlerts();
+                }
+
+                function readFile($file) {
                     if (imageService.checkFileType($file)) {
                         imageService.readFile($file);
                         return true;
                     } else {
                         return false;
                     }
-                };
+                }
 
-                $scope.closeAlert = function(index) {
+                function closeAlert(index) {
                     alertService.closeAlert(index);
-                };
+                }
 
-                $scope.createApplication = function (application) {
+                function createApplication(application) {
                     if (imageService.image.fileData) {
                         application.base64logo = imageService.image.fileData;
                     } else {
@@ -46,13 +54,12 @@
                         }
                         toastService.createErrorToast(error, 'Could not create application.');
                     });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     imageService.clear();
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
 /// ==== PublishApplication Controller
@@ -62,16 +69,17 @@
 
                 $scope.selectedAppVersion = appVersion;
                 $scope.contracts = appContracts;
+                $scope.modalClose = modalClose;
+                $scope.doPublish = doPublish;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.doPublish = function () {
+                function doPublish() {
                     actionService.publishApp($scope.selectedAppVersion, true);
                     $scope.modalClose();
-                };
-
+                }
             })
 
 /// ==== RetireApplication Controller
@@ -81,15 +89,17 @@
 
                 $scope.applicationVersion = appVersion;
                 $scope.contracts = appContracts;
+                $scope.modalClose = modalClose;
+                $scope.doRetire = doRetire;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.doRetire = function () {
+                function doRetire() {
                     actionService.retireApp($scope.applicationVersion, true);
                     $scope.modalClose();
-                };
+                }
 
             })
 
@@ -99,8 +109,10 @@
                       toastService, TOAST_TYPES, Plan) {
 
                 $scope.org = orgScreenModel.organization;
+                $scope.createPlan = createPlan;
+                $scope.modalClose = modalClose;
 
-                $scope.createPlan = function (plan) {
+                function createPlan(plan) {
                     Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
                         $scope.modalClose();
                         $state.go('root.plan',
@@ -113,12 +125,11 @@
                         }
                         toastService.createErrorToast(error, 'Could not create plan.');
                     });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
 /// ==== LockPlan Controller
@@ -127,15 +138,17 @@
                       planVersion, actionService) {
 
                 $scope.planVersion = planVersion;
+                $scope.modalClose = modalClose;
+                $scope.doLock = doLock;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.doLock = function () {
+                function doLock() {
                     actionService.lockPlan($scope.planVersion, true);
                     $scope.modalClose();
-                };
+                }
 
             })
 
@@ -144,10 +157,6 @@
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, orgScreenModel, toastService, TOAST_TYPES, Categories, Service) {
 
-                alertService.resetAllAlerts();
-                Categories.query({}, function (reply) {
-                    $scope.currentCategories = reply;
-                });
                 $scope.org = orgScreenModel.organization;
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
@@ -155,21 +164,33 @@
                     singleFile: true
                 });
                 $scope.basePathPattern = /^[[a-z\-]+$/;
+                $scope.readFile = readFile;
+                $scope.closeAlert = closeAlert;
+                $scope.createService = createService;
+                $scope.modalClose = modalClose;
+                init();
 
-                $scope.readFile = function ($file) {
+                function init() {
+                    alertService.resetAllAlerts();
+                    Categories.query({}, function (reply) {
+                        $scope.currentCategories = reply;
+                    });
+                }
+
+                function readFile($file) {
                     if (imageService.checkFileType($file)) {
                         imageService.readFile($file);
                         return true;
                     } else {
                         return false;
                     }
-                };
+                }
 
-                $scope.closeAlert = function(index) {
+                function closeAlert(index) {
                     alertService.closeAlert(index);
-                };
+                }
 
-                $scope.createService = function (svc, categories) {
+                function createService(svc, categories) {
                     var cats = [];
                     for (var i = 0; i < categories.length; i++) {
                         cats.push(categories[i].text);
@@ -195,13 +216,12 @@
                         }
                         toastService.createErrorToast(error, 'Could not create service.');
                     });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     imageService.clear();
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             })
 
 /// ==== PublishService Controller
@@ -210,15 +230,17 @@
                       svcVersion, actionService) {
 
                 $scope.selectedSvcVersion = svcVersion;
+                $scope.modalClose = modalClose;
+                $scope.doPublish = doPublish;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.doPublish = function () {
+                function doPublish() {
                     actionService.publishService($scope.selectedSvcVersion, true);
                     $scope.modalClose();
-                };
+                }
 
             })
 
@@ -227,18 +249,18 @@
             function ($scope, $modal,
                       svcVersion, actionService) {
 
-                console.log(svcVersion);
-
                 $scope.serviceVersion = svcVersion;
+                $scope.modalClose = modalClose;
+                $scope.doRetire = doRetire;
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
-                $scope.doRetire = function () {
+                function doRetire() {
                     actionService.retireService($scope.serviceVersion, true);
                     $scope.modalClose();
-                };
+                }
 
             })
 
@@ -246,23 +268,29 @@
         .controller('NewVersionCtrl',
             function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, toastService,
                       ApplicationVersion, PlanVersion, ServiceVersion) {
-                var type = {};
-
-                if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
-                    type = 'Plan';
-                    $scope.currentVersion = planScreenModel.plan.version;
-                } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
-                    type = 'Application';
-                    $scope.currentVersion = appScreenModel.application.version;
-                } else {
-                    type = 'Service';
-                    $scope.currentVersion = svcScreenModel.service.version;
-                }
 
                 $scope.newVersion = '';
                 $scope.shouldClone = true;
+                $scope.createVersion = createVersion;
+                $scope.modalClose = modalClose;
 
-                $scope.createVersion = function () {
+                var type = {};
+                init();
+
+                function init() {
+                    if (angular.isUndefined($stateParams.appId) && angular.isUndefined($stateParams.svcId)) {
+                        type = 'Plan';
+                        $scope.currentVersion = planScreenModel.plan.version;
+                    } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
+                        type = 'Application';
+                        $scope.currentVersion = appScreenModel.application.version;
+                    } else {
+                        type = 'Service';
+                        $scope.currentVersion = svcScreenModel.service.version;
+                    }
+                }
+
+                function createVersion() {
                     var newVersion = {
                         version: $scope.newVersion,
                         clone: $scope.shouldClone,
@@ -309,18 +337,18 @@
                                 });
                             break;
                     }
-                };
+                }
 
-                var handleError = function (error, type) {
+                function handleError(error, type) {
                     if (error.status !== 409) {
                         $scope.modalClose();
                     }
                     toastService.createErrorToast(error, 'Could not create new ' + type + ' version.');
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
+                }
 
             })
 
@@ -329,7 +357,10 @@
             function ($scope, $modal, $state, publisherMode,
                       currentUserModel, toastService, TOAST_TYPES, Organization) {
 
-                $scope.createOrganization = function (org) {
+                $scope.createOrganization = createOrganization;
+                $scope.modalClose = modalClose;
+
+                function createOrganization(org) {
                     Organization.save(org, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();
@@ -349,12 +380,11 @@
                         }
                         toastService.createErrorToast(error, 'Could not create organization.');
                     });
-                };
+                }
 
-                $scope.modalClose = function() {
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
-                };
-
+                }
             });
 
     // #end
