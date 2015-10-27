@@ -163,11 +163,14 @@
                                     <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
                                 </div>
                             </div>
-                            <div class="ui-checkbox ui-checkbox-circle">
+                            <div class="ui-checkbox ui-checkbox-circle scope-checkbox">
                                 <p class="small text-muted text-uppercase mb5">Scopes</p>
-                                <label class="col-sm-12" ng-repeat="scope in selectedScopes">
+                                <label class="col-sm-12 mt10" ng-repeat="scope in selectedScopes">
                                     <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
-                                    <span class="col-sm-12">{{scope.desc}}</span>
+                                    <span class="col-sm-12">
+                                        <span class="col-sm-12">{{scope.desc}}</span>
+                                        <span class="col-sm-12 xsmall text-muted">{{scope.scope}}</span>
+                                    </span>
                                 </label>
                             </div>
                         </form>
