@@ -12965,6 +12965,9 @@ md-input-container {
   height: 57px;
   background-image: url('/images/is-member-stad.png');
 }
+.scope-checkbox label > span {
+  padding-top: 0;
+}
 .page-oauth .oauth-container .oauth-panel {
   margin-top: 5em;
 }
