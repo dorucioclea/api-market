@@ -65,14 +65,17 @@
         function($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, userApps,
                  docTester, svcTab, ApplicationVersion, ServiceVersionDefinition,
                  oAuthService, toastService, TOAST_TYPES) {
+            $scope.addHeader = addHeader;
             $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
             $scope.endpoint = endpoint;
             $scope.contractApps = [];
             $scope.canGrant = canGrant;
+            $scope.customHeaders = [];
             $scope.doGrant = doGrant;
             $scope.hasGrant = false;
             $scope.selectedScopes = [];
             $scope.selectContract = selectContract;
+            $scope.updateHeaders = updateHeaders;
             var currentDefinitionSpec;
 
             init();
@@ -112,6 +115,10 @@
                     });
             }
 
+            function addHeader() {
+                $scope.customHeaders.push({name: '', value: ''});
+            }
+
             function filterApplications(apps, contracts) {
                 var match = function (app, contract) {
                     return (app.id === contract.appId && app.organizationId === contract.appOrganizationId);
@@ -133,7 +140,7 @@
                     updateOAuthInfo(contract);
                 }
                 docTester.setApiKey(contract.apikey);
-                $scope.updateSwaggerHeader();
+                $scope.updateSwaggerApiKeyHeader();
             }
 
             function updateOAuthInfo(contract) {
@@ -185,10 +192,40 @@
 
                 if (paramStart > -1) {
                     var paramString = uri.substr(paramStart + 13);
-                    $scope.addSwaggerTokenHeader('Bearer ' + paramString);
+                    var headerObj = {
+                        name: 'Authorization',
+                        value: 'Bearer ' + paramString
+                    };
+                    $scope.addCustomSwaggerHeader(headerObj);
                     return true;
                 } else {
                     return false;
+                }
+            }
+
+            function updateHeaders() {
+                var didSet = false;
+                var hasInvalid = false;
+                angular.forEach($scope.customHeaders, function (header) {
+                    if (header.name.length > 0 && header.value.length > 0) {
+                        $scope.addCustomSwaggerHeader(header);
+                        didSet = true;
+                    } else {
+                        hasInvalid = true;
+                    }
+                });
+
+                if (didSet && !hasInvalid) {
+                    toastService.createToast(TOAST_TYPES.INFO,
+                        '<b>Headers set!</b>', true);
+                } else if (didSet && hasInvalid) {
+                    toastService.createToast(TOAST_TYPES.WARNING,
+                        '<b>Could not set all headers.</b>' +
+                        '<br>One or more headers had an invalid configuration and were not set', true);
+                } else {
+                    toastService.createToast(TOAST_TYPES.WARNING,
+                        '<b>No headers were set.</b>' +
+                        '<br>Could not find a valid header configuration', true);
                 }
             }
         })

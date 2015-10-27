@@ -110,14 +110,14 @@
               $scope.swaggerUi.load();
           };
 
-          $scope.updateSwaggerHeader = function () {
+          $scope.updateSwaggerApiKeyHeader = function () {
               $scope.swaggerUi.api.clientAuthorizations.add('key',
                 new SwaggerClient.ApiKeyAuthorization('apikey', docTester.apikey, 'header'));
           };
 
-          $scope.addSwaggerTokenHeader = function (token) {
-              $scope.swaggerUi.api.clientAuthorizations.add('token',
-                new SwaggerClient.ApiKeyAuthorization('Authorization', token, 'header'));
+          $scope.addCustomSwaggerHeader = function (header) {
+              $scope.swaggerUi.api.clientAuthorizations.add(header.name,
+                new SwaggerClient.ApiKeyAuthorization(header.name, header.value, 'header'));
           };
 
           $scope.navFull = true;

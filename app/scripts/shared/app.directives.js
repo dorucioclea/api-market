@@ -118,7 +118,7 @@
 // Authentication directives
     .directive('authAccordionGroup', function () {
         return {
-            scope: {title: '=heading'},
+            scope: {title: '@heading'},
             transclude: true,
             templateUrl: '/views/templates/auth/accordion-group.html'
         };
