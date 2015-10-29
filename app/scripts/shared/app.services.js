@@ -135,9 +135,9 @@
             };
 
             this.resetAllAlerts = function () {
-                this.alerts.forEach(function (value) {
+                while (alerts.length > 0) {
                     closeAlert(0);
-                });
+                }
             };
 
             var closeAlert = function (index) {
