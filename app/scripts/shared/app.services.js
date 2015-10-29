@@ -203,7 +203,7 @@
                 toasts.splice(index, 1);
             };
 
-            this.closeAlert = function(index) {
+            this.closeToast = function(index) {
                 closeToastAtIndex(index);
             };
 
