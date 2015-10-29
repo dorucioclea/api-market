@@ -108,4 +108,77 @@ describe('Services tests', function () {
             expect(alertService.alerts.length).toBe(0);
         }));
     });
+
+    describe('Service: imageService', function () {
+        it('is initialized correctly', inject(function (imageService) {
+            expect(imageService.image.isValid).toBe(true);
+            expect(imageService.image.fileData).toBe(null);
+        }));
+
+        //TODO Expand tests
+    });
+
+    describe('Service: toastService', function () {
+
+        it('is initialized as an empty array', inject(function (toastService) {
+            expect(toastService.toasts.length).toBe(0);
+        }));
+
+        it('adds a toast', inject(function (toastService, TOAST_TYPES) {
+            toastService.createToast(TOAST_TYPES.INFO, 'A test toast', false);
+            expect(toastService.toasts.length).toBe(1);
+            expect(toastService.toasts[0]).toEqual({type: 'info', msg: 'A test toast'});
+        }));
+
+        it('closes a toast', inject(function (toastService, TOAST_TYPES) {
+            toastService.createToast(TOAST_TYPES.INFO, 'A test toast', false);
+            expect(toastService.toasts.length).toBe(1);
+            expect(toastService.toasts[0]).toEqual({type: 'info', msg: 'A test toast'});
+
+            toastService.closeToast(0);
+            expect(toastService.toasts.length).toBe(0);
+        }));
+    });
+
+    describe('Service: headerModel', function () {
+
+        it('is initialized with all buttons invisible', inject(function (headerModel) {
+            expect(headerModel.showExplore).toBe(false);
+            expect(headerModel.showDash).toBe(false);
+            expect(headerModel.showSearch).toBe(false);
+        }));
+
+        it('can update button visibilities', inject(function (headerModel) {
+            headerModel.setIsButtonVisible(false, true, true);
+
+            expect(headerModel.showExplore).toBe(false);
+            expect(headerModel.showDash).toBe(true);
+            expect(headerModel.showSearch).toBe(true);
+
+            headerModel.setIsButtonVisible(true, true, false);
+
+            expect(headerModel.showExplore).toBe(true);
+            expect(headerModel.showDash).toBe(true);
+            expect(headerModel.showSearch).toBe(false);
+        }));
+
+    });
+
+    describe('Service: orgScreenModel', function () {
+
+        it('is initialized to show Plans tab', inject(function (orgScreenModel) {
+            expect(orgScreenModel.selectedTab).toBe('Plans');
+            expect(orgScreenModel.organization).toBe(undefined);
+        }));
+
+        it('can update current tab', inject(function (orgScreenModel) {
+            orgScreenModel.updateTab('Services');
+            expect(orgScreenModel.selectedTab).toBe('Services');
+        }));
+
+        it('can update current organization', inject(function (orgScreenModel) {
+            orgScreenModel.updateOrganization({id: 'TestOrg'});
+            expect(orgScreenModel.organization).toEqual({id: 'TestOrg'});
+        }));
+    });
 });
