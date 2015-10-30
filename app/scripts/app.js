@@ -70,6 +70,7 @@
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
+            $urlRouterProvider.when('/org/{orgId}/', '/org/{orgId}/plans');
             $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}',
                 '/org/{orgId}/application/{appId}/{versionId}/overview');
             $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}',
@@ -756,7 +757,13 @@
                 .state('root.service.implementation', {
                     url: '/implementation',
                     templateUrl: 'views/partials/service/implementation.html',
-                    resolve: {},
+                    resolve: {
+                        ServiceVersion: 'ServiceVersion',
+                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
+                            return ServiceVersion.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        }
+                    },
                     controller: 'ServiceImplementationCtrl'
                 })
                 // Definition Tab

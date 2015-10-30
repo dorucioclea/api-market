@@ -290,12 +290,12 @@
         var editorTemplate = '<div class="click-to-edit">' +
           '<div ng-hide="view.editorEnabled">' +
           '{{value}} ' +
-          '<a href class="fa fa-pencil" ng-click="enableEditor()"></a>' +
+          '<a id="clickToEdit" href class="fa fa-pencil" ng-click="enableEditor()"></a>' +
           '</div>' +
           '<div ng-show="view.editorEnabled">' +
           '<input class="form-control" ng-model="view.editableValue">' +
-          '<span class="btn btn-xs fa fa-check" ng-click="doSave()"></span>' +
-          '<span class="btn btn-xs fa fa-ban" ng-click="disableEditor()"></span>' +
+          '<span class="btn btn-xs fa fa-check" id="clickToSave" ng-click="doSave()"></span>' +
+          '<span class="btn btn-xs fa fa-ban" id="clickToCancel" ng-click="disableEditor()"></span>' +
           '</div>' +
           '</div>';
 

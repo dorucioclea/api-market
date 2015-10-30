@@ -1,7 +1,7 @@
 describe('My Organizations Page', function() {
 
     it('should have at least one organization listed', function () {
-        browser.get('http://mkt.t1t.be/#/my-organizations');
+        browser.get('http://pub.t1t.be/#/my-organizations');
 
         var orgs = element.all(by.repeater('org in orgs'));
         expect(orgs.count()).toBeGreaterThan(0);
@@ -12,8 +12,8 @@ describe('My Organizations Page', function() {
         });
     });
 
-    it('should create a Protractor org if none exists', function () {
-        browser.get('http://mkt.t1t.be/#/my-organizations');
+    it('should create a Protractor org if it does not exist', function () {
+        browser.get('http://pub.t1t.be/#/my-organizations');
         var originalCount =  element.all(by.repeater('org in orgs')).count();
         var alreadyCreated = false;
 
@@ -37,7 +37,7 @@ describe('My Organizations Page', function() {
                     element(by.model('ctrl.organization.description')).sendKeys('E2E test organization');
                     element(by.buttonText('Create Organization')).click();
 
-                    browser.get('http://mkt.t1t.be/#/my-organizations');
+                    browser.get('http://pub.t1t.be/#/my-organizations');
                     var newOrgs = element.all(by.repeater('org in orgs'));
                     var newCount = newOrgs.count();
 

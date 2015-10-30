@@ -104,16 +104,18 @@
         /// ==== Implementation Controller
         .controller('ServiceImplementationCtrl',
             function ($scope, $state, $stateParams, toastService, TOAST_TYPES,
-                      ServiceVersion, svcScreenModel) {
+                      ServiceVersion, svcScreenModel, svcData) {
 
-                $scope.version = svcScreenModel.service;
+                $scope.serviceVersion = svcData;
                 $scope.updatedService = {
                     endpointType: 'rest',
-                    endpoint: $scope.version.endpoint,
+                    endpoint: $scope.serviceVersion.endpoint,
                     gateways: [{gatewayId: 'KongGateway'}]
                 };
+                svcScreenModel.updateService(svcData);
+                $scope.version = svcScreenModel.service;
 
-                $scope.typeOptions = ['rest', 'soap'];
+                $scope.typeOptions = ['rest'];
                 svcScreenModel.updateTab('Implementation');
 
                 $scope.selectType = function (newType) {
