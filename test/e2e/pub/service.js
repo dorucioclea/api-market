@@ -1,10 +1,10 @@
 describe('Organization Service Creation', function() {
 
     // Svc to test with
-    var svcName = 'E2E Awesome Service';
+    var svcName = 'End To End Three';
     var svcInitialVersion = 'v1';
     var svcSecondVersion = 'v2';
-    var svcBasePath = 'e2etest';
+    var svcBasePath = 'endtoendthree';
     var svcDescription = 'Service created by E2E tests';
     var svcImplementationEndpoint = 'http://rest.visireg.com/VisiREGServer-web/rest/v1';
 
@@ -93,11 +93,12 @@ describe('Organization Service Creation', function() {
         expect(element(by.buttonText('Save')).isEnabled()).toBe(false);
 
         var path = require('path');
-        var fileToUpload = 'test_definition.json',
+        var fileToUpload = '../test_definition.json',
             absolutePath = path.resolve(__dirname, fileToUpload);
 
         $('input[type="file"]').sendKeys(absolutePath);
 
+        browser.sleep(1500); // Wait for processing to complete
         expect(element(by.buttonText('Save')).isEnabled()).toBe(true);
         element(by.buttonText('Save')).click();
         expect(browser.getCurrentUrl())
@@ -105,7 +106,7 @@ describe('Organization Service Creation', function() {
             svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/plans');
     });
 
-    it('can select a svc to use', function () {
+    it('can select a plan to use', function () {
         browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
             svcName.replace(/ /g,'') + '/' + svcInitialVersion);
         browser.waitForAngular();
@@ -132,7 +133,7 @@ describe('Organization Service Creation', function() {
         expect(element(by.binding('status')).getText()).toBe('READY');
     });
 
-    it('can add a Rate Liniting policy to the service', function () {
+    it('can add a Rate Limiting policy to the service', function () {
         browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
             svcName.replace(/ /g,'') + '/' + svcInitialVersion);
         browser.waitForAngular();
@@ -151,7 +152,7 @@ describe('Organization Service Creation', function() {
         browser.waitForAngular();
         expect(element(by.id('add-policy')).isEnabled()).toBe(false);
         element(by.css('.btn.btn-primary.dropdown-toggle')).click();
-        browser.waitForAngular();
+        browser.sleep(500); // Wait for animation to complete
         element(by.css('.fa.fa-inline.fa-fw.fa-tachometer')).click();
         element(by.model('model[\'second\']')).sendKeys('10');
         expect(element(by.id('add-policy')).isEnabled()).toBe(true);
@@ -198,7 +199,7 @@ describe('Organization Service Creation', function() {
         browser.waitForAngular();
         expect(element(by.id('add-policy')).isEnabled()).toBe(false);
         element(by.css('.btn.btn-primary.dropdown-toggle')).click();
-        browser.waitForAngular();
+        browser.sleep(500); // Wait for animation to complete
         element(by.css('.fa.fa-inline.fa-fw.fa-sign-in')).click();
         element(by.id('scope')).sendKeys('full');
         element(by.id('scope_desc')).sendKeys('Complete access');
@@ -232,6 +233,7 @@ describe('Organization Service Creation', function() {
             'When a Service requires or includes downloadable software, this software may update automatically on your device once a new version or feature is available. Some Services may let you adjust your automatic update settings.' +
             'Google gives you a personal, worldwide, royalty-free, non-assignable and non-exclusive license to use the software provided to you by Google as part of the Services. This license is for the sole purpose of enabling you to use and enjoy the benefit of the Services as provided by Google, in the manner permitted by these terms. You may not copy, modify, distribute, sell, or lease any part of our Services or included software, nor may you reverse engineer or attempt to extract the source code of that software, unless laws prohibit those restrictions or you have our written permission.' +
             'Open source software is important to us. Some software used in our Services may be offered under an open source license that we will make available to you. There may be provisions in the open source license that expressly override some of these terms.');
+        browser.sleep(500);
         expect(element(by.buttonText('Save')).isEnabled()).toBe(true);
         element(by.buttonText('Save')).click();
     });
@@ -308,7 +310,7 @@ describe('Organization Service Creation', function() {
         expect(element(by.binding('entityVersion.version')).getText()).toContain(svcInitialVersion);
     });
 
-    it('can update the svc description', function () {
+    it('can update the service description', function () {
         browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
             svcName.replace(/ /g,'') + '/' + svcSecondVersion);
         browser.waitForAngular();

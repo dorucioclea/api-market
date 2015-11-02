@@ -1,7 +1,7 @@
 describe('Organization Plan Creation', function() {
 
     // Plan to test with
-    var planName = 'E2E Awesome Plan';
+    var planName = 'End To End Three';
     var planInitialVersion = 'v1';
     var planSecondVersion = 'v2';
     var planDescription = 'Plan created by E2E tests';
@@ -90,7 +90,7 @@ describe('Organization Plan Creation', function() {
         browser.waitForAngular();
         expect(element(by.id('add-policy')).isEnabled()).toBe(false);
         element(by.css('.btn.btn-primary.dropdown-toggle')).click();
-        browser.waitForAngular();
+        browser.sleep(500); // Wait for animation to complete
         element(by.css('.fa.fa-inline.fa-fw.fa-tachometer')).click();
         element(by.model('model[\'minute\']')).sendKeys('6');
         expect(element(by.id('add-policy')).isEnabled()).toBe(true);
@@ -127,7 +127,7 @@ describe('Organization Plan Creation', function() {
         browser.waitForAngular();
         expect(element(by.id('add-policy')).isEnabled()).toBe(false);
         element(by.css('.btn.btn-primary.dropdown-toggle')).click();
-        browser.waitForAngular();
+        browser.sleep(500); // Wait for animation to complete
         element(by.css('.fa.fa-inline.fa-fw.fa-tachometer')).click();
         element(by.model('model[\'minute\']')).sendKeys('6');
         expect(element(by.id('add-policy')).isEnabled()).toBe(true);
