@@ -319,11 +319,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://apim.t1t.be:8000/dev/apiengine/v1',
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
               'API_KEY_NAME': 'apikey'
             },
             'AUTH': {
-              'URL': 'http://apim.t1t.be:8000/dev/apiengineauth/v1'
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -332,9 +332,34 @@ module.exports = function (grunt) {
             'SECURITY': {
               'REDIRECT_URL': '/users/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
-              'IDP_URL': 'https://idp.t1t.be:9443/samlsso',
-              'SP_URL': 'http://api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
+              'SP_URL': 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apimmarket',
+              'CLIENT_TOKEN': 'opaque'
+            }
+          }
+        }
+      },
+      t1tmtp: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'https://apim.t1t.be/apiengine/v1',
+              'API_KEY_NAME': 'apikey'
+            },
+            'AUTH': {
+              'URL': 'https://apim.t1t.be/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/users/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
+              'SP_URL': 'https://api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'SP_NAME': 'APIEngine',
               'CLIENT_TOKEN': 'opaque'
             }
           }
@@ -536,6 +561,42 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:dev',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:pub'
+  ]);
+
+  grunt.registerTask('t1tMtpPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:t1tmtp',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress'
+  ]);
+
+  grunt.registerTask('t1tMtpMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:t1tmtp',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
