@@ -1,21 +1,15 @@
+var constants = require('../test_constants.js');
+
 describe('Organization Service Creation', function() {
 
-    // Svc to test with
-    var svcName = 'End To End Three';
-    var svcInitialVersion = 'v1';
-    var svcSecondVersion = 'v2';
-    var svcBasePath = 'endtoendthree';
-    var svcDescription = 'Service created by E2E tests';
-    var svcImplementationEndpoint = 'http://rest.visireg.com/VisiREGServer-web/rest/v1';
-
     it('can create a new service', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/');
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/');
         browser.waitForAngular();
-        expect(browser.getCurrentUrl()).toBe('http://pub.t1t.be/#/org/Protractor/plans');
+        expect(browser.getCurrentUrl()).toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/plans');
 
         element(by.id('services')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/services');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/services');
 
         element(by.linkText('New Service')).click();
 
@@ -26,69 +20,69 @@ describe('Organization Service Creation', function() {
 
         //Button should be disabled if no data has been entered
         expect(element(by.buttonText('Create Service')).isEnabled()).toBe(false);
-        element(by.model('ctrl.service.name')).sendKeys(svcName);
-        element(by.model('ctrl.service.initialVersion')).sendKeys(svcInitialVersion);
-        element(by.model('ctrl.service.basepath')).sendKeys(svcBasePath);
+        element(by.model('ctrl.service.name')).sendKeys(constants.SVC_NAME);
+        element(by.model('ctrl.service.initialVersion')).sendKeys(constants.SVC_VERSION_INITIAL);
+        element(by.model('ctrl.service.basepath')).sendKeys(constants.SVC_BASEPATH);
         // Button should be enabled now
         expect(element(by.buttonText('Create Service')).isEnabled()).toBe(true);
 
         // Try incorrect basepath
         element(by.model('ctrl.service.basepath')).clear();
-        element(by.model('ctrl.service.basepath')).sendKeys('/' + svcBasePath);
+        element(by.model('ctrl.service.basepath')).sendKeys('/' + constants.SVC_BASEPATH);
         expect(element(by.buttonText('Create Service')).isEnabled()).toBe(false);
 
         // Reset to correct basepath
         element(by.model('ctrl.service.basepath')).clear();
-        element(by.model('ctrl.service.basepath')).sendKeys(svcBasePath);
+        element(by.model('ctrl.service.basepath')).sendKeys(constants.SVC_BASEPATH);
         expect(element(by.buttonText('Create Service')).isEnabled()).toBe(true);
 
-        element(by.model('ctrl.service.description')).sendKeys(svcDescription);
+        element(by.model('ctrl.service.description')).sendKeys(constants.SVC_DESC);
         // TODO Add test for category tags
         element(by.buttonText('Create Service')).click();
 
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' + svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' + constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
         expect(element(by.binding('status')).getText()).toBe('CREATED');
-        expect(element(by.binding('value')).getText()).toBe(svcDescription);
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcInitialVersion);
-        expect(element(by.binding('endpoint')).getText()).toBe('/' + svcBasePath);
+        expect(element(by.binding('value')).getText()).toBe(constants.SVC_DESC);
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_INITIAL);
+        expect(element(by.binding('endpoint')).getText()).toBe('/' + constants.SVC_BASEPATH);
     });
 
     it('can set the implementation endpoint', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('implementation')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/implementation');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/implementation');
         expect(element(by.model('updatedService.endpoint')).getText()).toBe('');
         expect(element(by.buttonText('Save')).isEnabled()).toBe(false);
         element(by.model('updatedService.endpoint')).clear();
-        element(by.model('updatedService.endpoint')).sendKeys(svcImplementationEndpoint);
+        element(by.model('updatedService.endpoint')).sendKeys(constants.SVC_IMPL_ENDPOINT);
         expect(element(by.buttonText('Save')).isEnabled()).toBe(true);
         element(by.buttonText('Save')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/definition');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/definition');
     });
 
     it('can upload a definition file', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('definition')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/definition');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/definition');
 
         expect(element(by.buttonText('Save')).isEnabled()).toBe(false);
 
@@ -102,22 +96,22 @@ describe('Organization Service Creation', function() {
         expect(element(by.buttonText('Save')).isEnabled()).toBe(true);
         element(by.buttonText('Save')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/plans');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/plans');
     });
 
     it('can select a plan to use', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('plans')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/plans');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/plans');
 
         expect(element.all(by.repeater('plan in plans')).count()).toBeGreaterThan(0);
         expect(element(by.buttonText('Save')).isEnabled()).toBe(false);
@@ -134,17 +128,17 @@ describe('Organization Service Creation', function() {
     });
 
     it('can add a Rate Limiting policy to the service', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('policies')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/policies');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/policies');
 
         expect(element.all(by.repeater('policy in ctrl.policies')).count()).toBe(0);
 
@@ -161,17 +155,17 @@ describe('Organization Service Creation', function() {
     });
 
     it('can remove the newly added policy', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('policies')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/policies');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/policies');
 
         expect(element.all(by.repeater('policy in ctrl.policies')).count()).toBe(1);
 
@@ -181,17 +175,17 @@ describe('Organization Service Creation', function() {
     });
 
     it('can add an OAuth2 policy', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('policies')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/policies');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/policies');
 
         expect(element.all(by.repeater('policy in ctrl.policies')).count()).toBe(0);
 
@@ -212,17 +206,17 @@ describe('Organization Service Creation', function() {
     });
 
     it('can add some Service Terms', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
 
         element(by.id('terms')).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/terms');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/terms');
         browser.waitForAngular();
         expect(element(by.buttonText('Save')).isEnabled()).toBe(false);
         element(by.model('html')).sendKeys('Service Terms' +
@@ -239,12 +233,12 @@ describe('Organization Service Creation', function() {
     });
 
     it('can publish the service', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
         expect(element(by.buttonText('Publish')).isEnabled()).toBe(true);
         element(by.buttonText('Publish')).click();
 
@@ -254,12 +248,12 @@ describe('Organization Service Creation', function() {
     });
 
     it('can retire the service', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
         expect(element(by.buttonText('Retire')).isEnabled()).toBe(true);
         element(by.buttonText('Retire')).click();
 
@@ -269,55 +263,55 @@ describe('Organization Service Creation', function() {
     });
 
     it('can create a new version of the service', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcInitialVersion);
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_INITIAL);
 
         element(by.buttonText('New Version')).click();
         expect(element(by.buttonText('Create Version')).isEnabled()).toBe(false);
         expect(element(by.model('shouldClone')).isSelected()).toBeTruthy();
 
-        element(by.model('newVersion')).sendKeys(svcSecondVersion);
+        element(by.model('newVersion')).sendKeys(constants.SVC_VERSION_SECOND);
         expect(element(by.buttonText('Create Version')).isEnabled()).toBe(true);
         element(by.buttonText('Create Version')).click();
 
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcSecondVersion + '/overview');
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_SECOND + '/overview');
         expect(element(by.binding('status')).getText()).toBe('CREATED');
-        expect(element(by.binding('value')).getText()).toBe(svcDescription);
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcSecondVersion);
+        expect(element(by.binding('value')).getText()).toBe(constants.SVC_DESC);
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_SECOND);
     });
 
     it('can switch between service versions', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcSecondVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_SECOND);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcSecondVersion + '/overview');
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcSecondVersion);
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_SECOND + '/overview');
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_SECOND);
 
         element(by.binding('entityVersion.version')).click();
-        element(by.linkText(svcInitialVersion)).click();
+        element(by.linkText(constants.SVC_VERSION_INITIAL)).click();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcInitialVersion + '/overview');
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcInitialVersion);
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_INITIAL + '/overview');
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_INITIAL);
     });
 
     it('can update the service description', function () {
-        browser.get('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcSecondVersion);
+        browser.get(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_SECOND);
         browser.waitForAngular();
         expect(browser.getCurrentUrl())
-            .toBe('http://pub.t1t.be/#/org/Protractor/service/' +
-            svcName.replace(/ /g,'') + '/' + svcSecondVersion + '/overview');
-        expect(element(by.binding('entityVersion.version')).getText()).toContain(svcSecondVersion);
+            .toBe(constants.PUB_BASE_URL + '#/org/' + constants.ORG_NAME.replace(/ /g,'') + '/service/' +
+            constants.SVC_NAME.replace(/ /g,'') + '/' + constants.SVC_VERSION_SECOND + '/overview');
+        expect(element(by.binding('entityVersion.version')).getText()).toContain(constants.SVC_VERSION_SECOND);
 
         //Clear description
         element(by.css('.fa.fa-pencil')).click();
@@ -327,8 +321,8 @@ describe('Organization Service Creation', function() {
 
         //Update description
         element(by.css('.fa.fa-pencil')).click();
-        element(by.model('view.editableValue')).sendKeys(svcDescription);
+        element(by.model('view.editableValue')).sendKeys(constants.SVC_DESC);
         element(by.css('span[ng-click="doSave()"]')).click();
-        expect(element(by.binding('value')).getText()).toEqual(svcDescription);
+        expect(element(by.binding('value')).getText()).toEqual(constants.SVC_DESC);
     });
 });
