@@ -1,8 +1,8 @@
-;(function(angular){
-"use strict";
+;(function(angular) {
+    'use strict';
 
-angular.module('app.config', [])
-    .constant('CONFIG', {
+    angular.module('app.config', [])
+        .constant('CONFIG', {
             BASE: {
                 URL:'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
                 API_KEY_NAME:'apikey',
