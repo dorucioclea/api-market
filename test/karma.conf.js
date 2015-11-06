@@ -90,8 +90,15 @@ module.exports = function(config) {
         // Which plugins to enable
         plugins: [
             'karma-phantomjs-launcher',
-            'karma-jasmine'
+            'karma-jasmine',
+            'karma-bamboo-reporter'
         ],
+
+        // Report test results to bamboo
+        reporters: ['bamboo'],
+        bambooReporter:{
+            filename: 'mocha.json' //optional, defaults to "mocha.json"
+        },
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
