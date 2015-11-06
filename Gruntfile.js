@@ -294,11 +294,12 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://localhost:8080/API-Engine-web/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
-              'URL': 'http://localhost:8080/API-Engine-auth/v1'
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -320,7 +321,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
@@ -345,7 +347,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'https://apim.t1t.be/apiengineauth/v1'
@@ -370,7 +373,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
@@ -395,7 +399,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
@@ -420,7 +425,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
@@ -445,7 +451,8 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'API_KEY_NAME': 'apikey',
+              'API_TTL_NAME': 'ttl'
             },
             'AUTH': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
