@@ -109,6 +109,7 @@
 
                             if (!$sessionStorage.apikey) {
                                 var apikey = getParameterByName(CONFIG.BASE.API_KEY_NAME);
+                                var logoutTtl = getParameterByName(CONFIG.BASE.API_TTL_NAME);
                                 var clientUrl = window.location.origin;
 
                                 if (!apikey) {
@@ -140,6 +141,7 @@
                                     });
                                 } else {
                                     $sessionStorage.apikey = apikey;
+                                    $sessionStorage.logoutTtl = logoutTtl;
                                     var ttl = new Date();
                                     ttl.setMinutes(ttl.getMinutes() + 15);
                                     $sessionStorage.ttl = ttl;
@@ -929,7 +931,7 @@
             return {
                 request: function (config) {
                     config.headers.apikey = $sessionStorage.apikey;
-                    if (Date.parse($sessionStorage.ttl) < Date.parse(new Date())) {
+                    if (Date.parse($sessionStorage.ttl) < new Date()) {
                         console.log('ttl expired');
                         delete $sessionStorage.apikey;
                         $window.location.reload();

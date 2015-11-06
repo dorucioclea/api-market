@@ -254,6 +254,7 @@
           }
 
           function doLogOut() {
+              var logoutExpiry = Date.parse($sessionStorage.logoutTtl);
               var logOutObject = {
                   idpUrl: CONFIG.SECURITY.IDP_URL,
                   spName: CONFIG.SECURITY.SP_NAME,
@@ -267,7 +268,13 @@
                       }
                   });
                   delete $sessionStorage.apikey;
-                  window.location.href = string;
+                  delete $sessionStorage.logoutTtl;
+                  delete $sessionStorage.ttl;
+                  if (logoutExpiry < new Date()) {
+                      $state.go('logout');
+                  } else {
+                      window.location.href = string;
+                  }
               });
           }
 
