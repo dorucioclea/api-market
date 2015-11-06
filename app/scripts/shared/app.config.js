@@ -5,7 +5,8 @@ angular.module('app.config', [])
     .constant('CONFIG', {
             BASE: {
                 URL:'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
-                API_KEY_NAME:'apikey'
+                API_KEY_NAME:'apikey',
+                'API_TTL_NAME': 'ttl'
             },
             AUTH: {
                 URL: 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
