@@ -703,6 +703,26 @@ module.exports = function (grunt) {
     'replace:pub'
   ]);
 
+  grunt.registerTask('testBuild', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:dev',
+    'connect:test',
+    'karma',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:pub'
+  ]);
 
   grunt.registerTask('test', [
     'clean',
