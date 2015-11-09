@@ -149,7 +149,7 @@
             })
         /// ==== APIs Controller
         .controller('ApisCtrl',
-            function ($scope, $modal, contractData, appScreenModel, TOAST_TYPES) {
+            function ($scope, $modal, contractData, appScreenModel, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
 
                 $scope.contracts = contractData;
                 appScreenModel.updateTab('APIs');
@@ -165,11 +165,24 @@
                 }
 
                 function downloadDocs(contract) {
+                    ServiceVersionDefinition.get(
+                        {orgId: contract.serviceOrganizationId,
+                            svcId: contract.serviceId,
+                            versionId: contract.serviceVersion},
+                        function (definitionSpec) {
+                            definitionSpec.host = CONFIG.KONG.HOST;
+                            var data = angular.toJson(definitionSpec, true);
+                            var blob = new Blob([data], {type: 'text/json'}),
+                                a = document.createElement('a');
 
+                            a.download = contract.serviceName + '-' + contract.serviceVersion + '-swagger.json';
+                            a.href = window.URL.createObjectURL(blob);
+                            a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                            a.click();
+                        });
                 }
 
                 function howToInvoke(contract) {
-                    console.log(contract);
                     $modal.open({
                         templateUrl: 'views/modals/serviceHowToInvoke.html',
                         size: 'lg',
@@ -178,7 +191,8 @@
                             contract: contract,
                             endpoint: function (ServiceEndpoint) {
                                 return ServiceEndpoint.get(
-                                    {orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
+                                    {orgId: contract.serviceOrganizationId,
+                                        svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
                             }
                         },
                         windowClass: $scope.modalAnim	// Animation Class put here.

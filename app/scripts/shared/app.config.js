@@ -22,6 +22,9 @@
                 SP_URL: 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
                 SP_NAME: 'apimarket',
                 CLIENT_TOKEN: 'opaque'
+            },
+            KONG: {
+                HOST: 'dev.apim.t1t.be:8443'
             }
         });
 

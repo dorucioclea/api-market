@@ -312,6 +312,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://localhost:8080/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apimarketlocal',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'dev.apim.t1t.be:8443'
             }
           }
         }
@@ -338,6 +341,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apimmarket',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'dev.apim.t1t.be:8443'
             }
           }
         }
@@ -364,6 +370,9 @@ module.exports = function (grunt) {
               'SP_URL': 'https://api.t1t.be/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'APIEngine',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'apim.t1t.be'
             }
           }
         }
@@ -390,6 +399,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'devasu18.dev.digant.antwerpen.local'
             }
           }
         }
@@ -416,6 +428,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'devasu18.dev.digant.antwerpen.local'
             }
           }
         }
@@ -442,6 +457,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'rasu076.rte.antwerpen.local'
             }
           }
         }
@@ -468,6 +486,9 @@ module.exports = function (grunt) {
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'opaque'
+            },
+            KONG: {
+              HOST: 'rasu076.rte.antwerpen.local'
             }
           }
         }
