@@ -149,11 +149,41 @@
             })
         /// ==== APIs Controller
         .controller('ApisCtrl',
-            function ($scope, contractData, appScreenModel) {
+            function ($scope, $modal, contractData, appScreenModel, TOAST_TYPES) {
 
                 $scope.contracts = contractData;
                 appScreenModel.updateTab('APIs');
                 $scope.toggle = toggle;
+                $scope.copyKey = copyKey;
+                $scope.downloadDocs = downloadDocs;
+                $scope.howToInvoke = howToInvoke;
+
+                function copyKey(key) {
+                    var type = TOAST_TYPES.INFO;
+                    var msg = '<b>API Key copied to clipboard!</b><br>' + key;
+                    $scope.toastService.createToast(type, msg, true);
+                }
+
+                function downloadDocs(contract) {
+
+                }
+
+                function howToInvoke(contract) {
+                    console.log(contract);
+                    $modal.open({
+                        templateUrl: 'views/modals/serviceHowToInvoke.html',
+                        size: 'lg',
+                        controller: 'HowToInvokeCtrl as ctrl',
+                        resolve: {
+                            contract: contract,
+                            endpoint: function (ServiceEndpoint) {
+                                return ServiceEndpoint.get(
+                                    {orgId: contract.serviceOrganizationId, svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
 
                 function toggle(contract) {
                     contract.apiExpanded = !contract.apiExpanded;

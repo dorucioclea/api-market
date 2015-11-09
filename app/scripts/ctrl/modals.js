@@ -385,6 +385,16 @@
                 }
             })
 
+        .controller('HowToInvokeCtrl', function ($scope, $modal, contract, endpoint) {
+            $scope.contract = contract;
+            $scope.endpoint = endpoint;
+            $scope.modalClose = modalClose;
+
+            function modalClose() {
+                $scope.$close();
+            }
+        })
+
 /// ==== OAuthConfig Controller
         .controller('OAuthConfigCtrl',
             function ($scope, $rootScope, $modal, $state, appVersionDetails,

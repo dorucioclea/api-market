@@ -1,50 +1,56 @@
 <div class="row">
-  <div class="col-sm-12">
-    <h4>Application APIs</h4>
-    <p>Below is a list of all the APIs this application consumes. This information is derived from the set of Service Contracts the Application has entered into.</p>
-    <hr>
-  </div>
-
-  <div class="col-sm-10 col-sm-offset-1">
-    <div class="btn-group pull-right">
-      <button class="btn btn-sm btn-default">Download as JSON</button>
-      <button class="btn btn-sm btn-default">Download as XML</button>
+    <div class="col-sm-12">
+        <h4>Application APIs</h4>
+        <p>Below is a list of all the APIs this application consumes. This information is derived from the set of Service Contracts the Application has entered into.</p>
+        <hr>
     </div>
-  </div>
 
-  <div class="col-sm-10 col-sm-offset-1 mt10 table-responsive">
-    <table class="table table-bordered table-condensed table-hover">
-      <thead>
-      <tr>
-        <th nowrap="nowrap" width="1%"></th>
-        <th nowrap="nowrap">Service</th>
-        <th nowrap="nowrap" width="1%">Version</th>
-        <th nowrap="nowrap" width="30%">Plan</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat-start="contract in contracts">
-          <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': contract.apiExpanded, 'fa-chevron-right': !contract.apiExpanded}" ng-click="toggle(contract)"></i></td>
-          <td>{{contract.serviceName}}</td>
-          <td>{{contract.serviceVersion}}</td>
-          <td>{{contract.planName}}</td>
-        </tr>
-        <tr ng-repeat-end ng-show="contract.apiExpanded">
-          <td colspan="4">
-            <form role="form">
-              <div class="form-group">
-                <label>API Key</label>
-                <input readonly type="text" class="form-control" value="{{contract.apikey}}">
-              </div>
-              <div class="form-group">
-                <div>
-                  <button title="Click for details on how to invoke this managed service." data-field="detailsButton" class="btn btn-default" ng-click="howToInvoke(api)">How to invoke...</button>
-                </div>
-              </div>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="col-sm-10 col-sm-offset-1">
+
+    </div>
+
+    <div class="col-sm-10 col-sm-offset-1 mt10 table-responsive">
+        <table class="table table-bordered table-condensed table-hover">
+            <thead>
+            <tr>
+                <th nowrap="nowrap" width="1%"></th>
+                <th nowrap="nowrap">Service</th>
+                <th nowrap="nowrap" width="1%">Version</th>
+                <th nowrap="nowrap" width="30%">Plan</th>
+                <th nowrap="nowrap">Documentation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat-start="contract in contracts">
+                <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': contract.apiExpanded, 'fa-chevron-right': !contract.apiExpanded}" ng-click="toggle(contract)"></i></td>
+                <td>{{contract.serviceName}}</td>
+                <td>{{contract.serviceVersion}}</td>
+                <td>{{contract.planName}}</td>
+                <td>
+                    <button class="btn btn-sm btn-default" ng-click="downloadDocs(contract)">Download as JSON</button>
+                </td>
+            </tr>
+            <tr ng-repeat-end ng-show="contract.apiExpanded">
+                <td colspan="5">
+                    <form role="form">
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <div class="input-group col-sm-12">
+                                <input readonly type="text" class="form-control" value="{{contract.apikey}}">
+                                <div class="input-group-btn">
+                                    <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default fa fa-copy" ng-click="copyKey(contract.apikey)" title="Click to copy API key to clipboard!"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button title="Click for details on how to invoke this service." class="btn btn-default" ng-click="howToInvoke(contract)">How to invoke...</button>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
