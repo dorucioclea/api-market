@@ -347,7 +347,7 @@
 
         .directive('apiList', function () {
             return {
-                retrict: 'E',
+                restrict: 'E',
                 scope: {
                     apis: '=',
                     stats: '='
