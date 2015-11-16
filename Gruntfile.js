@@ -509,22 +509,38 @@ module.exports = function (grunt) {
     // Replace //
     // ======= //
     replace: {
-      mkt: {
+      publisherOn: {
+        src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\$scope.publisherMode = false;/g,
+            to: '$scope.publisherMode = true;'
+          }
+        ]
+      },
+      publisherOff: {
         src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
         overwrite: true,
         replacements: [
           {
             from: /\$scope.publisherMode = true;/g,
             to: '$scope.publisherMode = false;'
-          },
+          }
+        ]
+      },
+      mkt: {
+        src: ['<%= config.app %>/styles/main.less'],
+        overwrite: true,
+        replacements: [
           {
-            from: '@import "theme-override.less";',
-            to: '//@import "theme-override.less";'
+            from: '@import "theme-t1t.less";',
+            to: '//@import "theme-t1t.less";'
           }
         ]
       },
       pub: {
-        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+        src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
         replacements: [
           {
@@ -532,8 +548,18 @@ module.exports = function (grunt) {
             to: '$scope.publisherMode = true;'
           },
           {
-            from: /\/\/@import "theme-override.less";/g,
+            from: '@import "theme-t1t.less";',
             to: '@import "theme-override.less";'
+          }
+        ]
+      },
+      t1t: {
+        src: ['<%= config.app %>/styles/main.less'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\/\/@import "theme-t1t.less";/g,
+            to: '@import "theme-t1t.less";'
           }
         ]
       }
@@ -584,24 +610,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:dev',
-    'less:dist',
-    'useminPrepare',
-    'copy:dist',
-    'concat',
-    'ngAnnotate',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin',
-    'compress'
-  ]);
-
-  grunt.registerTask('mkt', [
-    'clean:dist',
-    'wiredep',
-    'ngconstant:dev',
-    'replace:mkt',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -613,7 +622,28 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('mkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:dev',
+    'replace:mkt',
+    'replace:publisherOff',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t',
+    'replace:PublisherOn'
   ]);
 
   grunt.registerTask('t1tMtpPub', [
@@ -637,7 +667,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:t1tmtp',
-    'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -649,13 +679,14 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('digiDevPub', [
     'clean:dist',
     'wiredep',
     'ngconstant:digiDevPub',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -666,7 +697,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress'
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt', [
@@ -674,6 +706,7 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMkt',
     'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -685,13 +718,15 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('digiAccPub', [
     'clean:dist',
     'wiredep',
     'ngconstant:digiAccPub',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -702,7 +737,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress'
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt', [
@@ -710,6 +746,7 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMkt',
     'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -721,35 +758,17 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('testBuildPub', [
     'clean:dist',
     'wiredep',
     'ngconstant:dev',
+    'replace:pub',
     'connect:test',
     'karma',
-    'less:dist',
-    'useminPrepare',
-    'copy:dist',
-    'concat',
-    'ngAnnotate',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin',
-    'compress'
-  ]);
-
-  grunt.registerTask('testBuildMkt', [
-    'clean:dist',
-    'wiredep',
-    'ngconstant:dev',
-    'connect:test',
-    'karma',
-    'replace:mkt',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -761,7 +780,30 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('testBuildMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:dev',
+    'replace:mkt',
+    'replace:publisherOff',
+    'connect:test',
+    'karma',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('test', [
