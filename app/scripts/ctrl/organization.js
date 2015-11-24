@@ -263,7 +263,7 @@
 
         /// ==== Members Controller
         .controller('MembersCtrl',
-            function ($scope, $state, $stateParams, memberData, roleData, orgScreenModel,
+            function ($scope, $state, $modal, $stateParams, memberData, roleData, orgScreenModel,
                       toastService, TOAST_TYPES, OrganizationMembers) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
@@ -297,6 +297,23 @@
                 function transferOwnership(member) {
                     //TODO implement
                     console.log('transfer ownership clicked');
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationTransferOwner.html',
+                        size: 'lg',
+                        controller: 'TransferOrgCtrl as ctrl',
+                        resolve: {
+                            org: function () {
+                                return $scope.org;
+                            },
+                            currentOwner: function () {
+                                return $scope.User.currentUser;
+                            },
+                            newOwner: function () {
+                                return member;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
                 }
 
             });

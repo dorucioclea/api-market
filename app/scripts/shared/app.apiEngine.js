@@ -30,6 +30,9 @@
                 }
             });
         })
+        .factory('OrganizationOwnershipTransfer', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/transfer');
+        })
         .factory('Plan', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/plans/:planId',
                 {orgId: '@organizationId', planId: '@id'}, {
