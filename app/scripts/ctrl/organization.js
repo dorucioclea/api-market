@@ -263,11 +263,41 @@
 
         /// ==== Members Controller
         .controller('MembersCtrl',
-            function ($scope, memberData, orgScreenModel) {
-
+            function ($scope, $state, $stateParams, memberData, roleData, orgScreenModel,
+                      toastService, TOAST_TYPES, OrganizationMembers) {
+                $scope.addMember = addMember;
+                $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
+                $scope.roles = roleData;
+                $scope.transferOwnership = transferOwnership;
 
                 orgScreenModel.updateTab('Members');
+
+                function addMember() {
+                    //TODO Implement
+                    console.log('add member clicked');
+                }
+
+                function grantRoleToMember(role, member) {
+                    var updateObject = {
+                        userId: member.userId,
+                        roleId: role.id
+                    };
+                    OrganizationMembers.update({orgId: $stateParams.orgId, userId: member.userId},
+                        updateObject,
+                        function (reply) {
+                        $state.forceReload();
+                        toastService.createToast('info',
+                            '<b>' + member.userName + '</b> now has the <b>' + role.name + '</b> role.', true);
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Could not update member role');
+                    })
+                }
+
+                function transferOwnership(member) {
+                    //TODO implement
+                    console.log('transfer ownership clicked');
+                }
 
             });
     // +++ End Organization Screen Subcontrollers +++
