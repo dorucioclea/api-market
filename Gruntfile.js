@@ -519,7 +519,7 @@ module.exports = function (grunt) {
           {
             from: /\$scope.publisherMode = true;/g,
             to: '$scope.publisherMode = false;'
-          }
+          },
         ]
       },
       mkt: {
@@ -546,12 +546,17 @@ module.exports = function (grunt) {
           }
         ]
       },
+
       t1t: {
         src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
         replacements: [
           {
             from: /\/\/@import "theme-t1t.less";/g,
+            to: '@import "theme-t1t.less";'
+          },
+          {
+            from: '@import "theme-override.less";',
             to: '@import "theme-t1t.less";'
           }
         ]
