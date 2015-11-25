@@ -566,6 +566,29 @@
                 }
             })
 
+        /// ==== AddOrgMemberCtrl Controller
+        .controller('AddOrgMemberCtrl',
+            function ($scope, $modal, $state, org, roles, toastService, TOAST_TYPES) {
+                $scope.addMember = addMember;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+                $scope.roles = roles;
+                $scope.selectedRole = null;
+                $scope.selectRole = selectRole;
+
+                function addMember(email) {
+                    toastService.createToast('success', 'Added member.', true);
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function selectRole(role) {
+                    $scope.selectedRole = role;
+                }
+            })
+
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
             function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES, OrganizationOwnershipTransfer) {

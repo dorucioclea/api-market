@@ -274,8 +274,20 @@
                 orgScreenModel.updateTab('Members');
 
                 function addMember() {
-                    //TODO Implement
-                    console.log('add member clicked');
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationAddMember.html',
+                        size: 'lg',
+                        controller: 'AddOrgMemberCtrl as ctrl',
+                        resolve: {
+                            org: function() {
+                                return $scope.org;
+                            },
+                            roles: function() {
+                                return $scope.roles;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
                 }
 
                 function grantRoleToMember(role, member) {
@@ -284,8 +296,7 @@
                         roleId: role.id
                     };
                     OrganizationMembers.update({orgId: $stateParams.orgId, userId: member.userId},
-                        updateObject,
-                        function (reply) {
+                        updateObject, function (reply) {
                         $state.forceReload();
                         toastService.createToast('info',
                             '<b>' + member.userName + '</b> now has the <b>' + role.name + '</b> role.', true);
@@ -295,8 +306,6 @@
                 }
 
                 function transferOwnership(member) {
-                    //TODO implement
-                    console.log('transfer ownership clicked');
                     $modal.open({
                         templateUrl: 'views/modals/organizationTransferOwner.html',
                         size: 'lg',

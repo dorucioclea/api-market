@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb30">
   <div class="panel panel-default">
     <div class="panel-body">
       <!-- Members Tab Content -->
@@ -37,7 +37,7 @@
         </div>
 
         <!-- ngRepeat: member in filteredMembers -->
-        <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText}">
+        <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText} | orderBy:'userId'">
           <div class="col-sm-12" >
             <span class="title"><a>{{member.userName}}</a>
             <span class="secondary ng-binding">({{member.userId}})</span></span>
@@ -46,15 +46,20 @@
               <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
               <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
             </a>
-            <div class="btn-group dropdown pull-right" dropdown>
-              <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
-                {{member.roles[0].roleName}}<span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li ng-repeat="role in roles | excludeRole:member.roles[0]" class="text-right" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
-                <li class="divider" ng-if="User.isAuthorizedFor('orgAdmin')"></li>
-                <li ng-if="User.isAuthorizedFor('orgAdmin')" class="text-right" ng-click="transferOwnership(member)"><a>Transfer Ownership</a></li>
-              </ul>
+            <div class="pull-right">
+              <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                  {{member.roles[0].roleName}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li ng-repeat="role in roles | excludeRole:member.roles[0]" class="text-right" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
+                  <li class="divider" ng-if="User.isAuthorizedFor('orgAdmin')"></li>
+                  <li ng-if="User.isAuthorizedFor('orgAdmin')" class="text-right" ng-click="transferOwnership(member)"><a>Transfer Ownership</a></li>
+                </ul>
+              </div>
+              <div ng-if="!User.isAuthorizedFor('orgAdmin')">
+                {{member.roles[0].roleName}}
+              </div>
             </div>
           </div>
           <div class="col-sm-12">
