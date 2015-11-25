@@ -3,6 +3,20 @@
 
     angular.module('app.filters', [])
 
+    .filter('excludeRole', function () {
+        return function (roles, currentRole) {
+            var out = [];
+            angular.forEach(roles, function (role) {
+                if (!role.autoGrant) {  // Ownership is autogranted, we do not want to include it in our list
+                    if (role.id != currentRole.roleId) {
+                        out.push(role);
+                    }
+                }
+            });
+            return out;
+        }
+    })
+
     .filter('joinBy', function () {
         return function (input, delimiter) {
             return (input || []).join(delimiter || ',');

@@ -510,6 +510,10 @@
                         Member: 'Member',
                         memberData: function (Member, organizationId) {
                             return Member.query({orgId: organizationId}).$promise;
+                        },
+                        Roles: 'Roles',
+                        roleData: function (Roles) {
+                            return Roles.query().$promise;
                         }
                     },
                     controller: 'MembersCtrl'

@@ -23,7 +23,15 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:id/activity');
         })
         .factory('OrganizationMembers', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:memberId');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:memberId/:roleId', {}, {
+                update: {
+                    mehtod: 'PUT',
+                    isArray: true
+                }
+            });
+        })
+        .factory('OrganizationOwnershipTransfer', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/transfer');
         })
         .factory('Plan', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/plans/:planId',
@@ -237,6 +245,11 @@
 
         .factory('PolicyDefs', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/policyDefs/:policyId');
+        })
+
+        /// ========== ROLES ============================================================================
+        .factory('Roles', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/roles/:roleId')
         })
 
         /// ========== SEARCH ===========================================================================

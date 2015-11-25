@@ -564,6 +564,31 @@
                     imageService.clear();
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
+            })
+
+        /// ==== TransferOrgCtrl Controller
+        .controller('TransferOrgCtrl',
+            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES, OrganizationOwnershipTransfer) {
+                $scope.doTransfer = doTransfer;
+                $scope.newOwner = newOwner;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+
+                function doTransfer() {
+                    var userId = newOwner.userName.length > 0 ? newOwner.userName : newOwner.userId;
+                    var transferObj = {
+                        currentOwnerId: currentOwner.id,
+                        newOwnerId: newOwner.userId
+                    };
+                    OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
+                        $state.forceReload();
+                        toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + userId + '</b>', true)
+                    })
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
             });
 
     // #end
