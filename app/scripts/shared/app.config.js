@@ -5,8 +5,7 @@
         .constant('CONFIG', {
             BASE: {
                 URL:'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
-                API_KEY_NAME:'apikey',
-                'API_TTL_NAME': 'ttl'
+                JWT_HEADER_NAME: 'jwt'
             },
             AUTH: {
                 URL: 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
@@ -21,7 +20,7 @@
                 IDP_URL: 'https://dev.idp.t1t.be:9443/samlsso',
                 SP_URL: 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
                 SP_NAME: 'apimarket',
-                CLIENT_TOKEN: 'opaque'
+                CLIENT_TOKEN: 'jwt'
             },
             KONG: {
                 HOST: 'dev.apim.t1t.be:8443'

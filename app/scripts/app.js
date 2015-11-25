@@ -2,51 +2,52 @@
     'use strict';
 
     angular.module('app', [
-        /* Angular modules */
-        'ngAnimate',
-        'ngResource',
-        'ngSanitize',
-        'ngAria',
-        'ngMaterial',
+            /* Angular modules */
+            'ngAnimate',
+            'ngResource',
+            'ngSanitize',
+            'ngAria',
+            'ngMaterial',
 
-        /* 3rd party modules */
-        'ui.router',
-        'ngStorage',
-        'ui.bootstrap',
-        'angular-loading-bar',
-        'FBAngular',
-        'matchMedia',
-        'ngTagsInput',
-        'schemaForm',
-        'angular-clipboard',
-        'flow',
-        'gridshore.c3js.chart',
-        'textAngular',
-        'relativeDate',
+            /* 3rd party modules */
+            'ui.router',
+            'ngStorage',
+            'ui.bootstrap',
+            'angular-loading-bar',
+            'FBAngular',
+            'matchMedia',
+            'ngTagsInput',
+            'schemaForm',
+            'angular-clipboard',
+            'flow',
+            'gridshore.c3js.chart',
+            'textAngular',
+            'relativeDate',
+            'angular-jwt',
 
-        /* custom modules */
-        'app.ctrls',
-        'app.config',
-        'app.constants',
-        'app.directives',
-        'app.services',
-        'app.filters',
-        'app.apiEngine',
-        'app.ctrl.auth.oauth',
-        'app.ctrl.login',
-        'app.ctrl.dashboard',
-        'app.ctrl.modals',
-        'app.ctrl.modals.lifecycle',
-        'app.ctrl.modals.support',
-        'app.ctrl.api',
-        'app.ctrl.service',
-        'app.ctrl.application',
-        'app.ctrl.organization',
-        'app.ctrl.plan',
-        'app.ctrl.policy',
-        'app.ctrl.user'
+            /* custom modules */
+            'app.ctrls',
+            'app.config',
+            'app.constants',
+            'app.directives',
+            'app.services',
+            'app.filters',
+            'app.apiEngine',
+            'app.ctrl.auth.oauth',
+            'app.ctrl.login',
+            'app.ctrl.dashboard',
+            'app.ctrl.modals',
+            'app.ctrl.modals.lifecycle',
+            'app.ctrl.modals.support',
+            'app.ctrl.api',
+            'app.ctrl.service',
+            'app.ctrl.application',
+            'app.ctrl.organization',
+            'app.ctrl.plan',
+            'app.ctrl.policy',
+            'app.ctrl.user'
 
-    ])
+        ])
 
         // disable spinner in loading-bar
         .config(function (cfpLoadingBarProvider) {
@@ -56,11 +57,11 @@
 
         // ngStorage key config
         .config(function ($localStorageProvider) {
-                $localStorageProvider.setKeyPrefix('apim-');
-            })
+            $localStorageProvider.setKeyPrefix('apim-');
+        })
         .config(function ($sessionStorageProvider) {
-                $sessionStorageProvider.setKeyPrefix('apim_session-');
-            })
+            $sessionStorageProvider.setKeyPrefix('apim_session-');
+        })
 
         // UI-Router states
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -80,7 +81,7 @@
 
             $stateProvider
 
-                // ERROR PAGE =====================================================================
+            // ERROR PAGE =====================================================================
                 .state('error', {
                     templateUrl: '/views/error.html',
                     controller: 'ErrorCtrl'
@@ -104,52 +105,37 @@
                     templateUrl: '/views/partials/root.html',
                     resolve: {
                         CONFIG: 'CONFIG',
-                        security: function ($q, $sessionStorage, CONFIG) {
-                            var deferred = $q.defer();
+                        security: function ($sessionStorage, $http, CONFIG) {
 
-                            if (!$sessionStorage.apikey) {
-                                var apikey = getParameterByName(CONFIG.BASE.API_KEY_NAME);
-                                var logoutTtl = getParameterByName(CONFIG.BASE.API_TTL_NAME);
+                            if (!$sessionStorage.jwt) {
+                                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
                                 var clientUrl = window.location.origin;
 
-                                if (!apikey) {
+                                if (!jwt) {
                                     var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
                                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
                                         '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
                                         CONFIG.SECURITY.CLIENT_TOKEN + '"}';
 
-                                    $.ajax({
+                                    return $http({
                                         method: 'POST',
                                         url: url,
                                         data: data,
-                                        dataType: 'text',
-                                        crossOrigin: true,
-                                        contentType: 'application/json',
                                         headers: {
-                                            'apikey': CONFIG.SECURITY.API_KEY
+                                            'Content-Type': 'application/json'
                                         },
-                                        async: false,
-                                        success: function (data) {
-                                            window.location.href = data;
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.log('Request failed with error code:', textStatus);
-                                            console.log(errorThrown);
-                                            console.log(jqXHR);
-                                        }
+                                        responseType: 'text'
+                                    }).then(function success(result) {
+                                        window.location.href = result.data;
+                                    }, function error(error) {
+                                        console.log('Request failed with error code: ', error.status);
+                                        console.log(error);
                                     });
                                 } else {
-                                    $sessionStorage.apikey = apikey;
-                                    $sessionStorage.logoutTtl = logoutTtl;
-                                    var ttl = new Date();
-                                    ttl.setMinutes(ttl.getMinutes() + 15);
-                                    $sessionStorage.ttl = ttl;
+                                    $sessionStorage.jwt = jwt;
                                     window.location.href = clientUrl;
                                 }
-                                return deferred.reject('NOT_AUTHENTICATED');
-                            } else {
-                                deferred.resolve('AUTHENTICATED');
                             }
 
                             function getParameterByName(name) {
@@ -167,7 +153,7 @@
                     controller: 'HeadCtrl'
                 })
 
-// MARKETPLACE CONSUMER DASHBOARD =================================================
+                // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
                     url: '/org/:orgId/applications',
                     templateUrl: '/views/market-dashboard.html',
@@ -926,25 +912,47 @@
             });
         })
 
-        // Make sure we use always the api key EXCEPT FOR OAUTH GRANT
-        .factory('sessionInjector', function ($sessionStorage, $window) {
+        .factory('apikeyInjector', function(CONFIG) {
             return {
                 request: function (config) {
-                    config.headers.apikey = $sessionStorage.apikey;
-                    if (Date.parse($sessionStorage.ttl) < new Date()) {
-                        console.log('ttl expired');
-                        delete $sessionStorage.apikey;
-                        $window.location.reload();
-                    }
-                    var ttl = new Date();
-                    ttl.setMinutes(ttl.getMinutes() + 15);
-                    $sessionStorage.ttl = ttl;
+                    config.headers.apikey = CONFIG.SECURITY.API_KEY;
                     return config;
                 }
             };
         })
-        .config(function ($httpProvider) {
-            $httpProvider.interceptors.push('sessionInjector');
+
+        .config(function ($httpProvider, jwtInterceptorProvider) {
+            // We're annotating the function so that the $injector works when the file is minified (known issue)
+            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$http', 'jwtHelper', 'CONFIG',
+                function($sessionStorage, $http, jwtHelper, CONFIG) {
+                //if (!$sessionStorage.jwt || jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                //    var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
+                //    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
+                //        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
+                //        '", "clientAppRedirect": "", "token": "' +
+                //        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
+                //
+                //    return $http({
+                //        method: 'POST',
+                //        url: url,
+                //        data: data,
+                //        headers: {
+                //            'Content-Type': 'application/json'
+                //        },
+                //        responseType: 'text'
+                //    }).then(function success(result) {
+                //        window.location.href = result.data;
+                //    }, function error(error) {
+                //        console.log('Request failed with error code: ', error.status);
+                //        console.log(error);
+                //    });
+                //} else {
+                //    return $sessionStorage.jwt;
+                //}
+                    return $sessionStorage.jwt;
+            }];
+            $httpProvider.interceptors.push('jwtInterceptor');
+            $httpProvider.interceptors.push('apikeyInjector');
         })
 
         // Define Force Reload

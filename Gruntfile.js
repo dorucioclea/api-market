@@ -295,8 +295,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
@@ -311,7 +310,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
               'SP_URL': 'http://localhost:8080/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apimarketlocal',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'dev.apim.t1t.be:8443'
@@ -324,8 +323,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
@@ -340,7 +338,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
               'SP_URL': 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apimmarket',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'dev.apim.t1t.be:8443'
@@ -353,8 +351,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'https://apim.t1t.be/apiengineauth/v1'
@@ -369,7 +366,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'https://api.t1t.be/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'APIEngine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'apim.t1t.be'
@@ -382,8 +379,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
@@ -398,7 +394,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'devasu18.dev.digant.antwerpen.local'
@@ -411,8 +407,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
@@ -427,7 +422,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'devasu18.dev.digant.antwerpen.local'
@@ -440,8 +435,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
@@ -456,7 +450,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'rasu076.rte.antwerpen.local'
@@ -469,8 +463,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'BASE': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey',
-              'API_TTL_NAME': 'ttl'
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
               'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
@@ -485,7 +478,7 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
               HOST: 'rasu076.rte.antwerpen.local'
@@ -643,7 +636,7 @@ module.exports = function (grunt) {
     'htmlmin',
     'compress',
     'replace:t1t',
-    'replace:PublisherOn'
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('t1tMtpPub', [
