@@ -305,10 +305,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
-              'SP_URL': 'http://localhost:8080/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apimarketlocal',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -333,10 +333,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
-              'SP_URL': 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://dev.api.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apimmarket',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -361,10 +361,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'https://api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -389,10 +389,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -417,10 +417,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -445,10 +445,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -473,10 +473,10 @@ module.exports = function (grunt) {
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },

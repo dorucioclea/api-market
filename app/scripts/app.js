@@ -112,7 +112,7 @@
                                 var clientUrl = window.location.origin;
 
                                 if (!jwt) {
-                                    var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
+                                    var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
                                         '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
