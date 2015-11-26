@@ -19,7 +19,7 @@
                 API_KEY: '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
                 IDP_URL: 'https://dev.idp.t1t.be:9443/samlsso',
                 SP_URL: 'http://dev.api.t1t.be/API-Engine-web/v1/users/idp/callback',
-                SP_NAME: 'apimarket',
+                SP_NAME: 'apimmarket',
                 CLIENT_TOKEN: 'jwt'
             },
             KONG: {
