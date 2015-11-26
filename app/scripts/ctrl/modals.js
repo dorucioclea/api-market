@@ -598,14 +598,22 @@
                 $scope.modalClose = modalClose;
 
                 function doTransfer() {
-                    var userId = newOwner.userName.length > 0 ? newOwner.userName : newOwner.userId;
+                    var user = newOwner.userName.length > 0 ? newOwner.userName : newOwner.userId;
                     var transferObj = {
-                        currentOwnerId: currentOwner.id,
+                        currentOwnerId: currentOwner.username,
                         newOwnerId: newOwner.userId
                     };
                     OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
-                        $state.forceReload();
-                        toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + userId + '</b>', true)
+                        // We changed our own role, need to update the CurrentUserInfo
+                        $scope.User.updateCurrentUserInfo($scope.User).then(function (success) {
+                            $state.forceReload();
+                            toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + user + '</b>', true);
+                            $scope.modalClose();
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not retrieve updated user permissions');
+                        });
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Failed to transfer organization ownership');
                     })
                 }
 

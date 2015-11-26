@@ -22,14 +22,6 @@
         .factory('OrganizationActivity', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:id/activity');
         })
-        .factory('OrganizationMembers', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:memberId/:roleId', {}, {
-                update: {
-                    mehtod: 'PUT',
-                    isArray: true
-                }
-            });
-        })
         .factory('OrganizationOwnershipTransfer', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/transfer');
         })
@@ -55,7 +47,12 @@
                 '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
         })
         .factory('Member', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:userId/:roleId', {}, {
+                update: {
+                    method: 'PUT',
+                    isArray: true
+                }
+            });
         })
         .factory('Application', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId',

@@ -1,5 +1,5 @@
 <div class="row mb30">
-  <div class="panel panel-default">
+  <div class="panel panel-default mb30">
     <div class="panel-body">
       <!-- Members Tab Content -->
       <div class="col-sm-12">
@@ -41,11 +41,11 @@
           <div class="col-sm-12" >
             <span class="title"><a>{{member.userName}}</a>
             <span class="secondary ng-binding">({{member.userId}})</span></span>
-            <a>
+            <span class="text-muted small">
               <i class="fa fa-clock-o fa-fw"></i>
-              <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
-              <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
-            </a>
+              <span>Last modified on</span>
+              <span>{{member.joinedOn | date }}</span>
+            </span>
             <div class="pull-right">
               <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>

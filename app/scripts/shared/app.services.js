@@ -410,10 +410,10 @@
             this.currentUser = {};
 
             this.updateCurrentUserInfo = function (currentUserModel) {
-                CurrentUserInfo.get({}, function (userInfo) {
+                return CurrentUserInfo.get({}, function (userInfo) {
                     currentUserModel.currentUser = userInfo;
                     createPermissionsTree(userInfo.permissions);
-                });
+                }).$promise;
             };
 
             this.setCurrentUserInfo = function (currentUserInfo) {
@@ -422,6 +422,7 @@
             };
 
             var createPermissionsTree = function (permissions) {
+                permissionTree = [];
                 angular.forEach(permissions, function (value) {
                     if (!permissionTree[value.organizationId]) {
                         permissionTree[value.organizationId] = [];

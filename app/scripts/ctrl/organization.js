@@ -85,10 +85,10 @@
 
             })
 
-/// ==== Organization Controller
+        /// ==== Organization Controller
         .controller('OrganizationCtrl',
             function ($scope, $state, $stateParams, screenSize, orgData,
-                      toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
+                      toastService, TOAST_TYPES, Organization, Member, orgScreenModel) {
 
                 $scope.displayTab = orgScreenModel;
                 $scope.org = orgData;
@@ -102,7 +102,7 @@
 
                 function init() {
                     orgScreenModel.updateOrganization(orgData);
-                    OrganizationMembers.query({orgId: $scope.org.id}, function (reply) {
+                    Member.query({orgId: $scope.org.id}, function (reply) {
                         $scope.memberCount = reply.length;
                     });
                 }
@@ -264,7 +264,7 @@
         /// ==== Members Controller
         .controller('MembersCtrl',
             function ($scope, $state, $modal, $stateParams, memberData, roleData, orgScreenModel,
-                      toastService, TOAST_TYPES, OrganizationMembers) {
+                      toastService, TOAST_TYPES, Member) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
@@ -295,14 +295,25 @@
                         userId: member.userId,
                         roleId: role.id
                     };
-                    OrganizationMembers.update({orgId: $stateParams.orgId, userId: member.userId},
-                        updateObject, function (reply) {
-                        $state.forceReload();
-                        toastService.createToast('info',
-                            '<b>' + member.userName + '</b> now has the <b>' + role.name + '</b> role.', true);
-                    }, function (error) {
-                        toastService.createErrorToast(error, 'Could not update member role');
-                    })
+                    Member.update({orgId: $stateParams.orgId, userId: member.userId},
+                        updateObject,
+                        function (reply) {
+                            Member.query({orgId: $stateParams.orgId}, function (updatedList) {
+                                $scope.members = updatedList;
+                                if (member.userId === $scope.User.currentUser.username) {
+                                    // We changed our own role, need to update the CurrentUserInfo
+                                    $scope.User.updateCurrentUserInfo($scope.User);
+                                }
+                                var name = member.userName ? member.userName : member.userId;
+                                toastService.createToast('info',
+                                    '<b>' + name + '</b> now has the <b>' + role.name + '</b> role.', true);
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Could not retrieve updated member roles');
+                            });
+                        },
+                        function (error) {
+                            toastService.createErrorToast(error, 'Could not update member role');
+                        });
                 }
 
                 function transferOwnership(member) {
