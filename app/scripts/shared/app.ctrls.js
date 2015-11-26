@@ -224,20 +224,14 @@
         }
     })
 
-    .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
+    .controller('ErrorCtrl', function ($scope, $state) {
         $scope.error = $state.current.error;
         console.log($scope.error);
-        $scope.retryLogin = retryLogin;
-
-        function retryLogin() {
-            delete $sessionStorage.apikey;
-            $state.go('root');
-        }
     })
 
     .controller('HeadCtrl',
       function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-               currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
+               currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
           $scope.currentUserModel = currentUserModel;
@@ -254,7 +248,6 @@
           }
 
           function doLogOut() {
-              var logoutExpiry = Date.parse($sessionStorage.logoutTtl);
               var logOutObject = {
                   idpUrl: CONFIG.SECURITY.IDP_URL,
                   spName: CONFIG.SECURITY.SP_NAME,
@@ -267,14 +260,12 @@
                           string += value;
                       }
                   });
-                  delete $sessionStorage.apikey;
-                  delete $sessionStorage.logoutTtl;
-                  delete $sessionStorage.ttl;
-                  if (logoutExpiry < new Date()) {
+                  if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                       $state.go('logout');
                   } else {
                       window.location.href = string;
                   }
+                  delete $sessionStorage.jwt;
               });
           }
 
