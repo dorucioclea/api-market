@@ -5,9 +5,9 @@
 
   // Root Controller
       .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$modal', '$timeout',
-        'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage',
+        'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage', 'CONFIG',
       function($rs, $scope, $state, $modal, $timeout,
-               Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage) {
+               Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage, CONFIG) {
           var mm = window.matchMedia('(max-width: 767px)');
 
           $rs.isMobile = mm.matches ? true : false;
@@ -95,16 +95,23 @@
                   }
               });
               function addApiKeyAuthorization() {
-                  //TODO add key var - replace with var
+                  //Add API key
                   var key;
                   if (docTester.preferredContract) {
                       key = docTester.apikey;
                   } else {
-                      key = encodeURIComponent($sessionStorage.apikey);
+                      key = encodeURIComponent(CONFIG.SECURITY.API_KEY);
                   }
                   if (key && key.trim() !== '') {
                       $scope.swaggerUi.api.clientAuthorizations.add('key',
-                        new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
+                          new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
+                  }
+
+                  // Add JWT
+                  var jwt = encodeURIComponent($sessionStorage.jwt);
+                  if (jwt && jwt.trim() !== '') {
+                      $scope.swaggerUi.api.clientAuthorizations.add('auth',
+                          new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + jwt, 'header'));
                   }
               }
               $scope.swaggerUi.load();
