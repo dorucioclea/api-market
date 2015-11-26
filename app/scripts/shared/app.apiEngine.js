@@ -235,7 +235,7 @@
         /// ========== USER LOGOUT ======================================================================
 
         .factory('LogOutRedirect', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/users/idp/logout');
+            return $resource(CONFIG.AUTH.URL + '/login/idp/logout');
         })
 
         /// ========== POLICYDEFS =======================================================================
