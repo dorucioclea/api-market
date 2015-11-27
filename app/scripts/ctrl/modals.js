@@ -646,21 +646,22 @@
 
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
-            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES, OrganizationOwnershipTransfer) {
+            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
+                      currentUserModel, OrganizationOwnershipTransfer) {
                 $scope.doTransfer = doTransfer;
                 $scope.newOwner = newOwner;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
 
                 function doTransfer() {
-                    var user = newOwner.userName.length > 0 ? newOwner.userName : newOwner.userId;
+                    var user = newOwner.userName ? newOwner.userName : newOwner.userId;
                     var transferObj = {
                         currentOwnerId: currentOwner.username,
                         newOwnerId: newOwner.userId
                     };
                     OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
                         // We changed our own role, need to update the CurrentUserInfo
-                        $scope.User.updateCurrentUserInfo($scope.User).then(function (success) {
+                        currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
                             toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + user + '</b>', true);
                             $scope.modalClose();
