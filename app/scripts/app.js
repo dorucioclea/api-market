@@ -891,7 +891,6 @@
                     if ($sessionStorage.jwt) {
                         if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                             // Token is expired, user needs to relogin
-                            console.log('token expired, redirecting to login');
                             delete $sessionStorage.jwt;
                             loginHelper.redirectToLogin();
                         } else {
@@ -899,7 +898,6 @@
                             var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
                             date.setMinutes(date.getMinutes() - 5);
                             if (date < new Date()) {
-                                console.log('refreshing token');
                                 // do refresh, then return new jwt
                                 loginHelper.redirectToLogin();
                                 var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
@@ -913,12 +911,10 @@
                                         expirationTimeMinutes: 10
                                     }
                                 }).then(function(response) {
-                                    console.log(response);
                                     $sessionStorage.jwt = response.data.jwt;
                                     return $sessionStorage.jwt;
                                 });
                             } else {
-                                console.log('token still valid');
                                 return $sessionStorage.jwt;
                             }
                         }
