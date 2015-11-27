@@ -15,16 +15,16 @@
         <div class="col-md-5" flow-init flow-file-added="readFile($file)" flow-object="flow">
           <label class="control-label text-primary">New Image</label>
           <div>
-            <div class="thumbnail" ng-hide="flow.files.length" flow-drop>
+            <div class="thumbnail" ng-if="!flow.files.length" flow-drop>
               <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
             </div>
-            <div class="thumbnail" ng-show="flow.files.length">
+            <div class="thumbnail" ng-if="flow.files.length">
               <img flow-img="$flow.files[0]" />
             </div>
             <div>
-              <span class="btn btn-line-primary btn-sm" ng-hide="flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
-              <span class="btn btn-line-primary btn-sm" ng-show="flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-              <span class="btn btn-line-danger btn-sm" ng-show="flow.files.length" ng-click="cancel()">Remove</span>
+              <span class="btn btn-line-primary btn-sm" ng-if="!flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+              <span class="btn btn-line-primary btn-sm" ng-if="flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+              <span class="btn btn-line-danger btn-sm" ng-if="flow.files.length" ng-click="cancel()">Remove</span>
             </div>
             <div class="col-sm-8 mt10">
               <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
