@@ -104,47 +104,6 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CONFIG: 'CONFIG',
-                        security: function ($sessionStorage, $http, CONFIG) {
-
-                            if (!$sessionStorage.jwt) {
-                                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-                                var clientUrl = window.location.origin;
-
-                                if (!jwt) {
-                                    var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
-                                    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                                        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                                        '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
-                                        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-
-                                    return $http({
-                                        method: 'POST',
-                                        url: url,
-                                        data: data,
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        responseType: 'text'
-                                    }).then(function success(result) {
-                                        window.location.href = result.data;
-                                    }, function error(error) {
-                                        console.log('Request failed with error code: ', error.status);
-                                        console.log(error);
-                                    });
-                                } else {
-                                    $sessionStorage.jwt = jwt;
-                                    window.location.href = clientUrl;
-                                }
-                            }
-
-                            function getParameterByName(name) {
-                                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                                    results = regex.exec(location.search);
-                                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-                            }
-                        },
                         CurrentUserInfo: 'CurrentUserInfo',
                         currentUser: function (CurrentUserInfo) {
                             return CurrentUserInfo.get().$promise;
@@ -927,34 +886,46 @@
 
         .config(function ($httpProvider, jwtInterceptorProvider) {
             // We're annotating the function so that the $injector works when the file is minified (known issue)
-            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$http', 'jwtHelper', 'CONFIG',
-                function($sessionStorage, $http, jwtHelper, CONFIG) {
-                //if (!$sessionStorage.jwt || jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                //    var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
-                //    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                //        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                //        '", "clientAppRedirect": "", "token": "' +
-                //        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-                //
-                //    return $http({
-                //        method: 'POST',
-                //        url: url,
-                //        data: data,
-                //        headers: {
-                //            'Content-Type': 'application/json'
-                //        },
-                //        responseType: 'text'
-                //    }).then(function success(result) {
-                //        window.location.href = result.data;
-                //    }, function error(error) {
-                //        console.log('Request failed with error code: ', error.status);
-                //        console.log(error);
-                //    });
-                //} else {
-                //    return $sessionStorage.jwt;
-                //}
-                    return $sessionStorage.jwt;
-            }];
+            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper', 'CONFIG',
+                function($sessionStorage, $state, $http, jwtHelper, loginHelper, CONFIG) {
+                    if ($sessionStorage.jwt) {
+                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                            // Token is expired, user needs to relogin
+                            console.log('token expired, redirecting to login');
+                            delete $sessionStorage.jwt;
+                            loginHelper.redirectToLogin();
+                        } else {
+                            // Token is still valid, check if we need to refresh
+                            var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
+                            date.setMinutes(date.getMinutes() - 5);
+                            if (date < new Date()) {
+                                console.log('refreshing token');
+                                // do refresh, then return new jwt
+                                loginHelper.redirectToLogin();
+                                var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
+                                return $http({
+                                    url: refreshUrl,
+                                    // This makes it so that this request doesn't send the JWT
+                                    skipAuthorization: true,
+                                    method: 'POST',
+                                    data: {
+                                        originalJWT: $sessionStorage.jwt,
+                                        expirationTimeMinutes: 10
+                                    }
+                                }).then(function(response) {
+                                    console.log(response);
+                                    $sessionStorage.jwt = response.data.jwt;
+                                    return $sessionStorage.jwt;
+                                });
+                            } else {
+                                console.log('token still valid');
+                                return $sessionStorage.jwt;
+                            }
+                        }
+                    } else {
+                        loginHelper.redirectToLogin();
+                    }
+                }];
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');
         })

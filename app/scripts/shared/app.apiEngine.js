@@ -232,7 +232,7 @@
             return $resource(CONFIG.BASE.URL + '/users/:userId');
         })
 
-        /// ========== USER LOGOUT ======================================================================
+        /// ========== LOGIN/LOGOUT/TOKEN REFRESH =======================================================
 
         .factory('LogOutRedirect', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/login/idp/logout');

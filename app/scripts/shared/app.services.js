@@ -100,7 +100,7 @@
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was successfully published!';
                     doAction(this.createAction(
-                            applicationVersion, ACTIONS.REGISTER),
+                        applicationVersion, ACTIONS.REGISTER),
                         shouldReload, TOAST_TYPES.SUCCESS,
                         msg);
                 };
@@ -109,7 +109,7 @@
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was retired.';
                     doAction(this.createAction(
-                            applicationVersion, ACTIONS.UNREGISTER),
+                        applicationVersion, ACTIONS.UNREGISTER),
                         shouldReload,
                         TOAST_TYPES.WARNING, msg);
                 };
@@ -482,8 +482,8 @@
                 }
             })
 
-            // OAUTH SERVICE
-            .service('oAuthService',
+        // OAUTH SERVICE
+        .service('oAuthService',
             function ($http, ApplicationOAuth,
                       OAuthConsumer) {
 
@@ -547,7 +547,51 @@
                 }
             })
 
-                // USER SCREEN MODEL
+        // LOGIN HELPER SERVICE
+        .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
+            this.redirectToLogin = redirectToLogin;
+
+            function redirectToLogin() {
+                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
+                var clientUrl = window.location.origin;
+
+                if (!jwt) {
+                    var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
+                    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
+                        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
+                        '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
+                        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
+
+                    return $http({
+                        method: 'POST',
+                        skipAuthorization: true,
+                        url: url,
+                        data: data,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        responseType: 'text'
+                    }).then(function success(result) {
+                        window.location.href = result.data;
+                    }, function error(error) {
+                        console.log('Request failed with error code: ', error.status);
+                        console.log(error);
+                    });
+                } else {
+                    $sessionStorage.jwt = jwt;
+                    window.location.href = clientUrl;
+                }
+            }
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
+                    results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            }
+        })
+
+        // USER SCREEN MODEL
         .service('userScreenModel', function () {
             this.selectedTab = 'Profile';
 
