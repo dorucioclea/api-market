@@ -899,7 +899,6 @@
                             date.setMinutes(date.getMinutes() - 5);
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
-                                loginHelper.redirectToLogin();
                                 var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
                                 return $http({
                                     url: refreshUrl,
