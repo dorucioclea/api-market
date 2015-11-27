@@ -232,6 +232,9 @@
             return $resource(CONFIG.BASE.URL + '/users/:userId');
         })
 
+        .factory('UserSearch', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/users/search');
+        })
         /// ========== LOGIN/LOGOUT/TOKEN REFRESH =======================================================
 
         .factory('LogOutRedirect', function ($resource, CONFIG) {

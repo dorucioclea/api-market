@@ -568,7 +568,7 @@
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, TOAST_TYPES) {
+            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
@@ -577,7 +577,37 @@
                 $scope.selectRole = selectRole;
 
                 function addMember(email) {
-                    toastService.createToast('success', 'Added member.', true);
+                    var searchObj = {
+                        filters: [{
+                            name: 'email',
+                            value: email,
+                            operator: 'like'
+                        }],
+                        orderBy: {
+                            ascending: false,
+                            name: 'email'
+                        }
+                    };
+                    UserSearch.save({}, searchObj, function (userList) {
+                        if (userList.beans.length === 1) {
+                            var newMemberObj = {
+                                userId: userList.beans[0].username,
+                                roleId: $scope.selectedRole.id
+                            };
+                            var name = userList.beans[0].fullName ? userList.beans[0].fullName : userList.beans[0].username;
+                            Member.save({orgId: org.id}, newMemberObj, function (success) {
+                                $scope.modalClose();
+                                $state.forceReload();
+                                toastService.createToast(TOAST_TYPES.SUCCESS, 'Added <b>' + name + '</b> to <b>' + org.name + '</b> as a <b>' + $scope.selectedRole.name + '</b>.', true);
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Failed to add user to organization :(');
+                            })
+                        } else {
+                            toastService.createToast(TOAST_TYPES.WARNING, 'Could not find member to add with email address <b>' + email + '</b>.', true);
+                        }
+                    }, function (error) {
+                       toastService.createErrorToast(error, 'Encoutered error searching for user');
+                    });
                 }
 
                 function modalClose() {
