@@ -38,7 +38,7 @@
 
         <!-- ngRepeat: member in filteredMembers -->
         <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText} | orderBy:'userId'">
-          <div class="col-sm-12" >
+          <div class="col-sm-8" >
             <span class="title"><a>{{member.userName}}</a>
             <span class="secondary ng-binding">({{member.userId}})</span></span>
             <span class="text-muted small">
@@ -46,6 +46,8 @@
               <span>Last modified on</span>
               <span>{{member.joinedOn | date }}</span>
             </span>
+          </div>
+          <div class="col-sm-2">
             <div class="pull-right">
               <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
@@ -53,9 +55,17 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                   <li ng-repeat="role in roles | excludeRole:member.roles[0]" class="text-right" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
-                  <li class="divider" ng-if="User.isAuthorizedFor('orgAdmin')"></li>
-                  <li ng-if="User.isAuthorizedFor('orgAdmin')" class="text-right" ng-click="transferOwnership(member)"><a>Transfer Ownership</a></li>
                 </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="pull-right">
+              <div class="btn-group" ng-if="User.isAuthorizedFor('orgAdmin')">
+                <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip="Tranfer organization ownership" ng-click="transferOwnership(member)"></button>
+              </div>
+              <div class="btn-group" ng-if="User.isAuthorizedFor('orgAdmin')">
+                <button class="btn btn-danger btn-xs action-icon fa fa-times" tooltip-popup-delay="300" tooltip="Remove member" ng-click="removeMember(member)"></button>
               </div>
               <div ng-if="!User.isAuthorizedFor('orgAdmin')">
                 {{member.roles[0].roleName}}
@@ -65,9 +75,10 @@
           <div class="col-sm-12">
             <hr>
           </div>
-        </div><!-- end ngRepeat: member in filteredMembers -->
-      </div>
-
+        </div>
+      </div><!-- end ngRepeat: member in filteredMembers -->
     </div>
+
   </div>
+</div>
 </div>

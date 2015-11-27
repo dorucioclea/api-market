@@ -268,6 +268,7 @@
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
+                $scope.removeMember = removeMember;
                 $scope.roles = roleData;
                 $scope.transferOwnership = transferOwnership;
 
@@ -305,7 +306,7 @@
                                     $scope.User.updateCurrentUserInfo($scope.User);
                                 }
                                 var name = member.userName ? member.userName : member.userId;
-                                toastService.createToast('info',
+                                toastService.createToast(TOAST_TYPES.INFO,
                                     '<b>' + name + '</b> now has the <b>' + role.name + '</b> role.', true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Could not retrieve updated member roles');
@@ -314,6 +315,23 @@
                         function (error) {
                             toastService.createErrorToast(error, 'Could not update member role');
                         });
+                }
+
+                function removeMember(member) {
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationRemoveMember.html',
+                        size: 'lg',
+                        controller: 'MemberRemoveCtrl as ctrl',
+                        resolve: {
+                            org: function () {
+                                return $scope.org;
+                            },
+                            member: function () {
+                                return member;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
                 }
 
                 function transferOwnership(member) {

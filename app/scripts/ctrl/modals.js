@@ -598,7 +598,7 @@
                             Member.save({orgId: org.id}, newMemberObj, function (success) {
                                 $scope.modalClose();
                                 $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS, 'Added <b>' + name + '</b> to <b>' + org.name + '</b> as a <b>' + $scope.selectedRole.name + '</b>.', true);
+                                toastService.createToast(TOAST_TYPES.SUCCESS, 'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name + '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');
                             });
@@ -616,6 +616,31 @@
 
                 function selectRole(role) {
                     $scope.selectedRole = role;
+                }
+            })
+
+        /// ==== MemberRemoveCtrl Controller
+        .controller('MemberRemoveCtrl',
+            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
+                $scope.doRemove = doRemove;
+                $scope.member = member;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+
+                function doRemove() {
+                    var name = member.userName ? member.userName : member.userId;
+                    Member.delete({orgId: org.id, userId: member.userId}, function (success) {
+                        $state.forceReload();
+                        toastService.createToast(TOAST_TYPES.INFO,
+                            '<b>' + name + '</b> was removed from the organization.', true);
+                        $scope.modalClose();
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Could not remove member from organization');
+                    });
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
                 }
             })
 
