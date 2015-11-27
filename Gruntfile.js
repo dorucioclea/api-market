@@ -125,7 +125,7 @@ module.exports = function (grunt) {
     // Clean //
     // ===== //
     clean: {
-      dist: ["dist", ".tmp", "release.zip"]
+      dist: ['dist', '.tmp', 'release.zip']
     }, // End Clean
 
     // ====== //

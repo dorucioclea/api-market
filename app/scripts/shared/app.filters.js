@@ -7,12 +7,12 @@
             return function (roles, currentRole) {
                 var out = [];
                 angular.forEach(roles, function (role) {
-                    if (role.id != currentRole.roleId) {
+                    if (role.id !== currentRole.roleId) {
                         out.push(role);
                     }
                 });
                 return out;
-            }
+            };
         })
 
         .filter('joinBy', function () {

@@ -596,11 +596,11 @@
             this.selectedTab = 'Profile';
 
             this.userInfo = {
-                fullName: "",
-                company: "",
-                location: "",
-                website: "",
-                bio: ""
+                fullName: '',
+                company: '',
+                location: '',
+                website: '',
+                bio: ''
             };
 
             this.updateTab = function (newTab) {

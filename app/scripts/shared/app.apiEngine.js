@@ -249,7 +249,7 @@
 
         /// ========== ROLES ============================================================================
         .factory('Roles', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/roles/:roleId')
+            return $resource(CONFIG.BASE.URL + '/roles/:roleId');
         })
 
         /// ========== SEARCH ===========================================================================
