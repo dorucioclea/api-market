@@ -5,57 +5,59 @@
     </div>
 
     <div class="panel-body">
-      <div class="row">
-        <div class="form-group col-xs-6">
-          <label for="fullname">
-            <span class="fa fa-user with-margin"></span>
-            <span>Full Name</span>
-          </label>
-          <input type="text" name="fullName" placeholder="Full Name" ng-model="user.userInfo.fullName" class="form-control">
-        </div>
-        <div class="form-group col-xs-6">
-          <label for="company">
-            <span class="fa fa-users with-margin"></span>
-            <span>Company</span>
-          </label>
-          <input type="text" name="company" placeholder="Company" ng-model="user.userInfo.company" value="" class="form-control">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-xs-6">
-          <label for="location">
-            <span class="fa fa-map-marker with-margin"></span>
-            <span>Location</span>
-          </label>
-          <input type="text" name="location" placeholder="Location" ng-model="user.userInfo.location" value="" class="form-control">
-        </div>
-        <div class="form-group col-xs-6">
-          <label for="website">
-            <span class="fa fa-link with-margin"></span>
-            <span>Website</span>
-          </label>
-          <input type="text" name="website" placeholder="Website" ng-model="user.userInfo.website" value="" class="form-control">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-xs-6">
-          <label for="description">
-            <span class="fa fa-pencil with-margin"></span>
-            <span>Bio</span>
-          </label>
-          <textarea type="text" name="description" placeholder="Something about yourself" ng-model="user.userInfo.bio" rows="5" cols="60" class="form-control"></textarea>
-        </div>
-        <div class="form-group col-xs-6">
-          <label>
-            <span class="fa fa-camera with-margin"></span>
-            <span>Profile Picture</span>
-          </label>
-          <div>
-            <base64-logo logo="{{user.userInfo.base64pic}}" logo-class="entity-logo" editable="true"></base64-logo>
+      <form role="form" name="userForm">
+        <div class="row">
+          <div class="form-group col-xs-6">
+            <label for="fullname">
+              <span class="fa fa-user with-margin"></span>
+              <span>Full Name</span>
+            </label>
+            <input type="text" name="fullName" placeholder="Full Name" ng-model="user.userInfo.fullName" class="form-control">
+          </div>
+          <div class="form-group col-xs-6">
+            <label for="company">
+              <span class="fa fa-users with-margin"></span>
+              <span>Company</span>
+            </label>
+            <input type="text" name="company" placeholder="Company" ng-model="user.userInfo.company" value="" class="form-control">
           </div>
         </div>
-      </div>
-      <button class="btn btn-line-primary" ng-click="saveUserDetails(user.userInfo)">Save</button>
+        <div class="row">
+          <div class="form-group col-xs-6">
+            <label for="location">
+              <span class="fa fa-map-marker with-margin"></span>
+              <span>Location</span>
+            </label>
+            <input type="text" name="location" placeholder="Location" ng-model="user.userInfo.location" value="" class="form-control">
+          </div>
+          <div class="form-group col-xs-6">
+            <label for="website">
+              <span class="fa fa-link with-margin"></span>
+              <span>Website</span>
+            </label>
+            <input type="url" name="website" placeholder="Website" ng-model="user.userInfo.website" value="" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-xs-6">
+            <label for="description">
+              <span class="fa fa-pencil with-margin"></span>
+              <span>Bio</span>
+            </label>
+            <textarea type="text" name="description" placeholder="Something about yourself" ng-model="user.userInfo.bio" rows="5" cols="60" class="form-control"></textarea>
+          </div>
+          <div class="form-group col-xs-6">
+            <label>
+              <span class="fa fa-camera with-margin"></span>
+              <span>Profile Picture</span>
+            </label>
+            <div>
+              <base64-logo logo="{{user.userInfo.base64pic}}" logo-class="entity-logo" editable="true"></base64-logo>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button class="btn btn-line-primary" ng-click="saveUserDetails(user.userInfo)" ng-disabled="userForm.$invalid">Save</button>
     </div>
   </div>
 </div>
