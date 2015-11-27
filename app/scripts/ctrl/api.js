@@ -62,7 +62,7 @@
 
 /// ==== Service Swagger Documentation Controller
         .controller('DocumentationCtrl',
-        function($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, userApps,
+        function($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                  docTester, svcTab, ApplicationVersion, ServiceVersionDefinition,
                  oAuthService, toastService, TOAST_TYPES) {
             $scope.addHeader = addHeader;
@@ -112,6 +112,9 @@
                     function (definitionSpec) {
                         currentDefinitionSpec = definitionSpec;
                         $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container', endpoint);
+                        if (jwtEnabled) {
+                            $scope.addJWTHeader();
+                        }
                     });
             }
 

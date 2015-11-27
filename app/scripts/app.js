@@ -332,6 +332,19 @@
 
                                 });
                         },
+                        jwtEnabled: function ($q, ServiceVersionPolicy, organizationId, serviceId, versionId) {
+                            return ServiceVersionPolicy.query(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise
+                                .then(function (result) {
+                                    var jwt = false;
+                                    angular.forEach(result, function (policy) {
+                                        if (policy.policyDefinitionId === 'JWT') {
+                                            jwt = true;
+                                        }
+                                    });
+                                    return jwt;
+                                });
+                        },
                         CurrentUserApps: 'CurrentUserApps',
                         userApps: function (CurrentUserApps) {
                             return CurrentUserApps.query().$promise;
@@ -350,7 +363,6 @@
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         },
                         ServicePlans: 'ServicePlans',
-                        PlanVersionPolicy: 'PlanVersionPolicy',
                         planData: function (ServicePlans, organizationId, serviceId, versionId) {
                             return ServicePlans.query(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;

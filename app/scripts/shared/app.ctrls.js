@@ -106,13 +106,6 @@
                       $scope.swaggerUi.api.clientAuthorizations.add('key',
                           new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
                   }
-
-                  // Add JWT
-                  var jwt = encodeURIComponent($sessionStorage.jwt);
-                  if (jwt && jwt.trim() !== '') {
-                      $scope.swaggerUi.api.clientAuthorizations.add('auth',
-                          new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + jwt, 'header'));
-                  }
               }
               $scope.swaggerUi.load();
           };
@@ -120,6 +113,15 @@
           $scope.updateSwaggerApiKeyHeader = function () {
               $scope.swaggerUi.api.clientAuthorizations.add('key',
                 new SwaggerClient.ApiKeyAuthorization('apikey', docTester.apikey, 'header'));
+          };
+
+          $scope.addJWTHeader = function () {
+              // Add JWT
+              var jwt = encodeURIComponent($sessionStorage.jwt);
+              if (jwt && jwt.trim() !== '') {
+                  $scope.swaggerUi.api.clientAuthorizations.add('jwt',
+                      new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + jwt, 'header'));
+              }
           };
 
           $scope.addCustomSwaggerHeader = function (header) {
