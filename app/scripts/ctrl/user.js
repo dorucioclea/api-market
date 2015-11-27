@@ -5,15 +5,14 @@
 
         /// ==== User Controller
         .controller('UserCtrl',
-        function ($scope, currentUserModel, headerModel, userScreenModel, toastService, CurrentUserInfo) {
+        function ($scope, headerModel, userScreenModel, toastService, CurrentUserInfo) {
 
             init();
 
             $scope.toasts = toastService.toasts;
             $scope.toastService = toastService;
             $scope.selectedTab = 1;
-            $scope.currentUserModel = currentUserModel;
-            $scope.updatedInfo = currentUserModel.currentUser;
+            $scope.user = userScreenModel;
             $scope.isActive = isActive;
             $scope.saveUserDetails = saveUserDetails;
 
@@ -22,6 +21,28 @@
                     headerModel.setIsButtonVisible(false, false, false);
                 } else {
                     headerModel.setIsButtonVisible(true, true, true);
+                }
+
+                userScreenModel.userInfo.base64pic = $scope.User.currentUser.base64pic;
+
+                if ($scope.User.currentUser.bio != null && $scope.User.currentUser.bio.length > 0 && userScreenModel.userInfo.bio.length === 0) {
+                    userScreenModel.userInfo.bio = $scope.User.currentUser.bio;
+                }
+
+                if ($scope.User.currentUser.company != null && $scope.User.currentUser.company.length > 0 && userScreenModel.userInfo.company.length === 0) {
+                    userScreenModel.userInfo.company = $scope.User.currentUser.company;
+                }
+
+                if ($scope.User.currentUser.location != null && $scope.User.currentUser.location.length > 0 && userScreenModel.userInfo.location.length === 0) {
+                    userScreenModel.userInfo.location = $scope.User.currentUser.location;
+                }
+
+                if ($scope.User.currentUser.website != null && $scope.User.currentUser.website.length > 0 && userScreenModel.userInfo.website.length === 0) {
+                    userScreenModel.userInfo.website = $scope.User.currentUser.website;
+                }
+
+                if ($scope.User.currentUser.fullName != null && $scope.User.currentUser.fullName.length > 0 && userScreenModel.userInfo.fullName.length === 0) {
+                    userScreenModel.userInfo.fullName = $scope.User.currentUser.fullName;
                 }
             }
 
@@ -37,9 +58,10 @@
                     bio: details.bio,
                     website: details.website,
                     email: details.email,
-                    pic: $scope.currentUserModel.currentUser.base64pic
+                    pic: details.base64pic
                 };
                 CurrentUserInfo.update({}, updateObject, function (reply) {
+                    $scope.User.updateCurrentUserInfo($scope.User);
                     toastService.createToast('info', 'Profile updated!', true);
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your Profile. ');

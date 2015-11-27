@@ -595,6 +595,14 @@
         .service('userScreenModel', function () {
             this.selectedTab = 'Profile';
 
+            this.userInfo = {
+                fullName: "",
+                company: "",
+                location: "",
+                website: "",
+                bio: ""
+            };
+
             this.updateTab = function (newTab) {
                 this.selectedTab = newTab;
             };

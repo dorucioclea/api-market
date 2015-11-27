@@ -11,14 +11,14 @@
             <span class="fa fa-user with-margin"></span>
             <span>Full Name</span>
           </label>
-          <input type="text" name="fullName" placeholder="Full Name" ng-model="currentUserModel.currentUser.fullName" class="form-control">
+          <input type="text" name="fullName" placeholder="Full Name" ng-model="user.userInfo.fullName" class="form-control">
         </div>
         <div class="form-group col-xs-6">
           <label for="company">
             <span class="fa fa-users with-margin"></span>
             <span>Company</span>
           </label>
-          <input type="text" name="company" placeholder="Company" ng-model="currentUserModel.currentUser.company" value="" class="form-control">
+          <input type="text" name="company" placeholder="Company" ng-model="user.userInfo.company" value="" class="form-control">
         </div>
       </div>
       <div class="row">
@@ -27,14 +27,14 @@
             <span class="fa fa-map-marker with-margin"></span>
             <span>Location</span>
           </label>
-          <input type="text" name="location" placeholder="Location" ng-model="currentUserModel.currentUser.location" value="" class="form-control">
+          <input type="text" name="location" placeholder="Location" ng-model="user.userInfo.location" value="" class="form-control">
         </div>
         <div class="form-group col-xs-6">
           <label for="website">
             <span class="fa fa-link with-margin"></span>
             <span>Website</span>
           </label>
-          <input type="text" name="website" placeholder="Website" ng-model="currentUserModel.currentUser.website" value="" class="form-control">
+          <input type="text" name="website" placeholder="Website" ng-model="user.userInfo.website" value="" class="form-control">
         </div>
       </div>
       <div class="row">
@@ -43,7 +43,7 @@
             <span class="fa fa-pencil with-margin"></span>
             <span>Bio</span>
           </label>
-          <textarea type="text" name="description" placeholder="Something about yourself" ng-model="currentUserModel.currentUser.bio" rows="5" cols="60" class="form-control"></textarea>
+          <textarea type="text" name="description" placeholder="Something about yourself" ng-model="user.userInfo.bio" rows="5" cols="60" class="form-control"></textarea>
         </div>
         <div class="form-group col-xs-6">
           <label>
@@ -51,11 +51,11 @@
             <span>Profile Picture</span>
           </label>
           <div>
-            <base64-logo logo="{{currentUserModel.currentUser.base64pic}}" logo-class="entity-logo" editable="true"></base64-logo>
+            <base64-logo logo="{{user.userInfo.base64pic}}" logo-class="entity-logo" editable="true"></base64-logo>
           </div>
         </div>
       </div>
-      <button class="btn btn-line-primary" ng-click="saveUserDetails(currentUserModel.currentUser)">Save</button>
+      <button class="btn btn-line-primary" ng-click="saveUserDetails(user.userInfo)">Save</button>
     </div>
   </div>
 </div>
