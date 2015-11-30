@@ -26,8 +26,12 @@
           <label class="control-label text-primary">Initial Version</label>
         </div>
         <div class="col-md-3 col-sm-3 col-xs-5">
-          <input type="text" name="version" class="form-control" maxlength="20" value="1.0" ng-model="ctrl.plan.initialVersion" required>
+          <div class="input-group">
+            <span class="input-group-addon input-version-addon">v</span>
+            <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.plan.initialVersion" required ng-pattern="regex.VERSION">
+          </div>
           <p class="text-danger xsmall" ng-show="planForm.version.$error.required" ng-if="planForm.version.$touched">Initial version is required.</p>
+          <p class="text-danger xsmall" ng-show="planForm.version.$error.pattern">Only numeric characters are allowed.</p>
         </div>
       </div>
 

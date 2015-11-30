@@ -12,8 +12,12 @@
           <label class="control-label text-primary">Version</label>
         </div>
         <div class="col-md-2 col-sm-2 col-xs-4">
-          <input type="text" name="newVersion" class="form-control" maxlength="20" value="1.0" ng-model="newVersion" required>
-          <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.required" ng-if="versionForm.newVersion.$touched">The new version must have a name.</p>
+          <div class="input-group">
+            <span class="input-group-addon input-version-addon">v</span>
+            <input type="text" name="newVersion" class="form-control input-version" maxlength="20" ng-model="newVersion" required ng-pattern="regex.VERSION">
+          </div>
+          <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.required" ng-if="versionForm.newVersion.$touched">Version number is required.</p>
+          <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.pattern">Only numeric characters are allowed.</p>
         </div>
       </div>
 
