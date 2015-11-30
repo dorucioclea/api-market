@@ -6,7 +6,7 @@
 /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
             function ($scope, $modal, $state, flowFactory, alertService, imageService,
-                      orgScreenModel, toastService, TOAST_TYPES, Application) {
+                      orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
 
                 $scope.currentOrg = orgScreenModel.organization;
                 $scope.imageService = imageService;
@@ -15,6 +15,7 @@
                     singleFile: true
                 });
                 $scope.readFile = readFile;
+                $scope.regex = REGEX;
                 $scope.closeAlert = closeAlert;
                 $scope.createApplication = createApplication;
                 $scope.modalClose = modalClose;
@@ -38,6 +39,7 @@
                 }
 
                 function createApplication(application) {
+                    application.name = application.name.trim();
                     if (imageService.image.fileData) {
                         application.base64logo = imageService.image.fileData;
                     } else {
@@ -106,13 +108,15 @@
 /// ==== NewPlan Controller
         .controller('NewPlanCtrl',
             function ($scope, $modal, $state, $stateParams, orgScreenModel,
-                      toastService, TOAST_TYPES, Plan) {
+                      toastService, REGEX, TOAST_TYPES, Plan) {
 
                 $scope.org = orgScreenModel.organization;
                 $scope.createPlan = createPlan;
+                $scope.regex = REGEX;
                 $scope.modalClose = modalClose;
 
                 function createPlan(plan) {
+                    plan.name = plan.name.trim();
                     Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
                         $scope.modalClose();
                         $state.go('root.plan',
@@ -155,7 +159,7 @@
 /// ==== NewService Controller
         .controller('NewServiceCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
-                      imageService, orgScreenModel, toastService, TOAST_TYPES, Categories, Service) {
+                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, Categories, Service) {
 
                 $scope.org = orgScreenModel.organization;
                 $scope.imageService = imageService;
@@ -163,7 +167,7 @@
                 $scope.flow = flowFactory.create({
                     singleFile: true
                 });
-                $scope.basePathPattern = /^[[a-z\-]+$/;
+                $scope.regex = REGEX;
                 $scope.readFile = readFile;
                 $scope.closeAlert = closeAlert;
                 $scope.createService = createService;
@@ -192,6 +196,7 @@
 
                 function createService(svc, categories) {
                     var newSvcObject = angular.copy(svc);
+                    newSvcObject.name = svc.name.trim();
                     var cats = [];
                     for (var i = 0; i < categories.length; i++) {
                         cats.push(categories[i].text);
@@ -356,12 +361,14 @@
 /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
             function ($scope, $modal, $state, publisherMode,
-                      currentUserModel, toastService, TOAST_TYPES, Organization) {
+                      currentUserModel, toastService, REGEX, TOAST_TYPES, Organization) {
 
                 $scope.createOrganization = createOrganization;
                 $scope.modalClose = modalClose;
+                $scope.regex = REGEX;
 
                 function createOrganization(org) {
+                    org.name = org.name.trim();
                     Organization.save(org, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();

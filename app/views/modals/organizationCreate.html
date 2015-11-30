@@ -19,8 +19,9 @@
                 <label class="control-label text-primary">Organization Name</label>
               </div>
               <div class="col-md-6">
-                <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required>
+                <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required ng-pattern="regex.ORG_NAME">
                 <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.required" ng-if="orgForm.orgName.$touched">Organization name is required.</p>
+                <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.pattern">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
               </div>
             </div>
 

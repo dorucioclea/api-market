@@ -17,8 +17,10 @@
       <div class="form-group mt30">
         <div class="col-md-7">
           <label class="control-label text-primary">Application Name</label>
-          <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required>
+          <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required ng-pattern="regex.APPLICATION_NAME">
           <p class="text-danger xsmall" ng-show="appForm.appName.$error.required" ng-if="appForm.appName.$touched">Application name is required.</p>
+          <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+
         </div>
         <div class="col-md-3 col-sm-3 col-xs-5">
           <label class="control-label text-primary">Initial Version</label>
