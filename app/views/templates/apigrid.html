@@ -6,7 +6,7 @@
             <h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4>
         </div>
         <div class="panel-body">
-            <div class="pull-right">
+            <div class="pull-right" ng-click="$event.stopPropagation()">
                 <a ng-click="followAction(api)" class="clickable pull-right">
                     <i class="text-primary follow-icon-grid fa" ng-class="{'fa-star-o': !userIsFollowing(api), 'fa-star': userIsFollowing(api)}"></i>
                 </a>
@@ -30,9 +30,9 @@
             <div class="text-uppercase">{{api.version}}</div>
         </div>
         <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i> {{stats[api.service.id].developers}}</div>
-            <div class="fa-hover col-xs-4"><i class="fa fa-star"></i> {{stats[api.service.id].followers}}</div>
-            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i> {{stats[api.service.id].uptime}}%</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i>&nbsp;{{stats[api.service.id].developers}}</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-star"></i>&nbsp;{{api.service.followers.length}}</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i>&nbsp;{{stats[api.service.id].uptime}}%</div>
         </div>
     </div>
 </div>

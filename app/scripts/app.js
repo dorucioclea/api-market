@@ -2,51 +2,52 @@
     'use strict';
 
     angular.module('app', [
-        /* Angular modules */
-        'ngAnimate',
-        'ngResource',
-        'ngSanitize',
-        'ngAria',
-        'ngMaterial',
+            /* Angular modules */
+            'ngAnimate',
+            'ngResource',
+            'ngSanitize',
+            'ngAria',
+            'ngMaterial',
 
-        /* 3rd party modules */
-        'ui.router',
-        'ngStorage',
-        'ui.bootstrap',
-        'angular-loading-bar',
-        'FBAngular',
-        'matchMedia',
-        'ngTagsInput',
-        'schemaForm',
-        'angular-clipboard',
-        'flow',
-        'gridshore.c3js.chart',
-        'textAngular',
-        'relativeDate',
+            /* 3rd party modules */
+            'ui.router',
+            'ngStorage',
+            'ui.bootstrap',
+            'angular-loading-bar',
+            'FBAngular',
+            'matchMedia',
+            'ngTagsInput',
+            'schemaForm',
+            'angular-clipboard',
+            'flow',
+            'gridshore.c3js.chart',
+            'textAngular',
+            'relativeDate',
+            'angular-jwt',
 
-        /* custom modules */
-        'app.ctrls',
-        'app.config',
-        'app.constants',
-        'app.directives',
-        'app.services',
-        'app.filters',
-        'app.apiEngine',
-        'app.ctrl.auth.oauth',
-        'app.ctrl.login',
-        'app.ctrl.dashboard',
-        'app.ctrl.modals',
-        'app.ctrl.modals.lifecycle',
-        'app.ctrl.modals.support',
-        'app.ctrl.api',
-        'app.ctrl.service',
-        'app.ctrl.application',
-        'app.ctrl.organization',
-        'app.ctrl.plan',
-        'app.ctrl.policy',
-        'app.ctrl.user'
+            /* custom modules */
+            'app.ctrls',
+            'app.config',
+            'app.constants',
+            'app.directives',
+            'app.services',
+            'app.filters',
+            'app.apiEngine',
+            'app.ctrl.auth.oauth',
+            'app.ctrl.login',
+            'app.ctrl.dashboard',
+            'app.ctrl.modals',
+            'app.ctrl.modals.lifecycle',
+            'app.ctrl.modals.support',
+            'app.ctrl.api',
+            'app.ctrl.service',
+            'app.ctrl.application',
+            'app.ctrl.organization',
+            'app.ctrl.plan',
+            'app.ctrl.policy',
+            'app.ctrl.user'
 
-    ])
+        ])
 
         // disable spinner in loading-bar
         .config(function (cfpLoadingBarProvider) {
@@ -56,11 +57,11 @@
 
         // ngStorage key config
         .config(function ($localStorageProvider) {
-                $localStorageProvider.setKeyPrefix('apim-');
-            })
+            $localStorageProvider.setKeyPrefix('apim-');
+        })
         .config(function ($sessionStorageProvider) {
-                $sessionStorageProvider.setKeyPrefix('apim_session-');
-            })
+            $sessionStorageProvider.setKeyPrefix('apim_session-');
+        })
 
         // UI-Router states
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -70,6 +71,7 @@
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
+            $urlRouterProvider.when('/org/{orgId}/', '/org/{orgId}/plans');
             $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}',
                 '/org/{orgId}/application/{appId}/{versionId}/overview');
             $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}',
@@ -79,7 +81,7 @@
 
             $stateProvider
 
-                // ERROR PAGE =====================================================================
+            // ERROR PAGE =====================================================================
                 .state('error', {
                     templateUrl: '/views/error.html',
                     controller: 'ErrorCtrl'
@@ -102,60 +104,6 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CONFIG: 'CONFIG',
-                        security: function ($q, $sessionStorage, CONFIG) {
-                            var deferred = $q.defer();
-
-                            if (!$sessionStorage.apikey) {
-                                var apikey = getParameterByName(CONFIG.BASE.API_KEY_NAME);
-                                var clientUrl = window.location.origin;
-
-                                if (!apikey) {
-                                    var url = CONFIG.BASE.URL + CONFIG.SECURITY.REDIRECT_URL;
-                                    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                                        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                                        '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
-                                        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-
-                                    $.ajax({
-                                        method: 'POST',
-                                        url: url,
-                                        data: data,
-                                        dataType: 'text',
-                                        crossOrigin: true,
-                                        contentType: 'application/json',
-                                        headers: {
-                                            'apikey': CONFIG.SECURITY.API_KEY
-                                        },
-                                        async: false,
-                                        success: function (data) {
-                                            window.location.href = data;
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            console.log('Request failed with error code:', textStatus);
-                                            console.log(errorThrown);
-                                            console.log(jqXHR);
-                                        }
-                                    });
-                                } else {
-                                    $sessionStorage.apikey = apikey;
-                                    var ttl = new Date();
-                                    ttl.setMinutes(ttl.getMinutes() + 15);
-                                    $sessionStorage.ttl = ttl;
-                                    window.location.href = clientUrl;
-                                }
-                                return deferred.reject('NOT_AUTHENTICATED');
-                            } else {
-                                deferred.resolve('AUTHENTICATED');
-                            }
-
-                            function getParameterByName(name) {
-                                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                                    results = regex.exec(location.search);
-                                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-                            }
-                        },
                         CurrentUserInfo: 'CurrentUserInfo',
                         currentUser: function (CurrentUserInfo) {
                             return CurrentUserInfo.get().$promise;
@@ -164,7 +112,7 @@
                     controller: 'HeadCtrl'
                 })
 
-// MARKETPLACE CONSUMER DASHBOARD =================================================
+                // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
                     url: '/org/:orgId/applications',
                     templateUrl: '/views/market-dashboard.html',
@@ -384,6 +332,19 @@
 
                                 });
                         },
+                        jwtEnabled: function ($q, ServiceVersionPolicy, organizationId, serviceId, versionId) {
+                            return ServiceVersionPolicy.query(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise
+                                .then(function (result) {
+                                    var jwt = false;
+                                    angular.forEach(result, function (policy) {
+                                        if (policy.policyDefinitionId === 'JWT') {
+                                            jwt = true;
+                                        }
+                                    });
+                                    return jwt;
+                                });
+                        },
                         CurrentUserApps: 'CurrentUserApps',
                         userApps: function (CurrentUserApps) {
                             return CurrentUserApps.query().$promise;
@@ -402,7 +363,6 @@
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         },
                         ServicePlans: 'ServicePlans',
-                        PlanVersionPolicy: 'PlanVersionPolicy',
                         planData: function (ServicePlans, organizationId, serviceId, versionId) {
                             return ServicePlans.query(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
@@ -507,6 +467,10 @@
                         Member: 'Member',
                         memberData: function (Member, organizationId) {
                             return Member.query({orgId: organizationId}).$promise;
+                        },
+                        Roles: 'Roles',
+                        roleData: function (Roles) {
+                            return Roles.query().$promise;
                         }
                     },
                     controller: 'MembersCtrl'
@@ -756,7 +720,13 @@
                 .state('root.service.implementation', {
                     url: '/implementation',
                     templateUrl: 'views/partials/service/implementation.html',
-                    resolve: {},
+                    resolve: {
+                        ServiceVersion: 'ServiceVersion',
+                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
+                            return ServiceVersion.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        }
+                    },
                     controller: 'ServiceImplementationCtrl'
                 })
                 // Definition Tab
@@ -917,25 +887,54 @@
             });
         })
 
-        // Make sure we use always the api key EXCEPT FOR OAUTH GRANT
-        .factory('sessionInjector', function ($sessionStorage, $window) {
+        .factory('apikeyInjector', function(CONFIG) {
             return {
                 request: function (config) {
-                    config.headers.apikey = $sessionStorage.apikey;
-                    if (Date.parse($sessionStorage.ttl) < Date.parse(new Date())) {
-                        console.log('ttl expired');
-                        delete $sessionStorage.apikey;
-                        $window.location.reload();
-                    }
-                    var ttl = new Date();
-                    ttl.setMinutes(ttl.getMinutes() + 15);
-                    $sessionStorage.ttl = ttl;
+                    config.headers.apikey = CONFIG.SECURITY.API_KEY;
                     return config;
                 }
             };
         })
-        .config(function ($httpProvider) {
-            $httpProvider.interceptors.push('sessionInjector');
+
+        .config(function ($httpProvider, jwtInterceptorProvider) {
+            // We're annotating the function so that the $injector works when the file is minified (known issue)
+            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper', 'CONFIG',
+                function($sessionStorage, $state, $http, jwtHelper, loginHelper, CONFIG) {
+                    if ($sessionStorage.jwt) {
+                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                            // Token is expired, user needs to relogin
+                            delete $sessionStorage.jwt;
+                            loginHelper.redirectToLogin();
+                        } else {
+                            // Token is still valid, check if we need to refresh
+                            var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
+                            date.setMinutes(date.getMinutes() - 5);
+                            if (date < new Date()) {
+                                // do refresh, then return new jwt
+                                var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
+                                return $http({
+                                    url: refreshUrl,
+                                    // This makes it so that this request doesn't send the JWT
+                                    skipAuthorization: true,
+                                    method: 'POST',
+                                    data: {
+                                        originalJWT: $sessionStorage.jwt,
+                                        expirationTimeMinutes: 10
+                                    }
+                                }).then(function(response) {
+                                    $sessionStorage.jwt = response.data.jwt;
+                                    return $sessionStorage.jwt;
+                                });
+                            } else {
+                                return $sessionStorage.jwt;
+                            }
+                        }
+                    } else {
+                        loginHelper.redirectToLogin();
+                    }
+                }];
+            $httpProvider.interceptors.push('jwtInterceptor');
+            $httpProvider.interceptors.push('apikeyInjector');
         })
 
         // Define Force Reload

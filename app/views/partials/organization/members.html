@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="panel panel-default">
+<div class="row mb30">
+  <div class="panel panel-default mb30">
     <div class="panel-body">
       <!-- Members Tab Content -->
       <div class="col-sm-12">
@@ -13,7 +13,7 @@
                 </div>
               </div>
             </div>
-            <a class="btn btn-line-primary pull-right" ng-if="User.isAuthorizedFor('orgEdit')">Manage Members</a>
+            <a class="btn btn-line-primary pull-right" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="addMember()">Add Member</a>
           </div>
         </form>
         <hr>
@@ -37,26 +37,46 @@
         </div>
 
         <!-- ngRepeat: member in filteredMembers -->
-        <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText}">
-          <div class="col-sm-12" >
-        <span class="title"><a>{{member.userName}}</a>
-          <span class="secondary ng-binding">({{member.userId}})</span>
-        </span>
-            <a>
+        <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText} | orderBy:'userId'">
+          <div class="col-sm-8" >
+            <span class="title"><a>{{member.userName}}</a>
+            <span class="secondary ng-binding">({{member.userId}})</span></span>
+            <span class="text-muted small">
               <i class="fa fa-clock-o fa-fw"></i>
-              <span apiman-i18n-key="joined-on" class="title-summary-item">Joined on</span>
-              <span class="title-summary-item ng-binding">{{member.joinedOn | date }}</span>
-            </a>
+              <span>Last modified on</span>
+              <span>{{member.joinedOn | date }}</span>
+            </span>
           </div>
-          <div class="col-sm-12" ng-repeat="role in member.roles">
-            <span class="description">{{role.roleName}}</span>
+          <div class="col-sm-2">
+            <div class="pull-right">
+              <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                  {{member.roles[0].roleName}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li ng-repeat="role in roles | excludeRole:member.roles[0]" class="text-right" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="pull-right">
+              <div class="btn-group-xs" ng-if="User.isAuthorizedFor('orgAdmin') && member.userId !== User.currentUser.username">
+                <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip="Tranfer organization ownership" ng-click="transferOwnership(member)"></button>
+                <button class="btn btn-danger btn-xs action-icon fa fa-times" tooltip-popup-delay="300" tooltip="Remove member" ng-click="removeMember(member)"></button>
+              </div>
+              <div ng-if="!User.isAuthorizedFor('orgAdmin')">
+                {{member.roles[0].roleName}}
+              </div>
+            </div>
           </div>
           <div class="col-sm-12">
             <hr>
           </div>
-        </div><!-- end ngRepeat: member in filteredMembers -->
-      </div>
-
+        </div>
+      </div><!-- end ngRepeat: member in filteredMembers -->
     </div>
+
   </div>
+</div>
 </div>

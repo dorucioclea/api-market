@@ -385,6 +385,16 @@
                 }
             })
 
+        .controller('HowToInvokeCtrl', function ($scope, $modal, contract, endpoint) {
+            $scope.contract = contract;
+            $scope.endpoint = endpoint;
+            $scope.modalClose = modalClose;
+
+            function modalClose() {
+                $scope.$close();
+            }
+        })
+
 /// ==== OAuthConfig Controller
         .controller('OAuthConfigCtrl',
             function ($scope, $rootScope, $modal, $state, appVersionDetails,
@@ -552,6 +562,118 @@
 
                 function modalClose() {
                     imageService.clear();
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+            })
+
+        /// ==== AddOrgMemberCtrl Controller
+        .controller('AddOrgMemberCtrl',
+            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, TOAST_TYPES) {
+                $scope.addMember = addMember;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+                $scope.roles = roles;
+                $scope.selectedRole = null;
+                $scope.selectRole = selectRole;
+
+                function addMember(email) {
+                    var searchObj = {
+                        filters: [{
+                            name: 'email',
+                            value: email,
+                            operator: 'like'
+                        }],
+                        orderBy: {
+                            ascending: false,
+                            name: 'email'
+                        }
+                    };
+                    UserSearch.save({}, searchObj, function (userList) {
+                        if (userList.beans.length === 1) {
+                            var newMemberObj = {
+                                userId: userList.beans[0].username,
+                                roleId: $scope.selectedRole.id
+                            };
+                            var name = userList.beans[0].fullName ? userList.beans[0].fullName : userList.beans[0].username;
+                            Member.save({orgId: org.id}, newMemberObj, function (success) {
+                                $scope.modalClose();
+                                $state.forceReload();
+                                toastService.createToast(TOAST_TYPES.SUCCESS, 'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name + '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Failed to add user to organization :(');
+                            });
+                        } else {
+                            toastService.createToast(TOAST_TYPES.WARNING, 'Could not find member to add with email address <b>' + email + '</b>.', true);
+                        }
+                    }, function (error) {
+                       toastService.createErrorToast(error, 'Encoutered error searching for user');
+                    });
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function selectRole(role) {
+                    $scope.selectedRole = role;
+                }
+            })
+
+        /// ==== MemberRemoveCtrl Controller
+        .controller('MemberRemoveCtrl',
+            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
+                $scope.doRemove = doRemove;
+                $scope.member = member;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+
+                function doRemove() {
+                    var name = member.userName ? member.userName : member.userId;
+                    Member.delete({orgId: org.id, userId: member.userId}, function (success) {
+                        $state.forceReload();
+                        toastService.createToast(TOAST_TYPES.INFO,
+                            '<b>' + name + '</b> was removed from the organization.', true);
+                        $scope.modalClose();
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Could not remove member from organization');
+                    });
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+            })
+
+        /// ==== TransferOrgCtrl Controller
+        .controller('TransferOrgCtrl',
+            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
+                      currentUserModel, OrganizationOwnershipTransfer) {
+                $scope.doTransfer = doTransfer;
+                $scope.newOwner = newOwner;
+                $scope.org = org;
+                $scope.modalClose = modalClose;
+
+                function doTransfer() {
+                    var user = newOwner.userName ? newOwner.userName : newOwner.userId;
+                    var transferObj = {
+                        currentOwnerId: currentOwner.username,
+                        newOwnerId: newOwner.userId
+                    };
+                    OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
+                        // We changed our own role, need to update the CurrentUserInfo
+                        currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
+                            $state.forceReload();
+                            toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + user + '</b>', true);
+                            $scope.modalClose();
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not retrieve updated user permissions');
+                        });
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Failed to transfer organization ownership');
+                    });
+                }
+
+                function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
             });

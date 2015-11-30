@@ -8,6 +8,7 @@
         <div class="panel panel-default mb15">
             <div class="panel-heading">
                 Swagger specification
+                <span class="btn btn-xs btn-info pull-right" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
             </div>
             <div class="panel-body">
                 <div class="swagger-section">
@@ -98,6 +99,40 @@
             </div>
         </div><!-- end Existing Contracts panel -->
 
+        <!-- Custom Headers panel -->
+        <div class="panel panel-default mb15">
+            <div class="panel-heading text-center">
+                Custom Headers
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12 text-center" ng-if="customHeaders.length === 0">
+                    <button class="btn btn-default" ng-click="addHeader()">Add Custom Header</button>
+                </div>
+                <accordion class="accordion-panel" ng-show="customHeaders.length > 0">
+                    <div ng-repeat="header in customHeaders">
+                        <auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">
+                            <form role="form" class="form">
+                                <div class="form-group mb30">
+                                    <div class="input-group mb5">
+                                        <span class="input-group-addon fa fa-fw fa-header"></span>
+                                        <input type="text" class="form-control" placeholder="Header Name" ng-model="header.name">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon fa fa-fw fa-envelope-o"></span>
+                                        <input type="text" class="form-control" placeholder="Header Value" ng-model="header.value">
+                                    </div>
+                                </div>
+                            </form>
+                        </auth-accordion-group>
+                    </div>
+                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" tooltip="Add Header" ng-click="addHeader()"></p>
+                </accordion>
+                <div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">
+                    <button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>
+                </div>
+            </div>
+        </div><!-- end Custom Headers panel -->
+
         <!-- Enabled OAuth Types panel -->
         <div class="panel panel-default mb15" ng-if="hasOAuth">
             <div class="panel-heading text-center">
@@ -151,7 +186,7 @@
             <div class="panel-body">
                 <!-- #start accordion -->
                 <accordion class="accordion-panel">
-                    <auth-accordion-group heading="'OAuth 2.0'">
+                    <auth-accordion-group heading="OAuth 2.0">
                         <form role="form" class="form">
                             <div class="form-group mb30">
                                 <div class="input-group mb5">
@@ -163,11 +198,14 @@
                                     <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
                                 </div>
                             </div>
-                            <div class="ui-checkbox ui-checkbox-circle">
+                            <div class="ui-checkbox ui-checkbox-circle scope-checkbox">
                                 <p class="small text-muted text-uppercase mb5">Scopes</p>
-                                <label class="col-sm-12" ng-repeat="scope in selectedScopes">
+                                <label class="col-sm-12 mt10" ng-repeat="scope in selectedScopes">
                                     <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
-                                    <span class="col-sm-12">{{scope.desc}}</span>
+                                    <span class="col-sm-12">
+                                        <span class="col-sm-12">{{scope.desc}}</span>
+                                        <span class="col-sm-12 xsmall text-muted">{{scope.scope}}</span>
+                                    </span>
                                 </label>
                             </div>
                         </form>

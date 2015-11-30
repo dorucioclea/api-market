@@ -2,3 +2,4 @@ app/scripts/plugins/*
 app/scripts/dev/*
 app/scripts/vendors/*
 app/scripts/ie/*
+test/*

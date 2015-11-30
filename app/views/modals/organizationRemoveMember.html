@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title">Are you sure you want to remove <span class="text-bold text-primary">{{member.userName.length > 0 ? member.userName : member.userId}}</span> from <span class="text-bold text-primary">{{org.name}}</span>?</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+<div class="modal-body">
+    <p>You are about to revoke the membership of <span class="text-bold text-primary">{{member.userName.length > 0 ? member.userName : member.userId}}</span> {{member.userName.length > 0 ? '(' + member.userId + ')' : ''}}.</p>
+    <p>After removal, the member will no longer be able to view or change any of the organizations applications, services or plans.</p>
+    <p>Do you want to proceed?</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="doRemove()">Remove</button>
+</div>

@@ -14,7 +14,7 @@
       <div class="form-group">
         <label class="col-md-3 control-label">API Endpoint</label>
         <div class="col-md-7">
-          <input ng-model="updatedService.endpoint" class="form-control" type="url"  name="implementation" placeholder="ex. http://path.to/your/service"
+          <input id="endpoint" ng-model="updatedService.endpoint" class="form-control" type="url"  name="implementation" placeholder="ex. http://path.to/your/service"
                  ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
           <p class="text-danger xsmall" ng-show="impForm.implementation.$error.url">This is not a valid endpoint url. Please check for errors.</p>
         </div>

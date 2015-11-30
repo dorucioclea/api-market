@@ -85,10 +85,10 @@
 
             })
 
-/// ==== Organization Controller
+        /// ==== Organization Controller
         .controller('OrganizationCtrl',
             function ($scope, $state, $stateParams, screenSize, orgData,
-                      toastService, TOAST_TYPES, Organization, OrganizationMembers, orgScreenModel) {
+                      toastService, TOAST_TYPES, Organization, Member, orgScreenModel) {
 
                 $scope.displayTab = orgScreenModel;
                 $scope.org = orgData;
@@ -102,7 +102,7 @@
 
                 function init() {
                     orgScreenModel.updateOrganization(orgData);
-                    OrganizationMembers.query({orgId: $scope.org.id}, function (reply) {
+                    Member.query({orgId: $scope.org.id}, function (reply) {
                         $scope.memberCount = reply.length;
                     });
                 }
@@ -263,11 +263,96 @@
 
         /// ==== Members Controller
         .controller('MembersCtrl',
-            function ($scope, memberData, orgScreenModel) {
-
+            function ($scope, $state, $modal, $stateParams, memberData, roleData, orgScreenModel,
+                      toastService, TOAST_TYPES, Member) {
+                $scope.addMember = addMember;
+                $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
+                $scope.removeMember = removeMember;
+                $scope.roles = roleData;
+                $scope.transferOwnership = transferOwnership;
 
                 orgScreenModel.updateTab('Members');
+
+                function addMember() {
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationAddMember.html',
+                        size: 'lg',
+                        controller: 'AddOrgMemberCtrl as ctrl',
+                        resolve: {
+                            org: function() {
+                                return $scope.org;
+                            },
+                            roles: function() {
+                                return $scope.roles;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+                function grantRoleToMember(role, member) {
+                    var updateObject = {
+                        userId: member.userId,
+                        roleId: role.id
+                    };
+                    Member.update({orgId: $stateParams.orgId, userId: member.userId},
+                        updateObject,
+                        function (reply) {
+                            Member.query({orgId: $stateParams.orgId}, function (updatedList) {
+                                $scope.members = updatedList;
+                                if (member.userId === $scope.User.currentUser.username) {
+                                    // We changed our own role, need to update the CurrentUserInfo
+                                    $scope.User.updateCurrentUserInfo($scope.User);
+                                }
+                                var name = member.userName ? member.userName : member.userId;
+                                toastService.createToast(TOAST_TYPES.INFO,
+                                    '<b>' + name + '</b> now has the <b>' + role.name + '</b> role.', true);
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Could not retrieve updated member roles');
+                            });
+                        },
+                        function (error) {
+                            toastService.createErrorToast(error, 'Could not update member role');
+                        });
+                }
+
+                function removeMember(member) {
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationRemoveMember.html',
+                        size: 'lg',
+                        controller: 'MemberRemoveCtrl as ctrl',
+                        resolve: {
+                            org: function () {
+                                return $scope.org;
+                            },
+                            member: function () {
+                                return member;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
+
+                function transferOwnership(member) {
+                    $modal.open({
+                        templateUrl: 'views/modals/organizationTransferOwner.html',
+                        size: 'lg',
+                        controller: 'TransferOrgCtrl as ctrl',
+                        resolve: {
+                            org: function () {
+                                return $scope.org;
+                            },
+                            currentOwner: function () {
+                                return $scope.User.currentUser;
+                            },
+                            newOwner: function () {
+                                return member;
+                            }
+                        },
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+                }
 
             });
     // +++ End Organization Screen Subcontrollers +++

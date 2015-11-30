@@ -125,7 +125,7 @@ module.exports = function (grunt) {
     // Clean //
     // ===== //
     clean: {
-      dist: ["dist", ".tmp", "release.zip"]
+      dist: ['dist', '.tmp', 'release.zip']
     }, // End Clean
 
     // ====== //
@@ -294,23 +294,26 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://localhost:8080/API-Engine-web/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://localhost:8080/API-Engine-web/v1'
+              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
-              'IDP_URL': 'https://idp.t1t.be:9443/samlsso',
-              'SP_URL': 'http://localhost:8080/API-Engine-web/v1/users/idp/callback',
+              'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
+              'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apimarketlocal',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'dev.apim.t1t.be:8443'
             }
           }
         }
@@ -319,23 +322,54 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://apim.t1t.be:8000/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'https://dev.apim.t1t.be:8443/dev/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://apim.t1t.be:8000/dev/apiengineauth/v1'
+              'URL': 'https://dev.apim.t1t.be:8443/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
-              'IDP_URL': 'https://idp.t1t.be:9443/samlsso',
-              'SP_URL': 'http://api.t1t.be/API-Engine-web/v1/users/idp/callback',
+              'IDP_URL': 'https://dev.idp.t1t.be:9443/samlsso',
+              'SP_URL': 'http://dev.api.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apimmarket',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'dev.apim.t1t.be:8443'
+            }
+          }
+        }
+      },
+      t1tmtp: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'https://apim.t1t.be/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://apim.t1t.be/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
+              'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'apim.t1t.be'
             }
           }
         }
@@ -344,23 +378,26 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'api-gw-o.antwerpen.be'
             }
           }
         }
@@ -369,23 +406,26 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-web/v1/users/idp/callback',
+              'SP_URL': 'http://devasu016.dev.digant.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'opaque'
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'api-gw-o.antwerpen.be'
             }
           }
         }
@@ -394,23 +434,26 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
-              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
-              'SP_NAME': 'apimarketacc',
-              'CLIENT_TOKEN': 'opaque'
+              'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'api-gw-a.antwerpen.be'
             }
           }
         }
@@ -419,23 +462,26 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
-              'API_KEY_NAME': 'apikey'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session-'
             },
             'SECURITY': {
-              'REDIRECT_URL': '/users/idp/redirect',
+              'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
-              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-web/v1/users/idp/callback',
-              'SP_NAME': 'apimarketacc',
-              'CLIENT_TOKEN': 'opaque'
+              'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
+              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'apiengine',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'api-gw-a.antwerpen.be'
             }
           }
         }
@@ -456,7 +502,17 @@ module.exports = function (grunt) {
     // Replace //
     // ======= //
     replace: {
-      mkt: {
+      publisherOn: {
+        src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\$scope.publisherMode = false;/g,
+            to: '$scope.publisherMode = true;'
+          }
+        ]
+      },
+      publisherOff: {
         src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
         overwrite: true,
         replacements: [
@@ -464,14 +520,20 @@ module.exports = function (grunt) {
             from: /\$scope.publisherMode = true;/g,
             to: '$scope.publisherMode = false;'
           },
+        ]
+      },
+      mkt: {
+        src: ['<%= config.app %>/styles/main.less'],
+        overwrite: true,
+        replacements: [
           {
-            from: '@import "theme-override.less";',
-            to: '//@import "theme-override.less";'
+            from: '@import "theme-t1t.less";',
+            to: '//@import "theme-t1t.less";'
           }
         ]
       },
       pub: {
-        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+        src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
         replacements: [
           {
@@ -479,8 +541,23 @@ module.exports = function (grunt) {
             to: '$scope.publisherMode = true;'
           },
           {
-            from: /\/\/@import "theme-override.less";/g,
+            from: '@import "theme-t1t.less";',
             to: '@import "theme-override.less";'
+          }
+        ]
+      },
+
+      t1t: {
+        src: ['<%= config.app %>/styles/main.less'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\/\/@import "theme-t1t.less";/g,
+            to: '@import "theme-t1t.less";'
+          },
+          {
+            from: '@import "theme-override.less";',
+            to: '@import "theme-t1t.less";'
           }
         ]
       }
@@ -515,10 +592,23 @@ module.exports = function (grunt) {
     ]);
   });
 
+  grunt.registerTask('serveLocal', 'Compile then start a connect web server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
+    }
+
+    grunt.task.run([
+      'connect:livereload',
+      'ngconstant:local',
+      'watch'
+    ]);
+  });
+
   grunt.registerTask('pub', [
     'clean:dist',
     'wiredep',
     'ngconstant:dev',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -529,7 +619,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress'
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('mkt', [
@@ -537,6 +628,7 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:dev',
     'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -548,13 +640,14 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
-  grunt.registerTask('digiDevPub', [
+  grunt.registerTask('t1tMtpPub', [
     'clean:dist',
     'wiredep',
-    'ngconstant:digiDevPub',
+    'ngconstant:t1tmtp',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -566,6 +659,44 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress'
+  ]);
+
+  grunt.registerTask('t1tMtpMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:t1tmtp',
+    'replace:publisherOff',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:publisherOn'
+  ]);
+
+  grunt.registerTask('digiDevPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiDevPub',
+    'replace:pub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt', [
@@ -573,6 +704,7 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMkt',
     'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -584,13 +716,15 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
   grunt.registerTask('digiAccPub', [
     'clean:dist',
     'wiredep',
     'ngconstant:digiAccPub',
+    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -601,7 +735,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress'
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt', [
@@ -609,6 +744,7 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMkt',
     'replace:mkt',
+    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -620,9 +756,53 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:pub'
+    'replace:t1t',
+    'replace:publisherOn'
   ]);
 
+  grunt.registerTask('testBuildPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:dev',
+    'replace:pub',
+    'connect:test',
+    'karma',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('testBuildMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:dev',
+    'replace:mkt',
+    'replace:publisherOff',
+    'connect:test',
+    'karma',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t',
+    'replace:publisherOn'
+  ]);
 
   grunt.registerTask('test', [
     'clean',

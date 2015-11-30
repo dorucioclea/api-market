@@ -22,8 +22,8 @@
         .factory('OrganizationActivity', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:id/activity');
         })
-        .factory('OrganizationMembers', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:memberId');
+        .factory('OrganizationOwnershipTransfer', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/transfer');
         })
         .factory('Plan', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/plans/:planId',
@@ -47,7 +47,12 @@
                 '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
         })
         .factory('Member', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:userId/:roleId', {}, {
+                update: {
+                    method: 'PUT',
+                    isArray: true
+                }
+            });
         })
         .factory('Application', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId',
@@ -227,16 +232,24 @@
             return $resource(CONFIG.BASE.URL + '/users/:userId');
         })
 
-        /// ========== USER LOGOUT ======================================================================
+        .factory('UserSearch', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/users/search');
+        })
+        /// ========== LOGIN/LOGOUT/TOKEN REFRESH =======================================================
 
         .factory('LogOutRedirect', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/users/idp/logout');
+            return $resource(CONFIG.AUTH.URL + '/login/idp/logout');
         })
 
         /// ========== POLICYDEFS =======================================================================
 
         .factory('PolicyDefs', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/policyDefs/:policyId');
+        })
+
+        /// ========== ROLES ============================================================================
+        .factory('Roles', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/roles/:roleId');
         })
 
         /// ========== SEARCH ===========================================================================

@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add member to <span class="text-bold text-primary">{{org.name}}</span></h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+<div class="modal-body">
+
+    <form role="form" name="memberForm" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="control-label text-primary">Member email address</label>
+            </div>
+            <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="Enter email address..." ng-model="ctrl.email" required>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required" ng-if="appForm.appName.$touched">Please provide the prospective members email address.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
+            </div>
+            <div class="col-md-4 col-md-offset-2">
+                <div class="btn-group dropdown" dropdown>
+                    <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+                        {{selectedRole ? selectedRole.name : 'Select member role'}}<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li ng-repeat="role in roles" ng-click="selectRole(role)"><a>{{role.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-disabled="memberForm.$invalid || !selectedRole" ng-click="addMember(ctrl.email)">Add</button>
+</div>

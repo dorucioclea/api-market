@@ -5,9 +5,9 @@
 
   // Root Controller
       .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$modal', '$timeout',
-        'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage',
+        'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage', 'CONFIG',
       function($rs, $scope, $state, $modal, $timeout,
-               Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage) {
+               Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage, CONFIG) {
           var mm = window.matchMedia('(max-width: 767px)');
 
           $rs.isMobile = mm.matches ? true : false;
@@ -95,29 +95,38 @@
                   }
               });
               function addApiKeyAuthorization() {
-                  //TODO add key var - replace with var
+                  //Add API key
                   var key;
                   if (docTester.preferredContract) {
                       key = docTester.apikey;
                   } else {
-                      key = encodeURIComponent($sessionStorage.apikey);
+                      key = encodeURIComponent(CONFIG.SECURITY.API_KEY);
                   }
                   if (key && key.trim() !== '') {
                       $scope.swaggerUi.api.clientAuthorizations.add('key',
-                        new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
+                          new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
                   }
               }
               $scope.swaggerUi.load();
           };
 
-          $scope.updateSwaggerHeader = function () {
+          $scope.updateSwaggerApiKeyHeader = function () {
               $scope.swaggerUi.api.clientAuthorizations.add('key',
                 new SwaggerClient.ApiKeyAuthorization('apikey', docTester.apikey, 'header'));
           };
 
-          $scope.addSwaggerTokenHeader = function (token) {
-              $scope.swaggerUi.api.clientAuthorizations.add('token',
-                new SwaggerClient.ApiKeyAuthorization('Authorization', token, 'header'));
+          $scope.addJWTHeader = function () {
+              // Add JWT
+              var jwt = encodeURIComponent($sessionStorage.jwt);
+              if (jwt && jwt.trim() !== '') {
+                  $scope.swaggerUi.api.clientAuthorizations.add('jwt',
+                      new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + jwt, 'header'));
+              }
+          };
+
+          $scope.addCustomSwaggerHeader = function (header) {
+              $scope.swaggerUi.api.clientAuthorizations.add(header.name,
+                new SwaggerClient.ApiKeyAuthorization(header.name, header.value, 'header'));
           };
 
           $scope.navFull = true;
@@ -224,20 +233,14 @@
         }
     })
 
-    .controller('ErrorCtrl', function ($scope, $state, $sessionStorage) {
+    .controller('ErrorCtrl', function ($scope, $state) {
         $scope.error = $state.current.error;
         console.log($scope.error);
-        $scope.retryLogin = retryLogin;
-
-        function retryLogin() {
-            delete $sessionStorage.apikey;
-            $state.go('root');
-        }
     })
 
     .controller('HeadCtrl',
       function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-               currentUser, currentUserModel, headerModel, orgScreenModel, Fullscreen) {
+               currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
           $scope.currentUserModel = currentUserModel;
@@ -266,8 +269,12 @@
                           string += value;
                       }
                   });
-                  delete $sessionStorage.apikey;
-                  window.location.href = string;
+                  if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                      $state.go('logout');
+                  } else {
+                      window.location.href = string;
+                  }
+                  delete $sessionStorage.jwt;
               });
           }
 
