@@ -4,11 +4,11 @@
     angular.module('app.config', [])
         .constant('CONFIG', {
             BASE: {
-                URL:'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
+                URL:'https://dev.apim.t1t.be:8443/dev/apiengine/v1',
                 JWT_HEADER_NAME: 'jwt'
             },
             AUTH: {
-                URL: 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
+                URL: 'https://dev.apim.t1t.be:8443/dev/apiengineauth/v1'
             },
             STORAGE: {
                 LOCAL_STORAGE: 'apim-',
