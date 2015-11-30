@@ -63,11 +63,12 @@
 /// ==== Service Swagger Documentation Controller
         .controller('DocumentationCtrl',
         function($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
-                 docTester, svcTab, ApplicationVersion, ServiceVersionDefinition,
+                 docTester, docDownloader, svcTab, ApplicationVersion, ServiceVersionDefinition,
                  oAuthService, toastService, TOAST_TYPES) {
             $scope.addHeader = addHeader;
             $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
             $scope.endpoint = endpoint;
+            $scope.docDownloader = docDownloader;
             $scope.contractApps = [];
             $scope.canGrant = canGrant;
             $scope.customHeaders = [];

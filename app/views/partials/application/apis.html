@@ -27,7 +27,7 @@
                 <td>{{contract.serviceVersion}}</td>
                 <td>{{contract.planName}}</td>
                 <td>
-                    <button class="btn btn-sm btn-default" ng-click="downloadDocs(contract)">Download as JSON</button>
+                    <button class="btn btn-sm btn-default" ng-click="docDownloader.fetchWithContract(contract)">Download as JSON</button>
                 </td>
             </tr>
             <tr ng-repeat-end ng-show="contract.apiExpanded">

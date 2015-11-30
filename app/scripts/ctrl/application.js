@@ -149,37 +149,19 @@
             })
         /// ==== APIs Controller
         .controller('ApisCtrl',
-            function ($scope, $modal, contractData, appScreenModel, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
+            function ($scope, $modal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
 
                 $scope.contracts = contractData;
+                $scope.docDownloader = docDownloader;
                 appScreenModel.updateTab('APIs');
                 $scope.toggle = toggle;
                 $scope.copyKey = copyKey;
-                $scope.downloadDocs = downloadDocs;
                 $scope.howToInvoke = howToInvoke;
 
                 function copyKey(key) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>API Key copied to clipboard!</b><br>' + key;
                     $scope.toastService.createToast(type, msg, true);
-                }
-
-                function downloadDocs(contract) {
-                    ServiceVersionDefinition.get(
-                        {orgId: contract.serviceOrganizationId,
-                            svcId: contract.serviceId,
-                            versionId: contract.serviceVersion},
-                        function (definitionSpec) {
-                            definitionSpec.host = CONFIG.KONG.HOST;
-                            var data = angular.toJson(definitionSpec, true);
-                            var blob = new Blob([data], {type: 'text/json'}),
-                                a = document.createElement('a');
-
-                            a.download = contract.serviceName + '-' + contract.serviceVersion + '-swagger.json';
-                            a.href = window.URL.createObjectURL(blob);
-                            a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-                            a.click();
-                        });
                 }
 
                 function howToInvoke(contract) {

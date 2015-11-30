@@ -547,6 +547,40 @@
                 }
             })
 
+        .service('docDownloader', function (toastService, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
+
+            this.fetch = fetch;
+            this.fetchWithContract = fetchWithContract;
+            this.fetchWithServiceVersion = fetchWithServiceVersion
+
+            function fetch(orgId, svcId, versionId) {
+                return ServiceVersionDefinition.get(
+                    {orgId: orgId,
+                        svcId: svcId,
+                        versionId: versionId},
+                    function (definitionSpec) {
+                        toastService.createToast(TOAST_TYPES.INFO, '<b>Downloading...</b>', true);
+                        definitionSpec.host = CONFIG.KONG.HOST;
+                        var data = angular.toJson(definitionSpec, true);
+                        var blob = new Blob([data], {type: 'text/json'}),
+                            a = document.createElement('a');
+
+                        a.download = svcId + '-' + versionId + '-swagger.json';
+                        a.href = window.URL.createObjectURL(blob);
+                        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                        a.click();
+                    });
+            }
+
+            function fetchWithContract(contract) {
+                fetch(contract.serviceOrganizationId, contract.serviceId, contract.serviceVersion);
+            }
+
+            function fetchWithServiceVersion(svcVersion) {
+                fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
+            }
+        })
+
         // LOGIN HELPER SERVICE
         .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
             this.redirectToLogin = redirectToLogin;
