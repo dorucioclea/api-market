@@ -322,11 +322,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengine/v1',
+              'URL': 'https://dev.apim.t1t.be:8443/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://dev.apim.t1t.be:8000/dev/apiengineauth/v1'
+              'URL': 'https://dev.apim.t1t.be:8443/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -378,11 +378,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -397,7 +397,7 @@ module.exports = function (grunt) {
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
-              HOST: 'devasu18.dev.digant.antwerpen.local'
+              HOST: 'api-gw-o.antwerpen.be'
             }
           }
         }
@@ -406,11 +406,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://devasu018.dev.digant.antwerpen.local/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -425,7 +425,7 @@ module.exports = function (grunt) {
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
-              HOST: 'devasu18.dev.digant.antwerpen.local'
+              HOST: 'api-gw-o.antwerpen.be'
             }
           }
         }
@@ -434,11 +434,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -453,7 +453,7 @@ module.exports = function (grunt) {
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
-              HOST: 'rasu076.rte.antwerpen.local'
+              HOST: 'api-gw-a.antwerpen.be'
             }
           }
         }
@@ -462,11 +462,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'http://rasu076.rte.antwerpen.local/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -481,7 +481,7 @@ module.exports = function (grunt) {
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
-              HOST: 'rasu076.rte.antwerpen.local'
+              HOST: 'api-gw-a.antwerpen.be'
             }
           }
         }
