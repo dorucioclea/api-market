@@ -12946,6 +12946,13 @@ md-input-container {
   width: 20px;
   height: 20px;
 }
+.member-pic {
+  width: 40px;
+  height: 40px;
+}
+.member-line {
+  line-height: 40px;
+}
 .input-version-addon {
   padding: 0;
   background: transparent;

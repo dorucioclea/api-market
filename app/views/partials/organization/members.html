@@ -38,7 +38,11 @@
 
         <!-- ngRepeat: member in filteredMembers -->
         <div class="col-sm-12" ng-repeat="member in members | filter:{userId:searchText} | orderBy:'userId'">
-          <div class="col-sm-8" >
+          <div class="col-sm-1 text-right">
+            <img class="member-pic img-circle" ng-src="data:image/png;base64,{{memberDetails[member.userId].base64pic}}" ng-if="memberDetails[member.userId].base64pic.length > 0">
+            <img class="member-pic img-cirlce" src="images/no-image-available.svg" ng-if="memberDetails[member.userId].base64pic.length === 0 || memberDetails[member.userId].base64pic === null">
+          </div>
+          <div class="col-sm-7 member-line">
             <span class="title"><a>{{member.userName}}</a>
             <span class="secondary ng-binding">({{member.userId}})</span></span>
             <span class="text-muted small">
@@ -47,7 +51,7 @@
               <span>{{member.joinedOn | date }}</span>
             </span>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-2 member-line">
             <div class="pull-right">
               <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
@@ -59,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-2 member-line">
             <div class="pull-right">
               <div class="btn-group-xs" ng-if="User.isAuthorizedFor('orgAdmin') && member.userId !== User.currentUser.username">
                 <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip="Tranfer organization ownership" ng-click="transferOwnership(member)"></button>

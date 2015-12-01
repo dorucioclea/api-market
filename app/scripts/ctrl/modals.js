@@ -576,7 +576,7 @@
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
 
-                function addMember(email) {
+                function addMember(username, email) {
                     var searchObj = {
                         filters: [{
                             name: 'email',

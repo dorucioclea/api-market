@@ -263,11 +263,12 @@
 
         /// ==== Members Controller
         .controller('MembersCtrl',
-            function ($scope, $state, $modal, $stateParams, memberData, roleData, orgScreenModel,
+            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, roleData, orgScreenModel,
                       toastService, TOAST_TYPES, Member) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
+                $scope.memberDetails = memberDetails;
                 $scope.removeMember = removeMember;
                 $scope.roles = roleData;
                 $scope.transferOwnership = transferOwnership;

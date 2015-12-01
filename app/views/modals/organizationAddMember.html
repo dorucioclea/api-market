@@ -7,11 +7,15 @@
     <form role="form" name="memberForm" class="form-horizontal">
         <div class="form-group">
             <div class="col-md-12">
-                <label class="control-label text-primary">Member email address</label>
+                <label class="control-label text-primary">Member To Add</label>
             </div>
             <div class="col-md-6">
-                <input type="email" name="email" class="form-control" placeholder="Enter email address..." ng-model="ctrl.email" required>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required" ng-if="appForm.appName.$touched">Please provide the prospective members email address.</p>
+                <input type="text" name="username" class="form-control" placeholder="Enter username..." ng-model="ctrl.username" option>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.option" ng-if="appForm.appName.$touched">Please provide either the prospective members username...</p>
+            </div>
+            <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="Enter email address..." ng-model="ctrl.email" option>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.option" ng-if="appForm.appName.$touched">...or email address.</p>
                 <p class="text-danger xsmall" ng-show="memberForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
             </div>
             <div class="col-md-4 col-md-offset-2">
@@ -29,5 +33,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-disabled="memberForm.$invalid || !selectedRole" ng-click="addMember(ctrl.email)">Add</button>
+    <button class="btn btn-primary" ng-disabled="memberForm.$invalid || !selectedRole" ng-click="addMember(ctrl.username, ctrl.email)">Add</button>
 </div>

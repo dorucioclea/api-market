@@ -468,6 +468,24 @@
                         memberData: function (Member, organizationId) {
                             return Member.query({orgId: organizationId}).$promise;
                         },
+                        Users: 'Users',
+                        memberDetails: function ($q, memberData, Users) {
+                            var memberDetails = [];
+                            var promises = [];
+
+                            angular.forEach(memberData, function (member) {
+                                console.log(member);
+                                promises.push(Users.get(
+                                    {userId: member.userId}).$promise);
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    memberDetails[details.username] = details;
+                                });
+                                return memberDetails;
+                            });
+                        },
                         Roles: 'Roles',
                         roleData: function (Roles) {
                             return Roles.query().$promise;
