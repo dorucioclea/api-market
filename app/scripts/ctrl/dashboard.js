@@ -12,6 +12,7 @@
                 orgScreenModel.updateOrganization(orgData);
                 selectedApp.reset();
                 docTester.reset();
+                $scope.$state = $state;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.applications = appData;
                 $scope.applicationVersions = appVersions;
