@@ -12,6 +12,7 @@
                 orgScreenModel.updateOrganization(orgData);
                 selectedApp.reset();
                 docTester.reset();
+                $scope.$state = $state;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.applications = appData;
                 $scope.applicationVersions = appVersions;
@@ -167,6 +168,38 @@
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
                     toastService.createToast(type, msg, true);
+                }
+            })
+
+        /// ==== Marketplace Members Controller
+        .controller('MarketMembersCtrl',
+            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, roleData, orgScreenModel,
+                      toastService, TOAST_TYPES, memberHelper) {
+                $scope.addMember = addMember;
+                $scope.grantRoleToMember = grantRoleToMember;
+                $scope.members = memberData;
+                $scope.memberDetails = memberDetails;
+                $scope.removeMember = removeMember;
+                $scope.roles = roleData;
+                $scope.transferOwnership = transferOwnership;
+
+                orgScreenModel.updateTab('Members');
+                orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+
+                function addMember() {
+                    memberHelper.addMember(orgScreenModel.organization, $scope.roles);
+                }
+
+                function grantRoleToMember(role, member) {
+                    memberHelper.grantRoleToMember(orgScreenModel.organization, role, $scope.User.currentUser, member);
+                }
+
+                function removeMember(member) {
+                    memberHelper.removeMember(orgScreenModel.organization, member);
+                }
+
+                function transferOwnership(member) {
+                    memberHelper.transferOwnership(orgScreenModel.organization, $scope.User.currentUser, member);
                 }
             })
 

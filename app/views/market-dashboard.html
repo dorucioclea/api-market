@@ -22,6 +22,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="pull-right">
+                                <button class="btn btn-line-default" ui-sref="root.market-dash.members" ng-class="{'hidden': $state.is('root.market-dash.members')}">Members</button>
+                                <button class="btn btn-line-default" ui-sref="root.market-dash" ng-class="{'hidden': $state.is('root.market-dash')}">Applications</button>
                                 <button class="btn btn-line-primary" ng-click="modalNewApplication()" ng-if="User.isAuthorizedFor('appEdit')">New Application</button>
                             </div>
                         </div>
@@ -32,7 +34,7 @@
             <div class="col-sm-12 mt10">
                 <div class="row">
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="panel-body" ui-view>
 
                             <!-- Applications Tab Content -->
                             <div class="col-sm-12">

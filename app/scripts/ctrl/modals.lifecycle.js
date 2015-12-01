@@ -40,6 +40,7 @@
 
                 function createApplication(application) {
                     application.name = application.name.trim();
+                    application.initialVersion = 'v'.concat(application.initialVersion);
                     if (imageService.image.fileData) {
                         application.base64logo = imageService.image.fileData;
                     } else {
@@ -117,6 +118,7 @@
 
                 function createPlan(plan) {
                     plan.name = plan.name.trim();
+                    plan.initialVersion = 'v'.concat(plan.initialVersion);
                     Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
                         $scope.modalClose();
                         $state.go('root.plan',
@@ -197,6 +199,7 @@
                 function createService(svc, categories) {
                     var newSvcObject = angular.copy(svc);
                     newSvcObject.name = svc.name.trim();
+                    newSvcObject.initialVersion = 'v'.concat(svc.initialVersion);
                     var cats = [];
                     for (var i = 0; i < categories.length; i++) {
                         cats.push(categories[i].text);
@@ -213,7 +216,7 @@
                     Service.save({orgId: $stateParams.orgId}, newSvcObject, function (newSvc) {
                         $scope.modalClose();
                         $state.go('root.service.overview',
-                            {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: svc.initialVersion});
+                            {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: newSvcObject.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Service <b>' + newSvc.name + '</b> created!', true);
                     }, function (error) {
@@ -273,12 +276,13 @@
 /// ==== NewVersion Controller
         .controller('NewVersionCtrl',
             function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, toastService,
-                      ApplicationVersion, PlanVersion, ServiceVersion) {
+                      ApplicationVersion, PlanVersion, ServiceVersion, REGEX) {
 
                 $scope.newVersion = '';
                 $scope.shouldClone = true;
                 $scope.createVersion = createVersion;
                 $scope.modalClose = modalClose;
+                $scope.regex = REGEX;
 
                 var type = {};
                 init();
@@ -298,7 +302,7 @@
 
                 function createVersion() {
                     var newVersion = {
-                        version: $scope.newVersion,
+                        version: 'v'.concat($scope.newVersion),
                         clone: $scope.shouldClone,
                         cloneVersion: $scope.currentVersion
                     };

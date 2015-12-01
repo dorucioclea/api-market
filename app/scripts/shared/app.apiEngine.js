@@ -240,6 +240,12 @@
         .factory('LogOutRedirect', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/login/idp/logout');
         })
+        .factory('UserSearch', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/login/idp/user/name');
+        })
+        .factory('EmailSearch', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/login/idp/user/mail');
+        })
 
         /// ========== POLICYDEFS =======================================================================
 

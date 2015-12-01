@@ -208,6 +208,40 @@
                     controller: 'MarketDashCtrl'
                 })
 
+                // MARKETPLACE MEMBER MANAGEMENT
+                .state('root.market-dash.members', {
+                    url: '/members',
+                    templateUrl: '/views/partials/market/members.html',
+                    resolve: {
+                        Member: 'Member',
+                        memberData: function (Member, organizationId) {
+                            return Member.query({orgId: organizationId}).$promise;
+                        },
+                        Users: 'Users',
+                        memberDetails: function ($q, memberData, Users) {
+                            var memberDetails = [];
+                            var promises = [];
+
+                            angular.forEach(memberData, function (member) {
+                                promises.push(Users.get(
+                                    {userId: member.userId}).$promise);
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    memberDetails[details.username] = details;
+                                });
+                                return memberDetails;
+                            });
+                        },
+                        Roles: 'Roles',
+                        roleData: function (Roles) {
+                            return Roles.query().$promise;
+                        }
+                    },
+                    controller: 'MarketMembersCtrl'
+                })
+
                 // MARKETPLACE API EXPLORER AND NESTED VIEWS =======================================
                 .state('root.apis', {
                     abstract: true,
@@ -467,6 +501,23 @@
                         Member: 'Member',
                         memberData: function (Member, organizationId) {
                             return Member.query({orgId: organizationId}).$promise;
+                        },
+                        Users: 'Users',
+                        memberDetails: function ($q, memberData, Users) {
+                            var memberDetails = [];
+                            var promises = [];
+
+                            angular.forEach(memberData, function (member) {
+                                promises.push(Users.get(
+                                    {userId: member.userId}).$promise);
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    memberDetails[details.username] = details;
+                                });
+                                return memberDetails;
+                            });
                         },
                         Roles: 'Roles',
                         roleData: function (Roles) {
@@ -903,6 +954,7 @@
                     if ($sessionStorage.jwt) {
                         if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                             // Token is expired, user needs to relogin
+                            console.log('Token expired, redirect to login');
                             delete $sessionStorage.jwt;
                             loginHelper.redirectToLogin();
                         } else {
@@ -911,6 +963,7 @@
                             date.setMinutes(date.getMinutes() - 5);
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
+                                console.log('Refreshing token');
                                 var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
                                 return $http({
                                     url: refreshUrl,
