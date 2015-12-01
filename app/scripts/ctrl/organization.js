@@ -264,7 +264,7 @@
         /// ==== Members Controller
         .controller('MembersCtrl',
             function ($scope, $state, $modal, $stateParams, memberData, memberDetails, roleData, orgScreenModel,
-                      toastService, TOAST_TYPES, Member) {
+                      toastService, TOAST_TYPES, memberHelper) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
@@ -276,83 +276,19 @@
                 orgScreenModel.updateTab('Members');
 
                 function addMember() {
-                    $modal.open({
-                        templateUrl: 'views/modals/organizationAddMember.html',
-                        size: 'lg',
-                        controller: 'AddOrgMemberCtrl as ctrl',
-                        resolve: {
-                            org: function() {
-                                return $scope.org;
-                            },
-                            roles: function() {
-                                return $scope.roles;
-                            }
-                        },
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
+                    memberHelper.addMember($scope.org, $scope.roles);
                 }
 
                 function grantRoleToMember(role, member) {
-                    var updateObject = {
-                        userId: member.userId,
-                        roleId: role.id
-                    };
-                    Member.update({orgId: $stateParams.orgId, userId: member.userId},
-                        updateObject,
-                        function (reply) {
-                            Member.query({orgId: $stateParams.orgId}, function (updatedList) {
-                                $scope.members = updatedList;
-                                if (member.userId === $scope.User.currentUser.username) {
-                                    // We changed our own role, need to update the CurrentUserInfo
-                                    $scope.User.updateCurrentUserInfo($scope.User);
-                                }
-                                var name = member.userName ? member.userName : member.userId;
-                                toastService.createToast(TOAST_TYPES.INFO,
-                                    '<b>' + name + '</b> now has the <b>' + role.name + '</b> role.', true);
-                            }, function (error) {
-                                toastService.createErrorToast(error, 'Could not retrieve updated member roles');
-                            });
-                        },
-                        function (error) {
-                            toastService.createErrorToast(error, 'Could not update member role');
-                        });
+                    memberHelper.grantRoleToMember($scope.org, role, $scope.User.currentUser, member);
                 }
 
                 function removeMember(member) {
-                    $modal.open({
-                        templateUrl: 'views/modals/organizationRemoveMember.html',
-                        size: 'lg',
-                        controller: 'MemberRemoveCtrl as ctrl',
-                        resolve: {
-                            org: function () {
-                                return $scope.org;
-                            },
-                            member: function () {
-                                return member;
-                            }
-                        },
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
+                    memberHelper.removeMember($scope.org, member);
                 }
 
                 function transferOwnership(member) {
-                    $modal.open({
-                        templateUrl: 'views/modals/organizationTransferOwner.html',
-                        size: 'lg',
-                        controller: 'TransferOrgCtrl as ctrl',
-                        resolve: {
-                            org: function () {
-                                return $scope.org;
-                            },
-                            currentOwner: function () {
-                                return $scope.User.currentUser;
-                            },
-                            newOwner: function () {
-                                return member;
-                            }
-                        },
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
+                    memberHelper.transferOwnership($scope.org, $scope.User.currentUser, member);
                 }
 
             });

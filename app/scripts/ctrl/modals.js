@@ -568,50 +568,65 @@
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, TOAST_TYPES) {
+            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
                 $scope.roles = roles;
+                $scope.selectedMethod = 'Email';
+                $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
 
                 function addMember(username, email) {
                     var searchObj = {
-                        filters: [{
-                            name: 'email',
-                            value: email,
-                            operator: 'like'
-                        }],
-                        orderBy: {
-                            ascending: false,
-                            name: 'email'
-                        }
+                        userName: '',
+                        userMail: ''
                     };
-                    UserSearch.save({}, searchObj, function (userList) {
-                        if (userList.beans.length === 1) {
+
+                    var promise;
+                    switch ($scope.selectedMethod) {
+                        case 'Email':
+                            searchObj.userMail = email;
+                            promise = EmailSearch.save({}, searchObj).$promise;
+                            break;
+                        case 'Username':
+                            searchObj.userName = username;
+                            promise = UserSearch.save({}, searchObj).$promise;
+                            break;
+                    }
+
+                    promise.then(function (user) {
+                        if (user) {
                             var newMemberObj = {
-                                userId: userList.beans[0].username,
+                                userId: user.username,
                                 roleId: $scope.selectedRole.id
                             };
-                            var name = userList.beans[0].fullName ? userList.beans[0].fullName : userList.beans[0].username;
+                            var name = user.name ? user.name : user.username;
                             Member.save({orgId: org.id}, newMemberObj, function (success) {
                                 $scope.modalClose();
                                 $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS, 'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name + '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
+                                toastService.createToast(TOAST_TYPES.SUCCESS,
+                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name +
+                                    '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');
                             });
                         } else {
-                            toastService.createToast(TOAST_TYPES.WARNING, 'Could not find member to add with email address <b>' + email + '</b>.', true);
+                            toastService.createToast(TOAST_TYPES.WARNING,
+                                'Could not find member to add with email address <b>' + email + '</b>.', true);
                         }
                     }, function (error) {
-                       toastService.createErrorToast(error, 'Encoutered error searching for user');
+                        toastService.createErrorToast(error, 'Encoutered error searching for user');
                     });
                 }
 
                 function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function selectMethod(method) {
+                    $scope.selectedMethod = method;
                 }
 
                 function selectRole(role) {
@@ -663,7 +678,8 @@
                         // We changed our own role, need to update the CurrentUserInfo
                         currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
-                            toastService.createToast('success', 'Ownership of <b>' + org.name + '</b> was successfully transferred to <b>' + user + '</b>', true);
+                            toastService.createToast('success', 'Ownership of <b>' + org.name +
+                                '</b> was successfully transferred to <b>' + user + '</b>', true);
                             $scope.modalClose();
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not retrieve updated user permissions');

@@ -57,8 +57,8 @@
                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
                   {{member.roles[0].roleName}}<span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <li ng-repeat="role in roles | excludeRole:member.roles[0]" class="text-right" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
+                <ul class="dropdown-menu dropdown-menu-left">
+                  <li ng-repeat="role in roles | excludeRole:member.roles[0]" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
                 </ul>
               </div>
             </div>

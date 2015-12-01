@@ -239,7 +239,7 @@
                             return Roles.query().$promise;
                         }
                     },
-                    controller: 'MembersCtrl'
+                    controller: 'MarketMembersCtrl'
                 })
 
                 // MARKETPLACE API EXPLORER AND NESTED VIEWS =======================================
@@ -954,6 +954,7 @@
                     if ($sessionStorage.jwt) {
                         if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                             // Token is expired, user needs to relogin
+                            console.log('Token expired, redirect to login');
                             delete $sessionStorage.jwt;
                             loginHelper.redirectToLogin();
                         } else {
@@ -962,6 +963,7 @@
                             date.setMinutes(date.getMinutes() - 5);
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
+                                console.log('Refreshing token');
                                 var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
                                 return $http({
                                     url: refreshUrl,

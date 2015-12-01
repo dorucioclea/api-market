@@ -4,34 +4,48 @@
 </div>
 <div class="modal-body">
 
+    <p>Select the method you want to use to add a new member, provide the necessary details, and select a role to be granted to the new member.</p>
+
     <form role="form" name="memberForm" class="form-horizontal">
         <div class="form-group">
             <div class="col-md-12">
-                <label class="control-label text-primary">Member To Add</label>
-            </div>
-            <div class="col-md-6">
-                <input type="text" name="username" class="form-control" placeholder="Enter username..." ng-model="ctrl.username" option>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.option" ng-if="appForm.appName.$touched">Please provide either the prospective members username...</p>
-            </div>
-            <div class="col-md-6">
-                <input type="email" name="email" class="form-control" placeholder="Enter email address..." ng-model="ctrl.email" option>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.option" ng-if="appForm.appName.$touched">...or email address.</p>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
-            </div>
-            <div class="col-md-4 col-md-offset-2">
-                <div class="btn-group dropdown" dropdown>
-                    <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
-                        {{selectedRole ? selectedRole.name : 'Select member role'}}<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-left">
-                        <li ng-repeat="role in roles" ng-click="selectRole(role)"><a>{{role.name}}</a></li>
-                    </ul>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <div class="dropdown" dropdown>
+                            <button class="btn btn-primary dropdown-toggle" dropdown-toggle
+                                    type="button">
+                                {{selectedMethod}}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-click="selectMethod('Username')"><a>Username</a></li>
+                                <li class="clickable" ng-click="selectMethod('Email')"><a>Email</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text" name="username" class="form-control" ng-model="ctrl.username" placeholder="Username of the prospective member" ng-class="{'hidden': selectedMethod === 'Email'}" required>
+                    <input type="email" name="email" class="form-control" ng-model="ctrl.email" placeholder="Email address of the prospective member" ng-class="{'hidden': selectedMethod === 'Username'}" required>
+                    <div class="input-group-btn">
+                        <div class="dropdown" dropdown>
+                            <button class="btn btn-line-primary dropdown-toggle" dropdown-toggle
+                                    type="button">
+                                {{selectedRole ? selectedRole.name : 'Select member role'}}<span class="caret"></span>
+                                </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-repeat="role in roles" ng-click="selectRole(role)"><a>{{role.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <p class="text-danger xsmall" ng-show="memberForm.username.$error.required && selectedMethod === 'Username'" ng-if="memberForm.username.$touched">Please provide the username you would like to add.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required && selectedMethod === 'Email'" ng-if="memberForm.email.$touched">Please provide the users email address.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
             </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-disabled="memberForm.$invalid || !selectedRole" ng-click="addMember(ctrl.username, ctrl.email)">Add</button>
+    <button class="btn btn-primary"
+            ng-disabled="(memberForm.email.$invalid && memberForm.username.$invalid) || !selectedRole"
+            ng-click="addMember(ctrl.username, ctrl.email)">Add</button>
 </div>
