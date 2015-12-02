@@ -38,13 +38,13 @@
                             <div class="input-group col-sm-12">
                                 <input readonly type="text" class="form-control" value="{{contract.apikey}}">
                                 <div class="input-group-btn">
-                                    <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default fa fa-copy" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip="Copy API key to clipboard"></button>
+                                    <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default fa fa-copy" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy API key to clipboard"></button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div>
-                                <button tooltip-popup-delay="500" tooltip="Details on how to invoke this service." class="btn btn-default" ng-click="howToInvoke(contract)">How to invoke...</button>
+                                <button tooltip-popup-delay="500" tooltip-placement="top" tooltip="Details on how to invoke this service." class="btn btn-default" ng-click="howToInvoke(contract)">How to invoke...</button>
                             </div>
                         </div>
                     </form>

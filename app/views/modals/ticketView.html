@@ -15,10 +15,10 @@
         </div>
     </div>
     <div class="right" ng-if="!editMode">
-        <button class="btn btn-default btn-xs fa fa-pencil" tooltip-popup-delay="300" tooltip="Edit issue" ng-click="editIssue()" ng-if="isOwnIssue() || isServiceOwner()">&nbsp;Edit</button>
-        <button class="btn btn-line-warning btn-xs fa fa-lock" tooltip-popup-delay="300" tooltip="Close issue" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN' && (publisherMode || isServiceOwner())">&nbsp;Close</button>
-        <button class="btn btn-line-warning btn-xs fa fa-folder-open" tooltip-popup-delay="300" tooltip="Reopen issue" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED' && (publisherMode || isServiceOwner())">&nbsp;Reopen</button>
-        <button class="btn btn-line-danger btn-xs fa fa-ban" tooltip-popup-delay="300" tooltip="Delete issue" ng-click="deleteIssue()" ng-if="publisherMode || isServiceOwner()">&nbsp;Delete</button>
+        <button class="btn btn-default btn-xs fa fa-pencil" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Edit issue" ng-click="editIssue()" ng-if="isOwnIssue() || isServiceOwner()">&nbsp;Edit</button>
+        <button class="btn btn-line-warning btn-xs fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Close issue" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN' && (publisherMode || isServiceOwner())">&nbsp;Close</button>
+        <button class="btn btn-line-warning btn-xs fa fa-folder-open" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Reopen issue" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED' && (publisherMode || isServiceOwner())">&nbsp;Reopen</button>
+        <button class="btn btn-line-danger btn-xs fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete issue" ng-click="deleteIssue()" ng-if="publisherMode || isServiceOwner()">&nbsp;Delete</button>
     </div>
 
     <div class="ml10 mr10" ng-if="editMode">
@@ -58,5 +58,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-default" tooltip-popup-delay="300" tooltip="Close this dialog" ng-click="modalClose()">OK</button>
+    <button class="btn btn-default" ng-click="modalClose()">OK</button>
 </div>
