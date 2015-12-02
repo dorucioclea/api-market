@@ -601,6 +601,7 @@
                             return roles;
                         }
                     },
+                    backdrop : 'static',
                     windowClass: 'default'	// Animation Class put here.
                 });
             }
@@ -644,6 +645,7 @@
                             return member;
                         }
                     },
+                    backdrop : 'static',
                     windowClass: 'default'	// Animation Class put here.
                 });
             }
@@ -664,6 +666,7 @@
                             return member;
                         }
                     },
+                    backdrop : 'static',
                     windowClass: 'default'	// Animation Class put here.
                 });
             }

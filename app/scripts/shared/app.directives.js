@@ -426,6 +426,7 @@
                                 resolve: {
                                     serviceVersion: $scope.serviceVersion
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         }
@@ -470,6 +471,7 @@
                                     publisherMode: $scope.publisherMode,
                                     serviceVersion: $scope.serviceVersion
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim
                             });
                         }

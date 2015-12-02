@@ -111,6 +111,7 @@
                                         return $scope.applicationContracts[appVersion.id];
                                     }
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
@@ -132,6 +133,7 @@
                                         return $scope.applicationContracts[appVersion.id];
                                     }
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
@@ -152,6 +154,7 @@
                                 return $scope.applicationVersionDetails[appVersion.id];
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -171,6 +174,7 @@
                         size: 'lg',
                         controller: 'NewApplicationCtrl as ctrl',
                         resolve: function() {},
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 

@@ -42,6 +42,7 @@
                                     versionId: $scope.serviceVersion.version}).$promise;
                         }
                     },
+                    backdrop : 'static',
                     windowClass: $scope.modalAnim	// Animation Class put here.
                 });
 

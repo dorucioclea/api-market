@@ -212,6 +212,7 @@
                   size: 'lg',
                   controller: 'NewVersionCtrl as ctrl',
                   resolve: function() {},
+                  backdrop : 'static',
                   windowClass: $scope.modalAnim	// Animation Class put here.
               });
 
@@ -228,6 +229,7 @@
                 size: 'lg',
                 controller: 'EditImgCtrl as ctrl',
                 resolve: function() {},
+                backdrop : 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
         }

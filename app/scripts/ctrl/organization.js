@@ -78,6 +78,7 @@
                                 return $scope.publisherMode;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -136,6 +137,7 @@
                         size: 'lg',
                         controller: 'NewPlanCtrl as ctrl',
                         resolve: function() {},
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -158,6 +160,7 @@
                                         return reply;
                                     }
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
@@ -187,6 +190,7 @@
                         size: 'lg',
                         controller: 'NewServiceCtrl as ctrl',
                         resolve: function() {},
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -213,6 +217,7 @@
                                         return reply;
                                     }
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });
@@ -231,6 +236,7 @@
                                         return reply;
                                     }
                                 },
+                                backdrop : 'static',
                                 windowClass: $scope.modalAnim	// Animation Class put here.
                             });
                         });

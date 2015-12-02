@@ -81,6 +81,7 @@
                                         versionId: appVersion.version}).$promise;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -100,6 +101,7 @@
                                         versionId: appVersion.version}).$promise;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -114,6 +116,7 @@
                                 return 'application';
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -133,6 +136,7 @@
                                 return appVersion;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -177,6 +181,7 @@
                                         svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }

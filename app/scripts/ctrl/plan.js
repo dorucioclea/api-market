@@ -54,6 +54,7 @@
                                 return $scope.planVersion;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -68,6 +69,7 @@
                                 return 'plan';
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -117,6 +119,7 @@
                                 return PolicyDefs.query({}).$promise;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 

@@ -40,30 +40,32 @@
 
                 function confirmPublishSvc() {
                     $modal.open({
-                                templateUrl: 'views/modals/servicePublish.html',
-                                size: 'lg',
-                                controller: 'PublishServiceCtrl as ctrl',
-                                resolve: {
-                                    svcVersion: function () {
-                                        return $scope.serviceVersion;
-                                    }
-                                },
-                                windowClass: $scope.modalAnim	// Animation Class put here.
-                            });
+                        templateUrl: 'views/modals/servicePublish.html',
+                        size: 'lg',
+                        controller: 'PublishServiceCtrl as ctrl',
+                        resolve: {
+                            svcVersion: function () {
+                                return $scope.serviceVersion;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
                 }
 
                 function confirmRetireSvc() {
                     $modal.open({
-                                templateUrl: 'views/modals/serviceRetire.html',
-                                size: 'lg',
-                                controller: 'RetireServiceCtrl as ctrl',
-                                resolve: {
-                                    svcVersion: function () {
-                                        return $scope.serviceVersion;
-                                    }
-                                },
-                                windowClass: $scope.modalAnim	// Animation Class put here.
-                            });
+                        templateUrl: 'views/modals/serviceRetire.html',
+                        size: 'lg',
+                        controller: 'RetireServiceCtrl as ctrl',
+                        resolve: {
+                            svcVersion: function () {
+                                return $scope.serviceVersion;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
                 }
 
                 $scope.updateDesc = function (newValue) {
@@ -85,6 +87,7 @@
                                 return 'service';
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 };
@@ -400,6 +403,7 @@
                                 return PolicyDefs.query({}).$promise;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -418,7 +422,7 @@
                 function doSave() {
                     var termsObject = {terms: $scope.htmlTerms};
                     ServiceTerms.update({orgId: $scope.serviceVersion.service.organization.id,
-                        svcId: $scope.serviceVersion.service.id}, termsObject,
+                            svcId: $scope.serviceVersion.service.id}, termsObject,
                         function (reply) {
                             $state.forceReload();
                             toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -459,6 +463,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -473,6 +478,7 @@
                                 return announcement;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -497,6 +503,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -511,6 +518,7 @@
                                 return announcement;
                             }
                         },
+                        backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
