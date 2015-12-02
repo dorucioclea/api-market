@@ -400,6 +400,7 @@
             function ($scope, $rootScope, $modal, $state, appVersionDetails,
                       ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
+                $scope.appVersionDetails = appVersionDetails;
                 $scope.callback = appVersionDetails.oauthClientRedirect;
                 $scope.id = appVersionDetails.oAuthClientId;
                 $scope.secret = appVersionDetails.oauthClientSecret;

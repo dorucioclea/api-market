@@ -14,6 +14,7 @@
                 };
                 $scope.createTicket = createTicket;
                 $scope.modalClose = modalClose;
+                $scope.serviceVersion = serviceVersion;
 
                 function createTicket() {
                     ServiceSupportTickets.save({orgId: serviceVersion.service.organization.id,
