@@ -53,9 +53,9 @@
                         <label class="control-label text-primary">Callback path</label>
                     </div>
                     <div class="col-md-12">
-                        <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required>
-                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
-                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url">This is not a valid callback url. Please check for errors.</p>
+                        <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required validate-on-timeout>
+                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required && callbackForm.callback.$timedout" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
+                        <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url && callbackForm.callback.$timedout">This is not a valid callback url. Please check for errors.</p>
                     </div>
                 </div>
             </form>

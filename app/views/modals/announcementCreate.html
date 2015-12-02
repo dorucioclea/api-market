@@ -14,16 +14,16 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label text-primary">Announcement Title</label>
-                    <input type="text" name="title" class="form-control" placeholder="Enter announcement title..." ng-model="announcement.title" required>
-                    <p class="text-danger xsmall" ng-show="annForm.title.$error.required" ng-if="annForm.title.$touched">Announcement title is required.</p>
+                    <input type="text" name="title" class="form-control" placeholder="Enter announcement title..." ng-model="announcement.title" required validate-on-timeout>
+                    <p class="text-danger xsmall" ng-show="annForm.title.$error.required && annForm.title.$timedout" ng-if="annForm.title.$touched">Announcement title is required.</p>
                 </div>
             </div>
             <div class="form-group mt30">
                 <div class="col-md-12">
                     <label class="control-label text-primary">Announcement</label>
-                    <div name="description" text-angular ng-model="announcement.description" ng-required="true">
+                    <div name="description" text-angular ng-model="announcement.description" ng-required="true" validate-on-timeout>
                     </div>
-                    <p class="text-danger xsmall" ng-show="annForm.description.$error.required" ng-if="annForm.description.$touched">You probably don't want to send a blank announcement, right?</p>
+                    <p class="text-danger xsmall" ng-show="annForm.description.$error.required && annForm.description.$timedout" ng-if="annForm.description.$touched">You probably don't want to send a blank announcement, right?</p>
                 </div>
             </div>
         </form>

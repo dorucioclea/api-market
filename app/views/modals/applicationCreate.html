@@ -17,19 +17,19 @@
       <div class="form-group mt30">
         <div class="col-md-7">
           <label class="control-label text-primary">Application Name</label>
-          <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required ng-pattern="regex.APPLICATION_NAME">
-          <p class="text-danger xsmall" ng-show="appForm.appName.$error.required" ng-if="appForm.appName.$touched">Application name is required.</p>
-          <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+          <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required ng-pattern="regex.APPLICATION_NAME" validate-on-timeout>
+          <p class="text-danger xsmall" ng-show="appForm.appName.$error.required && appForm.appName.$timedout" ng-if="appForm.appName.$touched">Application name is required.</p>
+          <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern && appForm.appName.$timedout">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
 
         </div>
         <div class="col-md-3 col-sm-3 col-xs-5">
           <label class="control-label text-primary">Initial Version</label>
           <div class="input-group">
             <span class="input-group-addon input-version-addon">v</span>
-            <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.application.initialVersion" required ng-required="regex.VERSION">
+            <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.application.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
           </div>
-          <p class="text-danger xsmall" ng-show="appForm.version.$error.required" ng-if="appForm.version.$touched">Initial Version is required.</p>
-          <p class="text-danger xsmall" ng-show="appForm.version.$error.pattern">Only numeric characters are allowed.</p>
+          <p class="text-danger xsmall" ng-show="appForm.version.$error.required && appForm.version.$timedout" ng-if="appForm.version.$touched">Initial Version is required.</p>
+          <p class="text-danger xsmall" ng-show="appForm.version.$error.pattern && appForm.version.$timedout">Only numeric characters are allowed.</p>
         </div>
       </div>
 

@@ -18,9 +18,9 @@
       <div class="form-group mt30">
         <div class="col-md-7">
           <label class="control-label text-primary">Plan Name</label>
-          <input type="text" name="planName" class="form-control" placeholder="Enter plan name..." ng-model="ctrl.plan.name" required ng-pattern="regex.PLAN_NAME">
-          <p class="text-danger xsmall" ng-show="planForm.planName.$error.required" ng-if="planForm.planName.$touched">Plan name is required.</p>
-          <p class="text-danger xsmall" ng-show="planForm.planName.$error.pattern">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+          <input type="text" name="planName" class="form-control" placeholder="Enter plan name..." ng-model="ctrl.plan.name" required ng-pattern="regex.PLAN_NAME" validate-on-timeout>
+          <p class="text-danger xsmall" ng-show="planForm.planName.$error.required && planForm.planName.$timedout" ng-if="planForm.planName.$touched">Plan name is required.</p>
+          <p class="text-danger xsmall" ng-show="planForm.planName.$error.pattern && planForm.planName.$timedout">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
         </div>
         <div class="col-md-3">
           <label class="control-label text-primary">Initial Version</label>
@@ -28,10 +28,10 @@
         <div class="col-md-3 col-sm-3 col-xs-5">
           <div class="input-group">
             <span class="input-group-addon input-version-addon">v</span>
-            <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.plan.initialVersion" required ng-pattern="regex.VERSION">
+            <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.plan.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
           </div>
-          <p class="text-danger xsmall" ng-show="planForm.version.$error.required" ng-if="planForm.version.$touched">Initial version is required.</p>
-          <p class="text-danger xsmall" ng-show="planForm.version.$error.pattern">Only numeric characters are allowed.</p>
+          <p class="text-danger xsmall" ng-show="planForm.version.$error.required && planForm.version.$timedout" ng-if="planForm.version.$touched">Initial version is required.</p>
+          <p class="text-danger xsmall" ng-show="planForm.version.$error.pattern && planForm.version.$timedout">Only numeric characters are allowed.</p>
         </div>
       </div>
 

@@ -22,8 +22,8 @@
                             </ul>
                         </div>
                     </div>
-                    <input type="text" name="username" class="form-control" ng-model="ctrl.username" placeholder="Username of the prospective member" ng-class="{'hidden': selectedMethod === 'Email'}" required>
-                    <input type="email" name="email" class="form-control" ng-model="ctrl.email" placeholder="Email address of the prospective member" ng-class="{'hidden': selectedMethod === 'Username'}" required>
+                    <input type="text" name="username" class="form-control" ng-model="ctrl.username" validate-on-timeout placeholder="Username of the prospective member" ng-class="{'hidden': selectedMethod === 'Email'}" required>
+                    <input type="email" name="email" class="form-control" ng-model="ctrl.email" validate-on-timeout placeholder="Email address of the prospective member" ng-class="{'hidden': selectedMethod === 'Username'}" required>
                     <div class="input-group-btn">
                         <div class="dropdown" dropdown>
                             <button class="btn btn-line-primary dropdown-toggle" dropdown-toggle
@@ -36,9 +36,9 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-danger xsmall" ng-show="memberForm.username.$error.required && selectedMethod === 'Username'" ng-if="memberForm.username.$touched">Please provide the username you would like to add.</p>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required && selectedMethod === 'Email'" ng-if="memberForm.email.$touched">Please provide the users email address.</p>
-                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email">This is not a valid email address. Please check for errors.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.username.$error.required && selectedMethod === 'Username' && memberForm.username.$timedout" ng-if="memberForm.username.$touched">Please provide the username you would like to add.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required && selectedMethod === 'Email' && memberForm.email.$timedout" ng-if="memberForm.email.$touched">Please provide the users email address.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email && memberForm.email.$timedout">This is not a valid email address. Please check for errors.</p>
             </div>
         </div>
     </form>
