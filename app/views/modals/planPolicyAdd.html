@@ -15,7 +15,7 @@
           <span>{{selectedPolicy === null ? 'Choose a policy...' : selectedPolicy.name}} </span><span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left">
-          <li ng-repeat="def in policyDefs | orderBy:'name.toLowerCase()'" ng-show="def.scopePlan" ng-click="selectPolicy(def)"><a><span class="fa fa-inline fa-fw {{def.icon}}"></span>&nbsp;&nbsp;{{def.name}}</a></li>
+          <li ng-repeat="def in policyDefs | orderBy:'name.toLowerCase()'" tooltip-placement="right" tooltip="{{def.description}}" ng-show="def.scopePlan" ng-click="selectPolicy(def)"><a><span class="fa fa-inline fa-fw {{def.icon}}"></span>&nbsp;&nbsp;{{def.name}}</a></li>
         </ul>
       </div>
 
