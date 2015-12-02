@@ -110,3 +110,32 @@
     padding-top: 0;
   }
 }
+
+.style-placeholders {
+  ::-webkit-input-placeholder {
+    font-style: italic;
+    color: @gray-modal-ph !important;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+    font-style: italic;
+    color: @gray-modal-ph !important;
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+    font-style: italic;
+    color: @gray-modal-ph !important;
+  }
+
+  input:-moz-placeholder {
+    font-style: italic;
+    color: @gray-modal-ph !important;
+  }
+
+  :-ms-input-placeholder {
+    font-style: italic;
+    color: @gray-modal-ph !important;
+  }
+}
+
+

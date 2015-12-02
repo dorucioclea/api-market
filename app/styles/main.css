@@ -12983,6 +12983,28 @@ md-input-container {
 .scope-checkbox label > span {
   padding-top: 0;
 }
+.style-placeholders ::-webkit-input-placeholder {
+  font-style: italic;
+  color: #d1d1d1 !important;
+}
+.style-placeholders :-moz-placeholder {
+  /* Firefox 18- */
+  font-style: italic;
+  color: #d1d1d1 !important;
+}
+.style-placeholders ::-moz-placeholder {
+  /* Firefox 19+ */
+  font-style: italic;
+  color: #d1d1d1 !important;
+}
+.style-placeholders input:-moz-placeholder {
+  font-style: italic;
+  color: #d1d1d1 !important;
+}
+.style-placeholders :-ms-input-placeholder {
+  font-style: italic;
+  color: #d1d1d1 !important;
+}
 .page-oauth .oauth-container .oauth-panel {
   margin-top: 5em;
 }

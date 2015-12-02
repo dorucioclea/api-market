@@ -3,12 +3,12 @@
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 
-<div class="modal-body">
+<div class="modal-body style-placeholders">
     <div class="ml10 mr10">
         <form role="form" name="ticketForm" class="form-horizontal">
             <div class="form-group">
                 <label class="control-label text-primary">Issue Summary</label>
-                <input type="text" name="summary" class="form-control" ng-model="newTicket.title" required validate-on-timeout>
+                <input type="text" name="summary" class="form-control" placeholder="Short description of the problem" ng-model="newTicket.title" required validate-on-timeout>
                 <p class="text-danger xsmall" ng-show="ticketForm.summary.$error.required && ticketForm.summary.$timedout" ng-if="ticketForm.summary.$touched">Ticket summary is required.</p>
             </div>
             <div class="form-group mt30 mb30">

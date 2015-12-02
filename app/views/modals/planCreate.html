@@ -3,7 +3,7 @@
   <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 <!-- Plan Create panel -->
-<div class="modal-body">
+<div class="modal-body style-placeholders">
   <form role="form" name="planForm" class="form-horizontal">
     <div class="form-group mt30">
       <div class="col-md-7">
@@ -18,7 +18,7 @@
       <div class="col-md-3 col-sm-3 col-xs-5">
         <div class="input-group">
           <span class="input-group-addon input-version-addon">v</span>
-          <input type="text" name="version" class="form-control input-version" maxlength="20" ng-model="ctrl.plan.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
+          <input type="text" name="version" class="form-control input-version" placeholder="version number" maxlength="20" ng-model="ctrl.plan.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
         </div>
         <p class="text-danger xsmall" ng-show="planForm.version.$error.required && planForm.version.$timedout" ng-if="planForm.version.$touched">Initial version is required.</p>
         <p class="text-danger xsmall" ng-show="planForm.version.$error.pattern && planForm.version.$timedout">Only numeric characters are allowed.</p>
