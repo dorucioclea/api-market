@@ -64,7 +64,7 @@
         <div class="col-sm-2 member-line">
             <div class="pull-right">
                 <div class="btn-group-xs" ng-if="User.isAuthorizedFor('orgAdmin') && member.userId !== User.currentUser.username">
-                    <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Tranfer organization ownership" ng-click="transferOwnership(member)"></button>
+                    <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Tranfer ownership" ng-click="transferOwnership(member)"></button>
                     <button class="btn btn-danger btn-xs action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Remove member" ng-click="removeMember(member)"></button>
                 </div>
                 <div ng-if="!User.isAuthorizedFor('orgAdmin')">
