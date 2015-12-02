@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-6 text-primary">
                             <h4><i class="fa fa-cogs"></i>
-                                {{orgScreenModel.organization.name}} Applications Overview
+                                {{orgScreenModel.organization.name}} {{$state.is('root.market-dash.members') ? 'Members' : 'Applications'}} Overview
                             </h4>
                         </div>
                         <div class="col-sm-6">
@@ -74,7 +74,8 @@
                             </div>
 
 
-                            <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0 || (applications | filter:{name:searchText}).length === 0">
+                            <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0 || (applications | filter:{name:searchText}).length === 0" style="overflow: visible">
+                                <p><a class="clickable" ng-click="expandAll()">Expand all</a> / <a class="clickable" ng-click="collapseAll()">Collapse all</a></p>
                                 <table class="table table-bordered table-condensed">
                                     <thead>
                                     <tr>
@@ -88,7 +89,7 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat-start="application in applications | filter:{name:searchText}">
-                                        <td><i class="fa fa-fw" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></i></td>
+                                        <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></a></td>
                                         <td>
                                             <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
                                             <a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a>

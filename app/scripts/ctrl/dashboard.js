@@ -20,6 +20,8 @@
                 $scope.applicationContracts = appContracts;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.collapseAll = collapseAll;
+                $scope.expandAll = expandAll;
                 $scope.toggle = toggle;
                 $scope.canCreateContract = canCreateContract;
                 $scope.canConfigureOAuth = canConfigureOAuth;
@@ -39,6 +41,22 @@
 
                 function toggle(app) {
                     app.contractsExpanded = !app.contractsExpanded;
+                }
+
+                function collapseAll() {
+                    angular.forEach($scope.applications, function (application) {
+                        application.contractsExpanded = false;
+                    })
+                }
+
+                function expandAll() {
+                    angular.forEach($scope.applications, function (application) {
+                        // Check if this application has at least one contract
+                        // Without this check, we would show an empty row
+                        if ($scope.applicationContracts.hasOwnProperty(application.id)) {
+                            application.contractsExpanded = true;
+                        }
+                    });
                 }
 
                 function canCreateContract(appVersion) {
