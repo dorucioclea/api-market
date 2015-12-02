@@ -1,37 +1,33 @@
-<div class="page">
-
-  <div class="modal-header clearfix">
-    <h4 class="modal-title">New Version</h4>
-    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
-  </div>
-  <!-- Plan Create panel -->
-  <div class="modal-body">
-    <form role="form" name="versionForm" class="form-horizontal">
-      <div class="form-group">
-        <div class="col-md-12">
-          <label class="control-label text-primary">Version</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-4">
-          <div class="input-group">
-            <span class="input-group-addon input-version-addon">v</span>
-            <input type="text" name="newVersion" class="form-control input-version" maxlength="20" ng-model="newVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
-          </div>
-          <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.required && versionForm.newVersion.$timedout" ng-if="versionForm.newVersion.$touched">Version number is required.</p>
-          <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.pattern && versionForm.newVersion.$timedout">Only numeric characters are allowed.</p>
-        </div>
+<div class="modal-header clearfix">
+  <h4 class="modal-title">New Version</h4>
+  <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+<!-- Plan Create panel -->
+<div class="modal-body">
+  <form role="form" name="versionForm" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-md-12">
+        <label class="control-label text-primary">Version</label>
       </div>
-
-      <div class="mt30 ui-checkbox ui-checkbox-primary ui-checkbox-circle">
-        <label>
-          <input type="checkbox" ng-model="shouldClone">
-          <span>Make a clone of the previously selected version (<b>{{currentVersion}}</b>). This will copy all policies and settings.</span>
-        </label>
+      <div class="col-md-2 col-sm-2 col-xs-4">
+        <div class="input-group">
+          <span class="input-group-addon input-version-addon">v</span>
+          <input type="text" name="newVersion" class="form-control input-version" maxlength="20" ng-model="newVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
+        </div>
+        <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.required && versionForm.newVersion.$timedout" ng-if="versionForm.newVersion.$touched">Version number is required.</p>
+        <p class="text-danger xsmall" ng-show="versionForm.newVersion.$error.pattern && versionForm.newVersion.$timedout">Only numeric characters are allowed.</p>
       </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-click="createVersion()" ng-disabled="versionForm.$invalid">Create Version</button>
-  </div>
+    </div>
 
+    <div class="mt30 ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+      <label>
+        <input type="checkbox" ng-model="shouldClone">
+        <span>Make a clone of the previously selected version (<b>{{currentVersion}}</b>). This will copy all policies and settings.</span>
+      </label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+  <button class="btn btn-primary" ng-click="createVersion()" ng-disabled="versionForm.$invalid">Create Version</button>
 </div>
