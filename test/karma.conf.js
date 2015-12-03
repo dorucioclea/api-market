@@ -63,6 +63,7 @@ module.exports = function(config) {
             'bower_components/textAngular/dist/textAngular.js',
             'bower_components/textAngular/dist/textAngular-sanitize.js',
             'bower_components/textAngular/dist/textAngularSetup.js',
+            'bower_components/angular-jwt/dist/angular-jwt.js',
             'bower_components/highlight/src/highlight.js',
             'app/scripts/**/*.js',
             'test/spec/**/*.js'

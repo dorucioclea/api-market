@@ -693,9 +693,9 @@
                             'Content-Type': 'application/json'
                         },
                         responseType: 'text'
-                    }).then(function success(result) {
+                    }).then(function (result) {
                         window.location.href = result.data;
-                    }, function error(error) {
+                    }, function (error) {
                         console.log('Request failed with error code: ', error.status);
                         console.log(error);
                     });
