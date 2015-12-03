@@ -19,6 +19,7 @@
               <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required ng-pattern="regex.ORG_NAME" validate-on-timeout>
               <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.required && orgForm.orgName.$timedout" ng-if="orgForm.orgName.$touched">Organization name is required.</p>
               <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.pattern && orgForm.orgName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+              <p class="text-muted xsmall">Human-readable name of the new organization</p>
             </div>
           </div>
 
@@ -26,6 +27,7 @@
             <div class="col-md-12">
               <label class="control-label text-primary">Organization Description</label>
               <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="ctrl.organization.description"></textarea>
+              <p class="text-muted xsmall">Short description of the organization</p>
             </div>
           </div>
         </form>

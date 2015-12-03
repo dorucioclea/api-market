@@ -11,6 +11,7 @@
         <input type="text" name="planName" class="form-control" placeholder="Enter plan name..." ng-model="ctrl.plan.name" required ng-pattern="regex.PLAN_NAME" validate-on-timeout>
         <p class="text-danger xsmall" ng-show="planForm.planName.$error.required && planForm.planName.$timedout" ng-if="planForm.planName.$touched">Plan name is required.</p>
         <p class="text-danger xsmall" ng-show="planForm.planName.$error.pattern && planForm.planName.$timedout">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+        <p class="text-muted xsmall">Human-readable name of the plan</p>
       </div>
       <div class="col-md-3">
         <label class="control-label text-primary">Initial Version</label>
@@ -22,6 +23,7 @@
         </div>
         <p class="text-danger xsmall" ng-show="planForm.version.$error.required && planForm.version.$timedout" ng-if="planForm.version.$touched">Initial version is required.</p>
         <p class="text-danger xsmall" ng-show="planForm.version.$error.pattern && planForm.version.$timedout">Only numeric characters are allowed.</p>
+        <p class="text-muted xsmall">Version the plan will start out as. Usually v1 for new plans</p>
       </div>
     </div>
 
@@ -29,6 +31,7 @@
       <div class="col-md-12">
         <label class="control-label text-primary">Plan Description</label>
         <textarea class="form-control" placeholder="Enter a description (optional)" ng-model="ctrl.plan.description"></textarea>
+        <p class="text-muted xsmall">Short description of the plan</p>
       </div>
     </div>
   </form>

@@ -161,9 +161,10 @@
 /// ==== NewService Controller
         .controller('NewServiceCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
-                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, Categories, Service) {
+                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Categories, Service) {
 
                 $scope.org = orgScreenModel.organization;
+                $scope.configVars = CONFIG;
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({

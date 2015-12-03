@@ -11,7 +11,7 @@
         <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required ng-pattern="regex.APPLICATION_NAME" validate-on-timeout>
         <p class="text-danger xsmall" ng-show="appForm.appName.$error.required && appForm.appName.$timedout" ng-if="appForm.appName.$touched">Application name is required.</p>
         <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern && appForm.appName.$timedout">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-
+        <p class="text-muted xsmall">Human-readable name of your application</p>
       </div>
       <div class="col-md-3 col-sm-3 col-xs-5">
         <label class="control-label text-primary">Initial Version</label>
@@ -21,6 +21,7 @@
         </div>
         <p class="text-danger xsmall" ng-show="appForm.version.$error.required && appForm.version.$timedout" ng-if="appForm.version.$touched">Initial Version is required.</p>
         <p class="text-danger xsmall" ng-show="appForm.version.$error.pattern && appForm.version.$timedout">Only numeric characters are allowed.</p>
+        <p class="text-muted xsmall">Version the application will start out as. Usually v1 for new applications</p>
       </div>
     </div>
 
@@ -28,16 +29,17 @@
       <div class="col-md-5" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
         <label class="control-label text-primary">Application Logo</label>
         <div>
-          <div class="thumbnail" ng-hide="$flow.files.length" flow-drop>
+          <div class="thumbnail logo" ng-if="!$flow.files.length" flow-drop>
             <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
           </div>
-          <div class="thumbnail" ng-show="$flow.files.length">
+          <div class="thumbnail logo" ng-if="$flow.files.length">
             <img flow-img="$flow.files[0]" />
           </div>
+          <p class="text-muted xsmall">Adding an image will make it easier to recognize your application</p>
           <div>
-            <span class="btn btn-line-primary btn-sm" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
-            <span class="btn btn-line-primary btn-sm" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-            <span class="btn btn-line-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
+            <span class="btn btn-line-primary btn-sm" ng-if="!$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+            <span class="btn btn-line-primary btn-sm" ng-if="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+            <span class="btn btn-line-danger btn-sm" ng-if="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
           </div>
           <div class="col-sm-8 mt10">
             <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
@@ -52,6 +54,7 @@
       <div class="col-md-12">
         <label class="control-label text-primary">Application Description</label>
         <textarea class="form-control" placeholder="Enter a description (optional)" ng-model="ctrl.application.description"></textarea>
+        <p class="text-muted xsmall">Short description of your application</p>
       </div>
     </div>
   </form>
