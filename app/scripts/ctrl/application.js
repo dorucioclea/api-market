@@ -134,6 +134,10 @@
                         resolve: {
                             appVersionDetails: function () {
                                 return appVersion;
+                            },
+                            oAuthService: 'oAuthService',
+                            needsCallback: function (oAuthService) {
+                                return oAuthService.needsCallback(appVersion.application.organization.id, appVersion.application.id, appVersion.version);
                             }
                         },
                         backdrop : 'static',

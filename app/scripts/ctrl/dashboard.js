@@ -152,6 +152,10 @@
                         resolve: {
                             appVersionDetails: function () {
                                 return $scope.applicationVersionDetails[appVersion.id];
+                            },
+                            oAuthService: 'oAuthService',
+                            needsCallback: function (oAuthService) {
+                                return oAuthService.needsCallback(appVersion.organizationId, appVersion.id, appVersion.version);
                             }
                         },
                         backdrop : 'static',

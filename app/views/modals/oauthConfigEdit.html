@@ -43,8 +43,8 @@
                 </div>
             </div>
         </div>
-        <div class="row mt30"></div>
-        <form role="form" name="callbackForm" class="form-horizontal">
+        <div class="row mt30" ng-if="needsCallback"></div>
+        <form role="form" name="callbackForm" class="form-horizontal" ng-if="needsCallback">
             <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label text-primary">Callback path</label>
@@ -59,7 +59,10 @@
 
     </div>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" ng-if="!needsCallback">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Close</button>
+</div>
+<div class="modal-footer" ng-if="needsCallback">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
     <button class="btn btn-primary" ng-click="updateCallback()" ng-disabled="callbackForm.$invalid">Update Configuration</button>
 </div>

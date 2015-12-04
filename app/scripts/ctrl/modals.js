@@ -397,10 +397,11 @@
 
 /// ==== OAuthConfig Controller
         .controller('OAuthConfigCtrl',
-            function ($scope, $rootScope, $modal, $state, appVersionDetails,
+            function ($scope, $rootScope, $modal, $state, appVersionDetails, needsCallback,
                       ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
                 $scope.appVersionDetails = appVersionDetails;
+                $scope.needsCallback = needsCallback;
                 $scope.callback = appVersionDetails.oauthClientRedirect;
                 $scope.id = appVersionDetails.oAuthClientId;
                 $scope.secret = appVersionDetails.oauthClientSecret;

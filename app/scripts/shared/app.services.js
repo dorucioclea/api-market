@@ -484,12 +484,13 @@
 
         // OAUTH SERVICE
         .service('oAuthService',
-            function ($http, ApplicationOAuth,
-                      OAuthConsumer) {
+            function ($http, $q, ApplicationOAuth, ApplicationContract,
+                      OAuthConsumer, ServiceVersionPolicy) {
 
                 this.grant = grant;
                 this.getAppOAuthInfo = getAppOAuthInfo;
                 this.createOAuthConsumer = createOAuthConsumer;
+                this.needsCallback = needsCallback;
 
                 function getAppOAuthInfo(clientId, orgId, svcId, versionId) {
                     return ApplicationOAuth.get({clientId: clientId,
@@ -535,6 +536,48 @@
                     var grantObject = constructGrantObject(clientId,
                         clientSecret, responseType, scopesToGrant, provisionKey, userId);
                     return postFormEncoded(grantUrl, grantObject);
+                }
+
+                function needsCallback(appOrgId, appId, appVersion) {
+
+                    return ApplicationContract.query({
+                        orgId: appOrgId,
+                        appId: appId,
+                        versionId: appVersion}).$promise
+                        .then(function (contracts) {
+                            var promises = [];
+                            var secondaryPromises = [];
+
+                            angular.forEach(contracts, function (contract) {
+                                promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
+                                    svcId: contract.serviceId,
+                                    versionId: contract.serviceVersion}, function (policies) {
+                                    angular.forEach(policies, function (policy) {
+                                        if (policy.policyDefinitionId === 'OAuth2') {
+                                            secondaryPromises.push(ServiceVersionPolicy.get(
+                                                {orgId: contract.serviceOrganizationId,
+                                                    svcId: contract.serviceId,
+                                                    versionId: contract.serviceVersion,
+                                                    policyId: policy.id}).$promise);
+                                        }
+                                    })
+                                }).$promise);
+                            });
+                            return $q.all(promises).then(function (result) {
+                                return $q.all(secondaryPromises).then(function (policyList) {
+                                    var needsCallback = false;
+                                    for (var i = 0; i < policyList.length; i++) {
+                                        var policyConfiguration = angular.fromJson(policyList[i].configuration);
+                                        if (policyConfiguration.enable_implicit_grant ||
+                                            policyConfiguration.enable_authorization_code) {
+                                            needsCallback = true;
+                                            break;
+                                        }
+                                    }
+                                    return needsCallback;
+                                });
+                            });
+                        });
                 }
 
                 function postFormEncoded(url, data) {
