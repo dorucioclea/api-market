@@ -44,13 +44,13 @@
             </div>
         </div>
         <div class="row mt30" ng-if="needsCallback"></div>
-        <form role="form" name="callbackForm" class="form-horizontal" ng-if="needsCallback">
+        <form role="form" name="callbackForm" class="form-horizontal" ng-show="needsCallback">
             <div class="form-group">
                 <div class="col-md-12">
                     <label class="control-label text-primary">Callback path</label>
                 </div>
                 <div class="col-md-12">
-                    <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" required validate-on-timeout>
+                    <input type="url" name="callback" class="form-control" placeholder="Enter callback url..." ng-model="callback" ng-required="true" validate-on-timeout>
                     <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.required && callbackForm.callback.$timedout" ng-if="callbackForm.callback.$touched">Callback path is required.</p>
                     <p class="text-danger xsmall" ng-show="callbackForm.callback.$error.url && callbackForm.callback.$timedout">This is not a valid callback url. Please check for errors.</p>
                 </div>
@@ -64,5 +64,5 @@
 </div>
 <div class="modal-footer" ng-if="needsCallback">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-primary" ng-click="updateCallback()" ng-disabled="callbackForm.$invalid">Update Configuration</button>
+    <button class="btn btn-primary" ng-click="updateCallback()" ng-disabled="callbackForm.callback.$invalid">Update Configuration</button>
 </div>

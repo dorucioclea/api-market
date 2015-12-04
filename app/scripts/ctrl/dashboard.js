@@ -7,7 +7,8 @@
         .controller('MarketDashCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                       appData, appVersions, appVersionDetails, appContracts, headerModel,
-                      selectedApp, docTester, toastService, TOAST_TYPES, ApplicationContract, ApplicationVersion) {
+                      selectedApp, docTester, oAuthService, toastService, TOAST_TYPES,
+                      ApplicationContract, ApplicationVersion) {
                 headerModel.setIsButtonVisible(true, false);
                 orgScreenModel.updateOrganization(orgData);
                 selectedApp.reset();
@@ -96,25 +97,36 @@
                 }
 
                 function confirmPublishApp(appVersion) {
-                    ApplicationVersion.get(
-                        {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
-                        function (reply) {
-                            $modal.open({
-                                templateUrl: 'views/modals/applicationPublish.html',
-                                size: 'lg',
-                                controller: 'PublishApplicationCtrl as ctrl',
-                                resolve: {
-                                    appVersion: function () {
-                                        return reply;
-                                    },
-                                    appContracts: function () {
-                                        return $scope.applicationContracts[appVersion.id];
-                                    }
-                                },
-                                backdrop : 'static',
-                                windowClass: $scope.modalAnim	// Animation Class put here.
-                            });
-                        });
+                    oAuthService.needsCallback(appVersion.organizationId, appVersion.id, appVersion.version).then(function (needsCallback) {
+                        if ( needsCallback &&
+                            ($scope.applicationVersionDetails[appVersion.id].oauthClientRedirect === null ||
+                            $scope.applicationVersionDetails[appVersion.id].oauthClientRedirect.length === 0)) {
+                            toastService.createToast(TOAST_TYPES.WARNING,
+                                '<b>No OAuth callback defined!</b><br>' +
+                                'The application cannot be registered without an OAuth callback URL',
+                                true);
+                        } else {
+                            ApplicationVersion.get(
+                                {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
+                                function (reply) {
+                                    $modal.open({
+                                        templateUrl: 'views/modals/applicationPublish.html',
+                                        size: 'lg',
+                                        controller: 'PublishApplicationCtrl as ctrl',
+                                        resolve: {
+                                            appVersion: function () {
+                                                return reply;
+                                            },
+                                            appContracts: function () {
+                                                return $scope.applicationContracts[appVersion.id];
+                                            }
+                                        },
+                                        backdrop : 'static',
+                                        windowClass: $scope.modalAnim	// Animation Class put here.
+                                    });
+                                });
+                        }
+                    });
                 }
 
                 function confirmRetireApp(appVersion) {
@@ -229,7 +241,7 @@
                 }
             })
 
-/// ==== API Search Controller
+        /// ==== API Search Controller
         .controller('ApiSearchCtrl',
             function($scope, $stateParams, svcData, headerModel,
                      ServiceVersion, ServiceMarketInfo) {
@@ -275,7 +287,7 @@
 
             })
 
-/// ==== Dashboard Controller
+        /// ==== Dashboard Controller
         .controller('DashboardCtrl',
             function($scope, $state, svcData, categories, headerModel, toastService,
                      SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {

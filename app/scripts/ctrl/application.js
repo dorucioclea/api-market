@@ -6,7 +6,8 @@
         /// ==== Application Controller
         .controller('ApplicationCtrl',
             function ($scope, $modal, $state, $stateParams, appData, appVersions,
-                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, toastService, TOAST_TYPES,
+                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, oAuthService,
+                      toastService, TOAST_TYPES,
                       Application, ApplicationContract, selectedApp) {
                 headerModel.setIsButtonVisible(true, true, false);
                 orgScreenModel.updateOrganization(orgData);
@@ -16,7 +17,7 @@
                 $scope.displayTab = appScreenModel;
                 $scope.isReady = $scope.applicationVersion.status === 'Ready';
                 $scope.isRegistered =
-                $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+                    $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
                 $scope.isRetired = $scope.applicationVersion.status === 'Retired';
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
@@ -67,22 +68,34 @@
                 }
 
                 function confirmPublishApp(appVersion) {
-                    $modal.open({
-                        templateUrl: 'views/modals/applicationPublish.html',
-                        size: 'lg',
-                        controller: 'PublishApplicationCtrl as ctrl',
-                        resolve: {
-                            appVersion: function () {
-                                return appVersion;
-                            },
-                            appContracts: function () {
-                                return ApplicationContract.query(
-                                    {orgId: appVersion.application.organization.id, appId: appVersion.application.id,
-                                        versionId: appVersion.version}).$promise;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    oAuthService.needsCallback(appVersion.application.organization.id,
+                        appVersion.application.id, appVersion.version).then(function (needsCallback) {
+                        if ( needsCallback &&
+                            (appVersion.oauthClientRedirect === null ||
+                            appVersion.oauthClientRedirect.length === 0)) {
+                            toastService.createToast(TOAST_TYPES.WARNING,
+                                '<b>No OAuth callback defined!</b><br>' +
+                                'The application cannot be registered without an OAuth callback URL',
+                                true);
+                        } else {
+                            $modal.open({
+                                templateUrl: 'views/modals/applicationPublish.html',
+                                size: 'lg',
+                                controller: 'PublishApplicationCtrl as ctrl',
+                                resolve: {
+                                    appVersion: function () {
+                                        return appVersion;
+                                    },
+                                    appContracts: function () {
+                                        return ApplicationContract.query(
+                                            {orgId: appVersion.application.organization.id, appId: appVersion.application.id,
+                                                versionId: appVersion.version}).$promise;
+                                    }
+                                },
+                                backdrop : 'static',
+                                windowClass: $scope.modalAnim	// Animation Class put here.
+                            });
+                        }
                     });
                 }
 
