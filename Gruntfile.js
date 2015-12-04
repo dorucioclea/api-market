@@ -448,7 +448,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },
@@ -476,7 +476,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'http://rasu073.rte.antwerpen.local/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt'
             },
