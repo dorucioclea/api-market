@@ -972,8 +972,7 @@
                                     skipAuthorization: true,
                                     method: 'POST',
                                     data: {
-                                        originalJWT: $sessionStorage.jwt,
-                                        expirationTimeMinutes: 10
+                                        originalJWT: $sessionStorage.jwt
                                     }
                                 }).then(function(response) {
                                     $sessionStorage.jwt = response.data.jwt;
