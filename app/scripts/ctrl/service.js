@@ -203,9 +203,12 @@
                     buttonDefaultText: 'Load',
                     buttonSubmittingText: 'Loading...',
                     buttonSuccessText: 'Definition loaded!',
+                    buttonErrorText: 'Failed to load definition',
                     buttonSubmittingIcon: 'fa fa-circle-o-notch',
                     buttonSuccessIcon: 'fa fa-thumbs-up',
-                    animationCompleteTime: '5000'
+                    buttonErrorIcon: 'fa fa-exclamation-circle',
+                    animationCompleteTime: '5000',
+                    formIsInvalid: true
                 };
 
                 ServiceVersionDefinition.get(
@@ -230,13 +233,10 @@
                         swaggerURI: uri
                     };
                     SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
-                        console.log(reply);
                         $scope.result = 'success';
-                        $scope.isSubmitting = null;
                         loadDefinition(angular.fromJson(reply.swaggerDoc));
                     }, function (error) {
                         $scope.result = 'error';
-                        $scope.isSubmitting = null;
                     });
                 }
 
