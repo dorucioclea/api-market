@@ -10,6 +10,10 @@
             return $resource(CONFIG.BASE.URL + '/actions');
         })
 
+        .factory('SwaggerDocFetch', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
+        })
+
         /// ========== ORGANIZATION =====================================================================
 
         .factory('Organization', function ($resource, CONFIG) {

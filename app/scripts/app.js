@@ -24,6 +24,7 @@
             'textAngular',
             'relativeDate',
             'angular-jwt',
+            'jp.ng-bs-animated-button',
 
             /* custom modules */
             'app.ctrls',

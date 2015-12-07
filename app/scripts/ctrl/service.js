@@ -179,12 +179,34 @@
 
         /// ==== Definition Controller
         .controller('ServiceDefinitionCtrl',
-            function ($scope, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
-                      ServiceVersionDefinition, svcScreenModel) {
+            function ($scope, $http, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
+                      ServiceVersionDefinition, SwaggerDocFetch, svcScreenModel) {
 
                 svcScreenModel.updateTab('Definition');
+                $scope.selectedMethod = 'JSON File';
                 $scope.definitionLoaded = false;
                 $scope.noDefinition = false;
+                $scope.doFetch = doFetch;
+                $scope.loadDefinition = loadDefinition;
+                $scope.loadPreview = loadPreview;
+                $scope.reset = reset;
+                $scope.saveDefinition = saveDefinition;
+                $scope.selectMethod = selectMethod;
+                $scope.isSubmitting = null;
+                $scope.result = null;
+
+                // Conditional button config
+                $scope.options = {
+                    buttonDefaultClass: 'btn-line-primary',
+                    buttonSubmittingClass: 'btn-info',
+                    buttonSuccessClass: 'btn-success',
+                    buttonDefaultText: 'Load',
+                    buttonSubmittingText: 'Loading...',
+                    buttonSuccessText: 'Definition loaded!',
+                    buttonSubmittingIcon: 'fa fa-circle-o-notch',
+                    buttonSuccessIcon: 'fa fa-thumbs-up',
+                    animationCompleteTime: '5000'
+                };
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -201,12 +223,39 @@
                         $scope.noDefinition = true;
                     });
 
-                $scope.reset = function () {
+                function doFetch(uri) {
+                    $scope.isSubmitting = true;
+                    $scope.result = null;
+                    var swaggerDocObj = {
+                        swaggerURI: uri
+                    };
+                    SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
+                        console.log(reply);
+                        $scope.result = 'success';
+                        $scope.isSubmitting = null;
+                        loadDefinition(angular.fromJson(reply.swaggerDoc));
+                    }, function (error) {
+                        $scope.result = 'error';
+                        $scope.isSubmitting = null;
+                    });
+                }
+
+                function loadDefinition($fileContent) {
+                    $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.loadPreview($scope.updatedDefinition);
+                }
+
+                function loadPreview(spec) {
+                    $scope.definitionLoaded = true;
+                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
+                }
+
+                function reset() {
                     $scope.definitionLoaded = false;
                     $scope.updatedDefinition = $scope.currentDefinition;
-                };
+                }
 
-                $scope.saveDefinition = function () {
+                function saveDefinition() {
                     ServiceVersionDefinition.update({
                             orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
@@ -226,22 +275,16 @@
                         function (error) {
                             toastService.createErrorToast(error, 'Could not update the definition.');
                         });
-                };
+                }
+
+                function selectMethod(method) {
+                    $scope.selectedMethod = method;
+                }
 
                 $scope.$watch('updatedDefinition', function (def) {
                     $scope.changed = (def !== $scope.currentDefinition);
                     $scope.invalid = (def === $scope.currentDefinition);
                 }, true);
-
-                $scope.loadDefinition = function ($fileContent) {
-                    $scope.updatedDefinition = angular.fromJson($fileContent);
-                    $scope.loadPreview($scope.updatedDefinition);
-                };
-
-                $scope.loadPreview = function (spec) {
-                    $scope.definitionLoaded = true;
-                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
-                };
             })
 
         /// ==== Plans Controller
