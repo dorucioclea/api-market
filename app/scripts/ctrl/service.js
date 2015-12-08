@@ -106,7 +106,7 @@
 
         /// ==== Implementation Controller
         .controller('ServiceImplementationCtrl',
-            function ($scope, $state, $stateParams, toastService, TOAST_TYPES,
+            function ($scope, $state, $stateParams, toastService, TOAST_TYPES, REGEX,
                       ServiceVersion, svcScreenModel, svcData) {
 
                 $scope.serviceVersion = svcData;
@@ -116,6 +116,7 @@
                     gateways: [{gatewayId: 'KongGateway'}]
                 };
                 svcScreenModel.updateService(svcData);
+                $scope.implementationRegex = REGEX.IMPLEMENTATION;
                 $scope.version = svcScreenModel.service;
 
                 $scope.typeOptions = ['rest'];

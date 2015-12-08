@@ -27,6 +27,7 @@
 
         .constant('REGEX', {
             'BASEPATH': /^[a-z\-]+$/,
+            'IMPLEMENTATION': /^(?:http|ftp)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[\/?]\S+)$/gi,
             'APPLICATION_NAME': /^([a-zA-Z-_]+\s)*[a-zA-Z-_]+$/,
             'ORG_NAME': /^([a-zA-Z0-9-_]+\s)*[a-zA-Z0-9-_]+$/,
             'PLAN_NAME': /^([a-zA-Z-_]+\s)*[a-zA-Z-_]+$/,
