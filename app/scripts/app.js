@@ -950,8 +950,18 @@
 
         .config(function ($httpProvider, jwtInterceptorProvider) {
             // We're annotating the function so that the $injector works when the file is minified (known issue)
-            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper', 'CONFIG',
-                function($sessionStorage, $state, $http, jwtHelper, loginHelper, CONFIG) {
+            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
+                'config', 'CONFIG',
+                function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
+                    // Skip authentication for any requests ending in .html
+                    if (config.url.substr(config.url.length - 5) == '.html') {
+                        return null;
+                    }
+                    // Skip authentication for oauth requests
+                    if (config.url.indexOf('oauth') > -1 ) {
+                        return null;
+                    }
+
                     if ($sessionStorage.jwt) {
                         if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                             // Token is expired, user needs to relogin
