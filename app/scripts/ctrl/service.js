@@ -403,7 +403,9 @@
                             toastService.createToast(TOAST_TYPES.SUCCESS,
                                 'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                                 true);
-                            $state.go('^.policies');
+                            $state.go('^.policies').then(function () {
+                                $state.forceReload();
+                            });
                         },
                         function (error) {
                             toastService.createErrorToast(error, 'Could not update the enabled plans.');
