@@ -179,6 +179,10 @@
                 $scope.copyKey = copyKey;
                 $scope.howToInvoke = howToInvoke;
 
+                angular.forEach($scope.contracts, function (contract) {
+                   contract.apiExpanded = true;
+                });
+
                 function copyKey(key) {
                     var type = TOAST_TYPES.INFO;
                     var msg = '<b>API Key copied to clipboard!</b><br>' + key;
