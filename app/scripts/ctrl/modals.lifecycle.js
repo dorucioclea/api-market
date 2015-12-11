@@ -39,14 +39,15 @@
                 }
 
                 function createApplication(application) {
-                    application.name = application.name.trim();
-                    application.initialVersion = 'v'.concat(application.initialVersion);
+                    var newAppObject = angular.copy(application);
+                    newAppObject.name = application.name.trim();
+                    newAppObject.initialVersion = 'v'.concat(application.initialVersion);
                     if (imageService.image.fileData) {
-                        application.base64logo = imageService.image.fileData;
+                        newAppObject.base64logo = imageService.image.fileData;
                     } else {
-                        application.base64logo = '';
+                        newAppObject.base64logo = '';
                     }
-                    Application.save({orgId: $scope.currentOrg.id}, application, function (app) {
+                    Application.save({orgId: $scope.currentOrg.id}, newAppObject, function (app) {
                         $scope.modalClose();
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -117,12 +118,13 @@
                 $scope.modalClose = modalClose;
 
                 function createPlan(plan) {
-                    plan.name = plan.name.trim();
-                    plan.initialVersion = 'v'.concat(plan.initialVersion);
-                    Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
+                    var newPlanObject = angular.copy(plan);
+                    newPlanObject.name = plan.name.trim();
+                    newPlanObject.initialVersion = 'v'.concat(plan.initialVersion);
+                    Plan.save({orgId: $stateParams.orgId}, newPlanObject, function (newPlan) {
                         $scope.modalClose();
                         $state.go('root.plan',
-                            {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+                            {orgId: $stateParams.orgId, planId: newPlan.id, versionId: newPlanObject.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Plan <b>' + newPlan.name + '</b> created!', true);
                     }, function (error) {
