@@ -222,24 +222,7 @@
                 $scope.reset = reset;
                 $scope.saveDefinition = saveDefinition;
                 $scope.selectMethod = selectMethod;
-                $scope.isSubmitting = null;
-                $scope.result = null;
-
-                // Conditional button config
-                $scope.options = {
-                    buttonDefaultClass: 'btn-line-primary',
-                    buttonSubmittingClass: 'btn-info',
-                    buttonSuccessClass: 'btn-success',
-                    buttonDefaultText: 'Load',
-                    buttonSubmittingText: 'Loading...',
-                    buttonSuccessText: 'Definition loaded!',
-                    buttonErrorText: 'Failed to load definition',
-                    buttonSubmittingIcon: 'fa fa-circle-o-notch',
-                    buttonSuccessIcon: 'fa fa-thumbs-up',
-                    buttonErrorIcon: 'fa fa-exclamation-circle',
-                    animationCompleteTime: '5000',
-                    formIsInvalid: true
-                };
+                $scope.isSubmitting = false;
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -258,14 +241,15 @@
 
                 function doFetch(uri) {
                     $scope.isSubmitting = true;
-                    $scope.result = null;
                     var swaggerDocObj = {
                         swaggerURI: uri
                     };
                     SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
+                        $scope.isSubmitting = false;
                         $scope.result = 'success';
                         loadDefinition(angular.fromJson(reply.swaggerDoc));
                     }, function (error) {
+                        $scope.isSubmitting = false;
                         $scope.result = 'error';
                     });
                 }
