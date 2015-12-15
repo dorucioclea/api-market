@@ -10,7 +10,7 @@
         <label class="control-label text-primary">Application Name</label>
         <input type="text" name="appName" class="form-control" placeholder="Enter application name..." ng-model="ctrl.application.name" required ng-pattern="regex.APPLICATION_NAME" validate-on-timeout>
         <p class="text-danger xsmall" ng-show="appForm.appName.$error.required && appForm.appName.$timedout" ng-if="appForm.appName.$touched">Application name is required.</p>
-        <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern && appForm.appName.$timedout">Allowed characters: A-z (both upper and lowercase), dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+        <p class="text-danger xsmall" ng-show="appForm.appName.$error.pattern && appForm.appName.$timedout">Allowed characters: A-z (both upper and lowercase), numbers, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
         <p class="text-muted xsmall">Human-readable name of your application</p>
       </div>
       <div class="col-md-3 col-sm-3 col-xs-5">
