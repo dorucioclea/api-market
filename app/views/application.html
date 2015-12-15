@@ -13,6 +13,7 @@
     <button class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
     <button class="btn btn-line-success btn-sm" ng-disabled="!isReady" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="confirmPublishApp(applicationVersion)">Publish</button>
     <button class="btn btn-line-warning btn-sm" ng-if="isRegistered && !isRetired && User.isAuthorizedFor('appEdit')" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
+    <button class="btn btn-line-danger btn-sm" ng-if="User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete</button>
 
   </overview-header>
 

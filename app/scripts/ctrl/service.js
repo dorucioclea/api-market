@@ -22,6 +22,7 @@
                 $scope.tabStatus = svcScreenModel.tabStatus;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.confirmDeleteSvc = confirmDeleteSvc;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
 
@@ -37,6 +38,34 @@
                     $state.go($state.$current.name,
                         {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
                 };
+
+
+                function confirmDeleteSvc() {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/serviceDelete.html',
+                        size: 'lg',
+                        controller: 'DeleteServiceCtrl as ctrl',
+                        resolve: {
+                            organizationId: function () {
+                                return $scope.serviceVersion.service.organization.id;
+                            },
+                            serviceId: function () {
+                                return $scope.serviceVersion.service.id;
+                            },
+                            serviceName: function () {
+                                return $scope.serviceVersion.service.name;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function (result) {
+                        if ( result === 'success') {
+                            $state.go('root.organization.services', { orgId: $scope.serviceVersion.service.organization.id });
+                        }
+                    });
+                }
 
                 function confirmPublishSvc() {
                     $modal.open({

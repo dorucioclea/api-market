@@ -177,6 +177,7 @@
                 $scope.serviceVersions = svcVersions;
                 $scope.canPublish = canPublish;
                 $scope.canRetire = canRetire;
+                $scope.confirmDeleteSvc = confirmDeleteSvc;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
                 $scope.toMetrics = toMetrics;
@@ -202,6 +203,33 @@
 
                 function canRetire(svcVersion) {
                     return svcVersion.status === 'Published';
+                }
+
+                function confirmDeleteSvc(svcVersion) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/serviceDelete.html',
+                        size: 'lg',
+                        controller: 'DeleteServiceCtrl as ctrl',
+                        resolve: {
+                            organizationId: function () {
+                                return svcVersion.organizationId;
+                            },
+                            serviceId: function () {
+                                return svcVersion.id;
+                            },
+                            serviceName: function () {
+                                return svcVersion.name;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function (result) {
+                        if ( result === 'success') {
+                            $state.forceReload();
+                        }
+                    });
                 }
 
                 function confirmPublishSvc(svcVersion) {
