@@ -346,7 +346,7 @@ module.exports = function (grunt) {
           }
         }
       },
-      t1tmtp: {
+      t1tprod: {
         constants: {
           'CONFIG': {
             'BASE': {
@@ -644,10 +644,10 @@ module.exports = function (grunt) {
     'replace:publisherOn'
   ]);
 
-  grunt.registerTask('t1tMtpPub', [
+  grunt.registerTask('t1tProdPub', [
     'clean:dist',
     'wiredep',
-    'ngconstant:t1tmtp',
+    'ngconstant:t1tprod',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -661,10 +661,10 @@ module.exports = function (grunt) {
     'compress'
   ]);
 
-  grunt.registerTask('t1tMtpMkt', [
+  grunt.registerTask('t1tProdMkt', [
     'clean:dist',
     'wiredep',
-    'ngconstant:t1tmtp',
+    'ngconstant:t1tprod',
     'replace:publisherOff',
     'less:dist',
     'useminPrepare',
