@@ -487,6 +487,63 @@ module.exports = function (grunt) {
         }
       }
     },
+        digiProdPub: {
+          constants: {
+            'CONFIG': {
+              'BASE': {
+                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+                'JWT_HEADER_NAME': 'jwt'
+              },
+              'AUTH': {
+                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              },
+              'STORAGE': {
+                'LOCAL_STORAGE': 'apim-',
+                'SESSION_STORAGE': 'apim_session-'
+              },
+              'SECURITY': {
+                'REDIRECT_URL': '/login/idp/redirect',
+                'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+                'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
+                'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+                'SP_NAME': 'apiengine',
+                'CLIENT_TOKEN': 'jwt'
+              },
+              KONG: {
+                HOST: 'api-gw-a.antwerpen.be'
+              }
+            }
+          }
+        },
+        digiProdMkt: {
+          constants: {
+            'CONFIG': {
+              'BASE': {
+                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+                'JWT_HEADER_NAME': 'jwt'
+              },
+              'AUTH': {
+                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              },
+              'STORAGE': {
+                'LOCAL_STORAGE': 'apim-',
+                'SESSION_STORAGE': 'apim_session-'
+              },
+              'SECURITY': {
+                'REDIRECT_URL': '/login/idp/redirect',
+                'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
+                'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
+                'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+                'SP_NAME': 'apiengine',
+                'CLIENT_TOKEN': 'jwt'
+              },
+              KONG: {
+                HOST: 'api-gw-a.antwerpen.be'
+              }
+            }
+          }
+        }
+      },
 
     // ===== //
     // Karma //
@@ -743,6 +800,46 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:digiAccMkt',
+    'replace:mkt',
+    'replace:publisherOff',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t',
+    'replace:publisherOn'
+  ]);
+
+  grunt.registerTask('digiProdPub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiProdPub',
+    'replace:pub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('digiProdMkt', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:digiProdMkt',
     'replace:mkt',
     'replace:publisherOff',
     'less:dist',
