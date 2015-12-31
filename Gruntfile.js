@@ -491,11 +491,11 @@ module.exports = function (grunt) {
           constants: {
             'CONFIG': {
               'BASE': {
-                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+                'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
                 'JWT_HEADER_NAME': 'jwt'
               },
               'AUTH': {
-                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+                'URL': 'https://api-gw-p.antwerpen.be/apiengineauth/v1'
               },
               'STORAGE': {
                 'LOCAL_STORAGE': 'apim-',
@@ -504,13 +504,13 @@ module.exports = function (grunt) {
               'SECURITY': {
                 'REDIRECT_URL': '/login/idp/redirect',
                 'API_KEY': '05bac13c95a346cbc6e177d747e038db',
-                'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-                'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+                'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
+                'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
                 'SP_NAME': 'apiengine',
                 'CLIENT_TOKEN': 'jwt'
               },
               KONG: {
-                HOST: 'api-gw-a.antwerpen.be'
+                HOST: 'api-gw-p.antwerpen.be'
               }
             }
           }
@@ -519,11 +519,11 @@ module.exports = function (grunt) {
           constants: {
             'CONFIG': {
               'BASE': {
-                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+                'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
                 'JWT_HEADER_NAME': 'jwt'
               },
               'AUTH': {
-                'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+                'URL': 'https://api-gw-p.antwerpen.be/apiengineauth/v1'
               },
               'STORAGE': {
                 'LOCAL_STORAGE': 'apim-',
@@ -532,13 +532,13 @@ module.exports = function (grunt) {
               'SECURITY': {
                 'REDIRECT_URL': '/login/idp/redirect',
                 'API_KEY': '229e2ea08ba94919c9d221cdf3be1f7d',
-                'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-                'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+                'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
+                'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
                 'SP_NAME': 'apiengine',
                 'CLIENT_TOKEN': 'jwt'
               },
               KONG: {
-                HOST: 'api-gw-a.antwerpen.be'
+                HOST: 'api-gw-p.antwerpen.be'
               }
             }
           }
