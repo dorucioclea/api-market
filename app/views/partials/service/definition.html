@@ -10,9 +10,9 @@
       definition file will allow consumers to better understand how to use your API.
       Simply select your Swagger API definition below.
     </p>
-    <p class="text-bold">
+    <p class="text-bold text-primary">
       Only Swagger 2.0 JSON definition files
-          are currently supported!
+      are currently supported!
     </p>
     <hr>
   </div>
@@ -57,9 +57,32 @@
     </div>
   </div><!-- end Swagger Documentation panel -->
 
-  <div class="col-sm-12 mt30" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
+  <div class="col-md-12 mt30" ng-if="!isRetire && User.isAuthorizedFor('svcEdit')">
     <h5>Update Swagger definiton</h5>
-    <input type="file" accept="application/json" definition-select="loadDefinition($fileContent)" />
+    <form name="docForm">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <div class="dropdown" dropdown>
+            <button class="btn btn-primary dropdown-toggle" dropdown-toggle
+                    type="button">
+              {{selectedMethod}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="clickable" ng-click="selectMethod('JSON File')"><a>JSON File</a></li>
+              <li class="clickable" ng-click="selectMethod('URI')"><a>URI</a></li>
+            </ul>
+          </div>
+        </div>
+        <input type="file" class="form-control" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
+        <input type="url" name="uri" class="form-control" ng-model="ctrl.uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
+        <div class="input-group-btn" ng-class="{'hidden': selectedMethod === 'JSON File'}">
+          <button class="btn btn-line-primary" ladda="isSubmitting" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
+        </div>
+      </div>
+      <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'URI'}">You can use the button above to select the JSON file you want to upload.</p>
+      <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'JSON File'}">Please provide the URI where your swagger documentation is located, then press the 'Load' button.</p>
+      <p class="text-danger xsmall" ng-show="docForm.uri.$error.url && docForm.uri.$timedout">This is not a valid URI. Please check for errors.</p>
+    </form>
   </div>
 
   <div class="col-sm-12">

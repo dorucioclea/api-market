@@ -31,7 +31,8 @@
     "perfect-scrollbar": "~0.6.5",
     "textAngular": "~1.4.6",
     "underscore": "~1.8.3",
-    "angular-jwt": "~0.0.9"
+    "angular-jwt": "~0.0.9",
+    "angular-ladda": "~0.3.1"
   },
   "devDependencies": {
     "less": "~2.2.0",

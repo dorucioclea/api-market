@@ -31,6 +31,7 @@
                 $scope.canRetire = canRetire;
                 $scope.newContract = newContract;
                 $scope.toApiDoc = toApiDoc;
+                $scope.confirmDeleteApp = confirmDeleteApp;
                 $scope.confirmPublishApp = confirmPublishApp;
                 $scope.confirmRetireApp = confirmRetireApp;
                 $scope.toMetrics = toMetrics;
@@ -94,6 +95,33 @@
                             svcId: contract.serviceId,
                             versionId: contract.serviceVersion}));
                     docTester.setPreferredContract(contract);
+                }
+
+                function confirmDeleteApp(appVersion) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/applicationDelete.html',
+                        size: 'lg',
+                        controller: 'DeleteApplicationCtrl as ctrl',
+                        resolve: {
+                            organizationId: function () {
+                                return appVersion.organizationId;
+                            },
+                            applicationId: function () {
+                                return appVersion.id;
+                            },
+                            applicationName: function () {
+                                return appVersion.name;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function(result) {
+                        if (result === 'success') {
+                            $state.forceReload();
+                        }
+                    });
                 }
 
                 function confirmPublishApp(appVersion) {

@@ -70,6 +70,7 @@
             $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
             $scope.endpoint = endpoint;
             $scope.docDownloader = docDownloader;
+            $scope.copy = copy;
             $scope.contractApps = [];
             $scope.canGrant = canGrant;
             $scope.customHeaders = [];
@@ -122,6 +123,10 @@
 
             function addHeader() {
                 $scope.customHeaders.push({name: '', value: ''});
+            }
+
+            function copy(field) {
+                toastService.createToast(TOAST_TYPES.INFO, '<b>' + field + '</b> copied to clipboard!', true);
             }
 
             function filterApplications(apps, contracts) {

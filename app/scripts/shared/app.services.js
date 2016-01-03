@@ -5,7 +5,7 @@
 
         // ACTION SERVICE
         .service('actionService',
-            function ($state, toastService, TOAST_TYPES, Action, ACTIONS) {
+            function ($state, toastService, TOAST_TYPES, Action, ACTIONS, Application, Service) {
 
                 this.createAction = function (entityVersion, type) {
                     var action = {};
@@ -112,6 +112,24 @@
                         applicationVersion, ACTIONS.UNREGISTER),
                         shouldReload,
                         TOAST_TYPES.WARNING, msg);
+                };
+
+                // DELETE METHODS == USE WITH CAUTION!
+
+                this.deleteApp = function (organizationId, applicationId, applicationName) {
+                    return Application.remove({orgId: organizationId, appId: applicationId}, function (success) {
+                        toastService.createToast(TOAST_TYPES.INFO, 'Application <b>' + applicationName + '</b> deleted.', true);
+                    }, function (fail) {
+                        toastService.createErrorToast(fail, 'Could not delete application');
+                    }).$promise;
+                };
+
+                this.deleteSvc = function (organizationId, serviceId, serviceName) {
+                    return Service.remove({orgId: organizationId, svcId: serviceId}, function (success) {
+                        toastService.createToast(TOAST_TYPES.INFO, 'Service <b>' + serviceName + '</b> deleted.', true);
+                    }, function (fail) {
+                        toastService.createErrorToast(fail, 'Could not delete service');
+                    }).$promise;
                 };
             })
 

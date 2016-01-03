@@ -22,6 +22,7 @@
                 $scope.tabStatus = svcScreenModel.tabStatus;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.confirmDeleteSvc = confirmDeleteSvc;
                 $scope.confirmPublishSvc = confirmPublishSvc;
                 $scope.confirmRetireSvc = confirmRetireSvc;
 
@@ -37,6 +38,34 @@
                     $state.go($state.$current.name,
                         {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
                 };
+
+
+                function confirmDeleteSvc() {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/serviceDelete.html',
+                        size: 'lg',
+                        controller: 'DeleteServiceCtrl as ctrl',
+                        resolve: {
+                            organizationId: function () {
+                                return $scope.serviceVersion.service.organization.id;
+                            },
+                            serviceId: function () {
+                                return $scope.serviceVersion.service.id;
+                            },
+                            serviceName: function () {
+                                return $scope.serviceVersion.service.name;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function (result) {
+                        if ( result === 'success') {
+                            $state.go('root.organization.services', { orgId: $scope.serviceVersion.service.organization.id });
+                        }
+                    });
+                }
 
                 function confirmPublishSvc() {
                     $modal.open({
@@ -106,7 +135,7 @@
 
         /// ==== Implementation Controller
         .controller('ServiceImplementationCtrl',
-            function ($scope, $state, $stateParams, toastService, TOAST_TYPES,
+            function ($scope, $state, $stateParams, toastService, TOAST_TYPES, REGEX,
                       ServiceVersion, svcScreenModel, svcData) {
 
                 $scope.serviceVersion = svcData;
@@ -116,6 +145,7 @@
                     gateways: [{gatewayId: 'KongGateway'}]
                 };
                 svcScreenModel.updateService(svcData);
+                $scope.implementationRegex = REGEX.IMPLEMENTATION;
                 $scope.version = svcScreenModel.service;
 
                 $scope.typeOptions = ['rest'];
@@ -179,12 +209,20 @@
 
         /// ==== Definition Controller
         .controller('ServiceDefinitionCtrl',
-            function ($scope, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
-                      ServiceVersionDefinition, svcScreenModel) {
+            function ($scope, $http, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
+                      ServiceVersionDefinition, SwaggerDocFetch, svcScreenModel) {
 
                 svcScreenModel.updateTab('Definition');
+                $scope.selectedMethod = 'JSON File';
                 $scope.definitionLoaded = false;
                 $scope.noDefinition = false;
+                $scope.doFetch = doFetch;
+                $scope.loadDefinition = loadDefinition;
+                $scope.loadPreview = loadPreview;
+                $scope.reset = reset;
+                $scope.saveDefinition = saveDefinition;
+                $scope.selectMethod = selectMethod;
+                $scope.isSubmitting = false;
 
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
@@ -201,12 +239,37 @@
                         $scope.noDefinition = true;
                     });
 
-                $scope.reset = function () {
+                function doFetch(uri) {
+                    $scope.isSubmitting = true;
+                    var swaggerDocObj = {
+                        swaggerURI: uri
+                    };
+                    SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
+                        $scope.isSubmitting = false;
+                        $scope.result = 'success';
+                        loadDefinition(angular.fromJson(reply.swaggerDoc));
+                    }, function (error) {
+                        $scope.isSubmitting = false;
+                        $scope.result = 'error';
+                    });
+                }
+
+                function loadDefinition($fileContent) {
+                    $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.loadPreview($scope.updatedDefinition);
+                }
+
+                function loadPreview(spec) {
+                    $scope.definitionLoaded = true;
+                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
+                }
+
+                function reset() {
                     $scope.definitionLoaded = false;
                     $scope.updatedDefinition = $scope.currentDefinition;
-                };
+                }
 
-                $scope.saveDefinition = function () {
+                function saveDefinition() {
                     ServiceVersionDefinition.update({
                             orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
@@ -226,22 +289,16 @@
                         function (error) {
                             toastService.createErrorToast(error, 'Could not update the definition.');
                         });
-                };
+                }
+
+                function selectMethod(method) {
+                    $scope.selectedMethod = method;
+                }
 
                 $scope.$watch('updatedDefinition', function (def) {
                     $scope.changed = (def !== $scope.currentDefinition);
                     $scope.invalid = (def === $scope.currentDefinition);
                 }, true);
-
-                $scope.loadDefinition = function ($fileContent) {
-                    $scope.updatedDefinition = angular.fromJson($fileContent);
-                    $scope.loadPreview($scope.updatedDefinition);
-                };
-
-                $scope.loadPreview = function (spec) {
-                    $scope.definitionLoaded = true;
-                    $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
-                };
             })
 
         /// ==== Plans Controller
@@ -359,7 +416,9 @@
                             toastService.createToast(TOAST_TYPES.SUCCESS,
                                 'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                                 true);
-                            $state.forceReload();
+                            $state.go('^.policies').then(function () {
+                                $state.forceReload();
+                            });
                         },
                         function (error) {
                             toastService.createErrorToast(error, 'Could not update the enabled plans.');

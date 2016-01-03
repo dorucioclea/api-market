@@ -24,6 +24,7 @@
                 $scope.selectVersion = selectVersion;
                 $scope.breakContract = breakContract;
                 $scope.updateDesc = updateDesc;
+                $scope.confirmDeleteApp = confirmDeleteApp;
                 $scope.confirmPublishApp = confirmPublishApp;
                 $scope.confirmRetireApp = confirmRetireApp;
                 $scope.showInfoModal = showInfoModal;
@@ -65,6 +66,33 @@
                     };
                     selectedApp.updateApplication(appObject);
                     $state.go('root.apis.grid');
+                }
+
+                function confirmDeleteApp(appVersion) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/applicationDelete.html',
+                        size: 'lg',
+                        controller: 'DeleteApplicationCtrl as ctrl',
+                        resolve: {
+                            organizationId: function () {
+                                return appVersion.application.organization.id;
+                            },
+                            applicationId: function () {
+                                return appVersion.application.id;
+                            },
+                            applicationName: function () {
+                                return appVersion.application.name;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function (result) {
+                        if ( result === 'success') {
+                            $state.go('root.market-dash', { orgId: appVersion.application.organization.id });
+                        }
+                    });
                 }
 
                 function confirmPublishApp(appVersion) {
@@ -178,6 +206,10 @@
                 $scope.toggle = toggle;
                 $scope.copyKey = copyKey;
                 $scope.howToInvoke = howToInvoke;
+
+                angular.forEach($scope.contracts, function (contract) {
+                    contract.apiExpanded = true;
+                });
 
                 function copyKey(key) {
                     var type = TOAST_TYPES.INFO;

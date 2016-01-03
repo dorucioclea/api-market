@@ -61,6 +61,7 @@
             <button class="btn btn-success action-icon fa fa-check" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Publish {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canPublish(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc(serviceVersions[service.id])"></button>
             <button class="btn btn-warning action-icon fa fa-trash" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Retire {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc(serviceVersions[service.id])"></button>
             <button class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Service Metrics" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="toMetrics(serviceVersions[service.id])"></button>
+            <button class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete {{service.name}}" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc(serviceVersions[service.id])"></button>
           </div>
         </div>
         <div class="col-sm-12">

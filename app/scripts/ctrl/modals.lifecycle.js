@@ -3,7 +3,7 @@
 
     angular.module('app.ctrl.modals.lifecycle', [])
 
-/// ==== NewApplication Controller
+        /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
             function ($scope, $modal, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
@@ -39,14 +39,15 @@
                 }
 
                 function createApplication(application) {
-                    application.name = application.name.trim();
-                    application.initialVersion = 'v'.concat(application.initialVersion);
+                    var newAppObject = angular.copy(application);
+                    newAppObject.name = application.name.trim();
+                    newAppObject.initialVersion = 'v'.concat(application.initialVersion);
                     if (imageService.image.fileData) {
-                        application.base64logo = imageService.image.fileData;
+                        newAppObject.base64logo = imageService.image.fileData;
                     } else {
-                        application.base64logo = '';
+                        newAppObject.base64logo = '';
                     }
-                    Application.save({orgId: $scope.currentOrg.id}, application, function (app) {
+                    Application.save({orgId: $scope.currentOrg.id}, newAppObject, function (app) {
                         $scope.modalClose();
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -65,7 +66,7 @@
                 }
             })
 
-/// ==== PublishApplication Controller
+        /// ==== PublishApplication Controller
         .controller('PublishApplicationCtrl',
             function ($scope, $rootScope, $state, $modal,
                       appVersion, appContracts, actionService) {
@@ -85,7 +86,7 @@
                 }
             })
 
-/// ==== RetireApplication Controller
+        /// ==== RetireApplication Controller
         .controller('RetireApplicationCtrl',
             function ($scope, $rootScope, $modal,
                       appVersion, appContracts, actionService) {
@@ -106,7 +107,28 @@
 
             })
 
-/// ==== NewPlan Controller
+        /// ==== DeleteApplication Controller
+        .controller('DeleteApplicationCtrl',
+            function ($scope, $modalInstance, organizationId, applicationId, applicationName, actionService) {
+
+                $scope.applicationName = applicationName;
+                $scope.modalClose = modalClose;
+                $scope.doDelete = doDelete;
+
+                function modalClose() {
+                    $modalInstance.dismiss("cancel");
+                }
+
+                function doDelete() {
+                    actionService.deleteApp(organizationId, applicationId, applicationName).then(function (success) {
+                        $modalInstance.close("success");
+                    }, function (fail) {
+                        $modalInstance.close("fail");
+                    })
+                }
+            })
+
+        /// ==== NewPlan Controller
         .controller('NewPlanCtrl',
             function ($scope, $modal, $state, $stateParams, orgScreenModel,
                       toastService, REGEX, TOAST_TYPES, Plan) {
@@ -117,12 +139,13 @@
                 $scope.modalClose = modalClose;
 
                 function createPlan(plan) {
-                    plan.name = plan.name.trim();
-                    plan.initialVersion = 'v'.concat(plan.initialVersion);
-                    Plan.save({orgId: $stateParams.orgId}, plan, function (newPlan) {
+                    var newPlanObject = angular.copy(plan);
+                    newPlanObject.name = plan.name.trim();
+                    newPlanObject.initialVersion = 'v'.concat(plan.initialVersion);
+                    Plan.save({orgId: $stateParams.orgId}, newPlanObject, function (newPlan) {
                         $scope.modalClose();
                         $state.go('root.plan',
-                            {orgId: $stateParams.orgId, planId: newPlan.id, versionId: plan.initialVersion});
+                            {orgId: $stateParams.orgId, planId: newPlan.id, versionId: newPlanObject.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Plan <b>' + newPlan.name + '</b> created!', true);
                     }, function (error) {
@@ -138,7 +161,7 @@
                 }
             })
 
-/// ==== LockPlan Controller
+        /// ==== LockPlan Controller
         .controller('LockPlanCtrl',
             function ($scope, $modal,
                       planVersion, actionService) {
@@ -158,7 +181,7 @@
 
             })
 
-/// ==== NewService Controller
+        /// ==== NewService Controller
         .controller('NewServiceCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Categories, Service) {
@@ -234,7 +257,7 @@
                 }
             })
 
-/// ==== PublishService Controller
+        /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
             function ($scope, $modal,
                       svcVersion, actionService) {
@@ -254,7 +277,7 @@
 
             })
 
-/// ==== RetireService Controller
+        /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
             function ($scope, $modal,
                       svcVersion, actionService) {
@@ -274,7 +297,28 @@
 
             })
 
-/// ==== NewVersion Controller
+        /// ==== DeleteService Controller
+        .controller('DeleteServiceCtrl',
+            function ($scope, $modalInstance, organizationId, serviceId, serviceName, actionService) {
+
+                $scope.serviceName = serviceName;
+                $scope.modalClose = modalClose;
+                $scope.doDelete = doDelete;
+
+                function modalClose() {
+                    $modalInstance.dismiss("cancel");
+                }
+
+                function doDelete() {
+                    actionService.deleteSvc(organizationId, serviceId, serviceName).then(function (success) {
+                        $modalInstance.close("success");
+                    }, function (fail) {
+                        $modalInstance.close("fail");
+                    })
+                }
+            })
+
+        /// ==== NewVersion Controller
         .controller('NewVersionCtrl',
             function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, toastService,
                       ApplicationVersion, PlanVersion, ServiceVersion, REGEX) {
@@ -363,7 +407,7 @@
 
             })
 
-/// ==== NewOrganization Controller
+        /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
             function ($scope, $modal, $state, publisherMode,
                       currentUserModel, toastService, REGEX, TOAST_TYPES, Organization) {
