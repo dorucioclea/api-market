@@ -309,7 +309,7 @@ module.exports = function (grunt) {
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
+              'SP_NAME': 'APIEngine-local',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
