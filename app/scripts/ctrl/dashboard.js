@@ -7,8 +7,8 @@
         .controller('MarketDashCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                       appData, appVersions, appVersionDetails, appContracts, headerModel,
-                      selectedApp, docTester, oAuthService, toastService, TOAST_TYPES,
-                      ApplicationContract, ApplicationVersion) {
+                      selectedApp, applicationManager, docTester, toastService,
+                      ApplicationContract) {
                 headerModel.setIsButtonVisible(true, false);
                 orgScreenModel.updateOrganization(orgData);
                 selectedApp.reset();
@@ -98,85 +98,20 @@
                 }
 
                 function confirmDeleteApp(appVersion) {
-                    var modalInstance = $modal.open({
-                        templateUrl: 'views/modals/applicationDelete.html',
-                        size: 'lg',
-                        controller: 'DeleteApplicationCtrl as ctrl',
-                        resolve: {
-                            organizationId: function () {
-                                return appVersion.organizationId;
-                            },
-                            applicationId: function () {
-                                return appVersion.id;
-                            },
-                            applicationName: function () {
-                                return appVersion.name;
+                    applicationManager.delete(appVersion.organizationId, appVersion.id, appVersion.name)
+                        .then(function (result) {
+                            if (result === 'success') {
+                                $state.forceReload();
                             }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function(result) {
-                        if (result === 'success') {
-                            $state.forceReload();
-                        }
-                    });
+                        });
                 }
 
                 function confirmPublishApp(appVersion) {
-                    oAuthService.needsCallback(appVersion.organizationId, appVersion.id, appVersion.version).then(function (needsCallback) {
-                        if ( needsCallback &&
-                            ($scope.applicationVersionDetails[appVersion.id].oauthClientRedirect === null ||
-                            $scope.applicationVersionDetails[appVersion.id].oauthClientRedirect.length === 0)) {
-                            toastService.createToast(TOAST_TYPES.WARNING,
-                                '<b>No OAuth callback defined!</b><br>' +
-                                'The application cannot be registered without an OAuth callback URL',
-                                true);
-                        } else {
-                            ApplicationVersion.get(
-                                {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
-                                function (reply) {
-                                    $modal.open({
-                                        templateUrl: 'views/modals/applicationPublish.html',
-                                        size: 'lg',
-                                        controller: 'PublishApplicationCtrl as ctrl',
-                                        resolve: {
-                                            appVersion: function () {
-                                                return reply;
-                                            },
-                                            appContracts: function () {
-                                                return $scope.applicationContracts[appVersion.id];
-                                            }
-                                        },
-                                        backdrop : 'static',
-                                        windowClass: $scope.modalAnim	// Animation Class put here.
-                                    });
-                                });
-                        }
-                    });
+                    applicationManager.publish(appVersion.organizationId, appVersion.id, appVersion.version);
                 }
 
                 function confirmRetireApp(appVersion) {
-                    ApplicationVersion.get(
-                        {orgId: appVersion.organizationId, appId: appVersion.id, versionId: appVersion.version},
-                        function (reply) {
-                            $modal.open({
-                                templateUrl: 'views/modals/applicationRetire.html',
-                                size: 'lg',
-                                controller: 'RetireApplicationCtrl as ctrl',
-                                resolve: {
-                                    appVersion: function () {
-                                        return reply;
-                                    },
-                                    appContracts: function () {
-                                        return $scope.applicationContracts[appVersion.id];
-                                    }
-                                },
-                                backdrop : 'static',
-                                windowClass: $scope.modalAnim	// Animation Class put here.
-                            });
-                        });
+                    applicationManager.retire(appVersion.organizationId, appVersion.id, appVersion.version);
                 }
 
                 function toMetrics(appVersion) {
@@ -185,22 +120,7 @@
                 }
 
                 function showOAuthConfig(appVersion) {
-                    $modal.open({
-                        templateUrl: 'views/modals/oauthConfigEdit.html',
-                        size: 'lg',
-                        controller: 'OAuthConfigCtrl as ctrl',
-                        resolve: {
-                            appVersionDetails: function () {
-                                return $scope.applicationVersionDetails[appVersion.id];
-                            },
-                            oAuthService: 'oAuthService',
-                            needsCallback: function (oAuthService) {
-                                return oAuthService.needsCallback(appVersion.organizationId, appVersion.id, appVersion.version);
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
+                    applicationManager.oAuthConfig(appVersion.organizationId, appVersion.id, appVersion.version);
                 }
 
                 function breakContract(contract) {
@@ -225,15 +145,13 @@
                 }
 
                 function copyKey(apikey) {
-                    var type = TOAST_TYPES.INFO;
                     var msg = '<b>API key copied to clipboard!</b><br>' + apikey;
-                    toastService.createToast(type, msg, true);
+                    toastService.info(msg);
                 }
 
                 function copyProvisionKey(provKey) {
-                    var type = TOAST_TYPES.INFO;
                     var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
-                    toastService.createToast(type, msg, true);
+                    toastService.info(msg);
                 }
             })
 
