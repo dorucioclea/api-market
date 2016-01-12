@@ -379,6 +379,10 @@
                 this.createToast(TOAST_TYPES.WARNING, msg, true);
             };
 
+            this.error = function (msg) {
+                this.createToast(TOAST_TYPES.DANGER, msg, true);
+            };
+
             this.createErrorToast = function(error, heading) {
                 var toastType = TOAST_TYPES.DANGER;
                 var errorMsg = '<b>' + heading + '</b>';

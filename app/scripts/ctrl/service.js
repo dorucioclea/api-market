@@ -255,8 +255,15 @@
                 }
 
                 function loadDefinition($fileContent) {
-                    $scope.updatedDefinition = angular.fromJson($fileContent);
-                    $scope.loadPreview($scope.updatedDefinition);
+                    try {
+                        $scope.updatedDefinition = angular.fromJson($fileContent);
+                        $scope.loadPreview($scope.updatedDefinition);
+                    } catch (err) {
+                        toastService.warning("<b>Error parsing Swagger JSON!</b>" +
+                            "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
+                            "<br>Please double-check your JSON syntax.</span>" +
+                            "<br><span class='small'><b>" + err + '</b></span>');
+                    }
                 }
 
                 function loadPreview(spec) {
