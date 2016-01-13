@@ -479,6 +479,17 @@
             };
         })
 
+        // RESOURCE UTILITY SERVICE
+        .service('resourceUtil', function () {
+            this.cleanResponse = cleanResponse;
+
+            // This function will remove the $promise and $resolved properties from a resource promise,
+            // leaving us with a clean Javascript Object
+            function cleanResponse(resolvedPromise) {
+                return angular.fromJson(angular.toJson(resolvedPromise));
+            }
+        })
+
         // DASHBOARD SELECTED APP HELPER
         .service('selectedApp', function () {
             this.appVersion = null;
