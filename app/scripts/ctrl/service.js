@@ -470,7 +470,7 @@
 
                 $scope.modalAddPolicy = function () {
                     $modal.open({
-                        templateUrl: '/views/modals/servicePolicyAdd.html',
+                        templateUrl: '/views/modals/policyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',
                         resolve: {

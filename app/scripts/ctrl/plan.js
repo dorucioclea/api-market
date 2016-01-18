@@ -111,7 +111,7 @@
 
                 function modalAddPolicy() {
                     $modal.open({
-                        templateUrl: 'views/modals/planPolicyAdd.html',
+                        templateUrl: 'views/modals/policyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',
                         resolve: {

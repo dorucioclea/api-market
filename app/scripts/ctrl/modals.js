@@ -6,8 +6,9 @@
         /// ==== AddPolicy Controller
         .controller('AddPolicyCtrl',
             function ($scope, $modal, $state, $stateParams, policyDefs,
-                      toastService, TOAST_TYPES, PlanVersionPolicy, ServiceVersionPolicy) {
+                      toastService, TOAST_TYPES, PlanVersionPolicy, PolicyDefs, ServiceVersionPolicy) {
 
+                $scope.form = ['*'];
                 $scope.policyDefs = policyDefs;
                 $scope.valid = false;
                 $scope.selectedPolicy = null;
@@ -17,11 +18,12 @@
                 $scope.getConfig = getConfig;
                 $scope.addPolicy = addPolicy;
                 $scope.selectPolicy = selectPolicy;
+                $scope.type = $state.current.data.type;
 
                 init();
 
                 function init() {
-                    switch ($state.current.data.type) {
+                    switch ($scope.type) {
                         case 'plan':
                             PlanVersionPolicy.query(
                                 {orgId: $stateParams.orgId,
@@ -76,7 +78,7 @@
                         configuration: angular.toJson(config)
                     };
 
-                    switch ($state.current.data.type) {
+                    switch ($scope.type) {
                         case 'plan':
                             PlanVersionPolicy.save(
                                 {orgId: $stateParams.orgId,
@@ -112,18 +114,23 @@
                 }
 
                 function selectPolicy(policy) {
-                    if (!policy) {
-                        $scope.include = undefined;
-                    } else {
-                        $scope.selectedPolicy = policy;
-                        $scope.config = {};
-                        if ($scope.selectedPolicy.formType === 'JsonSchema') {
-                            //All plugins should fall into this category!
-                            $scope.include = 'views/modals/partials/policy/json-schema.html';
-                        } else {
-                            $scope.include = 'views/modals/partials/policy/Default.html';
-                        }
+                    $scope.selectedPolicy = policy;
+                    $scope.config = {};
+                }
+
+                // Watch for changes to selectedDef - if the user changes from one schema-based policy
+                // to another schema-based policy, then the controller won't change.  The result is that
+                // we need to refresh the schema when the selectedDef changes.
+                $scope.$watch('selectedPolicy', function(newValue) {
+                    if (newValue && newValue.formType === 'JsonSchema') {
+                        loadForm($scope.selectedPolicy);
                     }
+                });
+
+                function loadForm(policy) {
+                    PolicyDefs.get({policyId: policy.id}, function (policyData) {
+                        $scope.schema = angular.fromJson(policyData.form);
+                    });
                 }
             })
 
