@@ -71,51 +71,66 @@
                     return $scope.config;
                 }
 
-                function addPolicy() {
-                    var config = $scope.getConfig();
-                    var newPolicy = {
-                        definitionId: $scope.selectedPolicy.id,
-                        configuration: angular.toJson(config)
-                    };
+                function addPolicy(form) {
+                    $scope.$broadcast('schemaFormValidate');
 
-                    switch ($scope.type) {
-                        case 'plan':
-                            PlanVersionPolicy.save(
-                                {orgId: $stateParams.orgId,
-                                    planId: $stateParams.planId, versionId: $stateParams.versionId},
-                                newPolicy,
-                                function(reply) {
-                                    $scope.modalClose();
-                                    $state.forceReload();
-                                    toastService.createToast(TOAST_TYPES.SUCCESS,
-                                        'Plan policy successfully added.', true);
-                                }, function (error) {
-                                    $scope.modalClose();
-                                    toastService.createErrorToast(error, 'Could not create the plan policy.');
-                                });
-                            break;
-                        case 'service':
-                            ServiceVersionPolicy.save(
-                                {orgId: $stateParams.orgId,
-                                    svcId: $stateParams.svcId, versionId: $stateParams.versionId},
-                                newPolicy,
-                                function(reply) {
-                                    $scope.modalClose();
-                                    $state.forceReload();
-                                    toastService.createToast(TOAST_TYPES.SUCCESS,
-                                        'Service policy successfully added.', true);
-                                }, function (error) {
-                                    $scope.modalClose();
-                                    toastService.createErrorToast(error, 'Could not create the service policy.');
-                                });
-                            break;
+                    if (form.$valid) {
+                        console.log('valid');
+                        var config = $scope.getConfig();
+                        var newPolicy = {
+                            definitionId: $scope.selectedPolicy.id,
+                            configuration: angular.toJson(config)
+                        };
+
+                        switch ($scope.type) {
+                            case 'plan':
+                                PlanVersionPolicy.save(
+                                    {orgId: $stateParams.orgId,
+                                        planId: $stateParams.planId, versionId: $stateParams.versionId},
+                                    newPolicy,
+                                    function(reply) {
+                                        $scope.modalClose();
+                                        $state.forceReload();
+                                        toastService.createToast(TOAST_TYPES.SUCCESS,
+                                            'Plan policy successfully added.', true);
+                                    }, function (error) {
+                                        handleError(error);
+                                    });
+                                break;
+                            case 'service':
+                                ServiceVersionPolicy.save(
+                                    {orgId: $stateParams.orgId,
+                                        svcId: $stateParams.svcId, versionId: $stateParams.versionId},
+                                    newPolicy,
+                                    function(reply) {
+                                        $scope.modalClose();
+                                        $state.forceReload();
+                                        toastService.createToast(TOAST_TYPES.SUCCESS,
+                                            'Service policy successfully added.', true);
+                                    }, function (error) {
+                                        handleError(error);
+                                    });
+                                break;
+                        }
                     }
-
                 }
 
                 function selectPolicy(policy) {
                     $scope.selectedPolicy = policy;
                     $scope.config = {};
+                }
+
+                function handleError(error) {
+                    if (error.status === 404) {
+                        switch (error.data.errorCode) {
+                            case 10003:
+                                console.log('invalid config');
+                                toastService.warning('<b>Invalid Policy Configuration Detected!</b><br><span class="small">' + error.data.message + '</span>');
+                                break;
+                        }
+                    } else {
+                        toastService.createErrorToast(error, 'Could not create the service policy.');
+                    }
                 }
 
                 // Watch for changes to selectedDef - if the user changes from one schema-based policy
