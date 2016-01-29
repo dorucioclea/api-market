@@ -6,7 +6,7 @@
         /// ==== Service Controller
         .controller('ServiceCtrl',
             function ($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
-                      svcData, svcVersions, svcScreenModel, toastService, TOAST_TYPES, actionService,
+                      svcData, svcVersions, svcScreenModel, resourceUtil, toastService, TOAST_TYPES, actionService,
                       Service, ServiceVersionDefinition) {
 
                 orgScreenModel.updateOrganization(orgData);
@@ -29,7 +29,13 @@
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                     function (reply) {
-                        svcScreenModel.setHasDefinition(true);
+                        // Clean the reply so we have the pure data object, then
+                        // Check number of properties in the object, if 0, there is no definition present
+                        if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
+                            svcScreenModel.setHasDefinition(true);
+                        } else {
+                            svcScreenModel.setHasDefinition(false);
+                        }
                     }, function (error) {
                         svcScreenModel.setHasDefinition(false);
                     });
@@ -209,7 +215,7 @@
 
         /// ==== Definition Controller
         .controller('ServiceDefinitionCtrl',
-            function ($scope, $http, $state, $stateParams, endpoint, toastService, TOAST_TYPES,
+            function ($scope, $http, $state, $stateParams, endpoint, resourceUtil, toastService, TOAST_TYPES,
                       ServiceVersionDefinition, SwaggerDocFetch, svcScreenModel) {
 
                 svcScreenModel.updateTab('Definition');
@@ -227,8 +233,11 @@
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                     function (reply) {
-                        $scope.currentDefinition = reply;
-                        if (angular.isDefined($scope.currentDefinition)) {
+                        // Clean the reply so we have the pure data object
+                        var cleanReply = resourceUtil.cleanResponse(reply);
+                        // Check number of properties in the object, if 0, there is no definition present
+                        if (Object.keys(cleanReply).length > 0) {
+                            $scope.currentDefinition = cleanReply;
                             $scope.updatedDefinition = $scope.currentDefinition;
                             $scope.loadSwaggerUi($scope.currentDefinition,
                                 'original-swagger-ui-container', endpoint, true);
@@ -255,8 +264,15 @@
                 }
 
                 function loadDefinition($fileContent) {
-                    $scope.updatedDefinition = angular.fromJson($fileContent);
-                    $scope.loadPreview($scope.updatedDefinition);
+                    try {
+                        $scope.updatedDefinition = angular.fromJson($fileContent);
+                        $scope.loadPreview($scope.updatedDefinition);
+                    } catch (err) {
+                        toastService.warning("<b>Error parsing Swagger JSON!</b>" +
+                            "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
+                            "<br>Please double-check your JSON syntax.</span>" +
+                            "<br><span class='small'><b>" + err + '</b></span>');
+                    }
                 }
 
                 function loadPreview(spec) {
@@ -454,7 +470,7 @@
 
                 $scope.modalAddPolicy = function () {
                     $modal.open({
-                        templateUrl: '/views/modals/servicePolicyAdd.html',
+                        templateUrl: '/views/modals/policyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',
                         resolve: {

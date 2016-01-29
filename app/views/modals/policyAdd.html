@@ -1,0 +1,60 @@
+<div class="modal-header clearfix">
+    <h4 class="modal-title">Add Policy</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+    <p ng-if="type === 'plan'">Adding a policy to a plan will allow its specific functionality to be applied every time a service is invoked with the plan.</p>
+    <p ng-if="type === 'service'">Adding a policy to a service will allow its specific functionality to be applied every time the service is invoked, regardless of the plan used.</p>
+</div>
+
+<div class="modal-body style-placeholders">
+
+    <div class="row">  <!-- Policy Type -->
+        <div class="col-sm-12">
+            <span class="text-bold">Policy Type</span>
+            <div dropdown>
+                <button class="btn btn-primary" dropdown-toggle>
+                    <i class="fa {{selectedPolicy.icon}}"></i>
+                    <span>{{selectedPolicy === null ? 'Choose a policy...' : selectedPolicy.name}} </span><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-left">
+                    <li ng-repeat="def in policyDefs | orderBy:'name.toLowerCase()'" tooltip-placement="right"
+                        tooltip="{{def.description}}" ng-show="type === 'plan' ? def.scopePlan : def.scopeService"
+                        ng-click="selectPolicy(def)">
+                        <a><span class="fa fa-inline fa-fw {{def.icon}}"></span>&nbsp;&nbsp;{{def.name}}</a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Policy Type-specific config -->
+    <div class="row mt20 ng-hide" ng-show="selectedPolicy">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{selectedPolicy.name}} <span>Configuration</span></div>
+            <div class="panel-body">{{selectedPolicy.description}}</div>
+            <div class="panel-body">
+                <div class="form policy-config json-schema">
+                    <div ng-show="schemaState == 'loading'">
+                        <div class="spinner spinner-sm pull-left"></div>
+                        <span style="margin-left: 5px">Loading policy configuration schema...</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <form name="policyForm">
+                            <div sf-schema="schema"
+                                 sf-form="form"
+                                 sf-model="config"
+                                 sf-options="{ validateOnRender: true }">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="modalClose()">Cancel</button>
+    <button id="add-policy" ng-disabled="policyForm.$invalid" class="btn btn-primary" placeholder="Adding..." data-icon="fa-cog" ng-click="addPolicy(policyForm)">Add Policy</button>
+</div>
