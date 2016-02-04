@@ -29,6 +29,10 @@
                ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">3</span>&nbsp;&nbsp;</span>Plans
         </label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Scope'" id="scope" ui-sref=".scope"
+               ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
+            <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">4</span>&nbsp;&nbsp;</span>Scope
+        </label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Terms</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
