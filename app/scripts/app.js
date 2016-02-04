@@ -805,6 +805,18 @@
                     },
                     controller: 'ServicePlansCtrl'
                 })
+                // Scope Tab
+                .state('root.service.scopes', {
+                    url: '/scopes',
+                    templateUrl: 'views/partials/service/scopes.html',
+/*                    resolve: {
+                        Scope: 'Scope',
+                        scopeData: function (Scope, organizationId) {
+                            return Plan.query({orgId: organizationId}).$promise;
+                        }
+                    },*/
+                    controller: 'ServiceScopeCtrl'
+                })
                 // Policies Tab
                 .state('root.service.policies', {
                     url: '/policies',

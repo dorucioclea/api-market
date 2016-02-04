@@ -442,6 +442,13 @@
                 };
 
             })
+
+        /// ==== Scope Controller
+        .controller('ServiceScopeCtrl',
+            function ($scope, $state, svcScreenModel, ServiceTerms, toastService, TOAST_TYPES) {
+                console.log("to be done");
+            })
+
         /// ==== Policies Controller
         .controller('ServicePoliciesCtrl',
             function ($scope, $modal, $stateParams, policyData, policyConfiguration,
