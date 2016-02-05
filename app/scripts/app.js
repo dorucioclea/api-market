@@ -809,12 +809,10 @@
                 .state('root.service.scopes', {
                     url: '/scopes',
                     templateUrl: 'views/partials/service/scopes.html',
-/*                    resolve: {
+                    resolve: {
                         Scope: 'Scope',
-                        scopeData: function (Scope, organizationId) {
-                            return Plan.query({orgId: organizationId}).$promise;
-                        }
-                    },*/
+                        scopeData: {}
+                    },
                     controller: 'ServiceScopeCtrl'
                 })
                 // Policies Tab
