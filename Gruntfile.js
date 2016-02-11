@@ -290,6 +290,34 @@ module.exports = function (grunt) {
         wrap: ';(function(angular){\n"use strict";\n\n{%= __ngModule %} \n\n})(window.angular);',
         space: '  '
       },
+      docker: {
+        constants: {
+          'CONFIG': {
+            'BASE': {
+              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
+              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
+              'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine-local',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'devapim.t1t.be'
+            }
+          }
+        }
+      },
       local: {
         constants: {
           'CONFIG': {
@@ -306,7 +334,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-local',
@@ -879,6 +907,18 @@ module.exports = function (grunt) {
     grunt.task.run([
       'connect:livereload',
       'ngconstant:local',
+      'watch'
+    ]);
+  });
+
+  grunt.registerTask('serveDocker', 'Compile then start a connect web server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
+    }
+
+    grunt.task.run([
+      'connect:livereload',
+      'ngconstant:docker',
       'watch'
     ]);
   });
