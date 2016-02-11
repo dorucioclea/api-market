@@ -294,11 +294,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'URL': 'https://192.168.99.100/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+              'URL': 'https://192.168.99.100/dev/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -313,7 +313,7 @@ module.exports = function (grunt) {
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
-              HOST: 'devapim.t1t.be'
+              HOST: '192.168.99.100'
             }
           }
         }
@@ -336,8 +336,8 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine-local',
+              'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
