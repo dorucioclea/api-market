@@ -5,7 +5,8 @@ version 0.12.1.
 
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `grunt` for building and `grunt serve` to run against an online dev environment.
+Run `grunt` serveLocal for a local docker machine, or a local API Engine.
 
 ## Testing
 
