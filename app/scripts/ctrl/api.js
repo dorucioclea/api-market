@@ -295,6 +295,60 @@
 
         })
 
+        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
+                                            planData, policyConfig, PlanVersionPolicy) {
+            $scope.svcPolicies = svcPolicies;
+            $scope.plans = planData;
+            $scope.policies = [];
+            $scope.policyConfiguration = [];
+
+/*            init();
+
+            function init() {
+                svcTab.updateTab('Plans');
+
+                angular.forEach($scope.svcPolicies, function (policy) {
+                    getSvcPolicyDetails(policy);
+                });
+                angular.forEach($scope.plans, function (plan) {
+                    getPlanPolicies(plan);
+                });
+            }
+
+            function getPolicyDetails(policy, plan) {
+                PlanVersionPolicy.get(
+                    {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id},
+                    function (policyDetails) {
+                        $scope.policyConfiguration[policyDetails.id] =
+                            policyConfig.createConfigObject(policyDetails);
+                    });
+            }
+
+            function getPlanPolicies(plan) {
+                PlanVersionPolicy.query(
+                    {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version},
+                    function (policies) {
+                        $scope.policies[plan.planId] = policies;
+                        angular.forEach(policies, function (policy) {
+                            getPolicyDetails(policy, plan);
+                        });
+                    });
+            }
+
+            function getSvcPolicyDetails(policy) {
+                ServiceVersionPolicy.get(
+                    {orgId: $stateParams.orgId,
+                        svcId: $stateParams.svcId,
+                        versionId: $stateParams.versionId,
+                        policyId: policy.id},
+                    function (policyDetails) {
+                        $scope.policyConfiguration[policyDetails.id] =
+                            policyConfig.createConfigObject(policyDetails);
+                    });
+            }*/
+
+        })
+
         /// ==== Service Announcements Controller
         .controller('AnnouncementCtrl', function($scope, svcTab, announcements, Users) {
 

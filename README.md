@@ -8,6 +8,8 @@ version 0.12.1.
 Run `grunt` for building and `grunt serve` to run against an online dev environment.
 Run `grunt` serveLocal for a local docker machine, or a local API Engine.
 
+Note: For development, if you run 'grunt serveLocal' you can switch to from the publisher view to the marketplace by URL manipulation. For example: `/org/<orgId>/applications`
+
 ## Testing
 
 Running `grunt test` will run the unit tests with karma.
