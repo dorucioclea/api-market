@@ -294,6 +294,20 @@
             return $resource(CONFIG.BASE.URL + '/search/services/:status');
         })
 
+        /// ========== SYSTEM ============================================================================
+        .factory('AvailableMkts', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/marketplaces');
+        })
+        .factory('BlacklistRecords', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/blacklist/records');
+        })
+        .factory('WhitelistRecords', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/whitelist/records');
+        })
+        .factory('StatusInfo', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/status');
+        })
+
         /// ========== OAUTH ============================================================================
 
         .factory('ApplicationOAuth', function ($resource, CONFIG) {
