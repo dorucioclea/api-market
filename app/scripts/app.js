@@ -827,10 +827,12 @@
                 .state('root.service.scopes', {
                     url: '/scopes',
                     templateUrl: 'views/partials/service/scopes.html',
-/*                    resolve: {
-                        Scope: 'Scope',
-                        scopeData: {}
-                    },*/
+                    resolve: {
+                        AvailableMkts: 'AvailableMkts',
+                        marketplaces: function (ServiceEndpoint, organizationId, serviceId, versionId) {
+                            return ServiceEndpoint.get().$promise;
+                        }
+                    },
                     controller: 'ServiceScopeCtrl'
                 })
                 // Policies Tab
