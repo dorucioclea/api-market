@@ -447,9 +447,11 @@
 
         /// ==== Scope Controller
         .controller('ServiceScopeCtrl',
-            function ($scope, $state, marketplaces, svcScreenModel,
+            function ($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces,
                       toastService, TOAST_TYPES, svcData, ServiceVersion) {
                 $scope.mkts = marketplaces.availableMarketplaces;
+                $scope.serviceMkts = serviceMarketplaces.availableMarketplaces;
+                console.log(JSON.stringify(serviceMarketplaces.availableMarketplaces));
                 $scope.visibilities = ['Show', 'Hide'];
                 svcScreenModel.updateTab('Scopes');
                 $scope.updatedService = {};

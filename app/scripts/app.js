@@ -833,7 +833,7 @@
                             return AvailableMkts.get().$promise;
                         },
                         ServiceMkts: 'ServiceMkts',
-                        endpoint: function (ServiceMkts, organizationId, serviceId, versionId) {
+                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
                             return ServiceMkts.get(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         }
