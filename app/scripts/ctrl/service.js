@@ -450,8 +450,8 @@
             function ($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces,
                       toastService, TOAST_TYPES, svcData, ServiceVersion) {
                 $scope.mkts = marketplaces.availableMarketplaces;
-                $scope.serviceMkts = serviceMarketplaces.availableMarketplaces;
-                console.log(JSON.stringify(serviceMarketplaces.availableMarketplaces));
+                var serviceMkts = serviceMarketplaces.availableMarketplaces;
+                init();
                 $scope.visibilities = ['Show', 'Hide'];
                 svcScreenModel.updateTab('Scopes');
                 $scope.updatedService = {};
@@ -462,13 +462,25 @@
                 $scope.svcId = svcData.service.id;
                 $scope.versionId = svcData.version;
 
+                /*set the current state of the service version*/
+                function init(){
+                    if(serviceMkts){
+                        angular.forEach(serviceMkts, function(svmkt){
+                            angular.forEach($scope.mkts,function(mkt){
+                                if(mkt.code === svmkt.code) {
+                                    mkt.checked = true;
+                                    mkt.selectedVisibility = (svmkt.show)?'Show':'Hide';
+                                }
+                            });
+                        });
+                    }
+                }
+
                 $scope.$watch('mkts', function (newValue) {
-                    console.log("NewValue: "+JSON.stringify(newValue));
                     selectedMarketplaces=[];
                     angular.forEach(newValue,function(val){
                         if(val.checked===true)selectedMarketplaces.push(val);
                     });
-                    console.log("Selected Marketplaces: "+JSON.stringify(selectedMarketplaces));
                     setSelectedMarketplaces(selectedMarketplaces);
                     $scope.isDirty = selectedMarketplaces.length>0;
                 }, true);
@@ -489,24 +501,28 @@
                 }
 
                 $scope.reset = function () {
+                    init();
                     $scope.isDirty = false;
                 }
                 $scope.saveService = function () {
-                    ServiceVersion.update(
-                        {orgId: $scope.orgId, svcId: $scope.svcId, versionId: $scope.versionId},
-                        $scope.updatedService,
-                        function (reply) {
-                            toastService.createToast(TOAST_TYPES.SUCCESS,
-                                'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
-                                true);
-                            $state.go('^.policies').then(function () {
-                                $state.forceReload();
+                    if($scope.updatedService){
+                        console.log("updatedservice: "+ JSON.stringify($scope.updatedService));
+                        ServiceVersion.update(
+                            {orgId: $scope.orgId, svcId: $scope.svcId, versionId: $scope.versionId},
+                            $scope.updatedService,
+                            function (reply) {
+                                toastService.createToast(TOAST_TYPES.SUCCESS,
+                                    'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                                    true);
+                                $state.go('^.policies').then(function () {
+                                    $state.forceReload();
+                                });
+                            },
+                            function (error) {
+                                toastService.createErrorToast(error, 'Could not update the enabled plans.');
                             });
-                            $scope.isDirty = false;
-                        },
-                        function (error) {
-                            toastService.createErrorToast(error, 'Could not update the enabled plans.');
-                        });
+                    }
+                    $scope.isDirty = false;
                 };
             })
 
