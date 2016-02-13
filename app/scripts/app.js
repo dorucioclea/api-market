@@ -829,8 +829,8 @@
                     templateUrl: 'views/partials/service/scopes.html',
                     resolve: {
                         AvailableMkts: 'AvailableMkts',
-                        marketplaces: function (ServiceEndpoint, organizationId, serviceId, versionId) {
-                            return ServiceEndpoint.get().$promise;
+                        marketplaces: function (AvailableMkts) {
+                            return AvailableMkts.get().$promise;
                         }
                     },
                     controller: 'ServiceScopeCtrl'

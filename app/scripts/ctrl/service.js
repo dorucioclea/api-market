@@ -62,13 +62,13 @@
                                 return $scope.serviceVersion.service.name;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
                     modalInstance.result.then(function (result) {
-                        if ( result === 'success') {
-                            $state.go('root.organization.services', { orgId: $scope.serviceVersion.service.organization.id });
+                        if (result === 'success') {
+                            $state.go('root.organization.services', {orgId: $scope.serviceVersion.service.organization.id});
                         }
                     });
                 }
@@ -83,7 +83,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -98,7 +98,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -112,7 +112,7 @@
                         });
                 };
 
-                $scope.showInfoModal = function() {
+                $scope.showInfoModal = function () {
                     $modal.open({
                         templateUrl: 'views/modals/helpView.html',
                         size: 'lg',
@@ -122,7 +122,7 @@
                                 return 'service';
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 };
@@ -191,9 +191,11 @@
 
                 $scope.saveService = function () {
                     ServiceVersion.update(
-                        {orgId: $stateParams.orgId,
+                        {
+                            orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
-                            versionId: $stateParams.versionId},
+                            versionId: $stateParams.versionId
+                        },
                         $scope.updatedService,
                         function (reply) {
                             toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -445,8 +447,37 @@
 
         /// ==== Scope Controller
         .controller('ServiceScopeCtrl',
-            function ($scope, $state, svcScreenModel, ServiceTerms, toastService, TOAST_TYPES) {
-                console.log("to be done");
+            function ($scope, $state, marketplaces, svcScreenModel,
+                      toastService, TOAST_TYPES, svcData, ServiceVersion) {
+                $scope.mkts = marketplaces.availableMarketplaces;
+                $scope.visibilities = ['Show', 'Hide'];
+                svcScreenModel.updateTab('Scopes');
+                $scope.updatedService = {};
+
+                var selectedMarketplaces = [];
+
+                $scope.orgId = svcData.service.organization.id;
+                $scope.svcId = svcData.service.id;
+                $scope.versionId = svcData.version;
+                toastService.createToast(TOAST_TYPES.SUCCESS, 'orgId: ' + $scope.orgId + " </br>" + 'svcId: ' + $scope.svcId + " </br>" + 'versionId: ' + $scope.versionId + " </br>", true);
+
+                $scope.$watch('mkts', function (newValue) {
+                    console.log("NewValue: "+JSON.stringify(newValue));
+                    selectedMarketplaces=[];
+                    angular.forEach(newValue,function(val){
+                        if(val.checked===true)selectedMarketplaces.push(val);
+                    });
+                    console.log("Selected Marketplaces: "+JSON.stringify(selectedMarketplaces));
+                    $scope.isDirty = selectedMarketplaces.length>0;
+                }, true);
+
+                $scope.reset = function () {
+                    $scope.isDirty = false;
+                }
+                $scope.saveService = function () {
+                    $scope.isDirty = false;
+
+                };
             })
 
         /// ==== Policies Controller
@@ -460,10 +491,12 @@
 
                 $scope.removePolicy = function (policy) {
                     ServiceVersionPolicy.delete(
-                        {orgId: $stateParams.orgId,
+                        {
+                            orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
                             versionId: $stateParams.versionId,
-                            policyId: policy.id},
+                            policyId: policy.id
+                        },
                         function (data) {
                             angular.forEach($scope.policies, function (p, index) {
                                 if (policy === p) {
@@ -485,7 +518,7 @@
                                 return PolicyDefs.query({}).$promise;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
 
@@ -503,8 +536,10 @@
 
                 function doSave() {
                     var termsObject = {terms: $scope.htmlTerms};
-                    ServiceTerms.update({orgId: $scope.serviceVersion.service.organization.id,
-                            svcId: $scope.serviceVersion.service.id}, termsObject,
+                    ServiceTerms.update({
+                            orgId: $scope.serviceVersion.service.organization.id,
+                            svcId: $scope.serviceVersion.service.id
+                        }, termsObject,
                         function (reply) {
                             $state.forceReload();
                             toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -545,7 +580,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -560,7 +595,7 @@
                                 return announcement;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -585,7 +620,7 @@
                                 return $scope.serviceVersion;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -600,7 +635,7 @@
                                 return announcement;
                             }
                         },
-                        backdrop : 'static',
+                        backdrop: 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
                 }
@@ -636,8 +671,8 @@
 
         // ==== Metrics Controller
         .controller('ServiceMetricsController',
-            function($scope, $stateParams, svcScreenModel,
-                     ServiceMetricsResponse, ServiceMetricsResponseSummary, ServiceMarketInfo) {
+            function ($scope, $stateParams, svcScreenModel,
+                      ServiceMetricsResponse, ServiceMetricsResponseSummary, ServiceMarketInfo) {
 
                 init();
                 function init() {
@@ -655,7 +690,7 @@
                     updateMetrics();
                 }
 
-                $scope.open = function($event, to) {
+                $scope.open = function ($event, to) {
                     $event.preventDefault();
                     $event.stopPropagation();
 
@@ -675,21 +710,25 @@
 
                 function updateMetrics() {
                     ServiceMetricsResponse.get(
-                        {orgId: $stateParams.orgId,
+                        {
+                            orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
                             versionId: $stateParams.versionId,
                             from: $scope.fromDt,
                             to: $scope.toDt,
-                            interval: $scope.interval},
+                            interval: $scope.interval
+                        },
                         function (response) {
                             createResponseHistogram(response.data);
                         });
                     ServiceMetricsResponseSummary.get(
-                        {orgId: $stateParams.orgId,
+                        {
+                            orgId: $stateParams.orgId,
                             svcId: $stateParams.svcId,
                             versionId: $stateParams.versionId,
                             from: $scope.fromDt,
-                            to: $scope.toDt},
+                            to: $scope.toDt
+                        },
                         function (metrics) {
                             $scope.summary = metrics.data[0];
                         });
@@ -788,7 +827,7 @@
                         $scope.responseHistogramData.push(graphObject);
                     });
 
-                    $scope.responseHistogramData.sort(function(a, b) {
+                    $scope.responseHistogramData.sort(function (a, b) {
                         return a.x - b.x;
                     });
                 }

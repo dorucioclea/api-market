@@ -1,28 +1,28 @@
 <div class="row">
   <div class="col-sm-12">
-    <h4>Visibility</h4>
+    <h4>Availability</h4>
      <p>Choose in which marketplace (internal/external) the API should be published. After selecting the marketplace, optionally, choose in which API Explorer the API should appear. When the service visibility is disabled, an IP restriction policy will be set with predefined values.</p>
     <hr>
     <!-- The plans to choose from -->
-    <div class="col-sm-10 col-sm-offset-1 well" ng-hide="plans.length > 0">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-hide="mkts">
       This functionality will be enabled soon, in order to select the API Marketplace you want you service to appear in. You must be have editor rights to access the visibility configuration.
     </div>
     <div class="col-sm-12">
-      <div class="col-sm-12" ng-repeat="scope in scopes">
+      <div class="col-sm-12" ng-repeat="mkt in mkts">
         <div class="row">
           <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
             <label>
-              <input type="checkbox" ng-model="plan.checked" ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
-              <span class="title"><a ui-sref="root.scope({orgId: plan.organizationId, planId: plan.id, versionId: plan.selectedVersion})" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="{{ plan.description }}">{{ plan.name }}</a></span>
+              <input type="checkbox" ng-model="mkt.checked" ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+              <span class="title"><a ui-sref="root.scope({code:mkt.code})" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="{{ mkt.name.charAt(0).toUpperCase() + mkt.name.slice(1) }}">{{ mkt.name.charAt(0).toUpperCase() + mkt.name.slice(1) }} Marketplace</a></span>
             </label>
           </div>
           <div class="col-sm-6">
             <div class="btn-group dropdown pull-right" dropdown>
               <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
-                Visible?: {{plan.selectedVersion}}<span class="caret"></span>
+                Visibility: {{mkt.selectedVisibility || 'Show'}}<span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li ng-repeat="version in plan.lockedVersions | orderBy:'createdOn'" ng-click="plan.selectedVersion = version"><a>{{version}}</a></li>
+                <li ng-repeat="visibility in visibilities" ng-click="mkt.selectedVisibility = visibility"><a>{{visibility}}</a></li>
               </ul>
             </div>
           </div>

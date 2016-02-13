@@ -296,14 +296,11 @@
         })
 
         .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
-                                            planData, policyConfig, PlanVersionPolicy) {
-            $scope.svcPolicies = svcPolicies;
-            $scope.plans = planData;
+                                            marketplaces) {
+            $scope.mkts = marketplaces;
             $scope.policies = [];
-            $scope.policyConfiguration = [];
 
 /*            init();
-
             function init() {
                 svcTab.updateTab('Plans');
 
