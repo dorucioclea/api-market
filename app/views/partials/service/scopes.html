@@ -10,7 +10,7 @@
 
     <!--No available settings for this service-->
     <div class="col-sm-12">
-      <div class="col-sm-12" ng-repeat="mkt in mkts">
+      <div class="col-sm-12" ng-repeat="mkt in mkts|orderBy:name:reverse">
         <div class="row">
           <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
             <label>

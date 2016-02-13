@@ -434,7 +434,7 @@
                             toastService.createToast(TOAST_TYPES.SUCCESS,
                                 'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                                 true);
-                            $state.go('^.policies').then(function () {
+                            $state.go('^.scopes').then(function () {
                                 $state.forceReload();
                             });
                         },
@@ -453,7 +453,7 @@
                 var serviceMkts = serviceMarketplaces.availableMarketplaces;
                 init();
                 $scope.visibilities = ['Show', 'Hide'];
-                svcScreenModel.updateTab('Scopes');
+                svcScreenModel.updateTab('Availabilities');
                 $scope.updatedService = {};
 
                 var selectedMarketplaces = [];
@@ -538,7 +538,7 @@
                             $scope.updatedService,
                             function (reply) {
                                 toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                                    'Availability for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                                     true);
                                 $state.go('^.policies').then(function () {
                                     $state.forceReload();
