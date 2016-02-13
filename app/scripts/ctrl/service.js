@@ -498,14 +498,40 @@
                         });
                         $scope.updatedService.visibility = mktVisibilities;
                     }else $scope.updatedService.visibility= {};
-                }
+                };
 
                 $scope.reset = function () {
                     init();
                     $scope.isDirty = false;
+                };
+
+                function changed(){
+                    //verify if updateservice is different from the new configuration
+                    //serviceMkts
+                    var newConfig = $scope.updatedService.visibility;
+                    var originalConfig = [];
+                    console.log("verify original: "+JSON.stringify(serviceMkts));
+                    console.log("with new: "+JSON.stringify(newConfig));
+                    for(var key in serviceMkts) {
+                        originalConfig.push(serviceMkts[key]);
+                    }
+                    console.log("verify original reformatted: "+JSON.stringify(originalConfig));
+                    console.log("Compare: "+arraysEqual(newConfig,originalConfig));
+                    return ! arraysEqual(newConfig,originalConfig);
                 }
+
+                function arraysEqual(a, b) {
+                    if (a === b) return true;
+                    if (a == null || b == null) return false;
+                    if (a.length != b.length) return false;
+                    for (var i = 0; i < a.length; ++i) {
+                        if(! _.isEqual(a[i], b[i])) return false;
+                    }
+                    return true;
+                }
+
                 $scope.saveService = function () {
-                    if($scope.updatedService){
+                    if($scope.updatedService && changed()){
                         console.log("updatedservice: "+ JSON.stringify($scope.updatedService));
                         ServiceVersion.update(
                             {orgId: $scope.orgId, svcId: $scope.svcId, versionId: $scope.versionId},
