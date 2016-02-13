@@ -459,7 +459,6 @@
                 $scope.orgId = svcData.service.organization.id;
                 $scope.svcId = svcData.service.id;
                 $scope.versionId = svcData.version;
-                toastService.createToast(TOAST_TYPES.SUCCESS, 'orgId: ' + $scope.orgId + " </br>" + 'svcId: ' + $scope.svcId + " </br>" + 'versionId: ' + $scope.versionId + " </br>", true);
 
                 $scope.$watch('mkts', function (newValue) {
                     console.log("NewValue: "+JSON.stringify(newValue));
@@ -468,15 +467,44 @@
                         if(val.checked===true)selectedMarketplaces.push(val);
                     });
                     console.log("Selected Marketplaces: "+JSON.stringify(selectedMarketplaces));
+                    setSelectedMarketplaces(selectedMarketplaces);
                     $scope.isDirty = selectedMarketplaces.length>0;
                 }, true);
+
+                function setSelectedMarketplaces(selectedMkts){
+                    if(selectedMkts){
+                        var mktVisibilities = [];
+                        angular.forEach(selectedMkts,function(sMkt){
+                            var mktVisibility = {};
+                            mktVisibility.code = sMkt.code;
+                            if(sMkt.selectedVisibility){
+                                mktVisibility.show = (sMkt.selectedVisibility =='Hide')?false:true;
+                            }else mktVisibility.show = true;//default true
+                            mktVisibilities.push(mktVisibility);
+                        });
+                        $scope.updatedService.visibility = mktVisibilities;
+                    }else $scope.updatedService.visibility= {};
+                }
 
                 $scope.reset = function () {
                     $scope.isDirty = false;
                 }
                 $scope.saveService = function () {
-                    $scope.isDirty = false;
-
+                    ServiceVersion.update(
+                        {orgId: $scope.orgId, svcId: $scope.svcId, versionId: $scope.versionId},
+                        $scope.updatedService,
+                        function (reply) {
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                                true);
+                            $state.go('^.policies').then(function () {
+                                $state.forceReload();
+                            });
+                            $scope.isDirty = false;
+                        },
+                        function (error) {
+                            toastService.createErrorToast(error, 'Could not update the enabled plans.');
+                        });
                 };
             })
 

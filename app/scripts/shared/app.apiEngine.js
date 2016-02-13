@@ -162,6 +162,9 @@
         .factory('ServicePlans', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
         })
+        .factory('ServiceMkts', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability/');
+        })
         .factory('ServiceMetricsResponse', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/responseStats');
