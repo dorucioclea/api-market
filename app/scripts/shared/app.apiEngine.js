@@ -162,6 +162,9 @@
         .factory('ServicePlans', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
         })
+        .factory('ServiceMkts', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability/');
+        })
         .factory('ServiceMetricsResponse', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/responseStats');
@@ -292,6 +295,20 @@
         })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/services/:status');
+        })
+
+        /// ========== SYSTEM ============================================================================
+        .factory('AvailableMkts', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/marketplaces');
+        })
+        .factory('BlacklistRecords', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/blacklist/records');
+        })
+        .factory('WhitelistRecords', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/whitelist/records');
+        })
+        .factory('StatusInfo', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/status');
         })
 
         /// ========== OAUTH ============================================================================

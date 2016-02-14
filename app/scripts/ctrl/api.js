@@ -295,6 +295,21 @@
 
         })
 
+        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, serviceMarketplaces, svcData) {
+            $scope.mkts = [];
+            $scope.svcName = svcData.service.name.toUpperCase();
+            console.log("service mkts:" + JSON.stringify(serviceMarketplaces.availableMarketplaces));
+            init();
+            function init() {
+                $scope.mkts = Object.keys(serviceMarketplaces.availableMarketplaces).map(function (key) {return serviceMarketplaces.availableMarketplaces[key]});
+                angular.forEach($scope.mkts,function(mkt){
+                    if(mkt.code==='ext' && mkt.show===false)mkt.showToggle = true;
+                    mkt.enabled = true;
+                });
+                svcTab.updateTab('Availabilities');
+            }
+        })
+
         /// ==== Service Announcements Controller
         .controller('AnnouncementCtrl', function($scope, svcTab, announcements, Users) {
 
