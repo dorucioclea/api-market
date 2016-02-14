@@ -8,6 +8,7 @@
             'ngSanitize',
             'ngAria',
             'ngMaterial',
+            'uiSwitch',
 
             /* 3rd party modules */
             'ui.router',
