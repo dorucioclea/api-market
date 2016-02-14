@@ -302,6 +302,9 @@
             init();
             function init() {
                 $scope.mkts = Object.keys(serviceMarketplaces.availableMarketplaces).map(function (key) {return serviceMarketplaces.availableMarketplaces[key]});
+                angular.forEach($scope.mkts,function(mkt){
+                    mkt.enabled = true;
+                });
                 svcTab.updateTab('Availabilities');
             }
         })
