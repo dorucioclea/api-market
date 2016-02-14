@@ -303,6 +303,7 @@
             function init() {
                 $scope.mkts = Object.keys(serviceMarketplaces.availableMarketplaces).map(function (key) {return serviceMarketplaces.availableMarketplaces[key]});
                 angular.forEach($scope.mkts,function(mkt){
+                    if(mkt.code==='ext' && mkt.show===false)mkt.showToggle = true;
                     mkt.enabled = true;
                 });
                 svcTab.updateTab('Availabilities');
