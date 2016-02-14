@@ -10,32 +10,30 @@
 
             <div class="panel-body">
                 <p class="text-light">
-                    This tab provides an overview of availability of a service.
-                    
+                    This tab provides an overview for the availability of a service.
+                    The API Engine can expose multiple maketplaces, and a service can be exposed on one or more API Marketplaces.
+                    Exposure doesn't mean that the API will show up in the available API's. You have to explicitly enable 'Show' in order to do so.
+                    When an API is exposed but not visible, an IP Restriction policy will be added with default CIDR/IP black and white listing.
                 </p>
 
-                <p class="text-light">If a policy is defined on both Service and Plan level, whichever is most strict will apply.</p>
-            </div>
-
-            <div class="panel-body">
-                <h3 class="text-bold">Service Policies</h3>
-                <p ng-if="svcPolicies.length === 0">No policies have been defined on this service.</p>
-                <p ng-if="svcPolicies.length > 0">The following policies are defined on this service:</p>
-                <div class="col-sm-12" ng-repeat="policy in svcPolicies">
+                <p class="text-light">The available API Marketplaces for the current service are shown beneath. The 'Show' or 'Hide' denotes the visibility of the API on the API Marketplace.
+                    Remember that when an API is available, but hidden, the default IP Restriction policy is applied.
+                </p>
+                <h3 class="text-bold">Enabled API Marketplaces for {{svcName}}</h3>
+                <p ng-if="mkts.length === 0">No availabilities have been set, the default will apply.</p>
+                <div class="col-sm-12" ng-repeat="mkt in mkts">
                     <div class="row">
                         <div class="col-md-1">
-                            <h3 class="fa fa-policy-icon {{policy.icon}} fa-fw"></h3>
+                            <h3 class="fa fa-policy-icon fa-check-circle"></h3>
                         </div>
                         <div class="col-md-9">
                             <div>
-                                <span class="title"><a href>{{policy.name}}</a></span>
+                                <span class="title"><a href="">{{ mkt.name.charAt(0).toUpperCase() + mkt.name.slice(1) }} Marketplace</a> </span>
                             </div>
                             <div class="description apiman-label-faded">
-                                <div ng-hide="policyConfiguration[policy.id].length > 0">
-                                    <p class="text-light small">Oops! No configuration details available for this policy.</p>
-                                </div>
-                                <div ng-repeat="config in policyConfiguration[policy.id]">
-                                    <p class="text-bold">{{config.key}}: {{config.value}}</p>
+                                <div>
+                                    <p ng-show="!mkt.show" class="text-light small">Visibility: Hide</p>
+                                    <p ng-show="mkt.show" class="text-light small">Visibility: Show</p>
                                 </div>
                             </div>
                         </div>
@@ -43,46 +41,6 @@
                 </div>
             </div>
 
-
-            <div class="panel-body">
-                <h3 class="text-bold">Available Plans</h3>
-                <p>The following plans are available to create contracts with the Service. These plans will add additional policies, an overview of which you can find below:</p>
-
-                <accordion class="accordion-panel">
-                    <accordion-group class="panel-primary" is-open="true" ng-repeat="plan in plans">
-                        <accordion-heading>
-                            <h4>
-                                {{plan.planName}}
-                            </h4>
-                        </accordion-heading>
-                        <div class="col-sm-12" ng-if="policies[plan.planId].length == 0">
-                            No Policies defined in this plan. No additional policies will be imposed.
-                        </div>
-                        <div class="col-sm-12" ng-repeat="policy in policies[plan.planId]">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <h3 class="fa fa-policy-icon {{policy.icon}} fa-fw"></h3>
-                                </div>
-                                <div class="col-md-9">
-                                    <div>
-                                        <span class="title"><a href>{{policy.name}}</a></span>
-                                    </div>
-                                    <div class="description apiman-label-faded">
-                                        <div ng-hide="policyConfiguration[policy.id].length > 0">
-                                            <p class="text-light small">Oops! No configuration details available for this policy.</p>
-                                        </div>
-                                        <div ng-repeat="config in policyConfiguration[policy.id]">
-                                            <p class="text-bold">{{config.key}}: {{config.value}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr />
-                        </div>
-                    </accordion-group>
-                </accordion>
-            </div>
         </div>
     </div>
 

@@ -295,48 +295,14 @@
 
         })
 
-        .controller('SvcScopeCtrl', function($scope, $stateParams, marketplaces, svcTab, svcPolicies, ServiceVersionPolicy,serviceMarketplaces) {
-            $scope.mkts = marketplaces;
-            $scope.policies = [];
-
+        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, serviceMarketplaces, svcData) {
+            $scope.mkts = serviceMarketplaces.availableMarketplaces;
+            $scope.svcName = svcData.service.name.toUpperCase();
+            console.log("service mkts:" + JSON.stringify(serviceMarketplaces.availableMarketplaces));
             init();
             function init() {
                 svcTab.updateTab('Availabilities');
-
             }
-
-            function getPolicyDetails(policy, plan) {
-                PlanVersionPolicy.get(
-                    {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id},
-                    function (policyDetails) {
-                        $scope.policyConfiguration[policyDetails.id] =
-                            policyConfig.createConfigObject(policyDetails);
-                    });
-            }
-
-            function getPlanPolicies(plan) {
-                PlanVersionPolicy.query(
-                    {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version},
-                    function (policies) {
-                        $scope.policies[plan.planId] = policies;
-                        angular.forEach(policies, function (policy) {
-                            getPolicyDetails(policy, plan);
-                        });
-                    });
-            }
-
-            function getSvcPolicyDetails(policy) {
-                ServiceVersionPolicy.get(
-                    {orgId: $stateParams.orgId,
-                        svcId: $stateParams.svcId,
-                        versionId: $stateParams.versionId,
-                        policyId: policy.id},
-                    function (policyDetails) {
-                        $scope.policyConfiguration[policyDetails.id] =
-                            policyConfig.createConfigObject(policyDetails);
-                    });
-            }
-
         })
 
         /// ==== Service Announcements Controller

@@ -409,10 +409,6 @@
                     url: '/scopes',
                     templateUrl: 'views/partials/api/scopes.html',
                     resolve: {
-                        AvailableMkts: 'AvailableMkts',
-                        marketplaces: function (AvailableMkts) {
-                            return AvailableMkts.get().$promise;
-                        },
                         ServiceMkts: 'ServiceMkts',
                         serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
                             return ServiceMkts.get(
