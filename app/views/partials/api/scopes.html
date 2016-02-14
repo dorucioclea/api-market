@@ -19,8 +19,8 @@
                 <p class="text-light">The available API Marketplaces for the current service are shown beneath. The 'Show' or 'Hide' denotes the visibility of the API on the API Marketplace.
                     Remember that when an API is available, but hidden, the default IP Restriction policy is applied.
                 </p>
-                <h3 class="text-bold">Enabled API Marketplaces for {{svcName}}</h3>
-                <p ng-if="mkts.length === 0">No availabilities have been set, the default will apply.</p>
+                <h4 ng-show="mkts.length" class="text-bold">Enabled API Marketplaces for {{svcName}}</h4>
+                <h4 ng-show="!mkts.length" class="text-bold">No availability set for {{svcName}}</h4>
                 <div class="col-sm-12" ng-repeat="mkt in mkts">
                     <div class="row">
                         <div class="col-md-1">

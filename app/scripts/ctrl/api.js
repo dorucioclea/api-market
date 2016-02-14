@@ -296,11 +296,12 @@
         })
 
         .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, serviceMarketplaces, svcData) {
-            $scope.mkts = serviceMarketplaces.availableMarketplaces;
+            $scope.mkts = [];
             $scope.svcName = svcData.service.name.toUpperCase();
             console.log("service mkts:" + JSON.stringify(serviceMarketplaces.availableMarketplaces));
             init();
             function init() {
+                $scope.mkts = Object.keys(serviceMarketplaces.availableMarketplaces).map(function (key) {return serviceMarketplaces.availableMarketplaces[key]});
                 svcTab.updateTab('Availabilities');
             }
         })
