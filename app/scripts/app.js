@@ -408,18 +408,17 @@
                 .state('root.api.scopes', {
                     url: '/scopes',
                     templateUrl: 'views/partials/api/scopes.html',
-/*                    resolve: {
-                        ServiceVersionPolicy: 'ServiceVersionPolicy',
-                        svcPolicies: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                    resolve: {
+                        AvailableMkts: 'AvailableMkts',
+                        marketplaces: function (AvailableMkts) {
+                            return AvailableMkts.get().$promise;
                         },
-                        ServicePlans: 'ServicePlans',
-                        planData: function (ServicePlans, organizationId, serviceId, versionId) {
-                            return ServicePlans.query(
+                        ServiceMkts: 'ServiceMkts',
+                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
+                            return ServiceMkts.get(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         }
-                    },*/
+                    },
                     controller: 'SvcScopeCtrl'
                 })
                 // Support Tab
