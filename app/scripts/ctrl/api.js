@@ -295,21 +295,14 @@
 
         })
 
-        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
-                                            marketplaces) {
+        .controller('SvcScopeCtrl', function($scope, $stateParams, marketplaces, svcTab, svcPolicies, ServiceVersionPolicy,serviceMarketplaces) {
             $scope.mkts = marketplaces;
             $scope.policies = [];
 
-/*            init();
+            init();
             function init() {
-                svcTab.updateTab('Plans');
+                svcTab.updateTab('Availabilities');
 
-                angular.forEach($scope.svcPolicies, function (policy) {
-                    getSvcPolicyDetails(policy);
-                });
-                angular.forEach($scope.plans, function (plan) {
-                    getPlanPolicies(plan);
-                });
             }
 
             function getPolicyDetails(policy, plan) {
@@ -342,7 +335,7 @@
                         $scope.policyConfiguration[policyDetails.id] =
                             policyConfig.createConfigObject(policyDetails);
                     });
-            }*/
+            }
 
         })
 
