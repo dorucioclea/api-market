@@ -414,7 +414,14 @@
                         serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
                             return ServiceMkts.get(
                                 {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        },
+                        ServicePolicies: 'ServicePolicies',
+                        servicePolicies: function(ServicePolicies, organizationId, serviceId, versionId){
+                            return ServicePolicies.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}
+                            ).$promise;
                         }
+
                     },
                     controller: 'SvcScopeCtrl'
                 })

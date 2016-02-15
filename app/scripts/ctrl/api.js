@@ -295,10 +295,11 @@
 
         })
 
-        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, serviceMarketplaces, svcData) {
+        .controller('SvcScopeCtrl', function($scope, $stateParams, svcTab, serviceMarketplaces, svcData, servicePolicies) {
             $scope.mkts = [];
             $scope.svcName = svcData.service.name.toUpperCase();
             console.log("service mkts:" + JSON.stringify(serviceMarketplaces.availableMarketplaces));
+            console.log("service policies:"+ JSON.stringify(servicePolicies));
             init();
             function init() {
                 $scope.mkts = Object.keys(serviceMarketplaces.availableMarketplaces).map(function (key) {return serviceMarketplaces.availableMarketplaces[key]});
