@@ -703,7 +703,7 @@
                             keysToConcat.push(scope.scope);
                         }
                     });
-                    return keysToConcat.join(',');
+                    return keysToConcat.join(' ');
                 }
 
                 function grant(grantUrl, clientId, clientSecret, responseType, scopes, provisionKey, userId) {
