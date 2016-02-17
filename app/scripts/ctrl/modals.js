@@ -641,7 +641,7 @@
                                 'Could not find member to add with email address <b>' + email + '</b>.', true);
                         }
                     }, function (error) {
-                        toastService.createErrorToast(error, 'Encoutered error searching for user');
+                        toastService.createErrorToast(error, 'Encountered error searching for user');
                     });
                 }
 
