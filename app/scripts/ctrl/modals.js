@@ -597,7 +597,7 @@
                 $scope.org = org;
                 $scope.modalClose = modalClose;
                 $scope.roles = roles;
-                $scope.selectedMethod = 'Email';
+                $scope.selectedMethod = 'Username';
                 $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
@@ -610,10 +610,10 @@
 
                     var promise;
                     switch ($scope.selectedMethod) {
-                        case 'Email':
+/*                        case 'Email':
                             searchObj.userMail = email;
                             promise = EmailSearch.save({}, searchObj).$promise;
-                            break;
+                            break;*/
                         case 'Username':
                             searchObj.userName = username;
                             promise = UserSearch.save({}, searchObj).$promise;
