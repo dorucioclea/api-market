@@ -10,7 +10,7 @@
 
     <!--No available settings for this service-->
     <div class="col-sm-12">
-      <div class="col-sm-12" ng-repeat="mkt in mkts|orderBy:name:reverse">
+      <div class="col-sm-12" ng-repeat="mkt in mkts|orderBy:'name':reverse">
         <div class="row">
           <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
             <label>
@@ -19,7 +19,7 @@
             </label>
           </div>
           <div class="col-sm-6">
-            <div class="btn-group dropdown pull-right" dropdown>
+            <div ng-show="mkt.code==='ext'" class="btn-group dropdown pull-right" dropdown>
               <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
                 Visibility: {{mkt.selectedVisibility || 'Show'}}<span class="caret"></span>
               </button>
