@@ -579,7 +579,7 @@
                 // ADMINISTRATION OVERVIEW PAGE =================================================
                 .state('root.administration', {
                     url: '/administration',
-                    templateUrl: 'views/administation.html',
+                    templateUrl: 'views/administration.html',
                     controller: 'AdministrationCtrl'
                 })
 
