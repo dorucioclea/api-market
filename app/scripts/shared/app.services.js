@@ -897,7 +897,6 @@
             function redirectToLogin() {
                 var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
                 var clientUrl = window.location.origin;
-
                 if (!jwt) {
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
@@ -915,8 +914,10 @@
                         },
                         responseType: 'text'
                     }).then(function (result) {
+                        console.log("redirect result: "+JSON.stringify(result));
                         window.location.href = result.data;
                     }, function (error) {
+                        $state.go('accessdenied');
                         console.log('Request failed with error code: ', error.status);
                         console.log(error);
                     });

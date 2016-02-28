@@ -87,6 +87,10 @@
                     templateUrl: '/views/error.html',
                     controller: 'ErrorCtrl'
                 })
+                .state('accessdenied', {
+                    templateUrl: '/views/accessdenied.html',
+                    controller: 'AccessDeniedCtrl'
+                })
 
                 // OAUTH GRANT PAGE ===============================================================
                 .state('oauth', {
