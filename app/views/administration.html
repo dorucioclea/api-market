@@ -1,0 +1,63 @@
+<div class="page page-ui-notifications">
+
+    <ol class="breadcrumb breadcrumb-small">
+        <li>Publisher</li>
+        <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
+        <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.name}}</a></li>
+    </ol>
+    <div class="toast toast-bottomRight">
+        <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+            <div ng-bind-html="toast.msg">Test Toast</div>
+        </alert>
+    </div>
+    <div class="row">
+
+        <!-- Organization Basic Settings panel -->
+        <div class="col col-md-4 mb30">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
+                        <hr>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-12 text-light">
+                            <i class="fa fa-clock-o fa-fw"></i>
+                            <span>Created on</span>
+                            <span data-field="createdOn">{{org.createdOn | date}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-light">
+                        <div class="col-sm-12">
+                            <i class="fa fa-users fa-fw"></i>
+                            <span data-field="numMembers" class="ng-binding">{{memberCount}}</span>
+                            <span>Members</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label text-primary">Description</label>
+                            <div click-to-edit value="org.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgEdit')"></div>
+                            <div ng-if="!User.isAuthorizedFor('orgEdit')">{{org.description}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end Organization Basic Settings panel -->
+
+        <!-- Organization Actions panels -->
+        <div class="col-md-8 mb20" ng-init="activeTab = 1">
+            <div class="btn-group btn-radio">
+                <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" id="plans" ui-sref=".plans" ng-if="User.isAuthorizedFor('planView')">Plans</label>
+                <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" id="services" ui-sref=".services" ng-if="User.isAuthorizedFor('svcView')">Services</label>
+                <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Members'" id="members" ui-sref=".members">Members</label>
+            </div>
+            <div class="col-sm-12 mt10" ui-view></div>
+
+        </div>
+
+    </div>
+</div>

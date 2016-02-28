@@ -39,6 +39,8 @@
       <li><a ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
       <li><a ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
       <li class="divider"></li>
+      <li ng-if="currentUserModel.currentUser.admin"><a ui-sref="root.administration"><span class="ion ion-gear-a">&nbsp;&nbsp;</span>Administration</a></li>
+      <li class="divider" ng-if="currentUserModel.currentUser.admin"></li>
       <!--<li><a href="javascript:;" ng-click="togglePublisher()"><span class="ion ion-power">&nbsp;&nbsp;</span>Toggle PublisherMode</a></li>-->
       <!--<li class="divider"></li>-->
       <li><a href ng-click="doLogOut()"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>

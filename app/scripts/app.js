@@ -576,6 +576,13 @@
                     controller: 'MyOrganizationsCtrl'
                 })
 
+                // ADMINISTRATION OVERVIEW PAGE =================================================
+                .state('root.administration', {
+                    url: '/administration',
+                    templateUrl: 'views/administation.html',
+                    controller: 'AdministrationCtrl'
+                })
+
                 // PLAN OVERVIEW PAGE AND NESTED VIEWS ====================================
                 .state('root.plan', {
                     url: '/org/:orgId/plan/:planId/:versionId',
