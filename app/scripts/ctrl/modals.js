@@ -597,7 +597,7 @@
                 $scope.org = org;
                 $scope.modalClose = modalClose;
                 $scope.roles = roles;
-                $scope.selectedMethod = 'Email';
+                $scope.selectedMethod = 'Username';
                 $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
@@ -610,10 +610,10 @@
 
                     var promise;
                     switch ($scope.selectedMethod) {
-                        case 'Email':
+/*                        case 'Email':
                             searchObj.userMail = email;
                             promise = EmailSearch.save({}, searchObj).$promise;
-                            break;
+                            break;*/
                         case 'Username':
                             searchObj.userName = username;
                             promise = UserSearch.save({}, searchObj).$promise;
@@ -641,7 +641,7 @@
                                 'Could not find member to add with email address <b>' + email + '</b>.', true);
                         }
                     }, function (error) {
-                        toastService.createErrorToast(error, 'Encoutered error searching for user');
+                        toastService.createErrorToast(error, 'Encountered error searching for user');
                     });
                 }
 

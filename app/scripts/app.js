@@ -8,6 +8,7 @@
             'ngSanitize',
             'ngAria',
             'ngMaterial',
+            'uiSwitch',
 
             /* 3rd party modules */
             'ui.router',
@@ -403,6 +404,26 @@
                         }
                     },
                     controller: 'SvcPlanCtrl'
+                })
+                // Scopes Tab
+                .state('root.api.scopes', {
+                    url: '/scopes',
+                    templateUrl: 'views/partials/api/scopes.html',
+                    resolve: {
+                        ServiceMkts: 'ServiceMkts',
+                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
+                            return ServiceMkts.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        },
+                        ServicePolicies: 'ServicePolicies',
+                        servicePolicies: function(ServicePolicies, organizationId, serviceId, versionId){
+                            return ServicePolicies.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}
+                            ).$promise;
+                        }
+
+                    },
+                    controller: 'SvcScopeCtrl'
                 })
                 // Support Tab
                 .state('root.api.support', {
@@ -804,6 +825,23 @@
                         }
                     },
                     controller: 'ServicePlansCtrl'
+                })
+                // Scope Tab
+                .state('root.service.scopes', {
+                    url: '/scopes',
+                    templateUrl: 'views/partials/service/scopes.html',
+                    resolve: {
+                        AvailableMkts: 'AvailableMkts',
+                        marketplaces: function (AvailableMkts) {
+                            return AvailableMkts.get().$promise;
+                        },
+                        ServiceMkts: 'ServiceMkts',
+                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
+                            return ServiceMkts.get(
+                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        }
+                    },
+                    controller: 'ServiceScopeCtrl'
                 })
                 // Policies Tab
                 .state('root.service.policies', {
