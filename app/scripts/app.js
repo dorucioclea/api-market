@@ -563,6 +563,12 @@
                 .state('root.administration.users', {
                     url: '/users',
                     templateUrl: 'views/partials/administration/users.html',
+                    resolve: {
+                        Admins: 'Admins',
+                        adminData: function(Admins){
+                            return Admins.query().$promise;
+                        }
+                    },
                     controller: 'AdminUsersCtrl'
                 })
 

@@ -22,7 +22,9 @@
 
         /// ==== Members Controller
         .controller('AdminUsersCtrl',
-            function ($scope, $state, $modal, $stateParams, toastService, TOAST_TYPES) {
+            function ($scope, $state, $modal, $stateParams, adminData, toastService, TOAST_TYPES) {
+                $scope.admins = adminData;
+                console.log($scope.admins);
 /*                $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;

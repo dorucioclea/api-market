@@ -16,27 +16,28 @@
                     <hr>
                 </div>
                 <div class="col-sm-12">
-                    <div class="col-sm-12 text-light">
-                        <i class="fa fa-clock-o fa-fw"></i>
+                    <div class="col-sm-12 text-light">Administration tasks can be performed on this page.
+                        Administrators can be added, removed or updated from this section.
+<!--                        <i class="fa fa-clock-o fa-fw"></i>
                         <span>Created on</span>
-                        <span data-field="createdOn">some date</span>
+                        <span data-field="createdOn">some date</span>-->
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <hr>
                 </div>
-                <div class="col-sm-12">
+<!--                <div class="col-sm-12">
                     <div class="form-group">
                         <label class="control-label text-primary">Info</label>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
     <div class="col-md-8 mb20" ng-init="activeTab = 1">
         <div class="btn-group btn-radio">
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Users'" id="users" ui-sref=".users">Users</label>
-            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Status'" id="status" ui-sref=".status">Status</label>
+            <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Users'" id="users" ui-sref=".users">Admins</label>
+            <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Status'" id="status" ui-sref=".status">Status</label>-->
         </div>
         <div class="col-sm-12 mt10" ui-view></div>
 

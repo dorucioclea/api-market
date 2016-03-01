@@ -242,6 +242,10 @@
             return $resource(CONFIG.BASE.URL + '/users/:userId');
         })
 
+        .factory('Admins', function ($resource, CONFIG){
+            return $resource(CONFIG.BASE.URL + '/users/admins');
+        })
+
         .factory('UserSearch', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/users/search');
         })
