@@ -624,6 +624,28 @@
                     $scope.selectedMethod = method;
                 }
             })
+        /// ==== RemoveOrgAdminCtrl Controller
+        .controller('RemoveOrgAdminCtrl',
+            function ($scope, $modal, $state, admin, toastService, TOAST_TYPES, AdminUser) {
+                $scope.doRemove = doRemove;
+                $scope.admin = admin;
+                $scope.modalClose = modalClose;
+
+                function doRemove() {
+                    AdminUser.delete({id: admin.username}, function (success) {
+                        $state.forceReload();
+                        toastService.createToast(TOAST_TYPES.INFO,
+                            '<b>' + name + '</b> admin priviledges are removed.', true);
+                        $scope.modalClose();
+                    }, function (error) {
+                        toastService.createErrorToast(error, 'Could not remove member from organization');
+                    });
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+            })
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',

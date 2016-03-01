@@ -817,7 +817,18 @@
                 });
             }
             function removeAdmin(admin){
-                console.log("remove admin:"+admin);
+                $modal.open({
+                    templateUrl: 'views/modals/organizationRemoveAdmin.html',
+                    size: 'lg',
+                    controller: 'RemoveOrgAdminCtrl as ctrl',
+                    resolve: {
+                        admin: function () {
+                            return admin;
+                        }
+                    },
+                    backdrop : 'static',
+                    windowClass: 'default'	// Animation Class put here.
+                });
             }
         })
 
