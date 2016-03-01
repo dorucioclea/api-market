@@ -798,6 +798,17 @@
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
             }
         })
+        //ADMIN SERVICE
+        .service('adminHelper', function($modal, $state, toastService, TOAST_TYPES, currentUserModel, Admins){
+            this.addAdmin = addAdmin;
+            this.removeAdmin = removeAdmin;
+            function addAdmin(username){
+                console.log("add admin:"+username);
+            }
+            function removeAdmin(admin){
+                console.log("remove admin:"+admin);
+            }
+        })
 
         // MEMBER SERVICE
         .service('memberHelper', function ($modal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {

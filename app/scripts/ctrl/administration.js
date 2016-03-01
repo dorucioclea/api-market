@@ -22,34 +22,18 @@
 
         /// ==== Members Controller
         .controller('AdminUsersCtrl',
-            function ($scope, $state, $modal, $stateParams, adminData, toastService, TOAST_TYPES) {
+            function ($scope, $state, $modal, $stateParams, adminData, toastService, TOAST_TYPES, adminHelper) {
                 $scope.admins = adminData;
                 console.log($scope.admins);
-/*                $scope.addMember = addMember;
-                $scope.grantRoleToMember = grantRoleToMember;
-                $scope.members = memberData;
-                $scope.memberDetails = memberDetails;
-                $scope.removeMember = removeMember;
-                $scope.roles = roleData;
-                $scope.transferOwnership = transferOwnership;
-
-                orgScreenModel.updateTab('Members');
-
-                function addMember() {
-                    memberHelper.addMember($scope.org, $scope.roles);
+                $scope.addAdmin = addAdmin;
+                $scope.removeAdmin = removeAdmin;
+                function addAdmin() {
+                    adminHelper.addAdmin('someadmin');
                 }
 
-                function grantRoleToMember(role, member) {
-                    memberHelper.grantRoleToMember($scope.org, role, $scope.User.currentUser, member);
+                function removeAdmin(admin) {
+                    adminHelper.removeAdmin(admin);
                 }
-
-                function removeMember(member) {
-                    memberHelper.removeMember($scope.org, member);
-                }
-
-                function transferOwnership(member) {
-                    memberHelper.transferOwnership($scope.org, $scope.User.currentUser, member);
-                }*/
 
             });
 })(window.angular);
