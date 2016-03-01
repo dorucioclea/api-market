@@ -803,7 +803,18 @@
             this.addAdmin = addAdmin;
             this.removeAdmin = removeAdmin;
             function addAdmin(username){
-                console.log("add admin:"+username);
+                $modal.open({
+                    templateUrl: 'views/modals/organizationAddAdmin.html',
+                    size: 'lg',
+                    controller: 'AddOrgAdminCtrl as ctrl',
+                    resolve: {
+                        username: function() {
+                            return username;
+                        }
+                    },
+                    backdrop : 'static',
+                    windowClass: 'default'	// Animation Class put here.
+                });
             }
             function removeAdmin(admin){
                 console.log("remove admin:"+admin);

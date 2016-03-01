@@ -590,6 +590,41 @@
                 }
             })
 
+        /// ==== AddOrgAdminCtrl Controller
+        .controller('AddOrgAdminCtrl',
+            function ($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES) {
+                $scope.addAdmin = addAdmin;
+                $scope.username = username;
+                $scope.modalClose = modalClose;
+                $scope.selectedMethod = 'Username';
+                $scope.selectMethod = selectMethod;
+
+                function addAdmin(username) {
+                    var privuser;
+                    var promise;
+                    switch ($scope.selectedMethod) {
+                        case 'Username':
+                            privuser = username;
+                            promise = AdminUser.save({id:privuser},function(reply){
+                                $scope.modalClose();
+                                $state.forceReload();
+                                toastService.createToast(TOAST_TYPES.SUCCESS,
+                                    'Granted <b>' + privuser + '</b> with admin priviledges', true);
+                            },function(err){toastService.createErrorToast(error, 'Failed to grand admin priviledges.');});
+
+                            break;
+                    }
+                }
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function selectMethod(method) {
+                    $scope.selectedMethod = method;
+                }
+            })
+
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
             function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {

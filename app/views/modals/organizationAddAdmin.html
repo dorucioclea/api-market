@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add administrator</span></h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+<div class="modal-body style-placeholders">
+
+    <p>Specify a user to grant 'admin' priviledges. If the user doesn't exist, the user will be created.</p>
+
+    <form role="form" name="memberForm" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <div class="dropdown" dropdown>
+                            <button class="btn btn-primary dropdown-toggle" dropdown-toggle
+                                    type="button">
+                                {{selectedMethod}}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-click="selectMethod('Username')"><a>Username</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text" name="username" class="form-control" ng-model="ctrl.username" validate-on-timeout placeholder="Username of the prospective member" ng-class="{'hidden': selectedMethod === 'Email'}" required>
+                    <input type="email" name="email" class="form-control" ng-model="ctrl.email" validate-on-timeout placeholder="Email address of the prospective member" ng-class="{'hidden': selectedMethod === 'Username'}" required>
+                </div>
+                <p class="text-danger xsmall" ng-show="memberForm.username.$error.required && selectedMethod === 'Username' && memberForm.username.$timedout" ng-if="memberForm.username.$touched">Please provide the username you would like to add.</p>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary"
+            ng-disabled="(memberForm.username.$invalid)"
+            ng-click="addAdmin(ctrl.username)">Add</button>
+</div>
