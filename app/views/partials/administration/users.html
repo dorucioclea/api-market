@@ -1,0 +1,74 @@
+<div class="row mb30">
+  <div class="panel panel-default mb30">
+    <div class="panel-body">
+      <!-- Members Tab Content -->
+      <div class="col-sm-12">
+        <form role="form" class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="searchText" placeholder="Filter by user ID...">
+                <div class="input-group-btn">
+                  <button class="btn btn-default btn-sm fa fa-search"></button>
+                </div>
+              </div>
+            </div>
+            <a class="btn btn-line-primary pull-right" ng-click="addAdmin()">Add Admin</a>
+          </div>
+        </form>
+        <hr>
+      </div>
+      <!-- The organization's list of members -->
+      <div class="apiman-members" data-field="members">
+
+        <div class="col-sm-12" ng-hide="admins.length > 0">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 well">
+              This is very strange, but apparently this Organization has no admins! Highly irregular and weird at the same time!!
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12" ng-show="admins.length > 0 && (admins | filter:{username:searchText}).length == 0">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 well">
+              No members found matching your filter criteria - please try searching for something different.
+            </div>
+          </div>
+        </div>
+
+        <!-- ngRepeat: member in filteredMembers -->
+        <div class="col-sm-12" ng-repeat="admin in admins | filter:{username:searchText} | orderBy:'username'">
+          <div class="col-sm-1 text-right">
+            <img class="member-pic img-circle" ng-src="data:image/png;base64,{{admin.base64pic}}" ng-if="admin.base64pic.length > 0">
+            <img class="member-pic img-cirlce" src="images/no-image-available.svg" ng-if="admin.base64pic.length === 0 || admin.base64pic === null">
+          </div>
+          <div class="col-sm-7 member-line">
+            <span class="title"><a>{{admin.fullName}}</a>
+            <span class="secondary ng-binding">({{admin.username}})</span></span>
+            <span class="text-muted small">
+              <i class="fa fa-clock-o fa-fw"></i>
+              <span>Joined on</span>
+              <span>{{admin.joinedOn | date }}</span>
+            </span>
+          </div>
+          <div class="col-sm-2 member-line">
+            <div class="pull-right">
+            </div>
+          </div>
+          <div class="col-sm-2 member-line">
+            <div class="pull-right">
+              <div class="btn-group-xs">
+                <button class="btn btn-danger btn-xs action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Remove admin priviledges" ng-click="removeAdmin(admin)"></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <hr>
+          </div>
+        </div>
+      </div><!-- end ngRepeat: member in filteredMembers -->
+    </div>
+
+  </div>
+</div>
+</div>

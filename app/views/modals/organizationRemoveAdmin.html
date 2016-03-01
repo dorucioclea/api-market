@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title">Are you sure you want to remove admin priviledges for <span class="text-bold text-primary">{{admin.username}}</span>?</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+<div class="modal-body">
+    <p>You are about to remove the administration priviledges of <span class="text-bold text-primary">{{admin.username}}</span> {{admin.fullName.length > 0 ? '(' + admin.fullName + ')' : ''}}.</p>
+    <p>After removal, the user will not be able to access in restricted mode, or to perform administration tasks.</p>
+    <p>Do you want to proceed?</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="doRemove()">Remove</button>
+</div>
