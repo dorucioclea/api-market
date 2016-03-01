@@ -798,6 +798,39 @@
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
             }
         })
+        //ADMIN SERVICE
+        .service('adminHelper', function($modal, $state, toastService, TOAST_TYPES, currentUserModel, Admins){
+            this.addAdmin = addAdmin;
+            this.removeAdmin = removeAdmin;
+            function addAdmin(username){
+                $modal.open({
+                    templateUrl: 'views/modals/organizationAddAdmin.html',
+                    size: 'lg',
+                    controller: 'AddOrgAdminCtrl as ctrl',
+                    resolve: {
+                        username: function() {
+                            return username;
+                        }
+                    },
+                    backdrop : 'static',
+                    windowClass: 'default'	// Animation Class put here.
+                });
+            }
+            function removeAdmin(admin){
+                $modal.open({
+                    templateUrl: 'views/modals/organizationRemoveAdmin.html',
+                    size: 'lg',
+                    controller: 'RemoveOrgAdminCtrl as ctrl',
+                    resolve: {
+                        admin: function () {
+                            return admin;
+                        }
+                    },
+                    backdrop : 'static',
+                    windowClass: 'default'	// Animation Class put here.
+                });
+            }
+        })
 
         // MEMBER SERVICE
         .service('memberHelper', function ($modal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {
@@ -897,7 +930,6 @@
             function redirectToLogin() {
                 var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
                 var clientUrl = window.location.origin;
-
                 if (!jwt) {
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
@@ -915,8 +947,10 @@
                         },
                         responseType: 'text'
                     }).then(function (result) {
+                        console.log("redirect result: "+JSON.stringify(result));
                         window.location.href = result.data;
                     }, function (error) {
+                        $state.go('accessdenied');
                         console.log('Request failed with error code: ', error.status);
                         console.log(error);
                     });

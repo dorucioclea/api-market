@@ -334,7 +334,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine',
@@ -362,7 +362,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine',
@@ -940,27 +940,6 @@ module.exports = function (grunt) {
     'htmlmin',
     'compress',
     'replace:t1t'
-  ]);
-
-  grunt.registerTask('mkt', [
-    'clean:dist',
-    'wiredep',
-    'ngconstant:dev',
-    'replace:mkt',
-    'replace:publisherOff',
-    'less:dist',
-    'useminPrepare',
-    'copy:dist',
-    'concat',
-    'ngAnnotate',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin',
-    'compress',
-    'replace:t1t',
-    'replace:publisherOn'
   ]);
 
   grunt.registerTask('mkt-int', [

@@ -237,6 +237,14 @@
 
     .controller('ErrorCtrl', function ($scope, $state) {
         $scope.error = $state.current.error;
+        if($scope.error.message === 'JWT must have 3 parts'){
+            $state.go('accessdenied',$scope.error);
+        }
+        console.log($scope.error.message);
+    })
+
+    .controller('AccessDeniedCtrl', function ($scope, $state) {
+        $scope.error = $state.current.error;
         console.log($scope.error);
     })
 
@@ -252,6 +260,7 @@
           $scope.doLogOut = doLogOut;
           $scope.toggleFloatingSidebar = toggleFloatingSidebar;
           $scope.toApis = toApis;
+          $scope.toAccessDenied = toAccessDenied;
           $scope.toMarketDash = toMarketDash;
 
           function doSearch(query) {
@@ -287,6 +296,10 @@
           function toApis() {
               docTester.reset();
               $state.go('root.apis.grid');
+          }
+
+          function toAccessDenied(){
+              $state.go('accessdenied');
           }
 
           function toMarketDash() {

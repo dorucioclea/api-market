@@ -45,6 +45,7 @@
             'app.ctrl.service',
             'app.ctrl.application',
             'app.ctrl.organization',
+            'app.ctrl.administration',
             'app.ctrl.plan',
             'app.ctrl.user'
 
@@ -86,6 +87,10 @@
                 .state('error', {
                     templateUrl: '/views/error.html',
                     controller: 'ErrorCtrl'
+                })
+                .state('accessdenied', {
+                    templateUrl: '/views/accessdenied.html',
+                    controller: 'AccessDeniedCtrl'
                 })
 
                 // OAUTH GRANT PAGE ===============================================================
@@ -546,6 +551,32 @@
                         }
                     },
                     controller: 'MembersCtrl'
+                })
+
+                // ADMINISTRATION OVERVIEW PAGE =================================================
+                .state('root.administration', {
+                    url: '/administration',
+                    templateUrl: 'views/administration.html',
+                    controller: 'AdministrationCtrl'
+                })
+                // Admin Users View
+                .state('root.administration.users', {
+                    url: '/users',
+                    templateUrl: 'views/partials/administration/users.html',
+                    resolve: {
+                        Admins: 'Admins',
+                        adminData: function(Admins){
+                            return Admins.query().$promise;
+                        }
+                    },
+                    controller: 'AdminUsersCtrl'
+                })
+
+                // Admin Status View
+                .state('root.administration.status', {
+                    url: '/status',
+                    templateUrl: 'views/partials/administration/status.html',
+                    controller: 'AdminStatusCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================

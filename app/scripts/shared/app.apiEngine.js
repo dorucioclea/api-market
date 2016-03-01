@@ -242,6 +242,18 @@
             return $resource(CONFIG.BASE.URL + '/users/:userId');
         })
 
+        .factory('Admins', function ($resource, CONFIG){
+            return $resource(CONFIG.BASE.URL + '/users/admins');
+        })
+
+        .factory('AdminUser', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/users/admins/:id', {id: '@id'}, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+        })
+
         .factory('UserSearch', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/users/search');
         })
