@@ -337,7 +337,7 @@ module.exports = function (grunt) {
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
+              'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
@@ -365,7 +365,7 @@ module.exports = function (grunt) {
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
+              'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
@@ -393,7 +393,7 @@ module.exports = function (grunt) {
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
+              'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
@@ -421,7 +421,7 @@ module.exports = function (grunt) {
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
+              'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
