@@ -125,8 +125,9 @@
                                                     <td>{{$index+1}}</td>
                                                     <td><a href ng-click="toApiDoc(contract)">{{contract.serviceName}} - {{contract.serviceVersion}}</a></td>
                                                     <td>{{contract.planName}} - {{contract.planVersion}}</td>
-                                                    <td>
-                                                        <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy API key to clipboard" ng-show="isNotRetired(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')"></button>
+                                                    <td class="text-right">
+                                                        <!-- We hide the API key button when OAuth2 is enabled -->
+                                                        <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy API key to clipboard" ng-show="!contract.provisionKey || contract.provisionKey.length == 0"></button>
                                                         <button clipboard text="contract.provisionKey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-lock" ng-click="copyProvisionKey(contract.provisionKey)" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy OAuth Provision key" ng-show="canConfigureOAuth(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')"></button>
                                                         <button class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Break contract" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="breakContract(contract)"></button>
                                                     </td>

@@ -462,11 +462,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -490,11 +490,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -518,11 +518,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -546,11 +546,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengine/v1',
+              'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-o.antwerpen.be/dev/apiengineauth/v1'
+              'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -574,11 +574,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -602,11 +602,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -630,11 +630,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -658,11 +658,11 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'BASE': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengine/v1',
+              'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://api-gw-a.antwerpen.be/rte/apiengineauth/v1'
+              'URL': 'https://api-gw-a.antwerpen.be/apiengineauth/v1'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
