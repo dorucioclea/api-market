@@ -1,0 +1,28 @@
+<div class="modal-body style-placeholders">
+  <div class="col-sm-12 text-center text-light">
+    <h1>Hi there!</h1>
+    <h4>We don't have your email address on file</h4>
+  </div>
+  <div class="panel">
+    <div class="panel-body">
+      <div class="col-sm-12">
+        <p class="mt30 text-light">An <b>email address is required</b> to make sure several features (such as notifications and memberships, to name a few) of the Marketplace will work correctly.</p>
+        <form role="form" name="emailForm" class="form-horizontal">
+          <div class="form-group mt30">
+            <div class="col-md-12">
+              <label class="control-label text-primary">Please enter your email address:</label>
+            </div>
+            <div class="col-md-12">
+              <input type="email" name="email" class="form-control text-center" ng-model="ctrl.email" required validate-on-timeout>
+              <p class="text-danger xsmall" ng-show="emailForm.email.$error.required && emailForm.email.$timedout" ng-if="emailForm.email.$touched">Please provide your email address.</p>
+              <p class="text-danger xsmall" ng-show="emailForm.email.$error.email && emailForm.email.$timedout">This is not a valid email address. Please check for errors.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-12 text-center mt30">
+        <button class="btn btn-primary" ng-click="updateEmail(ctrl.email)" ng-disabled="emailForm.$invalid">Update email address</button>
+      </div>
+    </div>
+  </div>
+</div>
