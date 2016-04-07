@@ -453,7 +453,7 @@
                 var serviceMkts = serviceMarketplaces.availableMarketplaces;
                 init();
                 $scope.visibilities = ['Show', 'Hide'];
-                svcScreenModel.updateTab('Availabilities');
+                svcScreenModel.updateTab('Scopes');
                 $scope.updatedService = {};
 
                 var selectedMarketplaces = [];
