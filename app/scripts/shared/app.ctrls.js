@@ -263,7 +263,6 @@
           $scope.toAccessDenied = toAccessDenied;
           $scope.toMarketDash = toMarketDash;
 
-          console.log($scope.User);
           checkIsEmailPresent();
 
           function checkIsEmailPresent() {
