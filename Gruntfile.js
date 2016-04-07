@@ -293,6 +293,9 @@ module.exports = function (grunt) {
       docker: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://192.168.99.100/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -321,6 +324,9 @@ module.exports = function (grunt) {
       local: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -349,6 +355,9 @@ module.exports = function (grunt) {
       dev: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -377,6 +386,9 @@ module.exports = function (grunt) {
       devInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -405,6 +417,9 @@ module.exports = function (grunt) {
       devExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -433,6 +448,9 @@ module.exports = function (grunt) {
       t1tprod: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -461,6 +479,9 @@ module.exports = function (grunt) {
       digiDevPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -489,6 +510,9 @@ module.exports = function (grunt) {
       digiDevMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -517,6 +541,9 @@ module.exports = function (grunt) {
       digiDevMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -545,6 +572,9 @@ module.exports = function (grunt) {
       digiDevMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -573,6 +603,9 @@ module.exports = function (grunt) {
       digiAccPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -601,6 +634,9 @@ module.exports = function (grunt) {
       digiAccMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -629,6 +665,9 @@ module.exports = function (grunt) {
       digiAccMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -657,6 +696,9 @@ module.exports = function (grunt) {
       digiAccMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -685,6 +727,9 @@ module.exports = function (grunt) {
       digiProdPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -713,6 +758,9 @@ module.exports = function (grunt) {
       digiProdMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -741,6 +789,9 @@ module.exports = function (grunt) {
       digiProdMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -769,6 +820,9 @@ module.exports = function (grunt) {
       digiProdMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
