@@ -10,6 +10,14 @@
                 this.createAction = function (entityVersion, type) {
                     var action = {};
                     switch (type) {
+                        case ACTIONS.DEPRECATE:
+                            action = {
+                                type: ACTIONS.DEPRECATE,
+                                organizationId: entityVersion.service.organization.id,
+                                entityId: entityVersion.service.id,
+                                entityVersion: entityVersion.version
+                            };
+                            return action;
                         case ACTIONS.LOCK:
                             action = {
                                 type: ACTIONS.LOCK,
@@ -64,7 +72,7 @@
                 };
 
                 var doAction = function (action, shouldReload, type, msg) {
-                    Action.save(action, function (reply) {
+                    return Action.save(action, function () {
                         if (shouldReload) {
                             $state.forceReload();
                         }
@@ -72,27 +80,33 @@
                             toastService.createToast(type, msg, true);
                         }
                     }, function (error) {
-                        toastService.createToast(TOAST_TYPES.DANGER, 'Oops! An error has occurred :(', true);
-                    });
+                        if (!(error.status === 409)) toastService.createToast(TOAST_TYPES.DANGER, 'Oops! An error has occurred :(', true);
+                    }).$promise;
                 };
 
                 this.publishService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
+                    return doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
                         shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.retireService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was retired.';
-                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
+                    return doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
                         shouldReload, TOAST_TYPES.WARNING, msg);
+                };
+
+                this.deprecateService = function (serviceVersion, shouldReload) {
+                    var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was deprecated.';
+                    return doAction(this.createAction(serviceVersion, ACTIONS.DEPRECATE),
+                        shouldReload, TOAST_TYPES.INFO, msg);
                 };
 
                 this.lockPlan = function (planVersion, shouldReload) {
                     var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version +
                         '</b> was successfully locked!';
-                    doAction(this.createAction(planVersion, ACTIONS.LOCK),
+                    return doAction(this.createAction(planVersion, ACTIONS.LOCK),
                         shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
@@ -101,7 +115,7 @@
                     console.log(this.createAction(applicationVersion, ACTIONS.REGISTER));
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(
+                    return doAction(this.createAction(
                         applicationVersion, ACTIONS.REGISTER),
                         shouldReload, TOAST_TYPES.SUCCESS,
                         msg);
@@ -110,7 +124,7 @@
                 this.retireApp = function (applicationVersion, shouldReload) {
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was retired.';
-                    doAction(this.createAction(
+                    return doAction(this.createAction(
                         applicationVersion, ACTIONS.UNREGISTER),
                         shouldReload,
                         TOAST_TYPES.WARNING, msg);

@@ -280,19 +280,31 @@
         /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
             function ($scope, $modal,
-                      svcVersion, actionService) {
+                      svcVersion, actionService, toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
                 $scope.modalClose = modalClose;
+                $scope.doDeprecate = doDeprecate;
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
 
-                function doRetire() {
-                    actionService.retireService($scope.serviceVersion, true);
+                function doDeprecate() {
+                    actionService.deprecateService($scope.serviceVersion, true);
                     $scope.modalClose();
+                }
+
+                function doRetire() {
+                    actionService.retireService($scope.serviceVersion, true).then(function () {
+                        $scope.modalClose();
+                    }, function (err) {
+                        if (err.status === 409) { // BE returns 409 Conflict in case of existing contracts
+                            toastService.createToast(TOAST_TYPES.WARNING, '<b>This service has existing contracts!</b>', true);
+                            $scope.hasExistingContracts = true;
+                        }
+                    });
                 }
 
             })

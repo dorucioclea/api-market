@@ -4,6 +4,7 @@
     angular.module('app.constants', [])
 
         .constant('ACTIONS', {
+            'DEPRECATE': 'deprecateService',
             'LOCK': 'lockPlan',
             'PUBLISH': 'publishService',
             'RETIRE': 'retireService',
