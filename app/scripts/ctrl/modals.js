@@ -380,7 +380,7 @@
                                 'A contract was created between application <b>' +
                                 $scope.selectedAppVersion.name + ' ' +
                                 $scope.selectedAppVersion.version + '</b> and service <b>' +
-                                $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' +
+                                $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
                                 $scope.service.version + '</b>, using plan <b>' +
                                 $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
                             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
@@ -688,7 +688,7 @@
                                 $scope.modalClose();
                                 $state.forceReload();
                                 toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name +
+                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + org.friendlyName +
                                     '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');

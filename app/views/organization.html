@@ -3,7 +3,7 @@
   <ol class="breadcrumb breadcrumb-small">
     <li>Publisher</li>
     <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
-    <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.name}}</a></li>
+    <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.friendlyName}}</a></li>
   </ol>
   <div class="toast toast-bottomRight">
     <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
@@ -17,7 +17,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
+            <h4 class="text-primary text-uppercase text-bold">{{org.friendlyName}}</h4>
             <hr>
           </div>
           <div class="col-sm-12">

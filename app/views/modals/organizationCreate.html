@@ -24,12 +24,12 @@
           </div>
           <div class="form-group col-md-6" ng-if="useFriendlyNames">
             <div class="col-md-11 col-md-offset-1">
-              <label class="control-label text-primary">External Name</label>
+              <label class="control-label text-primary">Friendly Name</label>
             </div>
             <div class="col-md-11 col-md-offset-1">
               <input type="text" name="orgFriendlyName" class="form-control" placeholder="Enter external name..." ng-model="ctrl.organization.friendlyName" ng-pattern="regex.ORG_NAME" validate-on-timeout>
               <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.pattern && orgForm.orgName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-              <p class="text-muted xsmall">Name that will be shown on the external Marketplace. If left blank, the internal name will be used.</p>
+              <p class="text-muted xsmall">Name that will be shown on the Marketplace. If left blank, the internal name will be used.</p>
             </div>
           </div>
 

@@ -1,10 +1,10 @@
 <div class="modal-header">
-    <h4 class="modal-title">Are you sure you want to transfer ownership of <span class="text-bold text-primary">{{org.name}}</span>?</h4>
+    <h4 class="modal-title">Are you sure you want to transfer ownership of <span class="text-bold text-primary">{{org.friendlyName}}</span>?</h4>
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 <div class="modal-body">
     <p>You are about to transfer ownership to <span class="text-bold text-primary">{{newOwner.userName.length > 0 ? newOwner.userName : newOwner.userId}}</span> {{newOwner.userName.length > 0 ? '(' + newOwner.userId + ')' : ''}}.</p>
-    <p>After the transfer, you will have a Developer role within {{org.name}}. You will no longer be able to manage the member roles, or invite new members. All these privileges will be transferred to {{newOwner.username.length > 0 ? newOwner.username : newOwner.userId}}.</p>
+    <p>After the transfer, you will have a Developer role within {{org.friendlyName}}. You will no longer be able to manage the member roles, or invite new members. All these privileges will be transferred to {{newOwner.username.length > 0 ? newOwner.username : newOwner.userId}}.</p>
 </div>
 <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
