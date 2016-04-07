@@ -895,6 +895,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'connect:livereload',
       'ngconstant:dev',
+      'less:dist',
       'watch'
     ]);
   });
@@ -907,6 +908,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'connect:livereload',
       'ngconstant:local',
+      'less:dist',
       'watch'
     ]);
   });
