@@ -48,7 +48,8 @@
             'app.ctrl.plan',
             'app.ctrl.user',
             'app.administration',
-            'app.organizations'
+            'app.organizations',
+            'app.user'
 
         ])
 
@@ -112,9 +113,10 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function (CurrentUserInfo) {
-                            return CurrentUserInfo.get().$promise;
+                        // CurrentUserInfo: 'CurrentUserInfo',
+                        currentUser: function () {
+                            return {};
+                            // return CurrentUserInfo.get().$promise;
                         }
                     },
                     controller: 'HeadCtrl'
@@ -577,7 +579,7 @@
                     url: '/expiration',
                     templateUrl: 'views/partials/administration/expiration.html',
                     controller: 'AdminExpirationCtrl'
-                }) 
+                })
 
                 // Admin Status View
                 .state('root.administration.status', {
@@ -999,7 +1001,20 @@
                 });
         })
 
-        .run(function($state, $rootScope) {
+        .run(function($state, $rootScope, loginHelper) {
+
+            $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams, options){
+                    console.log(toState);
+                    if (loginHelper.checkLoginRequiredForState(toState)) {
+                        console.log('login required!');
+                        if (!loginHelper.checkLoggedIn()) {
+                            event.preventDefault();
+                            loginHelper.redirectToLogin();
+                        }
+                    }
+                });
+
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
@@ -1034,12 +1049,9 @@
             jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
                 'config', 'CONFIG',
                 function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
+
                     // Skip authentication for any requests ending in .html
                     if (config.url.substr(config.url.length - 5) == '.html') {
-                        return null;
-                    }
-                    // Skip authentication for oauth requests
-                    if (config.url.indexOf('oauth') > -1 ) {
                         return null;
                     }
 
@@ -1073,8 +1085,10 @@
                                 return $sessionStorage.jwt;
                             }
                         }
-                    } else {
-                        loginHelper.redirectToLogin();
+                    }
+                    // Skip authentication for oauth requests
+                    if (config.url.indexOf('oauth') > -1 ) {
+                        return null;
                     }
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');

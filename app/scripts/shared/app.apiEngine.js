@@ -295,7 +295,7 @@
             return $resource(CONFIG.BASE.URL + '/search/organizations');
         })
         .factory('SearchSvcs', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services', {}, {
                 query: {
                     method: 'POST'
                 }
@@ -310,6 +310,9 @@
         })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/search/services/:status');
+        })
+        .factory('SearchServiceVersion', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/:orgId/services/:svcId/versions/:versionId');
         })
 
         /// ========== SYSTEM ============================================================================

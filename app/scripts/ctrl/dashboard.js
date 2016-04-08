@@ -190,7 +190,7 @@
         /// ==== API Search Controller
         .controller('ApiSearchCtrl',
             function($scope, $stateParams, svcData, headerModel,
-                     ServiceVersion, ServiceMarketInfo) {
+                     SearchServiceVersion, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(true, true, true);
                 $scope.availableAPIs = [];
                 $scope.svcStats = [];
@@ -201,7 +201,7 @@
                 });
 
                 function getServiceVersions(data) {
-                    ServiceVersion.query({orgId: data.organizationId, svcId: data.id}, function (reply) {
+                    SearchServiceVersion.query({orgId: data.organizationId, svcId: data.id}, function (reply) {
                         angular.forEach(reply, function (version) {
                             getDetailsIfPublished(version);
                         });
@@ -210,7 +210,7 @@
 
                 function getDetailsIfPublished(version) {
                     if (version.status === 'Published') {
-                        ServiceVersion.get(
+                        SearchServiceVersion.get(
                             {orgId: version.organizationId,
                                 svcId: version.id,
                                 versionId: version.version},

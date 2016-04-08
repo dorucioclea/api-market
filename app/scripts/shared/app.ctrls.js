@@ -248,7 +248,7 @@
 
     .controller('HeadCtrl',
       function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-               currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
+               currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper, loginHelper) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
           $scope.currentUserModel = currentUserModel;
@@ -264,7 +264,7 @@
           checkIsEmailPresent();
 
           function checkIsEmailPresent() {
-              if (!$scope.User.currentUser.email) {
+              if (loginHelper.checkLoggedIn() && !$scope.User.currentUser.email) {
                   console.log('no email!');
 
                   $modal.open({
