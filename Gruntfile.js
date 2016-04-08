@@ -306,7 +306,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_docker-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -338,7 +338,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_local-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -370,7 +370,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -402,7 +402,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -434,7 +434,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -466,7 +466,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -498,7 +498,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -530,7 +530,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -562,7 +562,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -594,7 +594,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -626,7 +626,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -658,7 +658,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -690,7 +690,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -722,7 +722,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -754,7 +754,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -786,7 +786,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -818,7 +818,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -850,7 +850,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
