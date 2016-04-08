@@ -338,8 +338,9 @@
             template: '<label class=\"label text-uppercase\" ' +
             'data-ng-class=\"{\'label-success\': status === \'Published\' || status === \'Registered\'' +
             ' || status === \'Locked\' || status === \'OPEN\',' +
-            '\'label-warning\': status === \'Ready\' || status === \'Created\', ' +
-            '\'label-danger\': status === \'CLOSED\',' +
+            '\'label-warning\': status === \'Ready\' || status === \'Deprecated\', ' +
+            '\'label-purple\': status === \'Created\', ' +
+            '\'label-danger\': status === \'CLOSED\', ' +
             '\'label-muted\': status === \'Retired\'}\">' +
             '{{status}}</label>'
         };
