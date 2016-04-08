@@ -67,10 +67,11 @@
         })
 
         // UI-Router states
-        .config(function ($stateProvider, $urlRouterProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             $urlRouterProvider.otherwise('/');
-            $urlRouterProvider.when('/', '/my-organizations');
+            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
+            else $urlRouterProvider.when('/', '/apis/grid');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
