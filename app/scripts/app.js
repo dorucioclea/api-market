@@ -45,9 +45,9 @@
             'app.ctrl.service',
             'app.ctrl.application',
             'app.ctrl.organization',
-            'app.ctrl.administration',
             'app.ctrl.plan',
             'app.ctrl.user',
+            'app.administration',
             'app.organizations'
 
         ])
