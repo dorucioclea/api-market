@@ -9,6 +9,9 @@
             headerModel.setIsButtonVisible(true, true, true);
             svcModel.setService(svcData);
             $scope.serviceVersion = svcData;
+            $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
+            $scope.published = $scope.serviceVersion.status === 'Published';
+            $scope.retired = $scope.serviceVersion.status === 'Retired';
             $scope.hasOAuth = svcData.provisionKey !== null && svcData.provisionKey.length > 0;
             $scope.displayTab = svcTab;
             $scope.toasts = toastService.toasts;
