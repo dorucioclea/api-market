@@ -812,39 +812,6 @@
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
             }
         })
-        //ADMIN SERVICE
-        .service('adminHelper', function($modal, $state, toastService, TOAST_TYPES, currentUserModel, Admins){
-            this.addAdmin = addAdmin;
-            this.removeAdmin = removeAdmin;
-            function addAdmin(username){
-                $modal.open({
-                    templateUrl: 'views/modals/organizationAddAdmin.html',
-                    size: 'lg',
-                    controller: 'AddOrgAdminCtrl as ctrl',
-                    resolve: {
-                        username: function() {
-                            return username;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
-            }
-            function removeAdmin(admin){
-                $modal.open({
-                    templateUrl: 'views/modals/organizationRemoveAdmin.html',
-                    size: 'lg',
-                    controller: 'RemoveOrgAdminCtrl as ctrl',
-                    resolve: {
-                        admin: function () {
-                            return admin;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
-            }
-        })
 
         // MEMBER SERVICE
         .service('memberHelper', function ($modal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {

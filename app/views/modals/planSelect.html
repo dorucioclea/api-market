@@ -35,7 +35,7 @@
                 <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
             </ul>
         </div>
-        <span>in organization <b>{{orgScreenModel.organization.name}}</b>.</span>
+        <span>in organization <b>{{orgScreenModel.organization.friendlyName}}</b>.</span>
     </div>
 </div>
 

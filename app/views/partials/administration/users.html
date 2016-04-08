@@ -31,29 +31,23 @@
         <div class="col-sm-12" ng-show="admins.length > 0 && (admins | filter:{username:searchText}).length == 0">
           <div class="row">
             <div class="col-sm-10 col-sm-offset-1 well">
-              No members found matching your filter criteria - please try searching for something different.
+              No admins found matching your filter criteria - please try searching for something different.
             </div>
           </div>
         </div>
 
-        <!-- ngRepeat: member in filteredMembers -->
         <div class="col-sm-12" ng-repeat="admin in admins | filter:{username:searchText} | orderBy:'username'">
           <div class="col-sm-1 text-right">
             <img class="member-pic img-circle" ng-src="data:image/png;base64,{{admin.base64pic}}" ng-if="admin.base64pic.length > 0">
             <img class="member-pic img-cirlce" src="images/no-image-available.svg" ng-if="admin.base64pic.length === 0 || admin.base64pic === null">
           </div>
-          <div class="col-sm-7 member-line">
-            <span class="title"><a>{{admin.fullName}}</a>
-            <span class="secondary ng-binding">({{admin.username}})</span></span>
-            <span class="text-muted small">
+          <div class="col-sm-9 member-line">
+            <span class="title"><a>{{admin.fullName}}</a><span class="secondary">({{admin.username}})</span></span>
+            <span class="text-muted xsmall">
               <i class="fa fa-clock-o fa-fw"></i>
               <span>Joined on</span>
               <span>{{admin.joinedOn | date }}</span>
             </span>
-          </div>
-          <div class="col-sm-2 member-line">
-            <div class="pull-right">
-            </div>
           </div>
           <div class="col-sm-2 member-line">
             <div class="pull-right">
@@ -66,7 +60,7 @@
             <hr>
           </div>
         </div>
-      </div><!-- end ngRepeat: member in filteredMembers -->
+      </div>
     </div>
 
   </div>

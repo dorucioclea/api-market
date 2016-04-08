@@ -45,9 +45,10 @@
             'app.ctrl.service',
             'app.ctrl.application',
             'app.ctrl.organization',
-            'app.ctrl.administration',
             'app.ctrl.plan',
-            'app.ctrl.user'
+            'app.ctrl.user',
+            'app.administration',
+            'app.organizations'
 
         ])
 
@@ -571,11 +572,22 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
+                .state('root.administration.expiration', {
+                    url: '/expiration',
+                    templateUrl: 'views/partials/administration/expiration.html',
+                    controller: 'AdminExpirationCtrl'
+                }) 
 
                 // Admin Status View
                 .state('root.administration.status', {
                     url: '/status',
                     templateUrl: 'views/partials/administration/status.html',
+                    resolve: {
+                        adminHelper: 'adminHelper',
+                        status: function (adminHelper) {
+                            return adminHelper.getStatus();
+                        }
+                    },
                     controller: 'AdminStatusCtrl'
                 })
 

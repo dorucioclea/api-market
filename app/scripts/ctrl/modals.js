@@ -380,7 +380,7 @@
                                 'A contract was created between application <b>' +
                                 $scope.selectedAppVersion.name + ' ' +
                                 $scope.selectedAppVersion.version + '</b> and service <b>' +
-                                $scope.service.service.organization.name + ' ' + $scope.service.service.name + ' ' +
+                                $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
                                 $scope.service.version + '</b>, using plan <b>' +
                                 $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
                             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
@@ -590,66 +590,9 @@
                 }
             })
 
-        /// ==== AddOrgAdminCtrl Controller
-        .controller('AddOrgAdminCtrl',
-            function ($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES) {
-                $scope.addAdmin = addAdmin;
-                $scope.username = username;
-                $scope.modalClose = modalClose;
-                $scope.selectedMethod = 'Username';
-                $scope.selectMethod = selectMethod;
-
-                function addAdmin(username) {
-                    var privuser;
-                    var promise;
-                    switch ($scope.selectedMethod) {
-                        case 'Username':
-                            privuser = username;
-                            promise = AdminUser.save({id:privuser},function(reply){
-                                $scope.modalClose();
-                                $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Granted <b>' + privuser + '</b> with admin priviledges', true);
-                            },function(err){toastService.createErrorToast(error, 'Failed to grand admin priviledges.');});
-
-                            break;
-                    }
-                }
-
-                function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
-                }
-
-                function selectMethod(method) {
-                    $scope.selectedMethod = method;
-                }
-            })
-        /// ==== RemoveOrgAdminCtrl Controller
-        .controller('RemoveOrgAdminCtrl',
-            function ($scope, $modal, $state, admin, toastService, TOAST_TYPES, AdminUser) {
-                $scope.doRemove = doRemove;
-                $scope.admin = admin;
-                $scope.modalClose = modalClose;
-
-                function doRemove() {
-                    AdminUser.delete({id: admin.username}, function (success) {
-                        $state.forceReload();
-                        toastService.createToast(TOAST_TYPES.INFO,
-                            '<b>' + name + '</b> admin priviledges are removed.', true);
-                        $scope.modalClose();
-                    }, function (error) {
-                        toastService.createErrorToast(error, 'Could not remove member from organization');
-                    });
-                }
-
-                function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
-                }
-            })
-
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
+            function ($scope, $modal, $state, org, roles, toastService, orgService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
@@ -658,6 +601,7 @@
                 $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
+                $scope.orgName = orgService.name(org);
 
                 function addMember(username, email) {
                     var searchObj = {
@@ -688,7 +632,7 @@
                                 $scope.modalClose();
                                 $state.forceReload();
                                 toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + org.name +
+                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + $scope.orgName +
                                     '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');
@@ -717,11 +661,12 @@
 
         /// ==== MemberRemoveCtrl Controller
         .controller('MemberRemoveCtrl',
-            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
+            function ($scope, $modal, $state, member, org, orgService, toastService, TOAST_TYPES, Member) {
                 $scope.doRemove = doRemove;
                 $scope.member = member;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
+                $scope.orgName = orgService.name(org);
 
                 function doRemove() {
                     var name = member.userName ? member.userName : member.userId;
@@ -742,12 +687,13 @@
 
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
-            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
+            function ($scope, $modal, $state, currentOwner, newOwner, org, orgService, toastService, TOAST_TYPES,
                       currentUserModel, OrganizationOwnershipTransfer) {
                 $scope.doTransfer = doTransfer;
                 $scope.newOwner = newOwner;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
+                $scope.orgName = orgService.name(org);
 
                 function doTransfer() {
                     var user = newOwner.userName ? newOwner.userName : newOwner.userId;
@@ -759,7 +705,7 @@
                         // We changed our own role, need to update the CurrentUserInfo
                         currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
-                            toastService.createToast('success', 'Ownership of <b>' + org.name +
+                            toastService.createToast('success', 'Ownership of <b>' + $scope.orgName +
                                 '</b> was successfully transferred to <b>' + user + '</b>', true);
                             $scope.modalClose();
                         }, function (error) {
