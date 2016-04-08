@@ -1,0 +1,38 @@
+<div class="row mb30">
+    <div class="panel panel-default mb30">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Token Expiration Times</h4>
+                    <p>Below is a list of all the current token expiration times. Updated values will be applied to newly issued tokens.</p>
+                    <hr>
+                </div>
+                <div class="col-sm-10 col-sm-offset-1">
+                    <form role="form" name="timeoutForm" class="form-horizontal">
+                        <div class="form-group mt30">
+                            <div class="col-md-12">
+                                <label class="control-label text-primary">OAuth2 Tokens</label>
+                                <input type="number" name="oauth" class="form-control" ng-model="tokenTimeout.oauth" required validate-on-timeout>
+                                <p class="text-muted xsmall">Current validity period for OAuth2 tokens, expressed in seconds</p>
+                                <p class="text-danger xsmall" ng-show="timeoutForm.oauth.$error.required && timeoutForm.oauth.$timedout" ng-if="timeoutForm.oauth.$touched">OAuth2 timeout value is required.</p>
+                                <p class="text-danger xsmall" ng-show="timeoutForm.oauth.$error.number && timeoutForm.oauth.$timedout">OAuth2 timeout value must be a number.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt30">
+                            <div class="col-md-12">
+                                <label class="control-label text-primary">JWT Tokens</label>
+                                <input type="number" name="jwt" class="form-control" ng-model="tokenTimeout.jwt" required validate-on-timeout>
+                                <p class="text-muted xsmall">Current validity period for JWT tokens, expressed in seconds</p>
+                                <p class="text-danger xsmall" ng-show="timeoutForm.jwt.$error.required && timeoutForm.jwt.$timedout" ng-if="timeoutForm.jwt.$touched">JWT timeout value is required.</p>
+                                <p class="text-danger xsmall" ng-show="timeoutForm.jwt.$error.number && timeoutForm.jwt.$timedout">JWT timeout value must be a number.</p>
+                            </div>
+                        </div>
+                    </form>
+
+                    <button class="btn btn-line-primary" ng-click="updateExpirationTimes()" ng-disabled="timeoutForm.$invalid">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -590,63 +590,6 @@
                 }
             })
 
-        /// ==== AddOrgAdminCtrl Controller
-        .controller('AddOrgAdminCtrl',
-            function ($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES) {
-                $scope.addAdmin = addAdmin;
-                $scope.username = username;
-                $scope.modalClose = modalClose;
-                $scope.selectedMethod = 'Username';
-                $scope.selectMethod = selectMethod;
-
-                function addAdmin(username) {
-                    var privuser;
-                    var promise;
-                    switch ($scope.selectedMethod) {
-                        case 'Username':
-                            privuser = username;
-                            promise = AdminUser.save({id:privuser},function(reply){
-                                $scope.modalClose();
-                                $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Granted <b>' + privuser + '</b> with admin priviledges', true);
-                            },function(err){toastService.createErrorToast(error, 'Failed to grand admin priviledges.');});
-
-                            break;
-                    }
-                }
-
-                function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
-                }
-
-                function selectMethod(method) {
-                    $scope.selectedMethod = method;
-                }
-            })
-        /// ==== RemoveOrgAdminCtrl Controller
-        .controller('RemoveOrgAdminCtrl',
-            function ($scope, $modal, $state, admin, toastService, TOAST_TYPES, AdminUser) {
-                $scope.doRemove = doRemove;
-                $scope.admin = admin;
-                $scope.modalClose = modalClose;
-
-                function doRemove() {
-                    AdminUser.delete({id: admin.username}, function (success) {
-                        $state.forceReload();
-                        toastService.createToast(TOAST_TYPES.INFO,
-                            '<b>' + name + '</b> admin priviledges are removed.', true);
-                        $scope.modalClose();
-                    }, function (error) {
-                        toastService.createErrorToast(error, 'Could not remove member from organization');
-                    });
-                }
-
-                function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
-                }
-            })
-
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
             function ($scope, $modal, $state, org, roles, toastService, orgService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
