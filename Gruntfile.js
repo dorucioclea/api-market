@@ -294,7 +294,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://192.168.99.100/dev/apiengine/v1',
@@ -325,7 +326,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -356,7 +358,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -387,7 +390,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -418,7 +422,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -449,7 +454,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
@@ -480,7 +486,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -511,7 +518,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -542,7 +550,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -573,7 +582,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -604,7 +614,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -635,7 +646,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -666,7 +678,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -697,7 +710,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -728,7 +742,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -759,7 +774,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -790,7 +806,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -821,7 +838,8 @@ module.exports = function (grunt) {
         constants: {
           'CONFIG': {
             'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -863,26 +881,26 @@ module.exports = function (grunt) {
     // Replace //
     // ======= //
     replace: {
-      publisherOn: {
-        src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
-        overwrite: true,
-        replacements: [
-          {
-            from: /\$scope.publisherMode = false;/g,
-            to: '$scope.publisherMode = true;'
-          }
-        ]
-      },
-      publisherOff: {
-        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
-        overwrite: true,
-        replacements: [
-          {
-            from: /\$scope.publisherMode = true;/g,
-            to: '$scope.publisherMode = false;'
-          },
-        ]
-      },
+      // publisherOn: {
+      //   src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
+      //   overwrite: true,
+      //   replacements: [
+      //     {
+      //       from: /\$scope.publisherMode = false;/g,
+      //       to: '$scope.publisherMode = true;'
+      //     }
+      //   ]
+      // },
+      // publisherOff: {
+      //   src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+      //   overwrite: true,
+      //   replacements: [
+      //     {
+      //       from: /\$scope.publisherMode = true;/g,
+      //       to: '$scope.publisherMode = false;'
+      //     },
+      //   ]
+      // },
       mkt: {
         src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
@@ -897,10 +915,6 @@ module.exports = function (grunt) {
         src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
         replacements: [
-          {
-            from: /\$scope.publisherMode = false;/g,
-            to: '$scope.publisherMode = true;'
-          },
           {
             from: '@import "theme-t1t.less";',
             to: '@import "theme-override.less";'
@@ -1003,7 +1017,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:devInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1015,8 +1028,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('mkt-ext', [
@@ -1024,7 +1036,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:devExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1036,8 +1047,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('t1tProdPub', [
@@ -1061,7 +1071,6 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:t1tprod',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1072,8 +1081,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:publisherOn'
+    'compress'
   ]);
 
   grunt.registerTask('digiDevPub', [
@@ -1100,7 +1108,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1112,8 +1119,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt-int', [
@@ -1121,7 +1127,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1133,8 +1138,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt-ext', [
@@ -1142,7 +1146,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1154,8 +1157,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccPub', [
@@ -1182,7 +1184,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1194,8 +1195,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt-int', [
@@ -1203,7 +1203,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1215,8 +1214,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt-ext', [
@@ -1224,7 +1222,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1236,8 +1233,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdPub', [
@@ -1264,7 +1260,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1276,8 +1271,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdMkt-int', [
@@ -1285,7 +1279,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1297,8 +1290,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdMkt-ext', [
@@ -1306,7 +1298,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1318,8 +1309,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('testBuildPub', [
@@ -1348,7 +1338,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:dev',
     'replace:mkt',
-    'replace:publisherOff',
     'connect:test',
     'karma',
     'less:dist',
@@ -1362,8 +1351,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t' 
   ]);
 
   grunt.registerTask('test', [

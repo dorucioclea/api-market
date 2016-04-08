@@ -36,9 +36,7 @@
               });
           });
 
-          //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
-          $scope.publisherMode = true;
-          //End
+          $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
 
           //Make currentUserModel available to all child controllers
           $scope.User = currentUserModel;

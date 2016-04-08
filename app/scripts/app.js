@@ -47,7 +47,8 @@
             'app.ctrl.organization',
             'app.ctrl.administration',
             'app.ctrl.plan',
-            'app.ctrl.user'
+            'app.ctrl.user',
+            'app.organizations'
 
         ])
 
