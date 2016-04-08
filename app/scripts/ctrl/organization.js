@@ -5,10 +5,11 @@
 
         /// ==== Organizations Overview & Search Controller
         .controller('OrganizationsCtrl',
-            function ($scope, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
+            function ($scope, orgService, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
 
                 $scope.isMember = isMember;
                 $scope.doSearch = doSearch;
+                $scope.orgService = orgService;
                 var userOrgIds = null;
 
                 function isMember(org) {
@@ -50,9 +51,10 @@
 
         /// ==== MyOrganizations Overview Controller
         .controller('MyOrganizationsCtrl',
-            function ($scope, $modal, appOrgData, svcOrgData, toastService, headerModel) {
+            function ($scope, $modal, appOrgData, svcOrgData, orgService, toastService, headerModel) {
 
                 $scope.toasts = toastService.toasts;
+                $scope.orgService = orgService;
                 $scope.toastService = toastService;
                 $scope.modalNewOrganization = modalNewOrganization;
 
