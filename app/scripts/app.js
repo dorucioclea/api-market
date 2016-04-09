@@ -1038,7 +1038,7 @@
                         return null;
                     }
                     // Skip authentication for oauth requests
-                    if (config.url.indexOf('oauth') > -1 ) {
+                    if (config.url.indexOf('/oauth2/') > -1 ) {
                         return null;
                     }
 
