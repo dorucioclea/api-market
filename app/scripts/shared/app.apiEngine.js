@@ -339,6 +339,12 @@
                     method: 'POST'
                 }
             });
+        })
+        /// ========== OAUTH ============================================================================
+        .factory('OAuthCentralExpTime', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/security/oauth/expiration-time');//post body with expirationTime (integer in seconds)
+        })
+        .factory('JWTCentralExpTime', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/security/jwt/expiration-time'); //post body with expirationTime (integer in seconds)
         });
-
 })();
