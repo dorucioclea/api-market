@@ -402,6 +402,9 @@
                 var errorMsg = '<b>' + heading + '</b>';
 
                 switch (error.status) {
+                    case 404:
+                        toastType = TOAST_TYPES.WARNING;
+                        break;
                     case 409: //CONFLICT
                         toastType = TOAST_TYPES.WARNING;
                         errorMsg += '<br>This name is already in use!<br>Please try again with a different name.';

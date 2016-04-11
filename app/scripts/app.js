@@ -578,6 +578,16 @@
                 .state('root.administration.expiration', {
                     url: '/expiration',
                     templateUrl: 'views/partials/administration/expiration.html',
+                    resolve: {
+                        OAuthCentralExpTime: 'OAuthCentralExpTime',
+                        oauthExp: function(OAuthCentralExpTime){
+                            return OAuthCentralExpTime.get().$promise;
+                        },
+                        JWTCentralExpTime: 'JWTCentralExpTime',
+                        jwtExp: function(JWTCentralExpTime){
+                            return JWTCentralExpTime.get().$promise;
+                        }
+                    },
                     controller: 'AdminExpirationCtrl'
                 })
 
@@ -1055,6 +1065,11 @@
                         return null;
                     }
 
+                    // Skip authentication for oauth requests
+                    if (config.url.indexOf('/oauth2/') > -1 ) {
+                        return null;
+                    }
+
                     if ($sessionStorage.jwt) {
                         if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
                             // Token is expired, user needs to relogin
@@ -1086,10 +1101,7 @@
                             }
                         }
                     }
-                    // Skip authentication for oauth requests
-                    if (config.url.indexOf('oauth') > -1 ) {
-                        return null;
-                    }
+                    
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');
