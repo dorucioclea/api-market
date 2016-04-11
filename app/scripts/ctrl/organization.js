@@ -5,15 +5,23 @@
 
         /// ==== Organizations Overview & Search Controller
         .controller('OrganizationsCtrl',
-            function ($scope, orgService, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs) {
+            function ($scope, orgService, Organization, SearchOrgs, CurrentUserAppOrgs, CurrentUserSvcOrgs,RequestMembership,toastService, TOAST_TYPES) {
 
                 $scope.isMember = isMember;
                 $scope.doSearch = doSearch;
                 $scope.orgService = orgService;
+                $scope.requestMembership = requestMembership;
+                
                 var userOrgIds = null;
 
                 function isMember(org) {
                     return userOrgIds.indexOf(org.id) > -1;
+                }
+                
+                function requestMembership(org){
+                    RequestMembership.save({orgId:org.id},{}, function (reply) {
+                        toastService.createToast(TOAST_TYPES.INFO, 'Mail notification has been sent to the organization owners. Wait for approval.', true);
+                    });
                 }
 
                 function doSearch(searchString) {

@@ -51,7 +51,7 @@
                     {{org.description}}
                   </div>
                   <div class="actions" ng-hide="isMember(org)">
-                    <button class="btn btn-default btn-sm">Request Membership</button>
+                    <button class="btn btn-default btn-sm" ng-click="requestMembership(org)">Request Membership</button>
                   </div>
                   <a class="is-member" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this Organization." ng-show="isMember(org)"></a>
                 </div>
