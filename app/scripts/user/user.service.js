@@ -2,17 +2,33 @@
     'use strict';
 
     angular.module('app.user')
+        .service('currentUser', currentUser)
         .service('currentUserModel', currentUserModel)
         .service('loginHelper', loginHelper);
 
 
+    function currentUser(CurrentUserInfo) {
+        this.getInfo = getInfo;
+        this.update = update;
+        
+        function getInfo() {
+            return CurrentUserInfo.get().$promise;
+        }
+        
+        function update(newUserInfo) {
+            return CurrentUserInfo.update({}, newUserInfo).$promise;
+        }
+    }
+    
     function currentUserModel(orgScreenModel, CurrentUserInfo) {
         var permissionTree = [];
         this.currentUser = {};
 
         this.updateCurrentUserInfo = function (currentUserModel) {
+            console.log('update user info');
             return CurrentUserInfo.get({}, function (userInfo) {
                 currentUserModel.currentUser = userInfo;
+                console.log(currentUserModel.currentUser);
                 createPermissionsTree(userInfo.permissions);
             }).$promise;
         };
@@ -49,6 +65,7 @@
     // LOGIN HELPER SERVICE
     function loginHelper($http, $sessionStorage, $state, CONFIG) {
         this.checkLoggedIn = checkLoggedIn;
+        this.checkJWTInUrl = checkJWTInUrl;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
         this.redirectToLogin = redirectToLogin;
         
@@ -56,8 +73,11 @@
             return !!$sessionStorage.jwt;
         }
 
+        function checkJWTInUrl() {
+            return getParameterByName(CONFIG.BASE.JWT_HEADER_NAME).length > 0;
+        }
+
         function checkLoginRequiredForState(currentState) {
-            console.log(currentState);
             switch (currentState.name) {
                 case '':
                 case 'error':

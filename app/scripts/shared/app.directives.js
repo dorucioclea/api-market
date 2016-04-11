@@ -490,7 +490,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $modal, ServiceTicketComments, CurrentUserInfo,
+                    function ($scope, $modal, ServiceTicketComments,
                               toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
