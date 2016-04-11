@@ -458,44 +458,6 @@
             };
         })
 
-        // SERVICE DOCUMENTATION TAB HELPER
-        .service('svcTab', function () {
-
-            this.selectedTab = 'Documentation';
-
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-        })
-
-        // SERVICE SCREEN MODEL
-        .service('svcScreenModel', function () {
-            this.selectedTab = 'Overview';
-            this.service = {};
-            this.tabStatus = {
-                hasImplementation: false,
-                hasDefinition: false
-            };
-
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-            this.updateService = function (newSvc) {
-                this.service = newSvc;
-                this.tabStatus.hasImplementation = newSvc.endpoint !== null;
-            };
-
-            this.setHasImplementation = function (bool) {
-                this.tabStatus.hasImplementation = bool;
-            };
-
-            this.setHasDefinition = function (bool) {
-                this.tabStatus.hasDefinition = bool;
-            };
-        })
-
         // RESOURCE UTILITY SERVICE
         .service('resourceUtil', function () {
             this.cleanResponse = cleanResponse;
@@ -782,6 +744,7 @@
                 }
             })
 
+        // DOC DOWNLOADER
         .service('docDownloader', function (toastService, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
 
             this.fetch = fetch;
