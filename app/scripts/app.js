@@ -1015,7 +1015,6 @@
 
             $rootScope.$on('$stateChangeStart',
                 function(event, toState, toParams, fromState, fromParams, options){
-                    console.log(toState);
                     if (loginHelper.checkLoginRequiredForState(toState)) {
                         console.log('login required!');
                         if (!loginHelper.checkLoggedIn()) {
