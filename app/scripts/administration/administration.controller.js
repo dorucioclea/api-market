@@ -48,6 +48,7 @@
         $scope.kongInfo = angular.fromJson(status.kongInfo);
         $scope.kongStatus = angular.fromJson(status.kongStatus);
         console.log($scope.kongCluster);
+        console.log($scope.kongInfo);
         console.log($scope.kongStatus);
         $scope.status = status;
     }
