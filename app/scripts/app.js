@@ -298,10 +298,9 @@
                     url: '/org/:orgId/api/:svcId/:versionId',
                     templateUrl: 'views/api.html',
                     resolve: {
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
-                            return ServiceVersion.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        service: 'service',
+                        svcData: function (service, organizationId, serviceId, versionId) {
+                            return service.getVersion(organizationId, serviceId, versionId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;

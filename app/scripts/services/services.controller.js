@@ -17,8 +17,7 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, toastService, TOAST_TYPES, actionService,
-                         Service, ServiceVersionDefinition) {
+                         svcData, svcVersions, svcScreenModel, resourceUtil, toastService, TOAST_TYPES, service) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
@@ -37,19 +36,17 @@
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
 
-        ServiceVersionDefinition.get(
-            {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
-            function (reply) {
-                // Clean the reply so we have the pure data object, then
-                // Check number of properties in the object, if 0, there is no definition present
-                if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
-                    svcScreenModel.setHasDefinition(true);
-                } else {
-                    svcScreenModel.setHasDefinition(false);
-                }
-            }, function (error) {
+        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(function (reply) {
+            // Clean the reply so we have the pure data object, then
+            // Check number of properties in the object, if 0, there is no definition present
+            if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
+                svcScreenModel.setHasDefinition(true);
+            } else {
                 svcScreenModel.setHasDefinition(false);
-            });
+            }
+        }, function (error) {
+            svcScreenModel.setHasDefinition(false);
+        });
 
         $scope.selectVersion = function (version) {
             $state.go($state.$current.name,
@@ -115,12 +112,11 @@
         }
 
         $scope.updateDesc = function (newValue) {
-            Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId}, {description: newValue},
-                function (reply) {
-                    toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update service\'s description.');
-                });
+            service.updateDescription($stateParams.orgId, $stateParams.svcId, newValue).then(function (reply) {
+                toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update service\'s description.');
+            });
         };
 
         $scope.showInfoModal = function () {
@@ -148,8 +144,7 @@
     }
 
 
-    function serviceImplCtrl($scope, $state, $stateParams, toastService, TOAST_TYPES, REGEX,
-                             ServiceVersion, svcScreenModel, svcData) {
+    function serviceImplCtrl($scope, $state, toastService, TOAST_TYPES, REGEX, svcScreenModel, svcData) {
 
         $scope.serviceVersion = svcData;
         $scope.updatedService = {
@@ -197,13 +192,7 @@
         };
 
         $scope.saveService = function () {
-            ServiceVersion.update(
-                {
-                    orgId: $stateParams.orgId,
-                    svcId: $stateParams.svcId,
-                    versionId: $stateParams.versionId
-                },
-                $scope.updatedService,
+            service.updateServiceVersion(orgId, svcId, versionId, $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Endpoint for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
@@ -222,8 +211,8 @@
 
     }
 
-    function serviceDefinitionCtrl($scope, $http, $state, $stateParams, endpoint, resourceUtil, toastService, TOAST_TYPES,
-                                   ServiceVersionDefinition, SwaggerDocFetch, svcScreenModel) {
+    function serviceDefinitionCtrl($scope, $state, $stateParams, endpoint, resourceUtil, toastService, TOAST_TYPES,
+                                   SwaggerDocFetch, svcScreenModel, service) {
 
         svcScreenModel.updateTab('Definition');
         $scope.selectedMethod = 'JSON File';
@@ -237,8 +226,7 @@
         $scope.selectMethod = selectMethod;
         $scope.isSubmitting = false;
 
-        ServiceVersionDefinition.get(
-            {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
+        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(
             function (reply) {
                 // Clean the reply so we have the pure data object
                 var cleanReply = resourceUtil.cleanResponse(reply);
@@ -293,11 +281,8 @@
         }
 
         function saveDefinition() {
-            ServiceVersionDefinition.update({
-                    orgId: $stateParams.orgId,
-                    svcId: $stateParams.svcId,
-                    versionId: $stateParams.versionId
-                }, $scope.updatedDefinition,
+            service.updateDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId,
+                $scope.updatedDefinition).then(
                 function (data) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Service Definition for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
@@ -325,7 +310,7 @@
     }
 
     function servicePlansCtrl($scope, $state, $stateParams, $q, planData, svcScreenModel,
-                              toastService, TOAST_TYPES, PlanVersion, ServiceVersion) {
+                              toastService, TOAST_TYPES, PlanVersion) {
 
         svcScreenModel.updateTab('Plans');
         var definedPlans = planData;
@@ -430,9 +415,8 @@
         }, true);
 
         $scope.saveService = function () {
-            ServiceVersion.update(
-                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
-                $scope.updatedService,
+            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId. $stateParams.versionId,
+                $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
@@ -449,7 +433,7 @@
     }
 
     function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces,
-                              toastService, TOAST_TYPES, svcData, ServiceVersion) {
+                              toastService, TOAST_TYPES, svcData) {
         $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
         init();
@@ -534,9 +518,7 @@
         $scope.saveService = function () {
             if($scope.updatedService && changed()){
                 console.log("updatedservice: "+ JSON.stringify($scope.updatedService));
-                ServiceVersion.update(
-                    {orgId: $scope.orgId, svcId: $scope.svcId, versionId: $scope.versionId},
-                    $scope.updatedService,
+                service.updateServiceVersion($scope.orgId, $scope.svcId, $scope.versionId, $scope.updatedService).then(
                     function (reply) {
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Availability for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
@@ -554,20 +536,14 @@
     }
 
     function servicePoliciesCtrl($scope, $modal, $stateParams, policyData, policyConfiguration,
-                                 svcScreenModel, ServiceVersionPolicy) {
+                                 svcScreenModel, service) {
 
         $scope.policies = policyData;
         $scope.policyDetails = policyConfiguration;
         svcScreenModel.updateTab('Policies');
 
         $scope.removePolicy = function (policy) {
-            ServiceVersionPolicy.delete(
-                {
-                    orgId: $stateParams.orgId,
-                    svcId: $stateParams.svcId,
-                    versionId: $stateParams.versionId,
-                    policyId: policy.id
-                },
+            service.removePolicy($stateParams.orgId, $stateParams.svcId, $stateParams.versionId, policy.id).then(
                 function (data) {
                     angular.forEach($scope.policies, function (p, index) {
                         if (policy === p) {
@@ -596,7 +572,7 @@
         };
     }
 
-    function serviceTermsCtrl($scope, $state, svcScreenModel, ServiceTerms, toastService, TOAST_TYPES) {
+    function serviceTermsCtrl($scope, $state, svcScreenModel, toastService, TOAST_TYPES) {
 
         svcScreenModel.updateTab('Terms');
         $scope.htmlTerms = $scope.serviceVersion.service.terms;
@@ -605,10 +581,8 @@
 
         function doSave() {
             var termsObject = {terms: $scope.htmlTerms};
-            ServiceTerms.update({
-                    orgId: $scope.serviceVersion.service.organization.id,
-                    svcId: $scope.serviceVersion.service.id
-                }, termsObject,
+            service.updateTerms($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id,
+                termsObject).then(
                 function (reply) {
                     $state.forceReload();
                     toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -630,7 +604,7 @@
 
     }
 
-    function serviceAnnouncementsCtrl($scope, $modal, $state, svcScreenModel, announcements) {
+    function serviceAnnouncementsCtrl($scope, $modal, svcScreenModel, announcements) {
 
         svcScreenModel.updateTab('Announcements');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
@@ -669,7 +643,7 @@
 
     }
 
-    function serviceSupportCtrl($scope, $modal, $state, svcScreenModel) {
+    function serviceSupportCtrl($scope, $modal, svcScreenModel) {
 
         svcScreenModel.updateTab('Support');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
