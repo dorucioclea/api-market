@@ -575,6 +575,16 @@
                 .state('root.administration.expiration', {
                     url: '/expiration',
                     templateUrl: 'views/partials/administration/expiration.html',
+                    resolve: {
+                        OAuthCentralExpTime: 'OAuthCentralExpTime',
+                        oauthExp: function(OAuthCentralExpTime){
+                            return OAuthCentralExpTime.get().$promise;
+                        },
+                        JWTCentralExpTime: 'JWTCentralExpTime',
+                        jwtExp: function(JWTCentralExpTime){
+                            return JWTCentralExpTime.get().$promise;
+                        }
+                    },
                     controller: 'AdminExpirationCtrl'
                 }) 
 

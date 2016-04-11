@@ -21,11 +21,13 @@
     }
 
 
-    function adminExpirationCtrl($scope) {
+    function adminExpirationCtrl($scope,oauthExp,jwtExp) {
         $scope.adminTab.updateTab('Expiration');
+        console.log(oauthExp);
+        console.log(jwtExp);
         $scope.tokenTimeout = {
-            oauth: 7200,
-            jwt: 7200
+            oauth: oauthExp.expirationTime,
+            jwt: jwtExp.expirationTime
         };
         $scope.updateExpirationTimes = updateExpirationTimes;
 

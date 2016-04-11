@@ -15,7 +15,7 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($modal, $q, $state, toastService, TOAST_TYPES, currentUserModel, Admins, StatusInfo){
+    function adminHelper($modal, $q, $state, toastService, TOAST_TYPES, currentUserModel, Admins, StatusInfo,OAuthCentralExpTime,JWTCentralExpTime){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
@@ -56,8 +56,15 @@
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {
-            // TODO implement update endpoint on backend and return real promise
-            return $q.when('Not implemented yet!');
+            var updateJWTObj = {
+                expirationTime: jwtExpTime
+            };
+            var updateOAuthObj = {
+                expirationTime: oauthExpTime
+            };
+            JWTCentralExpTime.save({},updateJWTObj);
+            OAuthCentralExpTime.save({},updateOAuthObj);
+            return $q.when('nothing special!');
         }
     }
 
