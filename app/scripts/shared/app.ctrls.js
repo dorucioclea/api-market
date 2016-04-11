@@ -247,7 +247,7 @@
     })
 
     .controller('HeadCtrl',
-      function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+      function($scope, $modal, $state, docTester,
                currentUserInfo, currentUserModel, headerModel, orgScreenModel, jwtHelper, loginHelper) {
           $scope.loggedIn = loginHelper.checkLoggedIn();
           $scope.showExplore = headerModel.showExplore;
@@ -290,25 +290,7 @@
           }
 
           function doLogOut() {
-              var logOutObject = {
-                  idpUrl: CONFIG.SECURITY.IDP_URL,
-                  spName: CONFIG.SECURITY.SP_NAME,
-                  username: $scope.User.currentUser.username
-              };
-              LogOutRedirect.save({}, logOutObject, function (reply) {
-                  var string = '';
-                  angular.forEach(reply, function (value) {
-                      if (typeof value === 'string') {
-                          string += value;
-                      }
-                  });
-                  if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                      $state.go('logout');
-                  } else {
-                      window.location.href = string;
-                  }
-                  delete $sessionStorage.jwt;
-              });
+              loginHelper.logout();
           }
 
           function toggleFloatingSidebar() {

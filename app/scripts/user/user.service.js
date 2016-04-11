@@ -63,10 +63,11 @@
     }
 
     // LOGIN HELPER SERVICE
-    function loginHelper($http, $sessionStorage, $state, CONFIG) {
+    function loginHelper($http, $sessionStorage, $state, currentUser, jwtHelper, LogOutRedirect, CONFIG) {
         this.checkLoggedIn = checkLoggedIn;
         this.checkJWTInUrl = checkJWTInUrl;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
+        this.logout = logout;
         this.redirectToLogin = redirectToLogin;
         
         function checkLoggedIn() {
@@ -90,6 +91,33 @@
                 default:
                     return true;
             }
+        }
+
+        function logout() {
+            currentUser.getInfo().then(function (info) {
+                var logOutObject = {
+                    idpUrl: CONFIG.SECURITY.IDP_URL,
+                    spName: CONFIG.SECURITY.SP_NAME,
+                    username: info.username
+                };
+                LogOutRedirect.save({}, logOutObject, function (reply) {
+                    console.log(reply);
+                    var string = '';
+                    angular.forEach(reply, function (value) {
+                        if (typeof value === 'string') {
+                            string += value;
+                        }
+                    });
+                    console.log(string);
+                    if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                        $state.go('logout');
+                    } else {
+                        window.location.href = string;
+                    }
+                    delete $sessionStorage.jwt;
+                });
+            })
+
         }
 
         function redirectToLogin() {
