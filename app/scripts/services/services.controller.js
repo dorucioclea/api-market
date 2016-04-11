@@ -25,6 +25,7 @@
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
         $scope.support = support;
+        $scope.isDeprecated = $scope.serviceVersion.status === 'Deprecated';
         $scope.isReady = $scope.serviceVersion.status === 'Ready';
         $scope.isPublished =
             $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Deprecated';
@@ -33,6 +34,7 @@
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
 
@@ -78,6 +80,21 @@
                 if (result === 'success') {
                     $state.go('root.organization.services', {orgId: $scope.serviceVersion.service.organization.id});
                 }
+            });
+        }
+
+        function confirmDeprecateSvc() {
+            $modal.open({
+                templateUrl: 'views/modals/serviceDeprecate.html',
+                size: 'lg',
+                controller: 'DeprecateServiceCtrl as ctrl',
+                resolve: {
+                    svcVersion: function () {
+                        return $scope.serviceVersion;
+                    }
+                },
+                backdrop: 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
             });
         }
 

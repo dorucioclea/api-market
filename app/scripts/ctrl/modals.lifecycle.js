@@ -257,6 +257,26 @@
                 }
             })
 
+        /// ==== DeprecateService Controller
+        .controller('DeprecateServiceCtrl',
+            function ($scope, $modal,
+                      svcVersion, actionService) {
+
+                $scope.serviceVersion = svcVersion;
+                $scope.modalClose = modalClose;
+                $scope.doDeprecate = doDeprecate;
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function doDeprecate() {
+                    actionService.deprecateService($scope.serviceVersion, true);
+                    $scope.modalClose();
+                }
+
+            })        
+        
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
             function ($scope, $modal,
