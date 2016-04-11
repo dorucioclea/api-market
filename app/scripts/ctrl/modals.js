@@ -611,10 +611,10 @@
 
                     var promise;
                     switch ($scope.selectedMethod) {
-/*                        case 'Email':
+                        case 'Email':
                             searchObj.userMail = email;
                             promise = EmailSearch.save({}, searchObj).$promise;
-                            break;*/
+                            break;
                         case 'Username':
                             searchObj.userName = username;
                             promise = UserSearch.save({}, searchObj).$promise;
