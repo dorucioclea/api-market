@@ -17,7 +17,7 @@
                 $scope.support = support;
                 $scope.isReady = $scope.serviceVersion.status === 'Ready';
                 $scope.isPublished =
-                    $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Retired';
+                    $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Deprecated';
                 $scope.isRetired = $scope.serviceVersion.status === 'Retired';
                 $scope.tabStatus = svcScreenModel.tabStatus;
                 $scope.toasts = toastService.toasts;
