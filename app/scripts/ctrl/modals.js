@@ -642,7 +642,7 @@
                                 'Could not find member to add with email address <b>' + email + '</b>.', true);
                         }
                     }, function (error) {
-                        toastService.createErrorToast(error, 'Encountered error searching for user');
+                        toastService.createErrorToast(error, 'The user must have logged-in once, and entered an email.');
                     });
                 }
 

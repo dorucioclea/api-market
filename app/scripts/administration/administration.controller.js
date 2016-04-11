@@ -65,17 +65,26 @@
         }
     }
 
-    function addAdminCtrl($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES) {
+    function addAdminCtrl($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {
         $scope.addAdmin = addAdmin;
         $scope.username = username;
         $scope.modalClose = modalClose;
         $scope.selectedMethod = 'Username';
         $scope.selectMethod = selectMethod;
 
-        function addAdmin(username) {
+        function addAdmin(username,email) {
             var privuser;
+            var privmail;
             var promise;
+            var userpromise;
             switch ($scope.selectedMethod) {
+                case 'Email':
+                    var searchObj = {
+                        userMail: ''
+                    };
+                    searchObj.userMail = email;
+                    userpromise = EmailSearch.save({}, searchObj).$promise;
+                    break;
                 case 'Username':
                     privuser = username;
                     promise = AdminUser.save({id:privuser},function(reply){
@@ -87,6 +96,21 @@
 
                     break;
             }
+            userpromise.then(function (user) {
+                if (user) {
+                    AdminUser.save({id:user.username},function(reply){
+                        $scope.modalClose();
+                        $state.forceReload();
+                        toastService.createToast(TOAST_TYPES.SUCCESS,
+                            'Granted <b>' + user.username + '</b> with admin priviledges', true);
+                    },function(err){toastService.createErrorToast(error, 'Failed to grand admin privileges.');});
+                } else {
+                    toastService.createToast(TOAST_TYPES.WARNING,
+                        'Could not find member to add with email address <b>' + email + '</b>.', true);
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'The user must have logged-in once, and entered an email.');
+            });
         }
 
         function modalClose() {
