@@ -113,10 +113,14 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        // CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function () {
-                            return {};
-                            // return CurrentUserInfo.get().$promise;
+                        loginHelper: 'loginHelper',
+                        currentUser: 'currentUser',
+                        currentUserInfo: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
+                            else {
+                                if (loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
+                                else return {};
+                            }
                         }
                     },
                     controller: 'HeadCtrl'
