@@ -161,7 +161,7 @@
     }
 
 
-    function serviceImplCtrl($scope, $state, toastService, TOAST_TYPES, REGEX, svcScreenModel, svcData) {
+    function serviceImplCtrl($scope, $state, toastService, TOAST_TYPES, REGEX, svcScreenModel, service, svcData) {
 
         $scope.serviceVersion = svcData;
         $scope.updatedService = {
