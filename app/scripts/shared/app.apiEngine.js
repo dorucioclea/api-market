@@ -206,6 +206,9 @@
         .factory('ServiceOAuthToken', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/oauth2/token');
         })
+        .factory('RequestMembership', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/request-membership');
+        })
 
         /// ========== CURRENTUSER ======================================================================
 
