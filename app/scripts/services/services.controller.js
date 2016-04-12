@@ -432,7 +432,7 @@
         }, true);
 
         $scope.saveService = function () {
-            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId. $stateParams.versionId,
+            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId, $stateParams.versionId,
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -500,7 +500,7 @@
                 });
                 $scope.updatedService.visibility = mktVisibilities;
             }else $scope.updatedService.visibility= {};
-        };
+        }
 
         $scope.reset = function () {
             init();
