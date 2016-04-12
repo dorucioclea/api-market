@@ -36,9 +36,7 @@
               });
           });
 
-          //TODO Add function to verify if we are in publisher mode when the app starts or is refreshed
-          $scope.publisherMode = true;
-          //End
+          $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
 
           //Make currentUserModel available to all child controllers
           $scope.User = currentUserModel;
@@ -249,7 +247,7 @@
     })
 
     .controller('HeadCtrl',
-      function($scope, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+      function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
@@ -262,6 +260,28 @@
           $scope.toApis = toApis;
           $scope.toAccessDenied = toAccessDenied;
           $scope.toMarketDash = toMarketDash;
+
+          checkIsEmailPresent();
+
+          function checkIsEmailPresent() {
+              if (!$scope.User.currentUser.email) {
+                  console.log('no email!');
+
+                  $modal.open({
+                      templateUrl: 'views/modals/emailPrompt.html',
+                      // size: 'lg',
+                      controller: 'EmailPromptCtrl as ctrl',
+                      backdrop: 'static',
+                      keyboard: false,
+                      resolve: {
+                          currentInfo: function() {
+                              return $scope.User.currentUser;
+                          }
+                      },
+                      windowClass: $scope.modalAnim	// Animation Class put here.
+                  });
+              }
+          }
 
           function doSearch(query) {
               $state.go('root.search', {query: query});
@@ -316,7 +336,32 @@
               $scope.showSearch = headerModel.showSearch;
           });
 
-      });
+      })
+
+        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
+            $scope.updateEmail = updateEmail;
+
+            function updateEmail(newEmail) {
+                var updateObject = {
+                    fullName: currentInfo.fullName,
+                    company: currentInfo.company,
+                    location: currentInfo.location,
+                    bio: currentInfo.bio,
+                    website: currentInfo.website,
+                    email: newEmail,
+                    pic: currentInfo.base64pic
+                };
+
+                CurrentUserInfo.update({}, updateObject, function (reply) {
+                    currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
+                        toastService.createToast('success', 'Email address updated!', true);
+                        $modalInstance.close('Updated');
+                    });
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');
+                });
+            }
+        });
 
     // #end
 })(window.angular);

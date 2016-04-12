@@ -18,6 +18,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li class="clickable" ng-click="selectMethod('Username')"><a>Username</a></li>
+                                <li class="clickable" ng-click="selectMethod('Email')"><a>Email</a></li>
                             </ul>
                         </div>
                     </div>
@@ -25,6 +26,8 @@
                     <input type="email" name="email" class="form-control" ng-model="ctrl.email" validate-on-timeout placeholder="Email address of the prospective member" ng-class="{'hidden': selectedMethod === 'Username'}" required>
                 </div>
                 <p class="text-danger xsmall" ng-show="memberForm.username.$error.required && selectedMethod === 'Username' && memberForm.username.$timedout" ng-if="memberForm.username.$touched">Please provide the username you would like to add.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.required && selectedMethod === 'Email' && memberForm.email.$timedout" ng-if="memberForm.email.$touched">Please provide the users email address.</p>
+                <p class="text-danger xsmall" ng-show="memberForm.email.$error.email && memberForm.email.$timedout">This is not a valid email address. Please check for errors.</p>
             </div>
         </div>
     </form>
@@ -32,6 +35,6 @@
 <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
     <button class="btn btn-primary"
-            ng-disabled="(memberForm.username.$invalid)"
-            ng-click="addAdmin(ctrl.username)">Add</button>
+            ng-disabled="(memberForm.email.$invalid && memberForm.username.$invalid)"
+            ng-click="addAdmin(ctrl.username,ctrl.email)">Add</button>
 </div>

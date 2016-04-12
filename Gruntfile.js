@@ -293,6 +293,10 @@ module.exports = function (grunt) {
       docker: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://192.168.99.100/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -302,7 +306,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_docker-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -321,6 +325,10 @@ module.exports = function (grunt) {
       local: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -330,7 +338,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_local-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -349,6 +357,10 @@ module.exports = function (grunt) {
       dev: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -358,11 +370,11 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
@@ -377,6 +389,10 @@ module.exports = function (grunt) {
       devInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -386,7 +402,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -405,6 +421,10 @@ module.exports = function (grunt) {
       devExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -414,7 +434,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tdev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -433,6 +453,10 @@ module.exports = function (grunt) {
       t1tprod: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -442,7 +466,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_t1tprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -461,6 +485,10 @@ module.exports = function (grunt) {
       digiDevPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -470,7 +498,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -489,6 +517,10 @@ module.exports = function (grunt) {
       digiDevMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -498,7 +530,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -517,6 +549,10 @@ module.exports = function (grunt) {
       digiDevMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -526,7 +562,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -545,6 +581,10 @@ module.exports = function (grunt) {
       digiDevMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -554,7 +594,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digidev-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -573,6 +613,10 @@ module.exports = function (grunt) {
       digiAccPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -582,7 +626,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -601,6 +645,10 @@ module.exports = function (grunt) {
       digiAccMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -610,7 +658,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -629,6 +677,10 @@ module.exports = function (grunt) {
       digiAccMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -638,7 +690,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -657,6 +709,10 @@ module.exports = function (grunt) {
       digiAccMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -666,7 +722,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiacc-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -685,6 +741,10 @@ module.exports = function (grunt) {
       digiProdPub: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -694,7 +754,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -713,6 +773,10 @@ module.exports = function (grunt) {
       digiProdMkt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -722,7 +786,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -741,6 +805,10 @@ module.exports = function (grunt) {
       digiProdMktInt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -750,7 +818,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -769,6 +837,10 @@ module.exports = function (grunt) {
       digiProdMktExt: {
         constants: {
           'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false
+            },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
@@ -778,7 +850,7 @@ module.exports = function (grunt) {
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session-'
+              'SESSION_STORAGE': 'apim_session_digiprod-'
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
@@ -809,26 +881,26 @@ module.exports = function (grunt) {
     // Replace //
     // ======= //
     replace: {
-      publisherOn: {
-        src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
-        overwrite: true,
-        replacements: [
-          {
-            from: /\$scope.publisherMode = false;/g,
-            to: '$scope.publisherMode = true;'
-          }
-        ]
-      },
-      publisherOff: {
-        src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
-        overwrite: true,
-        replacements: [
-          {
-            from: /\$scope.publisherMode = true;/g,
-            to: '$scope.publisherMode = false;'
-          },
-        ]
-      },
+      // publisherOn: {
+      //   src: ['<%= config.app %>/scripts/shared/app.ctrls.js'],
+      //   overwrite: true,
+      //   replacements: [
+      //     {
+      //       from: /\$scope.publisherMode = false;/g,
+      //       to: '$scope.publisherMode = true;'
+      //     }
+      //   ]
+      // },
+      // publisherOff: {
+      //   src: ['<%= config.app %>/styles/main.less', '<%= config.app %>/scripts/shared/app.ctrls.js'],
+      //   overwrite: true,
+      //   replacements: [
+      //     {
+      //       from: /\$scope.publisherMode = true;/g,
+      //       to: '$scope.publisherMode = false;'
+      //     },
+      //   ]
+      // },
       mkt: {
         src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
@@ -843,10 +915,6 @@ module.exports = function (grunt) {
         src: ['<%= config.app %>/styles/main.less'],
         overwrite: true,
         replacements: [
-          {
-            from: /\$scope.publisherMode = false;/g,
-            to: '$scope.publisherMode = true;'
-          },
           {
             from: '@import "theme-t1t.less";',
             to: '@import "theme-override.less";'
@@ -895,6 +963,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'connect:livereload',
       'ngconstant:dev',
+      'less:dist',
       'watch'
     ]);
   });
@@ -907,6 +976,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'connect:livereload',
       'ngconstant:local',
+      'less:dist',
       'watch'
     ]);
   });
@@ -947,7 +1017,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:devInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -959,8 +1028,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('mkt-ext', [
@@ -968,7 +1036,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:devExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -980,8 +1047,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('t1tProdPub', [
@@ -1005,7 +1071,6 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:t1tprod',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1016,8 +1081,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:publisherOn'
+    'compress'
   ]);
 
   grunt.registerTask('digiDevPub', [
@@ -1044,7 +1108,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1056,8 +1119,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt-int', [
@@ -1065,7 +1127,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1077,8 +1138,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiDevMkt-ext', [
@@ -1086,7 +1146,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiDevMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1098,8 +1157,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccPub', [
@@ -1126,7 +1184,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1138,8 +1195,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt-int', [
@@ -1147,7 +1203,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1159,8 +1214,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiAccMkt-ext', [
@@ -1168,7 +1222,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiAccMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1180,8 +1233,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdPub', [
@@ -1208,7 +1260,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMkt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1220,8 +1271,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdMkt-int', [
@@ -1229,7 +1279,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMktInt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1241,8 +1290,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('digiProdMkt-ext', [
@@ -1250,7 +1298,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:digiProdMktExt',
     'replace:mkt',
-    'replace:publisherOff',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1262,8 +1309,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t'
   ]);
 
   grunt.registerTask('testBuildPub', [
@@ -1292,7 +1338,6 @@ module.exports = function (grunt) {
     'wiredep',
     'ngconstant:dev',
     'replace:mkt',
-    'replace:publisherOff',
     'connect:test',
     'karma',
     'less:dist',
@@ -1306,8 +1351,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'compress',
-    'replace:t1t',
-    'replace:publisherOn'
+    'replace:t1t' 
   ]);
 
   grunt.registerTask('test', [

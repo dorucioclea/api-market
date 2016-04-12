@@ -42,12 +42,13 @@
             'app.ctrl.modals.lifecycle',
             'app.ctrl.modals.support',
             'app.ctrl.api',
-            'app.ctrl.service',
             'app.ctrl.application',
             'app.ctrl.organization',
-            'app.ctrl.administration',
             'app.ctrl.plan',
-            'app.ctrl.user'
+            'app.ctrl.user',
+            'app.administration',
+            'app.organizations',
+            'app.service'
 
         ])
 
@@ -297,10 +298,9 @@
                     url: '/org/:orgId/api/:svcId/:versionId',
                     templateUrl: 'views/api.html',
                     resolve: {
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
-                            return ServiceVersion.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        service: 'service',
+                        svcData: function (service, organizationId, serviceId, versionId) {
+                            return service.getVersion(organizationId, serviceId, versionId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
@@ -571,11 +571,32 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
+                .state('root.administration.expiration', {
+                    url: '/expiration',
+                    templateUrl: 'views/partials/administration/expiration.html',
+                    resolve: {
+                        OAuthCentralExpTime: 'OAuthCentralExpTime',
+                        oauthExp: function(OAuthCentralExpTime){
+                            return OAuthCentralExpTime.get().$promise;
+                        },
+                        JWTCentralExpTime: 'JWTCentralExpTime',
+                        jwtExp: function(JWTCentralExpTime){
+                            return JWTCentralExpTime.get().$promise;
+                        }
+                    },
+                    controller: 'AdminExpirationCtrl'
+                }) 
 
                 // Admin Status View
                 .state('root.administration.status', {
                     url: '/status',
                     templateUrl: 'views/partials/administration/status.html',
+                    resolve: {
+                        adminHelper: 'adminHelper',
+                        status: function (adminHelper) {
+                            return adminHelper.getStatus();
+                        }
+                    },
                     controller: 'AdminStatusCtrl'
                 })
 
@@ -1026,7 +1047,7 @@
                         return null;
                     }
                     // Skip authentication for oauth requests
-                    if (config.url.indexOf('oauth') > -1 ) {
+                    if (config.url.indexOf('/oauth2/') > -1 ) {
                         return null;
                     }
 

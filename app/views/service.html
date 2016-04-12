@@ -12,7 +12,8 @@
             </alert>
         </div>
         <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc()">Publish</button>
-        <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc()">Retire</button>
+        <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && !isDeprecated && User.isAuthorizedFor('svcEdit')" ng-click="confirmDeprecateSvc()">Deprecate</button>
+        <button class="btn btn-line-purple btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc()">Retire</button>
         <button class="btn btn-line-danger btn-sm" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
     </overview-header>
 

@@ -2,7 +2,7 @@
     <ol class="breadcrumb breadcrumb-small">
         <li>Marketplace</li>
         <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
-        <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
+        <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.friendlyName}}</a></li>
     </ol>
     <div class="toast toast-bottomRight">
         <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-6 text-primary">
                             <h4><i class="fa fa-cogs"></i>
-                                {{orgScreenModel.organization.name}} {{$state.is('root.market-dash.members') ? 'Members' : 'Applications'}} Overview
+                                {{orgScreenModel.organization.friendlyName}} {{$state.is('root.market-dash.members') ? 'Members' : 'Applications'}} Overview
                             </h4>
                         </div>
                         <div class="col-sm-6">
@@ -75,7 +75,7 @@
 
 
                             <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0 || (applications | filter:{name:searchText}).length === 0" style="overflow: visible;">
-                                <p><a class="clickable" ng-click="expandAll()">Expand all</a> / <a class="clickable" ng-click="collapseAll()">Collapse all</a></p>
+                                <p><a class="clickable" ng-click="expandAll()">Expand all</a> | <a class="clickable" ng-click="collapseAll()">Collapse all</a></p>
                                 <table class="table table-bordered table-condensed">
                                     <thead>
                                     <tr>

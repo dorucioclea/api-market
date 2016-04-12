@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="../bower_components/textAngular/dist/textAngular.css" />
   <link rel="stylesheet" href="../bower_components/ladda/dist/ladda.min.css" />
   <link rel="stylesheet" href="../bower_components/angular-ui-switch/angular-ui-switch.css" />
+  <link rel="stylesheet" href="../bower_components/sweetalert/dist/sweetalert.css" />
   <!-- endbower -->
   <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
   <!-- endbuild -->
@@ -92,6 +93,7 @@
 <script src="../bower_components/ladda/dist/ladda.min.js"></script>
 <script src="../bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
 <script src="../bower_components/angular-ui-switch/angular-ui-switch.js"></script>
+<script src="../bower_components/sweetalert/dist/sweetalert.min.js"></script>
 <!-- endbower -->
 <script src="scripts/plugins/backbone.fix.js"></script>
 <script src="../bower_components/highlight/src/highlight.js"></script>
@@ -117,12 +119,21 @@
 <script src="scripts/ctrl/modals.lifecycle.js"></script>
 <script src="scripts/ctrl/modals.support.js"></script>
 <script src="scripts/ctrl/api.js"></script>
-<script src="scripts/ctrl/service.js"></script>
 <script src="scripts/ctrl/application.js"></script>
 <script src="scripts/ctrl/organization.js"></script>
 <script src="scripts/ctrl/plan.js"></script>
 <script src="scripts/ctrl/user.js"></script>
-<script src="scripts/ctrl/administration.js"></script>
+
+<script src="scripts/administration/administration.module.js"></script>
+<script src="scripts/administration/administration.controller.js"></script>
+<script src="scripts/administration/administration.service.js"></script>
+
+<script src="scripts/organizations/organizations.module.js"></script>
+<script src="scripts/organizations/organizations.service.js"></script>
+
+<script src="scripts/services/services.module.js"></script>
+<script src="scripts/services/services.controller.js"></script>
+<script src="scripts/services/services.service.js"></script>
 <!-- endbuild -->
 
 </body>

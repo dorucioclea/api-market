@@ -1,7 +1,7 @@
 <div class="page page-api page-ui-notifications">
     <div class="toast toast-bottomRight">
       <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-        <div ng-bind-html="toast.msg">Test Toast</div>
+        <div ng-bind-html="toast.msg"></div>
       </alert>
     </div>
   <div class="page-wrap">
@@ -19,14 +19,15 @@
                   <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
             </div>
             <div class="col-sm-3 text-bold pull-right text-center">
-              <h3><label class="label label-primary text-nowrap text-ellipsis">Version: {{serviceVersion.version}}</label></h3>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()">Create Contract</button>
+              <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
+              <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
+              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">Create Contract</button>
             </div>
             <div class="col-sm-12 text-primary">
-              <span class="text-light fa fa-user">&nbsp;{{serviceVersion.createdBy}}</span>
-              <a href="{{serviceVersion.onlinedoc}}" class="ml10 fa fa-globe" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0">&nbsp;{{serviceVersion.onlinedoc}}</a>
-              <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0">&nbsp;{{serviceVersion.service.categories.join(', ')}}</i>
-              <span class="ml10 text-light fa fa-clock-o">&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}</span>
+              <span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}
+              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10 fa fa-globe" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"></a>&nbsp;{{serviceVersion.onlinedoc}}
+              <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}
+              <span class="ml10 text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}
             </div>
             <div class="col-sm-12">
               <hr>

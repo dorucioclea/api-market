@@ -9,7 +9,7 @@
     <li class="active" ng-show="type === 'svc'"><a ui-sref="root.organization.services({orgId: entityVersion.service.organization.id})">{{entityVersion.service.organization.name}}</a></li>
     <li class="active" ng-show="type === 'svc'"><a ui-sref="root.service({orgId: entityVersion.service.organization.id, svcId: entityVersion.service.id})">{{entityVersion.service.name}}</a></li>
 
-    <li class="active" ng-show="type === 'app'"><a ui-sref="root.market-dash({orgId: entityVersion.application.organization.id})">{{entityVersion.application.organization.name}}</a></li>
+    <li class="active" ng-show="type === 'app'"><a ui-sref="root.market-dash({orgId: entityVersion.application.organization.id})">{{entityVersion.application.organization.friendlyName}}</a></li>
     <li class="active" ng-show="type === 'app'"><a ui-sref="root.application({orgId: entityVersion.application.organization.id, appId: entityVersion.application.id})">{{entityVersion.application.name}}</a></li>
   </ol>
   <div class="row">

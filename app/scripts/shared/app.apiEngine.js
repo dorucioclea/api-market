@@ -206,6 +206,9 @@
         .factory('ServiceOAuthToken', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/oauth2/token');
         })
+        .factory('RequestMembership', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/request-membership');
+        })
 
         /// ========== CURRENTUSER ======================================================================
 
@@ -339,6 +342,12 @@
                     method: 'POST'
                 }
             });
+        })
+        /// ========== OAUTH ============================================================================
+        .factory('OAuthCentralExpTime', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/oauth/expiration-time');//post body with expirationTime (integer in seconds)
+        })
+        .factory('JWTCentralExpTime', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/jwt/expiration-time'); //post body with expirationTime (integer in seconds)
         });
-
 })();

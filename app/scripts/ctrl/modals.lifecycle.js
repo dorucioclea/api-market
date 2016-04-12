@@ -257,6 +257,26 @@
                 }
             })
 
+        /// ==== DeprecateService Controller
+        .controller('DeprecateServiceCtrl',
+            function ($scope, $modal,
+                      svcVersion, actionService) {
+
+                $scope.serviceVersion = svcVersion;
+                $scope.modalClose = modalClose;
+                $scope.doDeprecate = doDeprecate;
+
+                function modalClose() {
+                    $scope.$close();	// this method is associated with $modal scope which is this.
+                }
+
+                function doDeprecate() {
+                    actionService.deprecateService($scope.serviceVersion, true);
+                    $scope.modalClose();
+                }
+
+            })        
+        
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
             function ($scope, $modal,
@@ -280,19 +300,31 @@
         /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
             function ($scope, $modal,
-                      svcVersion, actionService) {
+                      svcVersion, actionService, toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
                 $scope.modalClose = modalClose;
+                $scope.doDeprecate = doDeprecate;
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
 
-                function doRetire() {
-                    actionService.retireService($scope.serviceVersion, true);
+                function doDeprecate() {
+                    actionService.deprecateService($scope.serviceVersion, true);
                     $scope.modalClose();
+                }
+
+                function doRetire() {
+                    actionService.retireService($scope.serviceVersion, true).then(function () {
+                        $scope.modalClose();
+                    }, function (err) {
+                        if (err.status === 409) { // BE returns 409 Conflict in case of existing contracts
+                            toastService.createToast(TOAST_TYPES.WARNING, '<b>This service has existing contracts!</b>', true);
+                            $scope.hasExistingContracts = true;
+                        }
+                    });
                 }
 
             })
@@ -410,14 +442,22 @@
         /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
             function ($scope, $modal, $state, publisherMode,
-                      currentUserModel, toastService, REGEX, TOAST_TYPES, Organization) {
+                      currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, orgService, Organization) {
 
                 $scope.createOrganization = createOrganization;
                 $scope.modalClose = modalClose;
                 $scope.regex = REGEX;
+                $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
 
                 function createOrganization(org) {
                     org.name = org.name.trim();
+
+                    if (!org.friendlyName || org.friendlyName.length === 0) {
+                        org.friendlyName = org.name;
+                    } else {
+                        org.friendlyName = org.friendlyName.trim();
+                    }
+
                     Organization.save(org, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();

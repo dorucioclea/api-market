@@ -10,6 +10,14 @@
                 this.createAction = function (entityVersion, type) {
                     var action = {};
                     switch (type) {
+                        case ACTIONS.DEPRECATE:
+                            action = {
+                                type: ACTIONS.DEPRECATE,
+                                organizationId: entityVersion.service.organization.id,
+                                entityId: entityVersion.service.id,
+                                entityVersion: entityVersion.version
+                            };
+                            return action;
                         case ACTIONS.LOCK:
                             action = {
                                 type: ACTIONS.LOCK,
@@ -64,7 +72,7 @@
                 };
 
                 var doAction = function (action, shouldReload, type, msg) {
-                    Action.save(action, function (reply) {
+                    return Action.save(action, function () {
                         if (shouldReload) {
                             $state.forceReload();
                         }
@@ -72,27 +80,33 @@
                             toastService.createToast(type, msg, true);
                         }
                     }, function (error) {
-                        toastService.createToast(TOAST_TYPES.DANGER, 'Oops! An error has occurred :(', true);
-                    });
+                        if (!(error.status === 409)) toastService.createToast(TOAST_TYPES.DANGER, 'Oops! An error has occurred :(', true);
+                    }).$promise;
                 };
 
                 this.publishService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
+                    return doAction(this.createAction(serviceVersion, ACTIONS.PUBLISH),
                         shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
                 this.retireService = function (serviceVersion, shouldReload) {
                     var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was retired.';
-                    doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
+                    return doAction(this.createAction(serviceVersion, ACTIONS.RETIRE),
                         shouldReload, TOAST_TYPES.WARNING, msg);
+                };
+
+                this.deprecateService = function (serviceVersion, shouldReload) {
+                    var msg = '<b>' + serviceVersion.service.name + ' ' + serviceVersion.version + '</b> was deprecated.';
+                    return doAction(this.createAction(serviceVersion, ACTIONS.DEPRECATE),
+                        shouldReload, TOAST_TYPES.INFO, msg);
                 };
 
                 this.lockPlan = function (planVersion, shouldReload) {
                     var msg = '<b>' + planVersion.plan.name + ' ' + planVersion.version +
                         '</b> was successfully locked!';
-                    doAction(this.createAction(planVersion, ACTIONS.LOCK),
+                    return doAction(this.createAction(planVersion, ACTIONS.LOCK),
                         shouldReload, TOAST_TYPES.SUCCESS, msg);
                 };
 
@@ -101,7 +115,7 @@
                     console.log(this.createAction(applicationVersion, ACTIONS.REGISTER));
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was successfully published!';
-                    doAction(this.createAction(
+                    return doAction(this.createAction(
                         applicationVersion, ACTIONS.REGISTER),
                         shouldReload, TOAST_TYPES.SUCCESS,
                         msg);
@@ -110,7 +124,7 @@
                 this.retireApp = function (applicationVersion, shouldReload) {
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was retired.';
-                    doAction(this.createAction(
+                    return doAction(this.createAction(
                         applicationVersion, ACTIONS.UNREGISTER),
                         shouldReload,
                         TOAST_TYPES.WARNING, msg);
@@ -388,6 +402,9 @@
                 var errorMsg = '<b>' + heading + '</b>';
 
                 switch (error.status) {
+                    case 404:
+                        toastType = TOAST_TYPES.WARNING;
+                        break;
                     case 409: //CONFLICT
                         toastType = TOAST_TYPES.WARNING;
                         errorMsg += '<br>This name is already in use!<br>Please try again with a different name.';
@@ -438,44 +455,6 @@
                 Organization.get({id: id}, function (reply) {
                     orgScreenModel.updateOrganization(reply);
                 });
-            };
-        })
-
-        // SERVICE DOCUMENTATION TAB HELPER
-        .service('svcTab', function () {
-
-            this.selectedTab = 'Documentation';
-
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-        })
-
-        // SERVICE SCREEN MODEL
-        .service('svcScreenModel', function () {
-            this.selectedTab = 'Overview';
-            this.service = {};
-            this.tabStatus = {
-                hasImplementation: false,
-                hasDefinition: false
-            };
-
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-            this.updateService = function (newSvc) {
-                this.service = newSvc;
-                this.tabStatus.hasImplementation = newSvc.endpoint !== null;
-            };
-
-            this.setHasImplementation = function (bool) {
-                this.tabStatus.hasImplementation = bool;
-            };
-
-            this.setHasDefinition = function (bool) {
-                this.tabStatus.hasDefinition = bool;
             };
         })
 
@@ -765,6 +744,7 @@
                 }
             })
 
+        // DOC DOWNLOADER
         .service('docDownloader', function (toastService, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
 
             this.fetch = fetch;
@@ -796,39 +776,6 @@
 
             function fetchWithServiceVersion(svcVersion) {
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
-            }
-        })
-        //ADMIN SERVICE
-        .service('adminHelper', function($modal, $state, toastService, TOAST_TYPES, currentUserModel, Admins){
-            this.addAdmin = addAdmin;
-            this.removeAdmin = removeAdmin;
-            function addAdmin(username){
-                $modal.open({
-                    templateUrl: 'views/modals/organizationAddAdmin.html',
-                    size: 'lg',
-                    controller: 'AddOrgAdminCtrl as ctrl',
-                    resolve: {
-                        username: function() {
-                            return username;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
-            }
-            function removeAdmin(admin){
-                $modal.open({
-                    templateUrl: 'views/modals/organizationRemoveAdmin.html',
-                    size: 'lg',
-                    controller: 'RemoveOrgAdminCtrl as ctrl',
-                    resolve: {
-                        admin: function () {
-                            return admin;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
             }
         })
 

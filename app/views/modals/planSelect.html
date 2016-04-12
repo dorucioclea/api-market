@@ -10,7 +10,7 @@
             Select your organization<span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left">
-            <li ng-repeat="org in appOrgs" ng-click="selectOrg(org)"><a>{{org.name}}</a></li>
+            <li ng-repeat="org in appOrgs" ng-click="selectOrg(org)"><a>{{org.friendlyName}}</a></li>
         </ul>
     </div>
 </div>
@@ -35,7 +35,7 @@
                 <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
             </ul>
         </div>
-        <span>in organization <b>{{orgScreenModel.organization.name}}</b>.</span>
+        <span>in organization <b>{{orgScreenModel.organization.friendlyName}}</b>.</span>
     </div>
 </div>
 

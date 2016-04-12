@@ -42,8 +42,8 @@
                 <div class="organization-item" ng-repeat="org in orgs">
                   <div class="text-primary">
                     <i class="fa fa-shield icon"></i>
-                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="!publisherMode">{{org.name}}</a>
-                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="publisherMode">{{org.name}}</a>
+                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="!publisherMode">{{orgService.name(org)}}</a>
+                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="publisherMode">{{orgService.name(org)}}</a>
                   </div>
                   <div class="text-light text-nowrap text-ellipsis">
                     {{org.description}}
