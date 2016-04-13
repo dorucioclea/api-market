@@ -340,6 +340,7 @@
 
         .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
             $scope.updateEmail = updateEmail;
+            $scope.username = currentInfo.fullName;
 
             function updateEmail(newEmail) {
                 var updateObject = {
