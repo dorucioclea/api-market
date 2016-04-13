@@ -331,10 +331,10 @@
             };
 
             this.readFile = function ($file) {
-                if ($file.size > 10000) {
+                if ($file.size > 100000) {
                     image.isValid = false;
                     alertService.addAlert(ALERT_TYPES.DANGER,
-                        '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
+                        '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 100KB are accepted.');
                 } else {
                     image.isValid = true;
                     var reader = new FileReader();
