@@ -118,8 +118,7 @@
                         currentUserInfo: function (currentUser, loginHelper) {
                             if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
                             else {
-                                if (loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
-                                else return {};
+                                if (!loginHelper.checkJWTInUrl()) return {};
                             }
                         }
                     },
@@ -1022,7 +1021,6 @@
                     if (loginHelper.checkLoginRequiredForState(toState)) {
                         console.log('login required!');
                         if (!loginHelper.checkLoggedIn()) {
-                            event.preventDefault();
                             loginHelper.redirectToLogin();
                         }
                     }

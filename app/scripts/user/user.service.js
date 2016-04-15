@@ -69,13 +69,21 @@
         this.checkLoginRequiredForState = checkLoginRequiredForState;
         this.logout = logout;
         this.redirectToLogin = redirectToLogin;
-        
+
         function checkLoggedIn() {
             return !!$sessionStorage.jwt;
         }
 
         function checkJWTInUrl() {
-            return getParameterByName(CONFIG.BASE.JWT_HEADER_NAME).length > 0;
+            var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
+            if (jwt.length > 0) {
+                $sessionStorage.jwt = jwt;
+                delete $sessionStorage.loginInProgress;
+                window.location.href = $sessionStorage.apimredurl;
+                delete $sessionStorage.apimredurl;
+            }
+            
+            return jwt.length > 0;
         }
 
         function checkLoginRequiredForState(currentState) {
@@ -115,19 +123,21 @@
                         window.location.href = string;
                     }
                     delete $sessionStorage.jwt;
+                    delete $sessionStorage.apimredurl;
+                    delete $sessionStorage.loginInProgress;
                 });
             })
 
         }
 
         function redirectToLogin() {
-            var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-            var clientUrl = window.location.origin;
-            if (!jwt) {
+            if (!$sessionStorage.loginInProgress) {
+                $sessionStorage.loginInProgress = true;
+                if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
                 var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                 var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                     CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                    '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
+                    '", "clientAppRedirect": "' + $sessionStorage.apimredurl + '", "token": "' +
                     CONFIG.SECURITY.CLIENT_TOKEN + '"}';
                 //TODO redirect to correct page!
 
@@ -148,9 +158,6 @@
                     console.log('Request failed with error code: ', error.status);
                     console.log(error);
                 });
-            } else {
-                $sessionStorage.jwt = jwt;
-                window.location.href = clientUrl;
             }
         }
 
