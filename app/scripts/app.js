@@ -48,7 +48,8 @@
             'app.ctrl.user',
             'app.administration',
             'app.organizations',
-            'app.service'
+            'app.service',
+            'app.user'
 
         ])
 
@@ -67,10 +68,11 @@
         })
 
         // UI-Router states
-        .config(function ($stateProvider, $urlRouterProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             $urlRouterProvider.otherwise('/');
-            $urlRouterProvider.when('/', '/my-organizations');
+            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
+            else $urlRouterProvider.when('/', '/apis/grid');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
@@ -111,9 +113,13 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function (CurrentUserInfo) {
-                            return CurrentUserInfo.get().$promise;
+                        loginHelper: 'loginHelper',
+                        currentUser: 'currentUser',
+                        currentUserInfo: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
+                            else {
+                                if (!loginHelper.checkJWTInUrl()) return {};
+                            }
                         }
                     },
                     controller: 'HeadCtrl'
@@ -585,7 +591,7 @@
                         }
                     },
                     controller: 'AdminExpirationCtrl'
-                }) 
+                })
 
                 // Admin Status View
                 .state('root.administration.status', {
@@ -1007,7 +1013,18 @@
                 });
         })
 
-        .run(function($state, $rootScope) {
+        .run(function($state, $rootScope, loginHelper) {
+
+            $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams, options){
+                    if (loginHelper.checkLoginRequiredForState(toState)) {
+                        console.log('login required!');
+                        if (!loginHelper.checkLoggedIn()) {
+                            loginHelper.redirectToLogin();
+                        }
+                    }
+                });
+
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
@@ -1042,10 +1059,12 @@
             jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
                 'config', 'CONFIG',
                 function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
+
                     // Skip authentication for any requests ending in .html
                     if (config.url.substr(config.url.length - 5) == '.html') {
                         return null;
                     }
+
                     // Skip authentication for oauth requests
                     if (config.url.indexOf('/oauth2/') > -1 ) {
                         return null;
@@ -1081,9 +1100,8 @@
                                 return $sessionStorage.jwt;
                             }
                         }
-                    } else {
-                        loginHelper.redirectToLogin();
                     }
+                    
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');
