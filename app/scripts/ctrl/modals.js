@@ -477,8 +477,8 @@
 /// ==== EditImgCtrl Controller
         .controller('EditImgCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
-                      imageService, toastService, TOAST_TYPES, appScreenModel, currentUser, currentUserModel, svcScreenModel,
-                      Application, Service) {
+                      imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
+                      Application, CurrentUserInfo, Service) {
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({
@@ -563,11 +563,13 @@
                                 });
                             break;
                         case 'User':
-                            currentUser.update(updateObject).then(function (success) {
+                            CurrentUserInfo.update({},
+                                updateObject,
+                                function (reply) {
                                     handleResult(true, 'Profile pictured saved!');
                                 }, function (error) {
-                                handleResult(false, 'Could not update Profile Picture.', error);
-                            });
+                                    handleResult(false, 'Could not update Profile Picture.', error);
+                                });
                             break;
                     }
                 }

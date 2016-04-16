@@ -48,8 +48,7 @@
             'app.ctrl.user',
             'app.administration',
             'app.organizations',
-            'app.service',
-            'app.user'
+            'app.service'
 
         ])
 
@@ -68,11 +67,10 @@
         })
 
         // UI-Router states
-        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/');
-            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
-            else $urlRouterProvider.when('/', '/apis/grid');
+            $urlRouterProvider.when('/', '/my-organizations');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
@@ -113,13 +111,9 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        loginHelper: 'loginHelper',
-                        currentUser: 'currentUser',
-                        currentUserInfo: function (currentUser, loginHelper) {
-                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
-                            else {
-                                if (!loginHelper.checkJWTInUrl()) return {};
-                            }
+                        CurrentUserInfo: 'CurrentUserInfo',
+                        currentUser: function (CurrentUserInfo) {
+                            return CurrentUserInfo.get().$promise;
                         }
                     },
                     controller: 'HeadCtrl'
@@ -591,7 +585,7 @@
                         }
                     },
                     controller: 'AdminExpirationCtrl'
-                })
+                }) 
 
                 // Admin Status View
                 .state('root.administration.status', {
@@ -1013,18 +1007,7 @@
                 });
         })
 
-        .run(function($state, $rootScope, loginHelper) {
-
-            $rootScope.$on('$stateChangeStart',
-                function(event, toState, toParams, fromState, fromParams, options){
-                    if (loginHelper.checkLoginRequiredForState(toState)) {
-                        console.log('login required!');
-                        if (!loginHelper.checkLoggedIn()) {
-                            loginHelper.redirectToLogin();
-                        }
-                    }
-                });
-
+        .run(function($state, $rootScope) {
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
@@ -1059,12 +1042,10 @@
             jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
                 'config', 'CONFIG',
                 function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
-
                     // Skip authentication for any requests ending in .html
                     if (config.url.substr(config.url.length - 5) == '.html') {
                         return null;
                     }
-
                     // Skip authentication for oauth requests
                     if (config.url.indexOf('/oauth2/') > -1 ) {
                         return null;
@@ -1100,8 +1081,9 @@
                                 return $sessionStorage.jwt;
                             }
                         }
+                    } else {
+                        loginHelper.redirectToLogin();
                     }
-                    
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');

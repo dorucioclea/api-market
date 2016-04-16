@@ -5,7 +5,7 @@
 
         /// ==== User Controller
         .controller('UserCtrl',
-        function ($scope, headerModel, userScreenModel, toastService, currentUser) {
+        function ($scope, headerModel, userScreenModel, toastService, CurrentUserInfo) {
 
             init();
 
@@ -60,7 +60,7 @@
                     email: details.email,
                     pic: details.base64pic
                 };
-                currentUser.update(updateObject).then(function () {
+                CurrentUserInfo.update({}, updateObject, function (reply) {
                     $scope.User.updateCurrentUserInfo($scope.User);
                     toastService.createToast('info', 'Profile updated!', true);
                 }, function (error) {

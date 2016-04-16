@@ -17,7 +17,7 @@
   <li ng-show="showExplore">
     <button ng-click="toApis()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
   </li>
-  <li ng-show="showDash && loggedIn">
+  <li ng-show="showDash">
     <button ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>
   </li>
 
@@ -25,11 +25,8 @@
 
 
 <ul class="list-unstyled right-elems">
-  <li ng-if="!loggedIn" class="pr20">
-    <button ng-click="toLogin()" class="btn btn-tag-primary btn-header"><i class="ion ion-log-in"></i>Login</button>
-  </li>
   <!-- profile drop -->
-  <li class="profile-drop dropdown" dropdown ng-if="loggedIn">
+  <li class="profile-drop dropdown" dropdown>
     <a href dropdown-toggle>
       <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
       <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">

@@ -247,26 +247,24 @@
     })
 
     .controller('HeadCtrl',
-      function($scope, $modal, $state, docTester,
-               currentUserInfo, currentUserModel, headerModel, orgScreenModel, jwtHelper, loginHelper) {
-          $scope.loggedIn = loginHelper.checkLoggedIn();
+      function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+               currentUser, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
           $scope.showExplore = headerModel.showExplore;
           $scope.showDash = headerModel.showDash;
           $scope.currentUserModel = currentUserModel;
           $scope.orgScreenModel = orgScreenModel;
-          currentUserModel.setCurrentUserInfo(currentUserInfo);
+          currentUserModel.setCurrentUserInfo(currentUser);
           $scope.doSearch = doSearch;
           $scope.doLogOut = doLogOut;
           $scope.toggleFloatingSidebar = toggleFloatingSidebar;
           $scope.toApis = toApis;
           $scope.toAccessDenied = toAccessDenied;
-          $scope.toLogin = toLogin;
           $scope.toMarketDash = toMarketDash;
 
           checkIsEmailPresent();
 
           function checkIsEmailPresent() {
-              if (loginHelper.checkLoggedIn() && !$scope.User.currentUser.email) {
+              if (!$scope.User.currentUser.email) {
                   console.log('no email!');
 
                   $modal.open({
@@ -290,7 +288,25 @@
           }
 
           function doLogOut() {
-              loginHelper.logout();
+              var logOutObject = {
+                  idpUrl: CONFIG.SECURITY.IDP_URL,
+                  spName: CONFIG.SECURITY.SP_NAME,
+                  username: $scope.User.currentUser.username
+              };
+              LogOutRedirect.save({}, logOutObject, function (reply) {
+                  var string = '';
+                  angular.forEach(reply, function (value) {
+                      if (typeof value === 'string') {
+                          string += value;
+                      }
+                  });
+                  if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                      $state.go('logout');
+                  } else {
+                      window.location.href = string;
+                  }
+                  delete $sessionStorage.jwt;
+              });
           }
 
           function toggleFloatingSidebar() {
@@ -304,10 +320,6 @@
 
           function toAccessDenied(){
               $state.go('accessdenied');
-          }
-
-          function toLogin() {
-              loginHelper.redirectToLogin();
           }
 
           function toMarketDash() {
@@ -326,7 +338,7 @@
 
       })
 
-        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, currentUser) {
+        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
             $scope.updateEmail = updateEmail;
 
             function updateEmail(newEmail) {
@@ -340,7 +352,7 @@
                     pic: currentInfo.base64pic
                 };
 
-                currentUser.update(updateObject).then(function (reply) {
+                CurrentUserInfo.update({}, updateObject, function (reply) {
                     currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
                         $modalInstance.close('Updated');
