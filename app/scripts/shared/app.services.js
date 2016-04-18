@@ -331,10 +331,10 @@
             };
 
             this.readFile = function ($file) {
-                if ($file.size > 10000) {
+                if ($file.size > 100000) {
                     image.isValid = false;
                     alertService.addAlert(ALERT_TYPES.DANGER,
-                        '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 10KB are accepted.');
+                        '<b>Maximum filesize exceeded!</b><br>Only filesizes of maximum 100KB are accepted.');
                 } else {
                     image.isValid = true;
                     var reader = new FileReader();
@@ -872,17 +872,66 @@
 
         // LOGIN HELPER SERVICE
         .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
+            this.checkLoggedIn = checkLoggedIn;
+            this.checkJWTInUrl = checkJWTInUrl;
+            this.logout = logout;
             this.redirectToLogin = redirectToLogin;
 
-            function redirectToLogin() {
+            function checkLoggedIn() {
+                return !!$sessionStorage.jwt;
+            }
+
+            function checkJWTInUrl() {
                 var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-                var clientUrl = window.location.origin;
-                if (!jwt) {
+                if (jwt.length > 0) {
+                    $sessionStorage.jwt = jwt;
+                    delete $sessionStorage.loginInProgress;
+                    window.location.href = $sessionStorage.apimredurl;
+                    delete $sessionStorage.apimredurl;
+                }
+
+                return jwt.length > 0;
+            }
+
+            function logout() {
+                currentUser.getInfo().then(function (info) {
+                    var logOutObject = {
+                        idpUrl: CONFIG.SECURITY.IDP_URL,
+                        spName: CONFIG.SECURITY.SP_NAME,
+                        username: info.username
+                    };
+                    LogOutRedirect.save({}, logOutObject, function (reply) {
+                        console.log(reply);
+                        var string = '';
+                        angular.forEach(reply, function (value) {
+                            if (typeof value === 'string') {
+                                string += value;
+                            }
+                        });
+                        console.log(string);
+                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                            $state.go('logout');
+                        } else {
+                            window.location.href = string;
+                        }
+                        delete $sessionStorage.jwt;
+                        delete $sessionStorage.apimredurl;
+                        delete $sessionStorage.loginInProgress;
+                    });
+                })
+
+            }
+
+            function redirectToLogin() {
+                if (!$sessionStorage.loginInProgress) {
+                    $sessionStorage.loginInProgress = true;
+                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                        '", "clientAppRedirect": "' + clientUrl + '", "token": "' +
+                        '", "clientAppRedirect": "' + $sessionStorage.apimredurl + '", "token": "' +
                         CONFIG.SECURITY.CLIENT_TOKEN + '"}';
+                    //TODO redirect to correct page!
 
                     return $http({
                         method: 'POST',
@@ -901,9 +950,6 @@
                         console.log('Request failed with error code: ', error.status);
                         console.log(error);
                     });
-                } else {
-                    $sessionStorage.jwt = jwt;
-                    window.location.href = clientUrl;
                 }
             }
 
@@ -913,6 +959,7 @@
                     results = regex.exec(location.search);
                 return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
             }
+
         })
 
         // USER SCREEN MODEL

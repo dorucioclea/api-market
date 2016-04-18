@@ -585,7 +585,7 @@
                         }
                     },
                     controller: 'AdminExpirationCtrl'
-                }) 
+                })
 
                 // Admin Status View
                 .state('root.administration.status', {
@@ -1007,13 +1007,14 @@
                 });
         })
 
-        .run(function($state, $rootScope) {
+        .run(function($state, $rootScope, loginHelper) {
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
+                            if (!loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
                             break;
                         default:
                             $state.get('error').error = error;
@@ -1081,8 +1082,6 @@
                                 return $sessionStorage.jwt;
                             }
                         }
-                    } else {
-                        loginHelper.redirectToLogin();
                     }
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');

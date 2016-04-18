@@ -161,7 +161,7 @@
     }
 
 
-    function serviceImplCtrl($scope, $state, toastService, TOAST_TYPES, REGEX, svcScreenModel, svcData) {
+    function serviceImplCtrl($scope, $state, $stateParams, toastService, TOAST_TYPES, REGEX, svcScreenModel, service, svcData) {
 
         $scope.serviceVersion = svcData;
         $scope.updatedService = {
@@ -209,7 +209,7 @@
         };
 
         $scope.saveService = function () {
-            service.updateServiceVersion(orgId, svcId, versionId, $scope.updatedService).then(
+            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId, $stateParams.versionId, $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Endpoint for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
@@ -326,7 +326,7 @@
         }, true);
     }
 
-    function servicePlansCtrl($scope, $state, $stateParams, $q, planData, svcScreenModel,
+    function servicePlansCtrl($scope, $state, $stateParams, $q, planData, svcScreenModel, service,
                               toastService, TOAST_TYPES, PlanVersion) {
 
         svcScreenModel.updateTab('Plans');
@@ -432,7 +432,7 @@
         }, true);
 
         $scope.saveService = function () {
-            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId. $stateParams.versionId,
+            service.updateServiceVersion($stateParams.orgId, $stateParams.svcId, $stateParams.versionId,
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -449,7 +449,7 @@
 
     }
 
-    function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces,
+    function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces, service,
                               toastService, TOAST_TYPES, svcData) {
         $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
@@ -500,7 +500,7 @@
                 });
                 $scope.updatedService.visibility = mktVisibilities;
             }else $scope.updatedService.visibility= {};
-        };
+        }
 
         $scope.reset = function () {
             init();
@@ -589,7 +589,7 @@
         };
     }
 
-    function serviceTermsCtrl($scope, $state, svcScreenModel, toastService, TOAST_TYPES) {
+    function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
 
         svcScreenModel.updateTab('Terms');
         $scope.htmlTerms = $scope.serviceVersion.service.terms;
