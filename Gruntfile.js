@@ -374,7 +374,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
@@ -406,7 +406,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
@@ -438,7 +438,7 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
