@@ -19,6 +19,7 @@
                 $scope.addPolicy = addPolicy;
                 $scope.selectPolicy = selectPolicy;
                 $scope.type = $state.current.data.type;
+                $scope.policiesAvailable = true;
 
                 init();
 
@@ -30,6 +31,8 @@
                                     planId: $stateParams.planId,
                                     versionId: $stateParams.versionId},
                                 function (reply) {
+                                    if(reply.length === (policyDefs.filter(function(pol){return pol.scopePlan;})).length){$scope.policiesAvailable = false;}
+                                    else $scope.policiesAvailable = true;
                                     removeUsedPolicies(reply);
                                 });
                             break;
@@ -39,6 +42,8 @@
                                     svcId: $stateParams.svcId,
                                     versionId: $stateParams.versionId},
                                 function(reply) {
+                                    if(reply.length === (policyDefs.filter(function(pol){return pol.scopeService;})).length){$scope.policiesAvailable = false;}
+                                    else $scope.policiesAvailable = true;
                                     removeUsedPolicies(reply);
                                 });
                             break;
