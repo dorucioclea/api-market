@@ -15,7 +15,7 @@
         <label class="col-md-3 control-label">API Endpoint</label>
         <div class="col-md-7">
           <input id="endpoint" ng-model="updatedService.endpoint" class="form-control" type="url"  name="implementation" placeholder="ex. http://path.to/your/service"
-                 ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')" ng-pattern="implementationRegex" validate-on-timeout>
+                 ng-disabled="!User.isAuthorizedFor('svcEdit')" ng-pattern="implementationRegex" validate-on-timeout>
           <p class="text-danger xsmall" ng-show="(impForm.implementation.$error.url || impForm.implementation.$error.pattern) && impForm.implementation.$timedout">This is not a valid endpoint url. Please check for errors.</p>
         </div>
       </div>
@@ -52,4 +52,8 @@
   <hr>
   <button ng-disabled="!isDirty" ng-click="reset()" class="btn btn-default btn-sm">Cancel</button>
   <button ng-disabled="!isDirty || !isValid" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
+</div>
+<div class="col-sm-12 mt20" ng-if="isPublished && User.isAuthorizedFor('svcEdit')">
+  <hr>
+  <button ng-disabled="!isDirty || !isValid" ng-click="saveService()" class="btn btn-primary btn-sm">Update</button>
 </div>
