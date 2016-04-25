@@ -35,12 +35,28 @@
 
                         <div class="col-sm-12" ng-show="orgs.length > 0">
                             <div class="col-sm-12">
-                                <p>Found {{orgs.length}} organizations.</p>
+                                <p>You are a member of {{orgs.length}} organizations.</p>
+                            </div>
+
+                            <form role="form" class="form-horizontal">
+                                <div class="col-sm-6 form-group">
+                                    <div class="col-sm-10 input-group">
+                                        <input type="text" class="form-control" ng-model="searchText" placeholder="Filter by organization name...">
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="col-sm-12" ng-show="orgs.length > 0 && (orgs | filter:{name:searchText}).length == 0">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1 well">
+                                        No organizations found matching your filter criteria - please try searching for something different.
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-sm-12 mt20">
                                 <table class="table table-striped text-center">
-                                    <tr ng-repeat="org in orgs">
+                                    <tr ng-repeat="org in orgs | filter:{name: searchText}">
                                         <td style="width: 60%; border-left: 1px solid #eee">
                                             <div class="col-sm-12 text-left">
                                                 <h4 class="mb0">
@@ -68,7 +84,7 @@
                                         </td>
                                         <td style="width: 20%; border-right: 1px solid #eee">
                                             <div class="actions">
-                                                <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this organization.">
+                                                <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are a member of this organization.">
                                                     <i class="fa fa-users fa-stack-1x text-muted-light"></i>
                                                     <i class="fa fa-check fa-stack-2x text-success-light"></i>
                                                 </i>
