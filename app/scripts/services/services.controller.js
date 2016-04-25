@@ -391,6 +391,11 @@
             $scope.updatedService.plans = getSelectedPlans();
         }, true);
 
+        $scope.$watch('manualManagement', function (newValue) {
+            $scope.isDirty = true;
+        }, true);
+
+
         $scope.reset = function () {
             for (var i = 0; i < lockedPlans.length; i++) {
                 lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
