@@ -1,60 +1,86 @@
 <div class="page page-ui-notifications">
-  <div class="toast toast-bottomRight">
-    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-      <div ng-bind-html="toast.msg">Test Toast</div>
-    </alert>
-  </div>
-  <div class="col-sm-10 col-sm-offset-1">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="col-sm-12">
-          <div class="col-sm-12">
-            <h3 class="text-primary">My Organizations</h3>
-          </div>
-          <div class="col-sm-9">
-            <p class="text-light" ng-if="publisherMode">This page provides an overview of organizations of which you are a member. You can create new plans and services within these organizations.</p>
-            <p class="text-light" ng-if="!publisherMode">This page provides an overview of organizations of which you are a member. You can create new applications within these organizations.</p>
-          </div>
-          <div class="col-sm-3">
-            <button class="btn btn-line-primary pull-right" ng-click="modalNewOrganization()">New Organization</button>
-          </div>
-          <div class="col-sm-12">
-            <hr>
-          </div>
-        </div>
-
-        <div class="col-sm-12 browse-items">
-          <div class="col-sm-12">
-
-            <div class="col-sm-12" ng-hide="orgs.length > 0">
-              <div class="col-sm-10 col-sm-offset-1 well">
-                <p>No organizations found. Maybe you are not a member of any organization yet?</p>
-                <p>You can find organizations to join <a ui-sref="root.organizations">by clicking here</a> or create a new one using the button above!</p>
-              </div>
-            </div>
-
-            <div class="col-sm-12" ng-show="orgs.length > 0">
-              <div class="col-sm-12">
-                <p>Found {{orgs.length}} organizations.</p>
-              </div>
-
-              <div class="col-sm-12">
-                <div class="organization-item" ng-repeat="org in orgs">
-                  <div class="text-primary">
-                    <i class="fa fa-shield icon"></i>
-                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="!publisherMode">{{orgService.name(org)}}</a>
-                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="publisherMode">{{orgService.name(org)}}</a>
-                  </div>
-                  <div class="text-light text-nowrap text-ellipsis">
-                    {{org.description}}
-                  </div>
-                  <a class="is-member" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this Organization."></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="toast toast-bottomRight">
+        <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+            <div ng-bind-html="toast.msg">Test Toast</div>
+        </alert>
     </div>
-  </div>
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <h3 class="text-primary">My Organizations</h3>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-light" ng-if="publisherMode">This page provides an overview of organizations of which you are a member. You can create new plans and services within these organizations.</p>
+                        <p class="text-light" ng-if="!publisherMode">This page provides an overview of organizations of which you are a member. You can create new applications within these organizations.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-line-primary pull-right" ng-click="modalNewOrganization()">New Organization</button>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 browse-items">
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-12" ng-hide="orgs.length > 0">
+                            <div class="col-sm-10 col-sm-offset-1 well">
+                                <p>No organizations found. Maybe you are not a member of any organization yet?</p>
+                                <p>You can find organizations to join <a ui-sref="root.organizations">by clicking here</a> or create a new one using the button above!</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" ng-show="orgs.length > 0">
+                            <div class="col-sm-12">
+                                <p>Found {{orgs.length}} organizations.</p>
+                            </div>
+
+                            <div class="col-sm-12 mt20">
+                                <table class="table table-striped text-center">
+                                    <tr ng-repeat="org in orgs">
+                                        <td style="width: 60%; border-left: 1px solid #eee">
+                                            <div class="col-sm-12 text-left">
+                                                <h4 class="mb0">
+                                                    <!--<i class="fa fa-shield icon text-primary"></i>-->
+                                                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="!publisherMode">{{orgService.name(org)}}</a>
+                                                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="publisherMode">{{orgService.name(org)}}</a>
+                                                </h4>
+                                                <p class="text-light">{{org.description}}</p>
+                                            </div>
+                                            <div class="col-sm-12 text-muted">
+                                                <div class="col-sm-4">
+                                                    <h4 class="mb0">2</h4>
+                                                    <p class="text-light">Plans</p>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h4 class="mb0">4</h4><p class="text-light">Services</p>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h4 class="mb0">5</h4>
+                                                    <p class="text-light">Members</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%">
+                                        </td>
+                                        <td style="width: 20%; border-right: 1px solid #eee">
+                                            <div class="actions">
+                                                <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this organization.">
+                                                    <i class="fa fa-users fa-stack-1x text-muted-light"></i>
+                                                    <i class="fa fa-check fa-stack-2x text-success-light"></i>
+                                                </i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
