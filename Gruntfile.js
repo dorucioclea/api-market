@@ -305,6 +305,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://192.168.99.100/dev/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=username%20name%20avatar%20email%20phone&redirect_uri=localhost:9000&lng=nl'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_docker-'
@@ -337,6 +340,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -371,6 +377,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_t1tdev-'
@@ -403,6 +412,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -437,6 +449,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_t1tdev-'
@@ -469,6 +484,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://apim.t1t.be/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -503,6 +521,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_digidev-'
@@ -535,6 +556,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -569,6 +593,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_digidev-'
@@ -601,6 +628,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
@@ -734,6 +764,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengineauth/v1'
             },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-a.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_digiacc-'
@@ -865,6 +898,9 @@ module.exports = function (grunt) {
             },
             'AUTH': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
