@@ -1,6 +1,6 @@
 <div class="col-sm-12">
     <table class="table table-striped">
-        <tr ng-repeat="request in pendingRequests">
+        <tr ng-repeat="request in filteredRequests">
             <td style="width: 10%; padding: 10px;">
                 <img class="member-pic img-circle" ng-src="data:image/png;base64,{{request.userDetails.base64pic}}" ng-if="request.userDetails.base64pic.length > 0">
                 <img class="member-pic img-cirlce" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">

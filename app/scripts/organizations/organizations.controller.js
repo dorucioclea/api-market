@@ -158,7 +158,7 @@
         }
     }
 
-    function pendingMembersCtrl($scope, $stateParams, roleData, orgScreenModel) {
+    function pendingMembersCtrl($scope, $stateParams, roleData, filterFilter, orgScreenModel) {
         $scope.orgId = $stateParams.orgId;
         orgScreenModel.updateTab('Pending');
     }
