@@ -1,4 +1,4 @@
-<div class="page" ng-controller="OrganizationsCtrl">
+<div class="page">
 
     <div class="col-sm-10 col-sm-offset-1">
         <div class="panel panel-default">
@@ -41,50 +41,50 @@
 
                             <div class="col-sm-12">
                                 <apim-org-table orgs="orgs" member-orgs="memberOrgs" publisher-mode="publisherMode"></apim-org-table>
-                                <table class="table table-striped text-center">
-                                    <tr ng-repeat="org in orgs">
-                                        <td style="width: 60%; border-left: 1px solid #eee">
-                                            <div class="col-sm-12 text-left">
-                                                <h4 class="mb0">
-                                                    <!--<i class="fa fa-shield icon text-primary"></i>-->
-                                                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="isMember(org) && !publisherMode">{{orgService.name(org)}}</a>
-                                                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="isMember(org) && publisherMode">{{orgService.name(org)}}</a>
-                                                </h4>
-                                                <p class="text-light">{{org.description}}</p>
-                                            </div>
-                                            <div class="col-sm-12 text-muted">
-                                                <div class="col-sm-4" ng-if="publisherMode">
-                                                    <h4 class="mb0">{{org.numPlans ? org.numPlans : '0' }}</h4>
-                                                    <p class="text-light">Plans</p>
-                                                </div>
-                                                <div class="col-sm-4" ng-if="publisherMode">
-                                                    <h4 class="mb0">{{org.numServices ? org.numServices : '0' }}</h4><p class="text-light">Services</p>
-                                                </div>
-                                                <div class="col-sm-4" ng-if="!publisherMode">
-                                                    <h4 class="mb0">{{org.numApps ? org.numApps : '0' }}</h4><p class="text-light">Apps</p>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h4>
-                                                    <p class="text-light">Members</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 20%">
-                                        </td>
-                                        <td style="width: 20%; border-right: 1px solid #eee">
-                                            <div class="actions" ng-hide="isMember(org)">
-                                                <button ng-if="!org.organizationPrivate" class="btn btn-line-primary btn-sm" ng-click="requestMembership(org)">Request Membership</button>
-                                                <i ng-if="org.organizationPrivate" class="fa fa-lock fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="This is a private Organization. You cannot request to join."></i>
-                                            </div>
-                                            <div class="actions" ng-show="isMember(org)">
-                                                <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this organization.">
-                                                    <i class="fa fa-users fa-stack-1x text-muted-light"></i>
-                                                    <i class="fa fa-check fa-stack-2x text-success-light"></i>
-                                                </i>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <!--<table class="table table-striped text-center">-->
+                                    <!--<tr ng-repeat="org in orgs">-->
+                                        <!--<td style="width: 60%; border-left: 1px solid #eee">-->
+                                            <!--<div class="col-sm-12 text-left">-->
+                                                <!--<h4 class="mb0">-->
+                                                    <!--&lt;!&ndash;<i class="fa fa-shield icon text-primary"></i>&ndash;&gt;-->
+                                                    <!--<a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="isMember(org) && !publisherMode">{{orgService.name(org)}}</a>-->
+                                                    <!--<a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="isMember(org) && publisherMode">{{orgService.name(org)}}</a>-->
+                                                <!--</h4>-->
+                                                <!--<p class="text-light">{{org.description}}</p>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-sm-12 text-muted">-->
+                                                <!--<div class="col-sm-4" ng-if="publisherMode">-->
+                                                    <!--<h4 class="mb0">{{org.numPlans ? org.numPlans : '0' }}</h4>-->
+                                                    <!--<p class="text-light">Plans</p>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-4" ng-if="publisherMode">-->
+                                                    <!--<h4 class="mb0">{{org.numServices ? org.numServices : '0' }}</h4><p class="text-light">Services</p>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-4" ng-if="!publisherMode">-->
+                                                    <!--<h4 class="mb0">{{org.numApps ? org.numApps : '0' }}</h4><p class="text-light">Apps</p>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-4">-->
+                                                    <!--<h4 class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h4>-->
+                                                    <!--<p class="text-light">Members</p>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</td>-->
+                                        <!--<td style="width: 20%">-->
+                                        <!--</td>-->
+                                        <!--<td style="width: 20%; border-right: 1px solid #eee">-->
+                                            <!--<div class="actions" ng-hide="isMember(org)">-->
+                                                <!--<button ng-if="!org.organizationPrivate" class="btn btn-line-primary btn-sm" ng-click="requestMembership(org)">Request Membership</button>-->
+                                                <!--<i ng-if="org.organizationPrivate" class="fa fa-lock fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="This is a private Organization. You cannot request to join."></i>-->
+                                            <!--</div>-->
+                                            <!--<div class="actions" ng-show="isMember(org)">-->
+                                                <!--<i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this organization.">-->
+                                                    <!--<i class="fa fa-users fa-stack-1x text-muted-light"></i>-->
+                                                    <!--<i class="fa fa-check fa-stack-2x text-success-light"></i>-->
+                                                <!--</i>-->
+                                            <!--</div>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
                             </div>
                         </div>
                     </div>

@@ -15,18 +15,22 @@
             },
             templateUrl: 'views/templates/organization/organizations-table.html',
             controller: function ($scope, orgService, toastService, RequestMembership) {
-                console.log($scope.orgs);
                 $scope.orgService = orgService;
                 $scope.isMember = isMember;
                 $scope.requestMembership = requestMembership;
 
 
                 function isMember(org) {
-                    return $scope.memberOrgs.indexOf(org) > -1;
+                    for (var i = 0; i < $scope.memberOrgs.length; i++) {
+                        if ($scope.memberOrgs[i].id === org.id) {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
 
                 function requestMembership(org){
-                    RequestMembership.save({orgId:org.id},{}, function (reply) {
+                    RequestMembership.save({orgId: org.id},{}, function (reply) {
                         toastService.createToast(TOAST_TYPES.INFO, 'Mail notification has been sent to the organization owners. Wait for approval.', true);
                     });
                 }

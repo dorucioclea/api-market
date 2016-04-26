@@ -53,7 +53,6 @@
 
             $scope.doSearch = doSearch;
             $scope.orgService = orgService;
-
             init();
 
             function init() {

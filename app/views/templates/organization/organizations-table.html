@@ -1,17 +1,18 @@
 <table class="table table-striped text-center">
     <tr ng-repeat="org in orgs">
-        <td style="width: 60%; border-left: 1px solid #eee; padding: 5px;">
+        <td style="width: 80%; border-left: 1px solid #eee; padding: 5px;">
             <div class="col-sm-12 text-left">
-                <h4 class="mb5">
+                <h4 class="mb0">
                     <!--<i class="fa fa-shield icon text-primary"></i>-->
                     <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="isMember(org) && !publisherMode">{{orgService.name(org)}}</a>
                     <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="isMember(org) && publisherMode">{{orgService.name(org)}}</a>
                     <span class="xsmall text-muted ml10 mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span> Public</span>
                     <span class="xsmall text-muted ml10 mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span> Private</span>
                 </h4>
+                <hr class="mt10 mb5">
                 <p class="text-light small mb5">{{org.description}}</span></p>
             </div>
-            <div class="col-sm-12 text-muted">
+            <div class="col-sm-10 text-muted">
                 <div class="col-sm-4" ng-if="publisherMode">
                     <h6 class="mb0">{{org.numPlans ? org.numPlans : '0' }}</h6>
                     <p class="xsmall">Plans</p>
@@ -30,9 +31,7 @@
                 </div>
             </div>
         </td>
-        <td style="width: 20%">
-        </td>
-        <td style="width: 20%; border-right: 1px solid #eee">
+        <td style="width: 20%; border-right: 1px solid #eee;">
             <div class="actions" ng-hide="isMember(org)">
                 <button ng-if="!org.organizationPrivate" class="btn btn-line-primary btn-sm" ng-click="requestMembership(org)">Request Membership</button>
                 <i ng-if="org.organizationPrivate" class="fa fa-lock fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="This is a private Organization. You cannot request to join."></i>
