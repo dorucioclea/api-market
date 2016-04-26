@@ -220,9 +220,9 @@
                     url: '/members',
                     templateUrl: '/views/partials/market/members.html',
                     resolve: {
-                        Member: 'Member',
-                        memberData: function (Member, organizationId) {
-                            return Member.query({orgId: organizationId}).$promise;
+                        memberService: 'memberService',
+                        memberData: function (memberService, organizationId) {
+                            return memberService.getMembersForOrg(organizationId);
                         },
                         Users: 'Users',
                         memberDetails: function ($q, memberData, Users) {
@@ -244,6 +244,18 @@
                         Roles: 'Roles',
                         roleData: function (Roles) {
                             return Roles.query().$promise;
+                        },
+                        requests: function ($stateParams, memberService) {
+                            return memberService.getPendingRequests($stateParams.orgId);
+                        },
+                        pendingMemberDetails: function ($q, requests, memberService) {
+                            var promises = [];
+                            requests.forEach(function (req) {
+                                promises.push(memberService.getMemberDetails(req.requestOrigin).then(function (results) {
+                                    req.userDetails = results;
+                                }));
+                            });
+                            return $q.all(promises);
                         }
                     },
                     controller: 'MarketMembersCtrl'

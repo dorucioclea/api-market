@@ -18,6 +18,10 @@
             'WARNING': 'warning',
             'DANGER': 'danger'
         })
+        
+        .constant('EVENTS', {
+            'MEMBER_LIST_UPDATED': 'member-list-updated'
+        })
 
         .constant('PERMISSIONS', {
             'APP': {'ADMIN': 'appAdmin', 'EDIT': 'appEdit', 'VIEW': 'appView'},

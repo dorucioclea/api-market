@@ -19,6 +19,7 @@
                 $scope.applicationVersions = appVersions;
                 $scope.applicationVersionDetails = appVersionDetails;
                 $scope.applicationContracts = appContracts;
+                $scope.orgId = $stateParams.orgId;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.collapseAll = collapseAll;
@@ -157,18 +158,31 @@
 
         /// ==== Marketplace Members Controller
         .controller('MarketMembersCtrl',
-            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, roleData, orgScreenModel,
-                      toastService, TOAST_TYPES, memberHelper) {
+            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
+                      toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
                 $scope.memberDetails = memberDetails;
+                $scope.pendingRequests = requests;
                 $scope.removeMember = removeMember;
                 $scope.roles = roleData;
                 $scope.transferOwnership = transferOwnership;
 
                 orgScreenModel.updateTab('Members');
                 orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+
+                $scope.$on(EVENTS.MEMBER_LIST_UPDATED, function () {
+                    memberService.getMembersForOrg($scope.orgId).then(function (members) {
+                        members.forEach(function (member) {
+                            if (!$scope.memberDetails[member.userId]) memberService.getMemberDetails(member.userId)
+                                .then(function (memberDetails) {
+                                    $scope.memberDetails[memberDetails.username] = memberDetails;
+                                })
+                        });
+                        $scope.members = members;
+                    })
+                });
 
                 function addMember() {
                     memberHelper.addMember(orgScreenModel.organization, $scope.roles);

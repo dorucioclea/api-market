@@ -14,7 +14,7 @@
                 filter: '='
             },
             templateUrl: 'views/templates/members/pending-list.html',
-            controller: function ($scope, filterFilter, memberService, toastService) {
+            controller: function ($scope, $rootScope, filterFilter, memberService, toastService, EVENTS) {
                 $scope.grantMembership = grantMembership;
                 $scope.rejectRequest = rejectRequest;
 
@@ -31,7 +31,8 @@
                     memberService.grantMembership($scope.orgId, request, roleId).then(function () {
                         $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
                         applyFilter();
-                        toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + role + '</b>.');
+                        toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + roleId + '</b>.');
+                        $rootScope.$broadcast(EVENTS.MEMBER_LIST_UPDATED);
                     }, function (error) {
                         toastService.createErrorToast(error, 'Could not grant membership');
                     })

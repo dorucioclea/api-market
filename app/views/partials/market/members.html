@@ -76,4 +76,12 @@
             <hr>
         </div>
     </div>
+
+    <div class="col-sm-12 mt30" ng-if="User.isAuthorizedFor('orgAdmin') && pendingRequests.length > 0">
+        <div class="col-sm-12">
+            <h4>Pending membership requests <span class="badge badge-primary">{{pendingRequests.length}}</span></h4>
+        </div>
+        <apim-pending-member-list pending-requests="pendingRequests" org-id="{{orgId}}"></apim-pending-member-list>
+        <apim-pending-member-list></apim-pending-member-list>
+    </div>
 </div><!-- end ngRepeat: member in filteredMembers -->

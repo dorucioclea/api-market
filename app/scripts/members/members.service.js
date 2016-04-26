@@ -95,8 +95,9 @@
         }
     }
 
-    function memberService($q, Users) {
+    function memberService($q, Member, Users) {
         this.getMemberDetails = getMemberDetails;
+        this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
         this.grantMembership = grantMembership;
         this.rejectMembershipRequest = rejectMembershipRequest;
@@ -104,6 +105,10 @@
 
         function getMemberDetails(userId) {
             return Users.get({ userId: userId }).$promise;
+        }
+        
+        function getMembersForOrg(orgId) {
+            return Member.query({orgId: orgId}).$promise;
         }
 
         function getPendingRequests(orgId) {
