@@ -604,6 +604,16 @@
                 .state('root.organizations', {
                     url: '/organizations',
                     templateUrl: 'views/organizations.html',
+                    resolve: {
+                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
+                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
+                        appOrgData: function (CurrentUserAppOrgs) {
+                            return CurrentUserAppOrgs.query().$promise;
+                        },
+                        svcOrgData: function (CurrentUserSvcOrgs) {
+                            return CurrentUserSvcOrgs.query().$promise;
+                        }
+                    },
                     controller: 'OrganizationsCtrl'
                 })
 

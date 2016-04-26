@@ -55,46 +55,7 @@
                             </div>
 
                             <div class="col-sm-12 mt20">
-                                <table class="table table-striped text-center">
-                                    <tr ng-repeat="org in orgs | filter:{name: searchText}">
-                                        <td style="width: 60%; border-left: 1px solid #eee">
-                                            <div class="col-sm-12 text-left">
-                                                <h4 class="mb0">
-                                                    <!--<i class="fa fa-shield icon text-primary"></i>-->
-                                                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="!publisherMode">{{orgService.name(org)}}</a>
-                                                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="publisherMode">{{orgService.name(org)}}</a>
-                                                </h4>
-                                                <p class="text-light">{{org.description}}</p>
-                                            </div>
-                                            <div class="col-sm-12 text-muted">
-                                                <div class="col-sm-4" ng-if="publisherMode">
-                                                    <h4 class="mb0">{{org.numPlans ? org.numPlans : '0' }}</h4>
-                                                    <p class="text-light">Plans</p>
-                                                </div>
-                                                <div class="col-sm-4" ng-if="publisherMode">
-                                                    <h4 class="mb0">{{org.numServices ? org.numServices : '0' }}</h4><p class="text-light">Services</p>
-                                                </div>
-                                                <div class="col-sm-4" ng-if="!publisherMode">
-                                                    <h4 class="mb0">{{org.numApps ? org.numApps : '0' }}</h4><p class="text-light">Apps</p>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h4>
-                                                    <p class="text-light">Members</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 20%">
-                                        </td>
-                                        <td style="width: 20%; border-right: 1px solid #eee">
-                                            <div class="actions">
-                                                <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are a member of this organization.">
-                                                    <i class="fa fa-users fa-stack-1x text-muted-light"></i>
-                                                    <i class="fa fa-check fa-stack-2x text-success-light"></i>
-                                                </i>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <apim-org-table orgs="filteredOrgs" member-orgs="memberOrgs" publisher-mode="publisherMode"></apim-org-table>
                             </div>
                         </div>
                     </div>
