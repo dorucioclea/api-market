@@ -43,10 +43,10 @@
             'app.ctrl.modals.support',
             'app.ctrl.api',
             'app.ctrl.application',
-            'app.ctrl.organization',
             'app.ctrl.plan',
             'app.ctrl.user',
             'app.administration',
+            'app.members',
             'app.organizations',
             'app.service'
 
@@ -457,6 +457,19 @@
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
+                        },
+                        memberService: 'memberService',
+                        requests: function ($stateParams, memberService) {
+                            return memberService.getPendingRequests($stateParams.orgId);
+                        },
+                        memberDetails: function ($q, requests, memberService) {
+                            var promises = [];
+                            requests.forEach(function (req) {
+                                promises.push(memberService.getMemberDetails(req.requestOrigin).then(function (results) {
+                                    req.userDetails = results;
+                                }));
+                            });
+                            return $q.all(promises);
                         }
                     },
                     controller: 'OrganizationCtrl'
@@ -551,6 +564,18 @@
                         }
                     },
                     controller: 'MembersCtrl'
+                })                
+                // Pending Members View
+                .state('root.organization.pending', {
+                    url: '/pending',
+                    templateUrl: 'views/partials/organization/pending.html',
+                    resolve: {
+                        Roles: 'Roles',
+                        roleData: function (Roles) {
+                            return Roles.query().$promise;
+                        }
+                    },
+                    controller: 'PendingCtrl'
                 })
 
                 // ADMINISTRATION OVERVIEW PAGE =================================================
