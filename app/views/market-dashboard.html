@@ -6,7 +6,7 @@
     </ol>
     <div class="toast toast-bottomRight">
         <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-            <div ng-bind-html="toast.msg">Test Toast</div>
+            <div ng-bind-html="toast.msg"></div>
         </alert>
     </div>
     <div class="row">

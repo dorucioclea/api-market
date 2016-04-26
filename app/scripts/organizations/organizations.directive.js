@@ -30,8 +30,8 @@
                 }
 
                 function requestMembership(org){
-                    RequestMembership.save({orgId: org.id},{}, function (reply) {
-                        toastService.createToast(TOAST_TYPES.INFO, 'Mail notification has been sent to the organization owners. Wait for approval.', true);
+                    RequestMembership.save({orgId: org.id},{}, function () {
+                        toastService.info('Your request has been sent. You will be notified when the organization owner makes a decision.');
                     });
                 }
             }
