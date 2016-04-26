@@ -67,15 +67,18 @@
                                                 <p class="text-light">{{org.description}}</p>
                                             </div>
                                             <div class="col-sm-12 text-muted">
-                                                <div class="col-sm-4">
-                                                    <h4 class="mb0">2</h4>
+                                                <div class="col-sm-4" ng-if="publisherMode">
+                                                    <h4 class="mb0">{{org.numPlans ? org.numPlans : '0' }}</h4>
                                                     <p class="text-light">Plans</p>
                                                 </div>
-                                                <div class="col-sm-4">
-                                                    <h4 class="mb0">4</h4><p class="text-light">Services</p>
+                                                <div class="col-sm-4" ng-if="publisherMode">
+                                                    <h4 class="mb0">{{org.numServices ? org.numServices : '0' }}</h4><p class="text-light">Services</p>
+                                                </div>
+                                                <div class="col-sm-4" ng-if="!publisherMode">
+                                                    <h4 class="mb0">{{org.numApps ? org.numApps : '0' }}</h4><p class="text-light">Apps</p>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <h4 class="mb0">5</h4>
+                                                    <h4 class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h4>
                                                     <p class="text-light">Members</p>
                                                 </div>
                                             </div>
