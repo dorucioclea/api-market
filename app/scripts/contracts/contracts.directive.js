@@ -2,39 +2,35 @@
     'use strict';
 
     angular.module('app.contracts')
+        .directive('apimActiveContracts', activeContracts)
         .directive('apimPendingContracts', pendingContracts);
 
 
+    function activeContracts() {
+        return {
+            retstrict: 'E',
+            scope: {
+                contracts: '='
+            },
+            templateUrl: 'views/templates/contracts/active-contracts-table.html',
+            controller: contractListCtrl
+        }
+    }
+    
+    function contractListCtrl($scope) {
+        console.log('contractListCtrl');
+        console.log($scope.contracts);
+    }
+    
     function pendingContracts() {
         return {
             restrict: 'E',
             scope: {
-                orgs: '=',
-                memberOrgs: '=',
-                publisherMode: '='
+                contracts: '=',
+                userCanBreak: '@'
             },
-            templateUrl: 'views/templates/organization/organizations-table.html',
-            controller: function ($scope, orgService, toastService, RequestMembership) {
-                $scope.orgService = orgService;
-                $scope.isMember = isMember;
-                $scope.requestMembership = requestMembership;
-
-
-                function isMember(org) {
-                    for (var i = 0; i < $scope.memberOrgs.length; i++) {
-                        if ($scope.memberOrgs[i].id === org.id) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                function requestMembership(org){
-                    RequestMembership.save({orgId: org.id},{}, function () {
-                        toastService.info('Your request has been sent. You will be notified when the organization owner makes a decision.');
-                    });
-                }
-            }
+            templateUrl: 'views/templates/contracts/pending-contracts-table.html',
+            controller: contractListCtrl
         }
     }
 })();
