@@ -134,7 +134,7 @@
             AdminUser.delete({id: admin.username}, function (success) {
                 $state.forceReload();
                 toastService.createToast(TOAST_TYPES.INFO,
-                    '<b>' + name + '</b> admin priviledges are removed.', true);
+                    '<b>' + name + '</b> admin privileges are removed.', true);
                 $scope.modalClose();
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not remove admin privileges.');

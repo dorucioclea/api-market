@@ -2,6 +2,8 @@
     'use strict';
 
     angular.module('app.ctrl.modals', [])
+        .controller('GrantMembershipModalCtrl', grantMembershipModalCtrl)
+        .controller('RejectMembershipModalCtrl', rejectMembershipModalCtrl)
 
         /// ==== AddPolicy Controller
         .controller('AddPolicyCtrl',
@@ -725,6 +727,35 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
             });
+
+    function grantMembershipModalCtrl($scope, $modalInstance, role, user) {
+        $scope.user = user;
+        $scope.role = role;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }    
+    
+    function rejectMembershipModalCtrl($scope, $modalInstance, user) {
+        $scope.user = user;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }
 
     // #end
 })(window.angular);

@@ -4,7 +4,7 @@
     angular.module('app.members')
         .directive('apimPendingMemberList', pendingMemberList);
 
-    
+
     function pendingMemberList() {
         return {
             restrict: 'E',
@@ -14,7 +14,7 @@
                 filter: '='
             },
             templateUrl: 'views/templates/members/pending-list.html',
-            controller: function ($scope, $rootScope, filterFilter, memberService, toastService, EVENTS) {
+            controller: function ($scope, $rootScope, $modal, filterFilter, memberService, toastService, EVENTS) {
                 $scope.grantMembership = grantMembership;
                 $scope.rejectRequest = rejectRequest;
 
@@ -28,24 +28,54 @@
 
                 function grantMembership(request, roleId) {
                     // TODO add modal confirmation?
-                    memberService.grantMembership($scope.orgId, request, roleId).then(function () {
-                        $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
-                        applyFilter();
-                        toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + roleId + '</b>.');
-                        $rootScope.$broadcast(EVENTS.MEMBER_LIST_UPDATED);
-                    }, function (error) {
-                        toastService.createErrorToast(error, 'Could not grant membership');
+
+                    var modalinstance = $modal.open({
+                        templateUrl: 'views/modals/membershipGrant.html',
+                        controller: 'GrantMembershipModalCtrl as ctrl',
+                        resolve: {
+                            user: function () {
+                                return request.userDetails;
+                            },
+                            role: function () {
+                                return roleId;
+                            }
+                        },
+                        backdrop: 'static'
+                    });
+
+                    modalinstance.result.then(function() {
+                        memberService.grantMembership($scope.orgId, request, roleId).then(function () {
+                            $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
+                            applyFilter();
+                            toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + roleId + '</b>.');
+                            $rootScope.$broadcast(EVENTS.MEMBER_LIST_UPDATED);
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not grant membership');
+                        })
                     })
                 }
 
                 function rejectRequest(request) {
-                    // TODO add modal confirmation?
-                    memberService.rejectMembershipRequest(request.requestDestination, request.requestOrigin).then(function () {
-                        $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
-                        applyFilter();
-                        toastService.info('Request from <b>' + request.userDetails.fullName  + '</b> rejected.');
-                    }, function (error) {
-                        toastService.createErrorToast(error, 'Could not reject membership request');
+                    
+                    var modalinstance = $modal.open({
+                        templateUrl: 'views/modals/membershipReject.html',
+                        controller: 'RejectMembershipModalCtrl as ctrl',
+                        resolve: {
+                            user: function () {
+                                return request.userDetails         
+                            }
+                        },
+                        backdrop: 'static'
+                    });
+                    
+                    modalinstance.result.then(function () {
+                        memberService.rejectMembershipRequest(request.requestDestination, request.requestOrigin).then(function () {
+                            $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
+                            applyFilter();
+                            toastService.info('Request from <b>' + request.userDetails.fullName  + '</b> rejected.');
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not reject membership request');
+                        })
                     })
                 }
             }
