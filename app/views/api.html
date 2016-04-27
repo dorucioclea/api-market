@@ -48,7 +48,7 @@
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans & Policies</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API Terms</label>
+          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API README</label>
         </div>
       </div>
       <div>

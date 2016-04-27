@@ -26,6 +26,7 @@
             'relativeDate',
             'angular-jwt',
             'angular-ladda',
+            'btford.markdown',
 
             /* custom modules */
             'app.ctrls',

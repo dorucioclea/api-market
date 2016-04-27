@@ -35,7 +35,7 @@
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">4</span>&nbsp;&nbsp;</span>Availability
         </label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Terms</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Readme</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
