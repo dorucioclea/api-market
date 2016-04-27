@@ -40,7 +40,7 @@
 
                 function rejectRequest(request) {
                     // TODO add modal confirmation?
-                    memberService.rejectMembershipRequest(request).then(function () {
+                    memberService.rejectMembershipRequest(request.requestDestination, request.requestOrigin).then(function () {
                         $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
                         applyFilter();
                         toastService.info('Request from <b>' + request.userDetails.fullName  + '</b> rejected.');

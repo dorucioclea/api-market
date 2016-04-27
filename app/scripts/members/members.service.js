@@ -95,7 +95,7 @@
         }
     }
 
-    function memberService($q, Member, MembershipRequests, Users) {
+    function memberService(Member, MembershipRequests, RejectRequest, Users) {
         this.getMemberDetails = getMemberDetails;
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
@@ -116,7 +116,6 @@
         }
         
         function grantMembership(orgId, request, roleId) {
-            // TODO implement backend call to update status of request
             var newMemberObj = {
                 userId: request.userDetails.username,
                 roleId: roleId
@@ -124,10 +123,8 @@
             return Member.save({ orgId: orgId }, newMemberObj).$promise;
         }
         
-        function rejectMembershipRequest(userId, role) {
-            // TODO implement backend
-            return $q.when('OK');
-            // return $q.reject('FAIL');
+        function rejectMembershipRequest(orgId, userId) {
+            return RejectRequest.save({ orgId: orgId, userId: userId }).$promise;
         }
     }
 

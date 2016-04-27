@@ -14,9 +14,13 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
-        /// ========== NOTIFICATIONS ==========================================================================
+        /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIF_TYPE, NOTIF_STATUS) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' + NOTIF_TYPE.MEMBERSHIP + '/' + NOTIF_STATUS.PENDING);
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIF_TYPE.MEMBERSHIP + '/' + NOTIF_STATUS.PENDING);
+        })
+        .factory('RejectRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         })
 
         /// ========== ORGANIZATION =====================================================================
