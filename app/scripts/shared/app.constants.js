@@ -23,6 +23,17 @@
             'MEMBER_LIST_UPDATED': 'member-list-updated'
         })
 
+        .constant('EVENT_TYPE', {
+            'MEMBERSHIP': 'membership',
+            'CONTRACT': 'contract'
+        })
+        
+        .constant('EVENT_STATUS', {
+            'PENDING': 'pending',
+            'ACCEPTED': 'accepted',
+            'REJECTED': 'rejected'
+        })
+
         .constant('PERMISSIONS', {
             'APP': {'ADMIN': 'appAdmin', 'EDIT': 'appEdit', 'VIEW': 'appView'},
             'ORG': {'ADMIN': 'orgAdmin', 'EDIT': 'orgEdit', 'VIEW': 'orgView'},
