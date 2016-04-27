@@ -37,24 +37,29 @@
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
+        $scope.selectVersion = selectVersion;
+        $scope.showInfoModal = showInfoModal;
+        $scope.updateDesc = updateDesc;
 
-        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(function (reply) {
-            // Clean the reply so we have the pure data object, then
-            // Check number of properties in the object, if 0, there is no definition present
-            if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
-                svcScreenModel.setHasDefinition(true);
-            } else {
+        init();
+
+
+        function init() {
+            if ($scope.serviceVersion.plans.length > 0) svcScreenModel.setHasPlan(true);
+            else svcScreenModel.setHasPlan(false);
+
+            service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(function (reply) {
+                // Clean the reply so we have the pure data object, then
+                // Check number of properties in the object, if 0, there is no definition present
+                if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
+                    svcScreenModel.setHasDefinition(true);
+                } else {
+                    svcScreenModel.setHasDefinition(false);
+                }
+            }, function (error) {
                 svcScreenModel.setHasDefinition(false);
-            }
-        }, function (error) {
-            svcScreenModel.setHasDefinition(false);
-        });
-
-        $scope.selectVersion = function (version) {
-            $state.go($state.$current.name,
-                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
-        };
-
+            });
+        }
 
         function confirmDeleteSvc() {
             var modalInstance = $modal.open({
@@ -128,15 +133,20 @@
             });
         }
 
-        $scope.updateDesc = function (newValue) {
+        function updateDesc(newValue) {
             service.updateDescription($stateParams.orgId, $stateParams.svcId, newValue).then(function (reply) {
                 toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not update service\'s description.');
             });
-        };
+        }
 
-        $scope.showInfoModal = function () {
+        function selectVersion(version) {
+            $state.go($state.$current.name,
+                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
+        }
+
+        function showInfoModal() {
             $modal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
@@ -149,7 +159,7 @@
                 backdrop: 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
-        };
+        }
 
     }
 
@@ -443,9 +453,12 @@
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
-                    $state.go('^.scopes').then(function () {
+                    if ($scope.tabStatus.hasPlan) {
                         $state.forceReload();
-                    });
+                    } else {
+                        svcScreenModel.setHasPlan(true);
+                        $state.go('^.scopes');
+                    }
                 },
                 function (error) {
                     toastService.createErrorToast(error, 'Could not update the enabled plans.');
@@ -458,7 +471,6 @@
                               toastService, TOAST_TYPES, svcData) {
         $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
-        init();
         $scope.visibilities = ['Show', 'Hide'];
         svcScreenModel.updateTab('Scopes');
         $scope.updatedService = {};
@@ -469,9 +481,11 @@
         $scope.svcId = svcData.service.id;
         $scope.versionId = svcData.version;
 
+        init();
+
         /*set the current state of the service version*/
         function init(){
-            if(serviceMkts){
+            if(serviceMkts.length > 0){
                 angular.forEach(serviceMkts, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt){
                         if(mkt.code === svmkt.code) {
@@ -480,16 +494,23 @@
                         }
                     });
                 });
+            } else {
+                angular.forEach($scope.mkts, function (market) {
+                    // if no market has been selected for the service, enable the internal market by default
+                    if ( market.code === 'int') {
+                        market.checked = true;
+                    }
+                })
             }
         }
 
         $scope.$watch('mkts', function (newValue) {
-            selectedMarketplaces=[];
+            selectedMarketplaces = [];
             angular.forEach(newValue,function(val){
                 if(val.checked===true)selectedMarketplaces.push(val);
             });
             setSelectedMarketplaces(selectedMarketplaces);
-            $scope.isDirty = selectedMarketplaces.length>0;
+            $scope.isDirty = selectedMarketplaces.length > 0;
         }, true);
 
         function setSelectedMarketplaces(selectedMkts){
@@ -523,7 +544,7 @@
                 originalConfig.push(serviceMkts[key]);
             }
             console.log("verify original reformatted: "+JSON.stringify(originalConfig));
-            console.log("Compare: "+arraysEqual(newConfig,originalConfig));
+            console.log("Compare: "+ arraysEqual(newConfig,originalConfig));
             return ! arraysEqual(newConfig,originalConfig);
         }
 
