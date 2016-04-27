@@ -25,7 +25,7 @@
             </div>
             <div class="col-sm-12 text-primary">
               <span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}
-              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10 fa fa-globe" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0">&nbsp;{{serviceVersion.onlinedoc}}</a>
+              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>
               <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}
               <span class="ml10 text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}
             </div>
