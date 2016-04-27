@@ -14,9 +14,9 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
-        /// ========== EVENTS ==========================================================================
-        .factory('MembershipRequests', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/events/organizations/:orgId/membership-requests');
+        /// ========== NOTIFICATIONS ==========================================================================
+        .factory('MembershipRequests', function ($resource, CONFIG, NOTIF_TYPE, NOTIF_STATUS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' + NOTIF_TYPE.MEMBERSHIP + '/' + NOTIF_STATUS.PENDING);
         })
 
         /// ========== ORGANIZATION =====================================================================

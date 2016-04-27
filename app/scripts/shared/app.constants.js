@@ -23,12 +23,12 @@
             'MEMBER_LIST_UPDATED': 'member-list-updated'
         })
 
-        .constant('EVENT_TYPE', {
+        .constant('NOTIF_TYPE', {
             'MEMBERSHIP': 'membership',
             'CONTRACT': 'contract'
         })
         
-        .constant('EVENT_STATUS', {
+        .constant('NOTIF_STATUS', {
             'PENDING': 'pending',
             'ACCEPTED': 'accepted',
             'REJECTED': 'rejected'

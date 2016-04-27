@@ -112,30 +112,7 @@
         }
 
         function getPendingRequests(orgId) {
-            // return MembershipRequests.query({ orgId: orgId }).$promise;
-            
-            return $q.when([ {
-                "requestOrigin": "guillaume@trust1team.com",
-                "requestDestination": "testorg",
-                "type": "Membership",
-                "status": "Pending",
-                "createdOn": 1461675667422,
-                "modifiedOn": 1461675667422
-            }, {
-                "requestOrigin": "michallis@trust1team.com",
-                "requestDestination": "testorg",
-                "type": "Membership",
-                "status": "Pending",
-                "createdOn": 1461675667422,
-                "modifiedOn": 1461675667422
-            }, {
-                "requestOrigin": "maarten.somers@trust1team.com",
-                "requestDestination": "testorg",
-                "type": "Membership",
-                "status": "Pending",
-                "createdOn": 1461675667422,
-                "modifiedOn": 1461675667422
-            }]);
+            return MembershipRequests.query({ orgId: orgId }).$promise;
         }
         
         function grantMembership(orgId, request, roleId) {
