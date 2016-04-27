@@ -35,17 +35,23 @@
     </div>
 
     <div class="col-sm-12 mt30">
-        <h4>Manual Contract Management</h4>
+        <h4>Contract Management</h4>
         <p>
             Applications can create a link (Contract) with this Service using the plans selected above. By default,
             new contracts are activated automatically. If you would like to manually accept or reject each new contract,
-            please check the box below.
+            you can select manual mode below.
         </p>
         <div class="col-sm-12">
-            <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+            <div class="ui-radio ui-radio-primary">
                 <label>
-                    <input type="checkbox" ng-model="manualManagement" ng-disabled="!User.isAuthorizedFor('svcEdit')">
-                    <span class="title">I want to manually manage the contracts for this service.</span>
+                    <input type="radio" checked name="contractManagement">
+                    <span>I want to automatically activate new contracts.</span>
+                </label>
+            </div>
+            <div class="ui-radio ui-radio-primary">
+                <label>
+                    <input type="radio" name="contractManagement">
+                    <span>I want to manually manage the contracts for this service.</span>
                 </label>
             </div>
         </div>
