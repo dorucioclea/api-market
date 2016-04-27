@@ -95,7 +95,7 @@
         }
     }
 
-    function memberService($q, Member, Users) {
+    function memberService($q, Member, MembershipRequests, Users) {
         this.getMemberDetails = getMemberDetails;
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
@@ -112,7 +112,8 @@
         }
 
         function getPendingRequests(orgId) {
-            // TODO implement backend
+            // return MembershipRequests.query({ orgId: orgId }).$promise;
+            
             return $q.when([ {
                 "requestOrigin": "guillaume@trust1team.com",
                 "requestDestination": "testorg",

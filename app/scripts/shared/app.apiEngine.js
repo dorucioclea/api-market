@@ -14,6 +14,11 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
+        /// ========== EVENTS ==========================================================================
+        .factory('MembershipRequests', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/events/organizations/:orgId/membership-requests');
+        })
+
         /// ========== ORGANIZATION =====================================================================
 
         .factory('Organization', function ($resource, CONFIG) {
