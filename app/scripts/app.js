@@ -43,10 +43,11 @@
             'app.ctrl.modals.lifecycle',
             'app.ctrl.modals.support',
             'app.ctrl.api',
-            'app.ctrl.application',
             'app.ctrl.plan',
             'app.ctrl.user',
             'app.administration',
+            'app.applications',
+            'app.contracts',
             'app.members',
             'app.organizations',
             'app.service'

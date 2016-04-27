@@ -111,8 +111,6 @@
                 };
 
                 this.publishApp = function (applicationVersion, shouldReload) {
-                    console.log(applicationVersion);
-                    console.log(this.createAction(applicationVersion, ACTIONS.REGISTER));
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was successfully published!';
                     return doAction(this.createAction(
