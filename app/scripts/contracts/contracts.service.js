@@ -6,8 +6,8 @@
 
 
     function contractService($q, ApplicationContract) {
-        this.breakContract = breakContract;
-        this.getPendingForApp = getPendingForApp
+        this.break = breakContract;
+        this.getPendingForApp = getPendingForApp;
         
         
         function breakContract(orgId, appId, versionId, contractId) {

@@ -41,7 +41,7 @@
         }
 
         function breakContract (contract) {
-            contractService.breakContract(contract.appOrganizationId, contract.appId, contract.appVersion, contract.contractId)
+            contractService.break(contract.appOrganizationId, contract.appId, contract.appVersion, contract.contractId)
                 .then(function () {
                     // TODO toast?
                     $state.forceReload();
