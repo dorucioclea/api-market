@@ -1,34 +1,32 @@
-<div class="col-sm-12">
-    <table class="table table-striped">
-        <tr ng-repeat="request in filteredRequests">
-            <td style="width: 10%; padding: 10px;">
-                <img class="member-pic img-circle" ng-src="data:image/png;base64,{{request.userDetails.base64pic}}" ng-if="request.userDetails.base64pic.length > 0">
-                <img class="member-pic img-cirlce" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">
-            </td>
-            <td style="width: 90%; padding-left: 10px;">
-                <div class="col-sm-12 text-left">
-                    <h5 class="mb0">
-                        <span class="text-primary">{{request.userDetails.fullName}}</span>&nbsp;<span class="small text-light text-muted">{{request.userDetails.username}}</span>
-                    </h5>
-                    <hr class="mt10 mb10">
-                </div>
-                <div class="col-sm-12">
-                    <div class="actions">
-                        <div class="btn-group" dropdown>
-                            <button id="split-button" type="button" class="btn btn-sm btn-line-primary" ng-click="grantMembership(request, 'Developer')">Add as Developer</button>
-                            <button type="button" class="btn btn-sm btn-line-primary" dropdown-toggle>
-                                <span class="caret" style="margin-left: 0 !important;"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-left" dropdown-menu role="menu" aria-labelledby="split-button">
-                                <li role="menuitem"><a ng-click="grantMembership(request, 'Owner')">Add as Owner</a></li>
-                                <li role="menuitem"><a ng-click="grantMembership(request, 'Watcher')">Add as Watcher</a></li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-line-warning btn-sm" ng-click="rejectRequest(request)">Reject</button>
+<table class="table table-striped pending-list">
+    <tr ng-repeat="request in filteredRequests">
+        <td class="request-pic-wrapper">
+            <img class="request-pic img-circle" ng-src="data:image/png;base64,{{request.userDetails.base64pic}}" ng-if="request.userDetails.base64pic.length > 0">
+            <img class="request-pic img-cirlce" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">
+        </td>
+        <td class="request-info">
+            <div class="col-sm-12 text-left">
+                <h5 class="mb0">
+                    <span class="text-primary">{{request.userDetails.fullName}}</span>&nbsp;<span class="small text-light text-muted">{{request.userDetails.username}}</span>
+                </h5>
+                <hr class="mt10 mb10">
+            </div>
+            <div class="col-sm-12">
+                <div class="actions">
+                    <div class="btn-group" dropdown>
+                        <button id="split-button" type="button" class="btn btn-sm btn-line-primary" ng-click="grantMembership(request, 'Developer')">Add as Developer</button>
+                        <button type="button" class="btn btn-sm btn-line-primary" dropdown-toggle>
+                            <span class="caret" style="margin-left: 0 !important;"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-left" dropdown-menu role="menu" aria-labelledby="split-button">
+                            <li role="menuitem"><a ng-click="grantMembership(request, 'Owner')">Add as Owner</a></li>
+                            <li role="menuitem"><a ng-click="grantMembership(request, 'Watcher')">Add as Watcher</a></li>
+                        </ul>
                     </div>
+                    <button class="btn btn-line-warning btn-sm" ng-click="rejectRequest(request)">Reject</button>
                 </div>
-            </td>
+            </div>
+        </td>
 
-        </tr>
-    </table>
-</div>
+    </tr>
+</table>
