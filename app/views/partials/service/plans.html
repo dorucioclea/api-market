@@ -44,13 +44,13 @@
         <div class="col-sm-12">
             <div class="ui-radio ui-radio-primary">
                 <label>
-                    <input type="radio" checked name="contractManagement">
+                    <input type="radio" ng-checked="updatedService.autoAcceptContracts" ng-click="updatedService.autoAcceptContracts = true" name="contractManagement">
                     <span>I want to automatically activate new contracts.</span>
                 </label>
             </div>
             <div class="ui-radio ui-radio-primary">
                 <label>
-                    <input type="radio" name="contractManagement">
+                    <input type="radio" ng-checked="!updatedService.autoAcceptContracts" ng-click="updatedService.autoAcceptContracts = false" name="contractManagement">
                     <span>I want to manually manage the contracts for this service.</span>
                 </label>
             </div>
@@ -59,6 +59,6 @@
 
     <div class="col-sm-12 mt20" ng-if="User.isAuthorizedFor('svcEdit')">
         <button ng-disabled="!isDirty" class="btn btn-default btn-sm" ng-click="reset()">Cancel</button>
-        <button ng-disabled="!isDirty" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
+        <button ng-disabled="!(isDirty && isValid)" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
     </div>
 </div>

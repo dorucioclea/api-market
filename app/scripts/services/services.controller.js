@@ -21,6 +21,7 @@
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
+        console.log($scope.serviceVersion);
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
@@ -339,91 +340,23 @@
     function servicePlansCtrl($scope, $state, $stateParams, $q, planData, svcScreenModel, service,
                               toastService, TOAST_TYPES, PlanVersion) {
 
-        svcScreenModel.updateTab('Plans');
         var definedPlans = planData;
         var lockedPlans = [];
         $scope.updatedService = {};
+        $scope.reset = reset;
+        $scope.saveService = saveService;
         $scope.version = svcScreenModel.service;
 
-        var getSelectedPlans = function () {
-            var selectedPlans = [];
-            for (var i = 0; i < lockedPlans.length; i++) {
-                var plan = lockedPlans[i];
-                if (plan.checked) {
-                    var selectedPlan = {};
-                    selectedPlan.planId = plan.id;
-                    selectedPlan.version = plan.selectedVersion;
-                    selectedPlans.push(selectedPlan);
-                }
-            }
-            return selectedPlans;
-        };
-
-        //find locked plan versions
-        $q(function (resolve) {
-            var promises = [];
-            angular.forEach(definedPlans, function (plan) {
-                promises.push($q(function (resolve, reject) {
-                    PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
-                        var lockedVersions = [];
-                        for (var j = 0; j < planVersions.length; j++) {
-                            var planVersion = planVersions[j];
-                            if (planVersion.status === 'Locked') {
-                                lockedVersions.push(planVersion.version);
-                            }
-                        }
-                        // if we found locked plan versions then add them
-                        if (lockedVersions.length > 0) {
-                            plan.lockedVersions = lockedVersions;
-                            lockedPlans.push(plan);
-                        }
-                        resolve(planVersions);
-                    }, reject);
-                }));
-            });
-            $q.all(promises).then(function () {
-                lockedPlans.sort(function (a, b) {
-                    if (a.id.toLowerCase() < b.id.toLowerCase()) {
-                        return -1;
-                    } else if (b.id < a.id) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                resolve(lockedPlans);
-                $scope.plans = lockedPlans;
-                $scope.reset();
-            });
-        });
+        init();
 
         $scope.$watch('plans', function (newValue) {
             $scope.updatedService.plans = getSelectedPlans();
         }, true);
 
-        $scope.$watch('manualManagement', function (newValue) {
-            $scope.isDirty = true;
-        }, true);
-
-
-        $scope.reset = function () {
-            for (var i = 0; i < lockedPlans.length; i++) {
-                lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
-                for (var j = 0; j < $scope.version.plans.length; j++) {
-                    if (lockedPlans[i].id === $scope.version.plans[j].planId) {
-                        lockedPlans[i].checked = true;
-                        lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
-                        break;
-                    }
-                    lockedPlans[i].checked = false;
-                }
-            }
-            $scope.updatedService.plans = getSelectedPlans();
-            $scope.isDirty = false;
-        };
-
         $scope.$watch('updatedService', function (newValue) {
             var dirty = false;
+            console.log(newValue);
+            if (newValue.autoAcceptContracts != $scope.version.autoAcceptContracts) dirty = true;
             if (newValue.plans && $scope.version.plans &&
                 newValue.plans.length !== $scope.version.plans.length) {
                 dirty = true;
@@ -443,15 +376,92 @@
                     }
                 }
             }
+            if (newValue.plans.length > 0) $scope.isValid = true;
             $scope.isDirty = dirty;
         }, true);
 
-        $scope.saveService = function () {
+        function init() {
+            svcScreenModel.updateTab('Plans');
+
+            //find locked plan versions
+            $q(function (resolve) {
+                var promises = [];
+                angular.forEach(definedPlans, function (plan) {
+                    promises.push($q(function (resolve, reject) {
+                        PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
+                            var lockedVersions = [];
+                            for (var j = 0; j < planVersions.length; j++) {
+                                var planVersion = planVersions[j];
+                                if (planVersion.status === 'Locked') {
+                                    lockedVersions.push(planVersion.version);
+                                }
+                            }
+                            // if we found locked plan versions then add them
+                            if (lockedVersions.length > 0) {
+                                plan.lockedVersions = lockedVersions;
+                                lockedPlans.push(plan);
+                            }
+                            resolve(planVersions);
+                        }, reject);
+                    }));
+                });
+                $q.all(promises).then(function () {
+                    lockedPlans.sort(function (a, b) {
+                        if (a.id.toLowerCase() < b.id.toLowerCase()) {
+                            return -1;
+                        } else if (b.id < a.id) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    resolve(lockedPlans);
+                    $scope.plans = lockedPlans;
+                    $scope.reset();
+                });
+            });
+            $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+        }
+
+        var getSelectedPlans = function () {
+            var selectedPlans = [];
+            for (var i = 0; i < lockedPlans.length; i++) {
+                var plan = lockedPlans[i];
+                if (plan.checked) {
+                    var selectedPlan = {};
+                    selectedPlan.planId = plan.id;
+                    selectedPlan.version = plan.selectedVersion;
+                    selectedPlans.push(selectedPlan);
+                }
+            }
+            return selectedPlans;
+        };
+
+        function reset() {
+            for (var i = 0; i < lockedPlans.length; i++) {
+                lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
+                for (var j = 0; j < $scope.version.plans.length; j++) {
+                    if (lockedPlans[i].id === $scope.version.plans[j].planId) {
+                        lockedPlans[i].checked = true;
+                        lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
+                        break;
+                    }
+                    lockedPlans[i].checked = false;
+                }
+            }
+            $scope.updatedService.plans = getSelectedPlans();
+            $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+            $scope.isDirty = false;
+        }
+
+
+
+        function saveService() {
             service.updateServiceVersion($stateParams.orgId, $stateParams.svcId, $stateParams.versionId,
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Available Plans & Contract Management for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                     if ($scope.tabStatus.hasPlan) {
                         $state.forceReload();
@@ -463,7 +473,7 @@
                 function (error) {
                     toastService.createErrorToast(error, 'Could not update the enabled plans.');
                 });
-        };
+        }
 
     }
 
