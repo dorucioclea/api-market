@@ -35,10 +35,8 @@
                 var applicationDetPromises = [];
 
                 requests.forEach(function (req) {
-                    var identifier = req.destinationId.split('.');
-                    if (identifier.indexOf(svcId) > -1 && identifier.indexOf(versionId) > -1) {
-                        var appIdent = req.originId.split('.');
-                        applicationDetPromises.push(appService.getAppVersionDetails(appIdent[0], appIdent[1], appIdent[2])
+                    if (req.serviceId === svcId && req.serviceVersion === versionId) {
+                        applicationDetPromises.push(appService.getAppVersionDetails(req.appOrg, req.appId, req.appVersion)
                             .then(function (appVersion) {
                                 req.appDetails = appVersion;
                                 contracts.push(req);
