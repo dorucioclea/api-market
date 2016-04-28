@@ -462,7 +462,7 @@
                     } else {
                         $scope.organization.friendlyName = $scope.organization.friendlyName.trim();
                     }
-                    
+
                     Organization.save($scope.organization, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();

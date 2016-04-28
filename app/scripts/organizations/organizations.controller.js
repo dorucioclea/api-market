@@ -129,12 +129,12 @@
         }
     }
 
-    function organizationCtrl($scope, $modal, $state, screenSize, orgData, organizationId, requests,
+    function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, memberService,
                               toastService, TOAST_TYPES, Organization, Member, orgScreenModel) {
 
         $scope.displayTab = orgScreenModel;
         $scope.org = orgData;
-        $scope.pendingRequests = requests;
+        $scope.pendingRequests = [];
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.xs = screenSize.on('xs', function(match) {
@@ -149,6 +149,21 @@
             Member.query({orgId: $scope.org.id}, function (reply) {
                 $scope.memberCount = reply.length;
             });
+
+            if ($scope.User.isAuthorizedFor('orgAdmin')) {
+                memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
+                    var promises = [];
+                    requests.forEach(function (req) {
+                        promises.push(memberService.getMemberDetails(req.requestOrigin).then(function (results) {
+                            req.userDetails = results;
+                        }));
+                    });
+
+                    $q.all(promises).then(function() {
+                        $scope.pendingRequests = requests;
+                    })
+                });
+            }
         }
 
         function updateOrgDescription(newValue) {
@@ -157,8 +172,8 @@
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not update the organization\'s description.');
             });
-        }        
-        
+        }
+
         function updateOrgVisibility() {
             var modalinstance = $modal.open({
                 templateUrl: 'views/modals/organizationEditVisibility.html',
@@ -170,7 +185,7 @@
                 },
                 backdrop : 'static'
             });
-            
+
             modalinstance.result.then(function (setOrgPrivate) {
                 Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function (reply) {
                     toastService.success(setOrgPrivate ? 'Organization now set to <b>Private</b>.' : 'Organization now set to <b>Public</b>.');

@@ -471,19 +471,6 @@
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        },
-                        memberService: 'memberService',
-                        requests: function ($stateParams, memberService) {
-                            return memberService.getPendingRequests($stateParams.orgId);
-                        },
-                        memberDetails: function ($q, requests, memberService) {
-                            var promises = [];
-                            requests.forEach(function (req) {
-                                promises.push(memberService.getMemberDetails(req.requestOrigin).then(function (results) {
-                                    req.userDetails = results;
-                                }));
-                            });
-                            return $q.all(promises);
                         }
                     },
                     controller: 'OrganizationCtrl'
