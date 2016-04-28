@@ -7,6 +7,7 @@
         .controller('MyOrganizationsCtrl', myOrganizationsCtrl)
         .controller('OrganizationCtrl', organizationCtrl)
         .controller('OrganizationsCtrl', organizationsCtrl)
+        .controller('OrgVisibilityModalCtrl', orgVisibilityModalCtrl)
         .controller('PendingCtrl', pendingMembersCtrl)
         .controller('PlansCtrl', plansCtrl)
         .controller('ServicesCtrl', servicesCtrl);
@@ -128,7 +129,7 @@
         }
     }
 
-    function organizationCtrl($scope, screenSize, orgData, organizationId, requests,
+    function organizationCtrl($scope, $modal, $state, screenSize, orgData, organizationId, requests,
                               toastService, TOAST_TYPES, Organization, Member, orgScreenModel) {
 
         $scope.displayTab = orgScreenModel;
@@ -140,6 +141,7 @@
             $scope.xs = match;
         });
         $scope.updateOrgDescription = updateOrgDescription;
+        $scope.updateOrgVisibility = updateOrgVisibility;
         init();
 
         function init() {
@@ -155,6 +157,28 @@
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not update the organization\'s description.');
             });
+        }        
+        
+        function updateOrgVisibility() {
+            var modalinstance = $modal.open({
+                templateUrl: 'views/modals/organizationEditVisibility.html',
+                controller: 'OrgVisibilityModalCtrl as ctrl',
+                resolve: {
+                    currentlyPrivate: function () {
+                        return $scope.org.organizationPrivate;
+                    }
+                },
+                backdrop : 'static'
+            });
+            
+            modalinstance.result.then(function (setOrgPrivate) {
+                Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function (reply) {
+                    toastService.success(setOrgPrivate ? 'Organization visibility now set to <b>Private</b>.' : 'Organization visibility now set to <b>Public</b>.');
+                    $scope.org.organizationPrivate = setOrgPrivate;
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Could not update the organization visibility.');
+                });
+            })
         }
     }
 
@@ -211,6 +235,21 @@
 
     }
 
+    function orgVisibilityModalCtrl($scope, $modalInstance, currentlyPrivate) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.currentlyPrivate = currentlyPrivate;
+        $scope.setPrivate = currentlyPrivate;
+
+
+        function cancel() {
+            $modalInstance.dismiss('canceled');
+        }
+
+        function ok() {
+            $modalInstance.close($scope.setPrivate);
+        }
+    }
 
     function servicesCtrl($scope, $state, $modal, svcData, svcVersions,
                           orgScreenModel, ServiceVersion) {
