@@ -14,6 +14,15 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
+        /// ========== CONTRACTS ==========================================================================
+        .factory('ContractRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
+        // .factory('RejectContractRequest', function ($resource, CONFIG) {
+        //     return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
+        // })
+
         /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +

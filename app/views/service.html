@@ -40,6 +40,7 @@
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" id="metrics" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
         <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
     </overview-tabs>
 </overview>

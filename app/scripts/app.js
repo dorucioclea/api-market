@@ -876,6 +876,12 @@
                     },
                     controller: 'ServiceOverviewCtrl'
                 })
+                // Pending Contracts Tab
+                .state('root.service.pending', {
+                    url: '/pending',
+                    templateUrl: 'views/partials/service/pending.html',
+                    controller: 'ServicePendingContractsCtrl'
+                })                
                 // Implementation Tab
                 .state('root.service.implementation', {
                     url: '/implementation',

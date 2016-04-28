@@ -6,6 +6,7 @@
         .controller('ServiceActivityCtrl', serviceActivityCtrl)
         .controller('ServiceImplementationCtrl', serviceImplCtrl)
         .controller('ServiceDefinitionCtrl', serviceDefinitionCtrl)
+        .controller('ServicePendingContractsCtrl', servicePendingCtrl)
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
         .controller('ServicePoliciesCtrl', servicePoliciesCtrl)
@@ -17,8 +18,8 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, toastService, ALERT_TYPES,
-                         TOAST_TYPES, service) {
+                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
+                         toastService, ALERT_TYPES, TOAST_TYPES, service) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
@@ -60,6 +61,17 @@
             }, function (error) {
                 svcScreenModel.setHasDefinition(false);
             });
+
+
+            // Checl for pending contracts if the user is authorized
+            if ($scope.User.isAuthorizedFor('svcAdmin')) {
+                contractService.getPendingForSvc($stateParams.orgId, $stateParams.svcId, $stateParams.versionId)
+                    .then(function (contracts) {
+                        $scope.pendingContracts = contracts;
+                    })
+            } else {
+                $scope.pendingContracts = [];
+            }
 
             checkNeedsReadMe();
         }
@@ -185,6 +197,10 @@
 
     }
 
+    function servicePendingCtrl($scope, svcScreenModel) {
+        svcScreenModel.updateTab('Pending');
+    }
+    
     function serviceActivityCtrl($scope, activityData, svcScreenModel) {
 
         $scope.activities = activityData.beans;
