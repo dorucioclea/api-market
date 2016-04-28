@@ -173,7 +173,7 @@
             
             modalinstance.result.then(function (setOrgPrivate) {
                 Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function (reply) {
-                    toastService.success(setOrgPrivate ? 'Organization visibility now set to <b>Private</b>.' : 'Organization visibility now set to <b>Public</b>.');
+                    toastService.success(setOrgPrivate ? 'Organization now set to <b>Private</b>.' : 'Organization now set to <b>Public</b>.');
                     $scope.org.organizationPrivate = setOrgPrivate;
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update the organization visibility.');
