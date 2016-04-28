@@ -154,7 +154,7 @@
                 memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
                     var promises = [];
                     requests.forEach(function (req) {
-                        promises.push(memberService.getMemberDetails(req.requestOrigin).then(function (results) {
+                        promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
                             req.userDetails = results;
                         }));
                     });

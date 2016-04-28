@@ -15,9 +15,9 @@
         })
 
         /// ========== MEMBERSHIP ==========================================================================
-        .factory('MembershipRequests', function ($resource, CONFIG, NOTIF_TYPE, NOTIF_STATUS) {
+        .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
-                NOTIF_TYPE.MEMBERSHIP + '/' + NOTIF_STATUS.PENDING);
+                NOTIFICATIONS.MEMBERSHIP_PENDING);
         })
         .factory('RejectRequest', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')

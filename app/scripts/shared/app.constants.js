@@ -23,15 +23,13 @@
             'MEMBER_LIST_UPDATED': 'member-list-updated'
         })
 
-        .constant('NOTIF_TYPE', {
-            'MEMBERSHIP': 'membership',
-            'CONTRACT': 'contract'
-        })
-        
-        .constant('NOTIF_STATUS', {
-            'PENDING': 'pending',
-            'ACCEPTED': 'accepted',
-            'REJECTED': 'rejected'
+        .constant('NOTIFICATIONS', {
+            'MEMBERSHIP_PENDING': 'membership_pending',
+            'MEMBERSHIP_GRANTED': 'membership_granted',
+            'MEMBERSHIP_REJECTED': 'membership_rejected',
+            'CONTRACT_PENDING': 'contract_pending',
+            'CONTRACT_ACCEPTED': 'contract_accepted',
+            'CONTRACT_REJECTED': 'contract_rejected'
         })
 
         .constant('PERMISSIONS', {
