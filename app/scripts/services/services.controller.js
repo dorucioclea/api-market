@@ -17,11 +17,11 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, toastService, TOAST_TYPES, service) {
+                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, toastService, ALERT_TYPES,
+                         TOAST_TYPES, service) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
-        console.log($scope.serviceVersion);
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
@@ -60,6 +60,8 @@
             }, function (error) {
                 svcScreenModel.setHasDefinition(false);
             });
+
+            checkNeedsReadMe();
         }
 
         function confirmDeleteSvc() {
@@ -105,18 +107,22 @@
         }
 
         function confirmPublishSvc() {
-            $modal.open({
-                templateUrl: 'views/modals/servicePublish.html',
-                size: 'lg',
-                controller: 'PublishServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
+            if (checkNeedsReadMe()) {
+                toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
+            } else {
+                $modal.open({
+                    templateUrl: 'views/modals/servicePublish.html',
+                    size: 'lg',
+                    controller: 'PublishServiceCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return $scope.serviceVersion;
+                        }
+                    },
+                    backdrop: 'static',
+                    windowClass: $scope.modalAnim	// Animation Class put here.
+                });
+            }
         }
 
         function confirmRetireSvc() {
@@ -132,6 +138,21 @@
                 backdrop: 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
+        }
+
+        function checkNeedsReadMe() {
+            alertService.resetAllAlerts();
+            var needsReadMe = !$scope.serviceVersion.autoAcceptContracts &&
+                (!$scope.serviceVersion.service.terms || $scope.serviceVersion.service.terms.length === 0);
+            if (needsReadMe) {
+                alertService.addAlert(ALERT_TYPES.INFO,
+                    '<b>Please provide a README file!</b><br><span class="small text-light">You have indicated that you want to manually manage the' +
+                    ' contracts for this service, but no README has been found.' +
+                    ' Please update the README to include steps developers need to take' +
+                    ' to get their contract request approved (how to contact you, information to provide, etc...).' +
+                    ' Without a README you will not be able to publish the service!</span>');
+            }
+            return needsReadMe;
         }
 
         function updateDesc(newValue) {
@@ -355,7 +376,6 @@
 
         $scope.$watch('updatedService', function (newValue) {
             var dirty = false;
-            console.log(newValue);
             if (newValue.autoAcceptContracts != $scope.version.autoAcceptContracts) dirty = true;
             if (newValue.plans && $scope.version.plans &&
                 newValue.plans.length !== $scope.version.plans.length) {
