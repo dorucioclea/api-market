@@ -449,16 +449,21 @@
                 $scope.regex = REGEX;
                 $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
 
-                function createOrganization(org) {
-                    org.name = org.name.trim();
+                // New organization defaults to Private
+                $scope.organization = {
+                    organizationPrivate: true
+                };
 
-                    if (!org.friendlyName || org.friendlyName.length === 0) {
-                        org.friendlyName = org.name;
+                function createOrganization() {
+                    $scope.organization.name = $scope.organization.name.trim();
+
+                    if (!$scope.organization.friendlyName || $scope.organization.friendlyName.length === 0) {
+                        $scope.organization.friendlyName = $scope.organization.name;
                     } else {
-                        org.friendlyName = org.friendlyName.trim();
+                        $scope.organization.friendlyName = $scope.organization.friendlyName.trim();
                     }
-
-                    Organization.save(org, function (newOrg) {
+                    
+                    Organization.save($scope.organization, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();
                         if (publisherMode) {
