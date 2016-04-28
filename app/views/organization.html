@@ -1,4 +1,4 @@
-<div class="page page-ui-notifications">
+ <div class="page page-ui-notifications">
 
   <ol class="breadcrumb breadcrumb-small">
     <li>Publisher</li>
@@ -18,6 +18,8 @@
         <div class="panel-body">
           <div class="col-sm-12">
             <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
+            <span class="small text-muted mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span> Public Organization</span>
+            <span class="small text-muted mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span> Private Organization</span>
             <hr>
           </div>
           <div class="col-sm-12">
