@@ -55,7 +55,9 @@
             controller: function ($scope, contractService, toastService) {
                 console.log($scope.contracts);
                 $scope.acceptContract = acceptContract;
+                $scope.getPlanDetails = getPlanDetails;
                 $scope.rejectContract = rejectContract;
+                
                 
                 function acceptContract(contract) {
                     contractService.accept(contract).then(function () {
@@ -65,6 +67,11 @@
                     }, function (error) {
                         toastService.createErrorToast(error, 'Could not accept contract');
                     })
+                }
+                
+                function getPlanDetails(contract) {
+                    if (!contract.planDetails) contract.planDetails = angular.fromJson(contract.body);
+                    return contract.planDetails;
                 }
                 
                 function rejectContract(contract) {
