@@ -5,7 +5,7 @@
         .service('notificationService', notificationService);
 
 
-    function notificationService($q, contractService, orgService, UserMembershipNotifications, UserMembershipRequests, NOTIFICATIONS) {
+    function notificationService($q, contractService, orgService, UserIncomingNotifications, UserOutgoingNotifications, NOTIFICATIONS) {
         this.clear = clear;
         this.getNotificationsForUser = getNotificationsForUser;
 
@@ -17,7 +17,7 @@
         function getNotificationsForUser() {
             var notifications = [];
             
-            return $q.all([UserMembershipNotifications.query().$promise, UserMembershipRequests.query().$promise])
+            return $q.all([UserIncomingNotifications.query().$promise, UserOutgoingNotifications.query().$promise])
                 .then(function (results) {
                     console.log(results);
                     angular.forEach(results, function (result) {

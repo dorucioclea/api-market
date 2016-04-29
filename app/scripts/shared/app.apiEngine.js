@@ -40,13 +40,20 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
                 NOTIFICATIONS.MEMBERSHIP_REJECTED);
         })
-        .factory('UserMembershipNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming');
-        })
         .factory('RejectRequest', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         })
+            
 
+        /// ========== NOTIFICATIONS =====================================================================
+
+        .factory('UserIncomingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming');
+        })
+        .factory('UserOutgoingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
+        })
+            
         /// ========== ORGANIZATION =====================================================================
 
         .factory('Organization', function ($resource, CONFIG) {
