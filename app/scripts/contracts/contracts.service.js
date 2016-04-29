@@ -5,7 +5,7 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, appService, ContractRequests, RequestContract) {
+    function contractService($q, appService, AcceptContract, ContractRequests, RejectContract, RequestContract) {
         this.accept = accept;
         this.break = breakContract;
         this.getPendingForApp = getPendingForApp;
@@ -14,8 +14,14 @@
         this.request = requestContract;
         
         function accept(contract) {
-            // TODO backend implementation
-            return $q.when('mocked, not yet implemented');
+            var acceptObj = {
+                serviceOrgId: contract.serviceOrg,
+                serviceId: contract.serviceId,
+                serviceVersion: contract.serviceVersion,
+                planId: contract.planDetails.id
+            };
+            return AcceptContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
+                acceptObj).$promise;
         }
 
         function breakContract(orgId, appId, versionId, contractId) {
@@ -53,8 +59,14 @@
         }
 
         function reject(contract) {
-            // TODO backend implementation
-            return $q.when('Not yet implemented');
+            var rejectObj = {
+                serviceOrgId: contract.serviceOrg,
+                serviceId: contract.serviceId,
+                serviceVersion: contract.serviceVersion,
+                planId: contract.planDetails.id
+            };
+            return RejectContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
+                rejectObj).$promise;
         }
 
         function requestContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {

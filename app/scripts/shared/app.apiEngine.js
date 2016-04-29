@@ -23,9 +23,14 @@
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');
         })
-        // .factory('RejectContractRequest', function ($resource, CONFIG) {
-        //     return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
-        // })
+        .factory('AcceptContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+            '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/accept')
+        })
+        .factory('RejectContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+            '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/reject')
+        })
 
         /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
