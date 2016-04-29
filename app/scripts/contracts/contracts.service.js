@@ -5,10 +5,9 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, appService, ApplicationContract, ContractRequests, RequestContract) {
+    function contractService($q, appService, ContractRequests, RequestContract) {
         this.accept = accept;
         this.break = breakContract;
-        this.create = createContract;
         this.getPendingForApp = getPendingForApp;
         this.getPendingForSvc = getPendingForSvc;
         this.reject = reject;
@@ -22,16 +21,6 @@
         function breakContract(orgId, appId, versionId, contractId) {
             return ApplicationContract
                 .delete({orgId: orgId, appId: appId, versionId: versionId, contractId: contractId}).$promise;
-        }
-        
-        function createContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {
-            var contract = {
-                serviceOrgId: svcOrgId,
-                serviceId: svcId,
-                serviceVersion: svcVersion,
-                planId: planId
-            };
-            return ApplicationContract.save({ orgId: appOrgId, appId: appId, versionId: appVersion }, contract).$promise;
         }
         
         function getPendingForApp(appId) {

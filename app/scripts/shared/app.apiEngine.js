@@ -21,7 +21,7 @@
         })
         .factory('RequestContract', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/services/:svcId/versions/:versionId/request-contract');
+                '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');
         })
         // .factory('RejectContractRequest', function ($resource, CONFIG) {
         //     return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
