@@ -9,6 +9,7 @@
             headerModel.setIsButtonVisible(true, true, true);
             svcModel.setService(svcData);
             $scope.serviceVersion = svcData;
+            console.log($scope.serviceVersion);
             $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
             $scope.published = $scope.serviceVersion.status === 'Published';
             $scope.retired = $scope.serviceVersion.status === 'Retired';

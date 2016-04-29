@@ -19,6 +19,10 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
                 NOTIFICATIONS.CONTRACT_PENDING);
         })
+        .factory('RequestContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+                '/organizations/:orgId/services/:svcId/versions/:versionId/request-contract');
+        })
         // .factory('RejectContractRequest', function ($resource, CONFIG) {
         //     return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         // })

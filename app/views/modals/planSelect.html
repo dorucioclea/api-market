@@ -1,10 +1,10 @@
 <div class="modal-header clearfix">
-    <h4 class="modal-title">Creating Contract with <span class="text-primary">{{service.service.name}} {{service.version}}</span></h4>
+    <h4 class="modal-title">{{service.autoAcceptContracts ? 'Creating' : 'Requesting' }} Contract with <span class="text-primary">{{service.service.name}} {{service.version}}</span></h4>
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 <!-- Application Create panel -->
 <div class="modal-body" ng-hide="hasOrgContext">
-    <p class="mt30">We cannot find an organization context for the contract you wish to create. Please select the organization that contains the application you want to create a contract with.</p>
+    <p class="mt30">We cannot find an organization context for the contract you wish to {{service.autoAcceptContracts ? 'create' : 'request' }}. Please select the organization that contains the application you want to create a contract with.</p>
     <div class="btn-group dropdown" dropdown>
         <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
             Select your organization<span class="caret"></span>
@@ -87,9 +87,16 @@
     </div>
 </div>
 
+<div class="modal-body" ng-show="hasOrgContext && !service.autoAcceptContracts">
+    <h4>Please note that the owner of this service has chosen to review all contract requests for this service.
+        <strong class="text-primary">Your contract will not automatically activate!</strong>
+    </h4>
+    <h4>See the service README for instructions on how to proceed with your request.</h4>
+</div>
+
 <div class="modal-footer">
     <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-line-success" ng-click="startCreateContract()" ng-disabled="!hasOrgContext">Confirm Contract</button>
+    <button class="btn btn-line-success" ng-click="startCreateContract()" ng-disabled="!hasOrgContext">{{service.autoAcceptContracts ? 'Confirm' : 'Request' }} Contract</button>
 </div>
 
 

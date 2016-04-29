@@ -5,12 +5,14 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, appService, ApplicationContract, ContractRequests) {
+    function contractService($q, appService, ApplicationContract, ContractRequests, RequestContract) {
         this.accept = accept;
         this.break = breakContract;
+        this.create = createContract;
         this.getPendingForApp = getPendingForApp;
         this.getPendingForSvc = getPendingForSvc;
         this.reject = reject;
+        this.request = requestContract;
         
         function accept(contract) {
             // TODO backend implementation
@@ -20,6 +22,16 @@
         function breakContract(orgId, appId, versionId, contractId) {
             return ApplicationContract
                 .delete({orgId: orgId, appId: appId, versionId: versionId, contractId: contractId}).$promise;
+        }
+        
+        function createContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {
+            var contract = {
+                serviceOrgId: svcOrgId,
+                serviceId: svcId,
+                serviceVersion: svcVersion,
+                planId: planId
+            };
+            return ApplicationContract.save({ orgId: appOrgId, appId: appId, versionId: appVersion }, contract).$promise;
         }
         
         function getPendingForApp(appId) {
@@ -54,6 +66,16 @@
         function reject(contract) {
             // TODO backend implementation
             return $q.when('Not yet implemented');
+        }
+
+        function requestContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {
+            var requestObj = {
+                applicationOrg: appOrgId,
+                applicationId: appId,
+                applicationVersion: appVersion,
+                planId: planId
+            };
+            return RequestContract.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion}, requestObj).$promise;
         }
 
     }

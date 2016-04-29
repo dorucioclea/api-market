@@ -21,7 +21,7 @@
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">Create Contract</button>
+              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
             </div>
             <div class="col-sm-12 text-primary">
               <span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}

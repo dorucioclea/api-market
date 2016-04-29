@@ -224,7 +224,7 @@
 /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
-                      policyConfig, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion,
+                      policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
                       serviceVersion, svcPolicies) {
 
@@ -370,18 +370,22 @@
                 }
 
                 function startCreateContract() {
-                    var contract = {
-                        serviceOrgId: $scope.service.service.organization.id,
-                        serviceId: $scope.service.service.id,
-                        serviceVersion: $scope.service.version,
-                        planId: $scope.selectedPlan.plan.id
-                    };
-                    ApplicationContract.save(
-                        {orgId: $scope.selectedAppVersion.organizationId,
-                            appId: $scope.selectedAppVersion.id,
-                            versionId: $scope.selectedAppVersion.version},
-                        contract,
-                        function (data) {
+                    if ($scope.service.autoAcceptContracts) {
+                        createContract();
+                    } else {
+                        requestContract();
+                    }
+                }
+
+                function createContract() {
+                    contractService.create($scope.service.service.organization.id,
+                        $scope.service.service.id,
+                        $scope.service.version,
+                        $scope.selectedPlan.plan.id,
+                        $scope.selectedAppVersion.organizationId,
+                        $scope.selectedAppVersion.id,
+                        $scope.selectedAppVersion.version)
+                        .then(function () {
                             $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
                             $scope.modalClose();
                             var msg = '<b>Contract created!</b><br>' +
@@ -393,10 +397,34 @@
                                 $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
                             toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
                         }, function (error) {
-                            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
                             $scope.modalClose();
                             toastService.createErrorToast(error, 'Could not create the contract.');
                         });
+                }
+
+                function requestContract() {
+                    contractService.request($scope.service.service.organization.id,
+                        $scope.service.service.id,
+                        $scope.service.version,
+                        $scope.selectedPlan.plan.id,
+                        $scope.selectedAppVersion.organizationId,
+                        $scope.selectedAppVersion.id,
+                        $scope.selectedAppVersion.version)
+                        .then(function () {
+                        $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
+                        $scope.modalClose();
+                        var msg = '<b>Contract requested!</b><br>' +
+                            'A contract request between application <b>' +
+                            $scope.selectedAppVersion.name + ' ' +
+                            $scope.selectedAppVersion.version + '</b> and service <b>' +
+                            $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
+                            $scope.service.version + '</b>, using plan <b>' +
+                            $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b> was sent to the service owner for review.';
+                        toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+                    }, function (error) {
+                        $scope.modalClose();
+                        toastService.createErrorToast(error, 'Could not request the contract.');
+                    });
                 }
 
                 function modalClose() {
