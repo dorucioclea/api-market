@@ -1,0 +1,15 @@
+<div class="modal-header clearfix">
+    <h4 class="modal-title">Are you sure you want to request membership to <span class="text-primary">{{org.name}}</span>?</h4>
+    <span class="close ion ion-android-close" ng-click="cancel()"></span>
+</div>
+<!-- Application Create panel -->
+<div class="modal-body">
+    <p>You request will be sent to the Organization owner(s) for review. Once they reach a decision, you will be notified.</p>
+
+    <p>Do you wish to proceed?</p>
+</div>
+<div class="modal-footer">
+    <button id="cancel" class="btn btn-line-default ml15" ng-click="cancel()">Cancel</button>
+    <button id="lock" class="btn btn-line-success" ng-click="ok()">Request Membership</button>
+</div>
+

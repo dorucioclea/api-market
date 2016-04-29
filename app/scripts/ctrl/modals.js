@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('app.ctrl.modals', [])
+        .controller('ConfirmMembershipRequestModalCtrl', confirmMembershipRequestCtrl)
         .controller('GrantMembershipModalCtrl', grantMembershipModalCtrl)
         .controller('RejectMembershipModalCtrl', rejectMembershipModalCtrl)
 
@@ -728,6 +729,20 @@
                 }
             });
 
+    function confirmMembershipRequestCtrl($scope, $modalInstance, org) {
+        $scope.org = org;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }       
+    
     function grantMembershipModalCtrl($scope, $modalInstance, role, user) {
         $scope.user = user;
         $scope.role = role;

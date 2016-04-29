@@ -95,12 +95,13 @@
         }
     }
 
-    function memberService(Member, MembershipRequests, RejectRequest, Users) {
+    function memberService(Member, MembershipRequests, RejectRequest, RequestMembership, Users) {
         this.getMemberDetails = getMemberDetails;
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
         this.grantMembership = grantMembership;
         this.rejectMembershipRequest = rejectMembershipRequest;
+        this.requestMembership = requestMembership;
 
 
         function getMemberDetails(userId) {
@@ -125,6 +126,10 @@
         
         function rejectMembershipRequest(orgId, userId) {
             return RejectRequest.save({ orgId: orgId, userId: userId }).$promise;
+        }
+        
+        function requestMembership(orgId) {
+            return RequestMembership.save({orgId: orgId}, {}).$promise;
         }
     }
 

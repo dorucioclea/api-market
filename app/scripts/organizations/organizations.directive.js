@@ -11,10 +11,11 @@
             scope: {
                 orgs: '=',
                 memberOrgs: '=',
+                pendingOrgs: '=',
                 publisherMode: '='
             },
             templateUrl: 'views/templates/organization/organizations-table.html',
-            controller: function ($scope, orgService, toastService, RequestMembership) {
+            controller: function ($scope, $modal, memberService, orgService, toastService) {
                 $scope.orgService = orgService;
                 $scope.isMember = isMember;
                 $scope.requestMembership = requestMembership;
@@ -30,8 +31,24 @@
                 }
 
                 function requestMembership(org){
-                    RequestMembership.save({orgId: org.id},{}, function () {
-                        toastService.info('Your request has been sent. You will be notified when the organization owner makes a decision.');
+                    var modalInstance = $modal.open({
+                        templateUrl: 'views/modals/membershipRequestConfirm.html',
+                        controller: 'ConfirmMembershipRequestModalCtrl as ctrl',
+                        resolve: {
+                            org: function () {
+                                return org;
+                            }
+                        },
+                        backdrop: 'static'
+                    });
+                    
+                    modalInstance.result.then(function () {
+                        toastService.info('Requesting membership to <b>' + org.name +'</b>...');
+                        memberService.requestMembership(org.id).then(function () {
+                            toastService.success('Your request has been sent. You will be notified when the organization owner makes a decision.');
+                        }, function (error) {
+                            toastService.createErrorToast(error, 'Could not request membership');
+                        }); 
                     });
                 }
             }
