@@ -50,9 +50,8 @@
             
 
         /// ========== NOTIFICATIONS =====================================================================
-
         .factory('UserIncomingNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming');
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/:notificationId');
         })
         .factory('UserOutgoingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');

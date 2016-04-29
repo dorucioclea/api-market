@@ -248,7 +248,8 @@
 
         .controller('HeadCtrl',
             function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUser, notifications, currentUserModel, headerModel, orgScreenModel, toastService, jwtHelper) {
+                     currentUser, notifications, currentUserModel, headerModel, orgScreenModel, notificationService,
+                     toastService, jwtHelper) {
                 $scope.showExplore = headerModel.showExplore;
                 $scope.showDash = headerModel.showDash;
                 $scope.currentUserModel = currentUserModel;
@@ -257,6 +258,7 @@
                 $scope.notifications = notifications;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
+                $scope.clearNotification = clearNotification
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
@@ -284,6 +286,13 @@
                             windowClass: $scope.modalAnim	// Animation Class put here.
                         });
                     }
+                }
+                
+                function clearNotification(notification) {
+                    $scope.notifications.splice($scope.notifications.indexOf(notification), 1);
+                    notificationService.clear(notification).then(function () {
+                        toastService.info('<b>Notification cleared!</b>');
+                    })
                 }
 
                 function doSearch(query) {

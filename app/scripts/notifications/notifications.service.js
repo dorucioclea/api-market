@@ -11,8 +11,7 @@
         this.getOrgsWithPendingRequest = getOrgsWithPendingRequest;
 
         function clear(notification) {
-            // TODO implement backend
-            return $q.when('Not yet implemented');
+            return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
         }
         
         function getNotificationsForUser() {

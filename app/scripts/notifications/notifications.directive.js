@@ -68,10 +68,11 @@
         return {
             restrict: 'E',
             scope: {
-                notification: '='
+                notification: '=',
+                clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/notification.html',
-            controller: function ($scope, notificationService, NOTIFICATIONS) {
+            controller: function ($scope, NOTIFICATIONS) {
                 $scope.clear = clear;
                 init();
 
@@ -99,11 +100,7 @@
                 }
 
                 function clear(notification) {
-                    console.log('clear');
-                    console.log(notification);
-                    // notificationService.clear(notification).then(function () {
-                    //     // TODO Notify user of success
-                    // })
+                    $scope.clearFunction()(notification);
                 }
             }
         }
