@@ -2,6 +2,7 @@
     <span class="ion ion-person left bg-danger"></span>
     <div class="desc">
         <strong>Membership Rejected</strong>
-        <p class="small text-muted">{{notification.createdOn | relativeDate }}</p>
+        <p class="small text-light">Your request to join <span class="text-primary text-bold">{{ notification.orgDetails.name }}</span> has been rejected.</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
     </div>
 </a>

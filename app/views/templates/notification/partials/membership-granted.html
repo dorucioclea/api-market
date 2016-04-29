@@ -2,6 +2,7 @@
     <span class="ion ion-person left bg-success"></span>
     <div class="desc">
         <strong>Membership Granted</strong>
-        <p class="small text-muted">{{ notification.createdOn | relativeDate }}</p>
+        <p class="small text-light">You are now a member of <span class="text-primary text-bold">{{ notification.orgDetails.name }}</span>!</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
     </div>
 </a>

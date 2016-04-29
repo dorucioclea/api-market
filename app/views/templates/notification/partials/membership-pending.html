@@ -2,6 +2,7 @@
     <span class="ion ion-person left bg-warning"></span>
     <div class="desc">
         <strong>Membership Pending</strong>
-        <p class="small text-muted">{{ notification.createdOn | relativeDate }}</p>
+        <p class="small text-light">Your request to join <span class="text-primary text-bold">{{ notification.orgDetails.name }}</span> is still pending.</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
     </div>
 </a>
