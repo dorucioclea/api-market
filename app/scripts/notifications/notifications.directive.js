@@ -22,7 +22,9 @@
             controller: function ($scope) {
                 $scope.clear = clear;
 
-                function clear() {
+                function clear($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
                     $scope.clearFunction()($scope.notification);
                 }
             }
@@ -53,7 +55,9 @@
             controller: function ($scope) {
                 $scope.clear = clear;
 
-                function clear() {
+                function clear($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
                     $scope.clearFunction()($scope.notification);
                 }
             }
@@ -117,7 +121,9 @@
                 $scope.clear = clear;
                 $scope.org = $scope.notification.orgDetails;
 
-                function clear() {
+                function clear($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
                     $scope.clearFunction()($scope.notification);
                 }
                 
@@ -150,7 +156,9 @@
                 $scope.clear = clear;
                 $scope.org = $scope.notification.orgDetails;
 
-                function clear() {
+                function clear($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
                     $scope.clearFunction()($scope.notification);
                 }
             }

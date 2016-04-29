@@ -1,6 +1,7 @@
 <a ui-sref="root.myOrganizations">
     <span class="ion ion-person left bg-danger"></span>
     <div class="desc">
+        <span class="close ion ion-android-close" ng-click="clear($event)"></span>
         <strong>Membership Rejected</strong>
         <p class="small text-light">Your request to join <span class="text-primary text-bold">{{ notification.orgDetails.name }}</span> has been rejected.</p>
         <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
