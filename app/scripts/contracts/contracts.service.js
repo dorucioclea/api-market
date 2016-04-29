@@ -18,7 +18,7 @@
                 serviceOrgId: contract.serviceOrg,
                 serviceId: contract.serviceId,
                 serviceVersion: contract.serviceVersion,
-                planId: contract.planDetails.id
+                planId: contract.planDetails.plan.id
             };
             return AcceptContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
                 acceptObj).$promise;
