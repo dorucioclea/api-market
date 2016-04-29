@@ -41,11 +41,11 @@
                         },
                         backdrop: 'static'
                     });
-                    
                     modalInstance.result.then(function () {
                         toastService.info('Requesting membership to <b>' + org.name +'</b>...');
                         memberService.requestMembership(org.id).then(function () {
-                            toastService.success('Your request has been sent. You will be notified when the organization owner makes a decision.');
+                            org.requestPending = true;
+                            toastService.success('<b>Your request has been sent.</b> You will be notified when the organization owner makes a decision.');
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not request membership');
                         }); 

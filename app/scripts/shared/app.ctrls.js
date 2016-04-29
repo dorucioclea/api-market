@@ -248,13 +248,15 @@
 
         .controller('HeadCtrl',
             function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUser, notifications, currentUserModel, headerModel, orgScreenModel, jwtHelper) {
+                     currentUser, notifications, currentUserModel, headerModel, orgScreenModel, toastService, jwtHelper) {
                 $scope.showExplore = headerModel.showExplore;
                 $scope.showDash = headerModel.showDash;
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
                 currentUserModel.setCurrentUserInfo(currentUser);
                 $scope.notifications = notifications;
+                $scope.toasts = toastService.toasts;
+                $scope.toastService = toastService;
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
