@@ -32,6 +32,17 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing/' +
                 NOTIFICATIONS.MEMBERSHIP_PENDING);
         })
+        .factory('UserMembershipGranted', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
+                NOTIFICATIONS.MEMBERSHIP_GRANTED);
+        })
+        .factory('UserMembershipRejected', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
+                NOTIFICATIONS.MEMBERSHIP_REJECTED);
+        })
+        .factory('UserMembershipNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming');
+        })
         .factory('RejectRequest', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         })

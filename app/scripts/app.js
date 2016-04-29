@@ -118,6 +118,10 @@
                         CurrentUserInfo: 'CurrentUserInfo',
                         currentUser: function (CurrentUserInfo) {
                             return CurrentUserInfo.get().$promise;
+                        },
+                        notificationService: 'notificationService',
+                        notifications: function (notificationService) {
+                            return notificationService.getNotificationsForUser();
                         }
                     },
                     controller: 'HeadCtrl'

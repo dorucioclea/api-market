@@ -1,14 +1,6 @@
-<a ui-sref="root.organizations">
-    <span class="ion ion-email left bg-success"></span>
-    <div class="desc">
-        <strong>New Contract Request</strong>
-        <p class="small text-muted">1 min ago</p>
-    </div>
-</a>
-<!--<a ui-sref="root.organizations">-->
-    <!--<span class="ion ion-person left bg-warning"></span>-->
-    <!--<div class="desc">-->
-        <!--<strong>Membership Request</strong>-->
-        <!--<p class="small text-muted">4 hours ago</p>-->
-    <!--</div>-->
-<!--</a>-->
+<apim-notif-contract-accepted notification="notification" ng-if="contractAccepted"></apim-notif-contract-accepted>
+<apim-notif-contract-pending notification="notification" ng-if="contractPending"></apim-notif-contract-pending>
+<apim-notif-contract-rejected notification="notification" ng-if="contractRejected"></apim-notif-contract-rejected>
+<apim-notif-membership-granted notification="notification" ng-if="membershipGranted"></apim-notif-membership-granted>
+<apim-notif-membership-pending notification="notification" ng-if="membershipPending"></apim-notif-membership-pending>
+<apim-notif-membership-rejected notification="notification" ng-if="membershipRejected"></apim-notif-membership-rejected>
