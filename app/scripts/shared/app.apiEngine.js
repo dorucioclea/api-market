@@ -28,6 +28,10 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
                 NOTIFICATIONS.MEMBERSHIP_PENDING);
         })
+        .factory('UserMembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing/' +
+                NOTIFICATIONS.MEMBERSHIP_PENDING);
+        })
         .factory('RejectRequest', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         })

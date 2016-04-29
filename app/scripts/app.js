@@ -50,7 +50,8 @@
             'app.contracts',
             'app.members',
             'app.organizations',
-            'app.service'
+            'app.service',
+            'app.user'
 
         ])
 
