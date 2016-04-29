@@ -49,6 +49,7 @@
             'app.applications',
             'app.contracts',
             'app.members',
+            'app.notifications',
             'app.organizations',
             'app.service',
             'app.user'
