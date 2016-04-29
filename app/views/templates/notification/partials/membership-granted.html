@@ -1,6 +1,7 @@
 <a ui-sref="root.organization.members({orgId: org.id})">
     <span class="ion ion-person left bg-success"></span>
     <div class="desc">
+        <span class="close ion ion-android-close" ng-click="clear(); $event.stopPropagation();"></span>
         <strong>Membership Granted</strong>
         <p class="small text-light">You are now a member of <span class="text-primary text-bold">{{ notification.orgDetails.name }}</span>!</p>
         <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>

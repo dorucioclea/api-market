@@ -1,6 +1,7 @@
-<apim-notif-contract-accepted notification="notification" ng-if="contractAccepted"></apim-notif-contract-accepted>
+<apim-notif-contract-accepted notification="notification" clear-function="clear" ng-if="contractAccepted"></apim-notif-contract-accepted>
+<apim-notif-contract-rejected notification="notification" clear-function="clear" ng-if="contractRejected"></apim-notif-contract-rejected>
+<apim-notif-membership-granted notification="notification" clear-function="clear" ng-if="membershipGranted"></apim-notif-membership-granted>
+<apim-notif-membership-rejected notification="notification" clear-function="clear" ng-if="membershipRejected"></apim-notif-membership-rejected>
 <apim-notif-contract-pending notification="notification" ng-if="contractPending"></apim-notif-contract-pending>
-<apim-notif-contract-rejected notification="notification" ng-if="contractRejected"></apim-notif-contract-rejected>
-<apim-notif-membership-granted notification="notification" ng-if="membershipGranted"></apim-notif-membership-granted>
 <apim-notif-membership-pending notification="notification" ng-if="membershipPending"></apim-notif-membership-pending>
-<apim-notif-membership-rejected notification="notification" ng-if="membershipRejected"></apim-notif-membership-rejected>
+

@@ -19,8 +19,12 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/contract-accepted.html',
-            controller: function () {
+            controller: function ($scope) {
+                $scope.clear = clear;
 
+                function clear() {
+                    $scope.clearFunction()($scope.notification);
+                }
             }
         }
     }
@@ -46,8 +50,12 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/contract-rejected.html',
-            controller: function () {
+            controller: function ($scope) {
+                $scope.clear = clear;
 
+                function clear() {
+                    $scope.clearFunction()($scope.notification);
+                }
             }
         }
     }
@@ -87,9 +95,11 @@
                 }
 
                 function clear(notification) {
-                    notificationService.clear(notification).then(function () {
-                        // TODO Notify user of success
-                    })
+                    console.log('clear');
+                    console.log(notification);
+                    // notificationService.clear(notification).then(function () {
+                    //     // TODO Notify user of success
+                    // })
                 }
             }
         }
@@ -99,18 +109,16 @@
         return {
             restrict: 'E',
             scope: {
-                notification: '='
+                notification: '=',
+                clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/membership-granted.html',
             controller: function ($scope) {
+                $scope.clear = clear;
                 $scope.org = $scope.notification.orgDetails;
 
-                function initMembershipGranted() {
-                    // $scope.sref = "root.organization.members({orgId:" + $scope.notification.orgDetails.id + "})";
-                    $scope.sref = 'root.organization.plans({orgId: AppContainer})';
-                    // $scope.sref = 'root.myOrganizations';
-                    console.log($scope.sref);
-                    $scope.canClear = true;
+                function clear() {
+                    $scope.clearFunction()($scope.notification);
                 }
                 
             }
@@ -134,11 +142,17 @@
         return {
             restrict: 'E',
             scope: {
-                notification: '='
+                notification: '=',
+                clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/membership-rejected.html',
-            controller: function () {
-                
+            controller: function ($scope) {
+                $scope.clear = clear;
+                $scope.org = $scope.notification.orgDetails;
+
+                function clear() {
+                    $scope.clearFunction()($scope.notification);
+                }
             }
         }
     }
