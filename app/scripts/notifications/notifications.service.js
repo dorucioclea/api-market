@@ -5,13 +5,22 @@
         .service('notificationService', notificationService);
 
 
-    function notificationService($q, contractService, orgService, UserIncomingNotifications, UserOutgoingNotifications, NOTIFICATIONS) {
+    function notificationService($q, contractService, orgService, UserIncomingNotifications, UserOutgoingNotifications,
+                                 OrgIncomingNotifications, OrgOutgoingNotifications, OrgPendingContracts,
+                                 NOTIFICATIONS) {
         this.clear = clear;
+        this.getIncomingForOrg = getIncomingForOrg;
         this.getNotificationsForUser = getNotificationsForUser;
         this.getOrgsWithPendingRequest = getOrgsWithPendingRequest;
+        this.getOutgoingForOrg = getOutgoingForOrg;
+        this.getPendingContractsForOrg = getPendingContractsForOrg;
 
         function clear(notification) {
             return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+        }
+
+        function getIncomingForOrg(orgId) {
+            return OrgIncomingNotifications.query({ orgId: orgId }).$promise;
         }
         
         function getNotificationsForUser() {
@@ -54,6 +63,14 @@
                     return results;
                 })
             });
+        }
+
+        function getOutgoingForOrg(orgId) {
+            return OrgOutgoingNotifications.query({ orgId: orgId }).$promise;
+        }
+
+        function getPendingContractsForOrg(orgId) {
+            return OrgPendingContracts.query({ orgId: orgId}).$promise;
         }
     }
 

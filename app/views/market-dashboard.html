@@ -138,9 +138,9 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div>
+                                            <div ng-if="pendingContracts[application.id]">
                                                 <h5 class="mt15">Pending Contracts</h5>
-                                                <apim-pending-contracts contracts="applicationContracts[application.id]"
+                                                <apim-pending-contracts contracts="pendingContracts[application.id]"
                                                                         user-can-break="{{User.isAuthorizedFor('appEdit')}}">
                                                 </apim-pending-contracts>
                                             </div>

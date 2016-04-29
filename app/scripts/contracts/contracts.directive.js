@@ -19,8 +19,6 @@
     }
     
     function contractListCtrl($scope, contractService, toastService) {
-        console.log('contractListCtrl');
-        console.log($scope.contracts);
         $scope.breakContract = breakContract;
 
         function breakContract(contract) {

@@ -218,6 +218,10 @@
                                 });
                                 return appContracts;
                             });
+                        },
+                        notificationService: 'notificationService',
+                        pendingContracts: function (organizationId, notificationService) {
+                            return notificationService.getPendingContractsForOrg(organizationId);
                         }
                     },
                     controller: 'MarketDashCtrl'

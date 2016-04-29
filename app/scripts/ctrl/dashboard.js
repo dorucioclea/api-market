@@ -6,8 +6,8 @@
         /// ==== MarketDash Controller
         .controller('MarketDashCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                      appData, appVersions, appVersionDetails, appContracts, headerModel,
-                      selectedApp, applicationManager, docTester, toastService,
+                      appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
+                      selectedApp, applicationManager, docTester, toastService, service,
                       ApplicationContract) {
                 headerModel.setIsButtonVisible(true, false);
                 orgScreenModel.updateOrganization(orgData);
@@ -41,6 +41,18 @@
                 $scope.modalNewApplication = modalNewApplication;
                 $scope.copyKey = copyKey;
                 $scope.copyProvisionKey = copyProvisionKey;
+
+                pendingContracts.forEach(function (contract) {
+                    $scope.pendingContracts = [];
+                    if ($scope.applicationVersions[contract.appId] && $scope.applicationVersions[contract.appId].version === contract.appVersion) {
+                        if (!$scope.pendingContracts[contract.appId]) $scope.pendingContracts[contract.appId] = [];
+                        contract.planDetails = angular.fromJson(contract.body);
+                        service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
+                            contract.svcDetails = svcVersion;
+                        });
+                        $scope.pendingContracts[contract.appId].push(contract);
+                    }
+                });
 
                 function toggle(app) {
                     app.contractsExpanded = !app.contractsExpanded;

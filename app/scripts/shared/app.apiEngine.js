@@ -15,10 +15,6 @@
         })
 
         /// ========== CONTRACTS ==========================================================================
-        .factory('ContractRequests', function ($resource, CONFIG, NOTIFICATIONS) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
-                NOTIFICATIONS.CONTRACT_PENDING);
-        })
         .factory('RequestContract', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');
@@ -52,14 +48,27 @@
         .factory('RejectRequest', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
         })
-            
 
         /// ========== NOTIFICATIONS =====================================================================
+        .factory('ContractRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
         .factory('UserIncomingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/:notificationId');
         })
         .factory('UserOutgoingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
+        })
+        .factory('OrgIncomingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming')
+        })
+        .factory('OrgOutgoingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing')
+        })        
+        .factory('OrgPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
         })
             
         /// ========== ORGANIZATION =====================================================================
