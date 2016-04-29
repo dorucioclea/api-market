@@ -413,7 +413,7 @@
 
             this.createErrorToast = function(error, heading) {
                 var toastType = TOAST_TYPES.DANGER;
-                var errorMsg = '<b>' + heading + '</b>';
+                var errorMsg = '<b>' + heading + '</b><br>' + error.data.message;
 
                 switch (error.status) {
                     case 404:
@@ -421,10 +421,8 @@
                         break;
                     case 409: //CONFLICT
                         toastType = TOAST_TYPES.WARNING;
-                        errorMsg += '<br>This name is already in use!<br>Please try again with a different name.';
                         break;
                     default:
-                        errorMsg += '<br>An unexpected error has occurred.';
                         break;
                 }
                 this.createToast(toastType, errorMsg, true);
