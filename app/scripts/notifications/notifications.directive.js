@@ -60,7 +60,6 @@
             },
             templateUrl: 'views/templates/notification/notification.html',
             controller: function ($scope, notificationService, NOTIFICATIONS) {
-                console.log($scope.notification);
                 $scope.clear = clear;
                 init();
 

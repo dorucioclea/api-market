@@ -73,11 +73,12 @@
 
             if ($scope.publisherMode) {
                 $scope.orgs = svcOrgData;
-                $scope.memberOrgs = svcOrgData;
             } else {
                 $scope.orgs = appOrgData;
-                $scope.memberOrgs = appOrgData;
             }
+            $scope.orgs.forEach(function (org) {
+                org.isMember = true;
+            });
         }
 
         $scope.$watch('searchText', function (newVal) {
@@ -102,7 +103,7 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, svcOrgData, orgService, SearchOrgs) {
+    function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, orgService, SearchOrgs) {
 
         $scope.doSearch = doSearch;
         $scope.orgService = orgService;
@@ -114,6 +115,9 @@
             } else {
                 $scope.memberOrgs = appOrgData;
             }
+            notificationService.getOrgsWithPendingRequest().then(function (orgs) {
+                $scope.pendingOrgs = orgs;
+            });
         }
 
         function doSearch(searchString) {
@@ -124,6 +128,18 @@
 
             SearchOrgs.save(search, function (results) {
                 $scope.totalOrgs = results.totalSize;
+                results.beans.forEach(function (org) {
+                    for (var i = 0; i < $scope.memberOrgs.length; i++) {
+                        if ($scope.memberOrgs[i].id === org.id) {
+                            org.isMember = true;
+                        }
+                    }
+                    for (var j = 0; j < $scope.pendingOrgs.length; j++) {
+                        if ($scope.pendingOrgs[j].id === org.id) {
+                            org.requestPending = true;
+                        }
+                    }
+                });
                 $scope.orgs = results.beans;
             });
         }

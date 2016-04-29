@@ -255,7 +255,6 @@
                 $scope.orgScreenModel = orgScreenModel;
                 currentUserModel.setCurrentUserInfo(currentUser);
                 $scope.notifications = notifications;
-                console.log($scope.notifications);
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;

@@ -4,9 +4,9 @@
             <div class="col-sm-12 text-left">
                 <h4 class="mb0">
                     <!--<i class="fa fa-shield icon text-primary"></i>-->
-                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="isMember(org) && !publisherMode">{{orgService.name(org)}}</a>
-                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="isMember(org) && publisherMode">{{orgService.name(org)}}</a>
-                    <span class="text-primary not-clickable" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are not a member of this organization." ng-if="!isMember(org)">{{orgService.name(org)}}</span>
+                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="org.isMember && !publisherMode">{{orgService.name(org)}}</a>
+                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="org.isMember && publisherMode">{{orgService.name(org)}}</a>
+                    <span class="text-primary not-clickable" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are not a member of this organization." ng-if="!org.isMember">{{orgService.name(org)}}</span>
                     <span class="xsmall text-muted ml10 mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span> Public</span>
                     <span class="xsmall text-muted ml10 mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span> Private</span>
                 </h4>
@@ -33,12 +33,12 @@
             </div>
         </td>
         <td class="org-actions">
-            <div class="actions" ng-hide="isMember(org)">
-                <button ng-if="!org.organizationPrivate" class="btn btn-line-primary btn-sm" ng-click="requestMembership(org)">Request Membership</button>
+            <div class="actions" ng-hide="org.isMember">
+                <button ng-if="!org.organizationPrivate && !org.requestPending" class="btn btn-line-primary btn-sm" ng-click="requestMembership(org)">Request Membership</button>
                 <i ng-if="org.organizationPrivate" class="fa fa-lock fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="This is a private Organization. You cannot request to join."></i>
-                <i ng-if="!org.organizationPrivate && requestPending" class="fa fa-hourglass-half fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="Your membership request is pending. Please check back at a later time."></i>
+                <i ng-if="!org.organizationPrivate && org.requestPending" class="fa fa-hourglass-half fa-3x text-muted-light" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="Your membership request is pending. Please check back at a later time."></i>
             </div>
-            <div class="actions" ng-show="isMember(org)">
+            <div class="actions" ng-show="org.isMember">
                 <i class="fa-stack fa-2x" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are a member of this organization.">
                     <i class="fa fa-users fa-stack-1x text-muted-light"></i>
                     <i class="fa fa-check fa-stack-2x text-success-light"></i>
