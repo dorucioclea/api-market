@@ -105,6 +105,7 @@
                                                 <button class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Application metrics" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="toMetrics(applicationVersions[application.id])"></button>
                                                 <button class="btn btn-info action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" tooltip="OAuth 2.0 configuration" ng-if="canConfigureOAuth(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersions[application.id])"></button>
                                                 <button class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete application" ng-if="User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersions[application.id])"></button>
+                                                <button class="btn action-icon fa fa-exclamation-triangle" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Pending contract" ng-if="pendingContracts[application.id]"></button>
                                             </div>
                                         </td>
                                     </tr>
