@@ -53,7 +53,6 @@
                         $scope.pendingContracts[contract.appId].push(contract);
                     }
                 });
-
                 function toggle(app) {
                     app.contractsExpanded = !app.contractsExpanded;
                 }

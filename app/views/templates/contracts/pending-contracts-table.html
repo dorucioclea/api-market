@@ -10,8 +10,8 @@
     <tbody>
     <tr ng-repeat="contract in contracts">
         <td>{{$index+1}}</td>
-        <td><a href ng-click="toApiDoc(contract)">{{contract.svcDetails.service.name}} - {{contract.serviceVersion}}</a></td>
-        <td>{{contract.planDetails.plan.name}} - {{contract.planDetails.version}}</td>
+        <td><a href ng-click="toApiDoc(contract)">{{contract.serviceId}} - {{contract.serviceVersion}}</a></td>
+        <td>{{contract.planDetails.id}} - {{contract.planDetails.version}}</td>
         <td class="text-right">
             <!--<button class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Break contract" ng-if="userCanBreak" ng-click="breakContract(contract)"></button>-->
         </td>

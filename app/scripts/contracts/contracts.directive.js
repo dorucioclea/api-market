@@ -20,7 +20,6 @@
     
     function contractListCtrl($scope, contractService, toastService) {
         $scope.breakContract = breakContract;
-
         function breakContract(contract) {
             contractService.break(contract.appOrganizationId, contract.appId, contract.appVersion, contract.contractId)
                 .then(function () {

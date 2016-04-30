@@ -125,7 +125,7 @@
         }
         
         function rejectMembershipRequest(orgId, userId) {
-            return RejectRequest.save({ orgId: orgId, userId: userId }).$promise;
+            return RejectRequest.save({ orgId: orgId, userId: userId },{}).$promise;
         }
         
         function requestMembership(orgId) {
