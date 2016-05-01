@@ -89,7 +89,7 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat-start="application in applications | filter:{name:searchText}">
-                                        <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)" ng-click="toggle(application)"></a></td>
+                                        <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)||pendingContracts[application.id]" ng-click="toggle(application)"></a></td>
                                         <td>
                                             <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
                                             <a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a>
@@ -112,7 +112,7 @@
                                     <tr ng-show="application.contractsExpanded" class="row-selected fadein" ng-repeat-end>
                                         <td></td>
                                         <td colspan="5">
-                                            <div>
+                                            <div ng-if="applicationContracts.hasOwnProperty(application.id)">
                                                 <h5>Active Contracts</h5>
                                                 <!--<apim-active-contracts contracts="applicationContracts[application.id]"></apim-active-contracts>-->
                                                 <table class="table table-condensed row-selected">
