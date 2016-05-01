@@ -14,11 +14,12 @@
         this.request = requestContract;
         
         function accept(contract) {
+            console.log("Accept Contract:"+JSON.stringify(contract));
             var acceptObj = {
                 serviceOrgId: contract.serviceOrg,
                 serviceId: contract.serviceId,
                 serviceVersion: contract.serviceVersion,
-                planId: contract.planDetails.plan.id
+                planId: contract.planDetails.id
             };
             return AcceptContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
                 acceptObj).$promise;
