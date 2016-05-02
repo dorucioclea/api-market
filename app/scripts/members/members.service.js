@@ -95,7 +95,7 @@
         }
     }
 
-    function memberService(Member, MembershipRequests, RejectRequest, RequestMembership, Users) {
+    function memberService($rootScope, Member, MembershipRequests, RejectRequest, RequestMembership, Users, EVENTS) {
         this.getMemberDetails = getMemberDetails;
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
@@ -121,15 +121,21 @@
                 userId: request.userDetails.username,
                 roleId: roleId
             };
-            return Member.save({ orgId: orgId }, newMemberObj).$promise;
+            return Member.save({ orgId: orgId }, newMemberObj, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
         }
         
         function rejectMembershipRequest(orgId, userId) {
-            return RejectRequest.save({ orgId: orgId, userId: userId },{}).$promise;
+            return RejectRequest.save({ orgId: orgId, userId: userId },{}, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
         }
         
         function requestMembership(orgId) {
-            return RequestMembership.save({orgId: orgId}, {}).$promise;
+            return RequestMembership.save({orgId: orgId}, {}, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
         }
     }
 
