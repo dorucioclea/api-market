@@ -148,11 +148,12 @@
     }
 
     function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
-                              memberService, toastService, TOAST_TYPES, Organization, Member, orgScreenModel, CONFIG) {
+                              pendingMemberships, memberService, toastService, TOAST_TYPES, Organization, Member,
+                              orgScreenModel, CONFIG) {
 
         $scope.displayTab = orgScreenModel;
         $scope.org = orgData;
-        $scope.pendingMemberships = [];
+        $scope.pendingMemberships = pendingMemberships;
         $scope.pendingContracts = pendingContracts;
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -170,21 +171,6 @@
             Member.query({orgId: $scope.org.id}, function (reply) {
                 $scope.memberCount = reply.length;
             });
-
-            if ($scope.User.isAuthorizedFor('orgAdmin')) {
-                memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
-                    var promises = [];
-                    requests.forEach(function (req) {
-                        promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
-                            req.userDetails = results;
-                        }));
-                    });
-
-                    $q.all(promises).then(function() {
-                        $scope.pendingMemberships = requests;
-                    })
-                });
-            }
         }
 
         function updateOrgDescription(newValue) {
@@ -240,7 +226,7 @@
         }
     }
 
-    function pendingMembersCtrl($scope, $stateParams, roleData, filterFilter, orgScreenModel) {
+    function pendingMembersCtrl($scope, $stateParams, orgScreenModel) {
         $scope.orgId = $stateParams.orgId;
         orgScreenModel.updateTab('Pending');
     }

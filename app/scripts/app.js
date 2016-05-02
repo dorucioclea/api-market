@@ -260,17 +260,20 @@
                         roleData: function (Roles) {
                             return Roles.query().$promise;
                         },
-                        requests: function ($stateParams, memberService) {
-                            return memberService.getPendingRequests($stateParams.orgId);
-                        },
-                        pendingMemberDetails: function ($q, requests, memberService) {
-                            var promises = [];
-                            requests.forEach(function (req) {
-                                promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
-                                    req.userDetails = results;
-                                }));
+                        requests: function ($q, $stateParams, memberService) {
+                            var deferred = $q.defer();
+                            memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
+                                var promises = [];
+                                requests.forEach(function (req) {
+                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                        req.userDetails = results;
+                                    }));
+                                });
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(requests);
+                                });
                             });
-                            return $q.all(promises);
+                            return deferred.promise;
                         }
                     },
                     controller: 'MarketMembersCtrl'
@@ -488,6 +491,21 @@
                         contractService: 'contractService',
                         pendingContracts: function ($stateParams, contractService) {
                             return contractService.incomingPendingForOrg($stateParams.orgId);
+                        },
+                        pendingMemberships: function ($q, $stateParams, memberService) {
+                            var deferred = $q.defer();
+                            memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
+                                var promises = [];
+                                requests.forEach(function (req) {
+                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                        req.userDetails = results;
+                                    }));
+                                });
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(requests);
+                                });
+                            });
+                            return deferred.promise;
                         }
                     },
                     controller: 'OrganizationCtrl'
@@ -585,12 +603,6 @@
                 .state('root.organization.pending', {
                     url: '/pending',
                     templateUrl: 'views/partials/organization/pending.html',
-                    resolve: {
-                        Roles: 'Roles',
-                        roleData: function (Roles) {
-                            return Roles.query().$promise;
-                        }
-                    },
                     controller: 'PendingCtrl'
                 })
 
