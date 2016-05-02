@@ -258,7 +258,7 @@
                 $scope.notifications = notifications;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
-                $scope.clearNotification = clearNotification
+                $scope.clearNotification = clearNotification;
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;

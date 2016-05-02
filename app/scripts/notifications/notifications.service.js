@@ -33,7 +33,7 @@
                         result.forEach(function (res) {
                             switch (res.type) {
                                 case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
-                                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase:
+                                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
                                     orgService.orgInfo(res.originId).then(function (orgInfo) {
                                         res.orgDetails = orgInfo;
                                     });
