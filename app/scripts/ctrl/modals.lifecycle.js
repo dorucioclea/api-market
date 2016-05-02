@@ -441,9 +441,10 @@
 
         /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
-            function ($scope, $modal, $state, publisherMode,
+            function ($scope, $modal, $state, publisherMode, admin,
                       currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, orgService, Organization) {
 
+                $scope.admin = admin;
                 $scope.createOrganization = createOrganization;
                 $scope.modalClose = modalClose;
                 $scope.regex = REGEX;
@@ -457,9 +458,7 @@
                 function createOrganization() {
                     $scope.organization.name = $scope.organization.name.trim();
 
-                    if (!$scope.organization.friendlyName || $scope.organization.friendlyName.length === 0) {
-                        $scope.organization.friendlyName = $scope.organization.name;
-                    } else {
+                    if ($scope.organization.friendlyName) {
                         $scope.organization.friendlyName = $scope.organization.friendlyName.trim();
                     }
 

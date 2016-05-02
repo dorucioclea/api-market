@@ -391,8 +391,9 @@
                     apis: '=',
                     stats: '='
                 },
-                controller: function ($scope, currentUserModel, followerService) {
+                controller: function ($scope, currentUserModel, followerService, CONFIG) {
                         $scope.followAction = followAction;
+                        $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
                         $scope.userIsFollowing = userIsFollowing;
 
                         function followAction(api) {

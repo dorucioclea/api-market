@@ -94,6 +94,9 @@
                 resolve: {
                     publisherMode: function () {
                         return $scope.publisherMode;
+                    },
+                    admin: function () {
+                        return $scope.User.currentUser.admin
                     }
                 },
                 backdrop : 'static',
