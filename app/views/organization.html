@@ -18,6 +18,7 @@
         <div class="panel-body">
           <div class="col-sm-12">
             <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
+            <h5 ng-if="useFriendlyNames">({{ org.friendlyName }})&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgFriendlyName()"></a></h5>
             <span class="small text-muted mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span>&nbsp;Public Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
             <span class="small text-muted mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span>&nbsp;Private Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
             <hr>
@@ -33,7 +34,7 @@
             <div class="col-sm-12">
               <i class="fa fa-users fa-fw"></i>
               <span data-field="numMembers" class="ng-binding">{{memberCount}}</span>
-              <span>Members</span>
+              <span>{{ memberCount === 1 ? 'Member' : 'Members' }}</span>
             </div>
           </div>
           <div class="col-sm-12">

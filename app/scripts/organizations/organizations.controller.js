@@ -7,6 +7,7 @@
         .controller('MyOrganizationsCtrl', myOrganizationsCtrl)
         .controller('OrganizationCtrl', organizationCtrl)
         .controller('OrganizationsCtrl', organizationsCtrl)
+        .controller('OrgFriendlyNameModalCtrl', orgFriendlyNameModalCtrl)
         .controller('OrgVisibilityModalCtrl', orgVisibilityModalCtrl)
         .controller('PendingCtrl', pendingMembersCtrl)
         .controller('PlansCtrl', plansCtrl)
@@ -146,7 +147,7 @@
     }
 
     function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, memberService,
-                              toastService, TOAST_TYPES, Organization, Member, orgScreenModel) {
+                              toastService, TOAST_TYPES, Organization, Member, orgScreenModel, CONFIG) {
 
         $scope.displayTab = orgScreenModel;
         $scope.org = orgData;
@@ -157,7 +158,9 @@
             $scope.xs = match;
         });
         $scope.updateOrgDescription = updateOrgDescription;
+        $scope.updateOrgFriendlyName = updateOrgFriendlyName;
         $scope.updateOrgVisibility = updateOrgVisibility;
+        $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
         init();
 
         function init() {
@@ -190,6 +193,28 @@
             });
         }
 
+        function updateOrgFriendlyName() {
+            var modalinstance = $modal.open({
+                templateUrl: 'views/modals/organizationEditFriendlyName.html',
+                controller: 'OrgFriendlyNameModalCtrl as ctrl',
+                resolve: {
+                    orgFriendlyName: function () {
+                        return $scope.org.friendlyName;
+                    }
+                },
+                backdrop : 'static'
+            });
+
+            modalinstance.result.then(function (updatedOrgFriendlyName) {
+                Organization.update({id: organizationId}, { friendlyName: updatedOrgFriendlyName }, function () {
+                    toastService.success('Organization friendly name now set to <b>' + updatedOrgFriendlyName + '</b>');
+                    $scope.org.friendlyName = updatedOrgFriendlyName;
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Could not update the organization friendly name.');
+                });
+            })
+        }
+
         function updateOrgVisibility() {
             var modalinstance = $modal.open({
                 templateUrl: 'views/modals/organizationEditVisibility.html',
@@ -203,7 +228,7 @@
             });
 
             modalinstance.result.then(function (setOrgPrivate) {
-                Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function (reply) {
+                Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function () {
                     toastService.success(setOrgPrivate ? 'Organization now set to <b>Private</b>.' : 'Organization now set to <b>Public</b>.');
                     $scope.org.organizationPrivate = setOrgPrivate;
                 }, function (error) {
@@ -264,6 +289,22 @@
                 });
         }
 
+    }
+
+    function orgFriendlyNameModalCtrl($scope, $modalInstance, orgFriendlyName, REGEX) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.orgFriendlyName = angular.copy(orgFriendlyName);
+        $scope.regex = REGEX;
+
+
+        function cancel() {
+            $modalInstance.dismiss('canceled');
+        }
+
+        function ok() {
+            $modalInstance.close($scope.orgFriendlyName);
+        }
     }
 
     function orgVisibilityModalCtrl($scope, $modalInstance, currentlyPrivate) {
