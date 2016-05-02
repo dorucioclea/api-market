@@ -5,10 +5,13 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, appService, AcceptContract, ContractRequests, RejectContract, RequestContract) {
+    function contractService($q, appService, AcceptContract, ContractRequests, OrgIncomingPendingContracts,
+                             OrgOutgoingPendingContracts, RejectContract, RequestContract) {
         this.accept = accept;
         this.break = breakContract;
         this.getPendingForApp = getPendingForApp;
+        this.incomingPendingForOrg = incomingPendingForOrg;
+        this.outgoingPendingForOrg = outgoingPendingForOrg;
         this.getPendingForSvc = getPendingForSvc;
         this.reject = reject;
         this.request = requestContract;
@@ -35,8 +38,16 @@
             return $q.when('Not yet implemented');
         }
 
+        function incomingPendingForOrg(orgId) {
+            return OrgIncomingPendingContracts.query({ orgId: orgId }).$promise;
+        }
+
+
+        function outgoingPendingForOrg(orgId) {
+            return OrgOutgoingPendingContracts.query({ orgId: orgId}).$promise;
+        }
+        
         function getPendingForSvc(orgId, svcId, versionId) {
-            // TODO backend implementation
             var deferred = $q.defer();
             ContractRequests.query({ orgId: orgId }, function (requests) {
                 var contracts = [];

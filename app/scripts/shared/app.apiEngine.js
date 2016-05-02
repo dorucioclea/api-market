@@ -27,6 +27,14 @@
             return $resource(CONFIG.BASE.URL +
             '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/reject')
         })
+        .factory('OrgIncomingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
+        .factory('OrgOutgoingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
 
         /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
@@ -61,14 +69,10 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
         })
         .factory('OrgIncomingNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming')
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming');
         })
         .factory('OrgOutgoingNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing')
-        })        
-        .factory('OrgPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
-                NOTIFICATIONS.CONTRACT_PENDING);
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing');
         })
             
         /// ========== ORGANIZATION =====================================================================

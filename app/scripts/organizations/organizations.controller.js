@@ -146,12 +146,13 @@
         }
     }
 
-    function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, memberService,
-                              toastService, TOAST_TYPES, Organization, Member, orgScreenModel, CONFIG) {
+    function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
+                              memberService, toastService, TOAST_TYPES, Organization, Member, orgScreenModel, CONFIG) {
 
         $scope.displayTab = orgScreenModel;
         $scope.org = orgData;
-        $scope.pendingRequests = [];
+        $scope.pendingMemberships = [];
+        $scope.pendingContracts = pendingContracts;
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.xs = screenSize.on('xs', function(match) {
@@ -179,7 +180,7 @@
                     });
 
                     $q.all(promises).then(function() {
-                        $scope.pendingRequests = requests;
+                        $scope.pendingMemberships = requests;
                     })
                 });
             }
@@ -323,11 +324,10 @@
         }
     }
 
-    function servicesCtrl($scope, $state, $modal, svcData, svcVersions,
+    function servicesCtrl($scope, $state, $modal, svcData,
                           orgScreenModel, ServiceVersion) {
 
         $scope.services = svcData;
-        $scope.serviceVersions = svcVersions;
         $scope.canPublish = canPublish;
         $scope.canRetire = canRetire;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
@@ -337,6 +337,22 @@
         $scope.modalNewService = modalNewService;
 
         orgScreenModel.updateTab('Services');
+
+        init();
+
+        function init() {
+            // Find services with pending contracts
+            angular.forEach($scope.pendingContracts, function (pendingContract) {
+                for (var i = 0; i < $scope.services.length; i++) {
+                    var svc = $scope.services[i];
+                    if (pendingContract.serviceOrg === svc.organizationId &&
+                        pendingContract.serviceId === svc.serviceVersionDetails.id &&
+                        pendingContract.serviceVersion === svc.serviceVersionDetails.version) {
+                        svc.hasPendingContracts = true;
+                    }
+                }
+            })
+        }
 
         function modalNewService() {
             $modal.open({

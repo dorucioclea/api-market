@@ -55,9 +55,9 @@
     <div class="col-md-8 mb20" ng-init="activeTab = 1">
       <div class="btn-group btn-radio">
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" id="plans" ui-sref=".plans" ng-if="User.isAuthorizedFor('planView')">Plans</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" id="services" ui-sref=".services" ng-if="User.isAuthorizedFor('svcView')">Services</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Services'" id="services" ui-sref=".services" ng-if="User.isAuthorizedFor('svcView')">Services <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Members'" id="members" ui-sref=".members">Members</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="User.isAuthorizedFor('orgAdmin')">Membership Requests <span class="badge text-bold" ng-if="pendingRequests.length > 0">{{pendingRequests.length}}</span></label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="User.isAuthorizedFor('orgAdmin')">Membership Requests <span class="badge text-bold" ng-if="pendingMemberships.length > 0">{{pendingMemberships.length}}</span></label>
       </div>
       <div class="col-sm-12 mt10" ui-view></div>
 

@@ -50,7 +50,6 @@
             },
             templateUrl: 'views/templates/contracts/pending-contracts-for-svc.html',
             controller: function ($scope, contractService, toastService) {
-                console.log($scope.contracts);
                 $scope.acceptContract = acceptContract;
                 $scope.getPlanDetails = getPlanDetails;
                 $scope.rejectContract = rejectContract;

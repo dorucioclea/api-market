@@ -47,21 +47,22 @@
       <div class="col-sm-12" ng-repeat="service in services | filter:{name:searchText}">
         <div class="col-sm-3">
           <span class="title">
-            <a href ui-sref="root.service({orgId: serviceVersions[service.id].organizationId, svcId: service.id, versionId: serviceVersions[service.id].version})">{{service.name}}</a>
+            <a href ui-sref="root.service({orgId: service.serviceVersionDetails.organizationId, svcId: service.id, versionId: service.serviceVersionDetails.version})">{{service.name}}</a>
           </span>
         </div>
         <div class="col-sm-2 text-center">
-          <span>{{serviceVersions[service.id].version}}</span>
+          <span>{{service.serviceVersionDetails.version}}</span>
         </div>
         <div class="col-sm-2 text-center">
-          <status-label status="{{serviceVersions[service.id].status}}"></status-label>
+          <status-label status="{{service.serviceVersionDetails.status}}"></status-label>
         </div>
-        <div class="col-sm-2 col-sm-offset-3">
+        <div class="col-sm-3 col-sm-offset-2">
           <div class="btn-group-xs">
-            <button class="btn btn-success action-icon fa fa-check" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Publish {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canPublish(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc(serviceVersions[service.id])"></button>
-            <button class="btn btn-warning action-icon fa fa-trash" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Retire {{service.name}} - {{serviceVersions[service.id].version}}" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc(serviceVersions[service.id])"></button>
-            <button class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Service Metrics" ng-if="canRetire(serviceVersions[service.id]) && User.isAuthorizedFor('svcEdit')" ng-click="toMetrics(serviceVersions[service.id])"></button>
-            <button class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete {{service.name}}" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc(serviceVersions[service.id])"></button>
+            <button class="btn btn-success action-icon fa fa-check" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Publish {{service.name}} - {{service.serviceVersionDetails.version}}" ng-if="canPublish(service.serviceVersionDetails) && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc(service.serviceVersionDetails)"></button>
+            <button class="btn btn-warning action-icon fa fa-trash" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Retire {{service.name}} - {{service.serviceVersionDetails.version}}" ng-if="canRetire(service.serviceVersionDetails) && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc(service.serviceVersionDetails)"></button>
+            <button class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Service Metrics" ng-if="canRetire(service.serviceVersionDetails) && User.isAuthorizedFor('svcEdit')" ng-click="toMetrics(service.serviceVersionDetails)"></button>
+            <button class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete {{service.name}}" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc(service.serviceVersionDetails)"></button>
+            <button class="btn action-icon btn-github fa fa-exclamation-triangle" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Pending contract" ng-if="service.hasPendingContracts" ui-sref="root.service.pending({ orgId: service.organizationId, svcId: service.id, versionId: service.serviceVersionDetails.version })"></button>
           </div>
         </div>
         <div class="col-sm-12">

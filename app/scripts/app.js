@@ -219,9 +219,9 @@
                                 return appContracts;
                             });
                         },
-                        notificationService: 'notificationService',
-                        pendingContracts: function (organizationId, notificationService) {
-                            return notificationService.getPendingContractsForOrg(organizationId);
+                        contractService: 'contractService',
+                        pendingContracts: function (organizationId, contractService) {
+                            return contractService.outgoingPendingForOrg(organizationId);
                         }
                     },
                     controller: 'MarketDashCtrl'
@@ -481,6 +481,10 @@
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
+                        },
+                        contractService: 'contractService',
+                        pendingContracts: function ($stateParams, contractService) {
+                            return contractService.incomingPendingForOrg($stateParams.orgId);
                         }
                     },
                     controller: 'OrganizationCtrl'
@@ -491,25 +495,23 @@
                     templateUrl: 'views/partials/organization/services.html',
                     resolve: {
                         Service: 'Service',
-                        svcData: function (Service, organizationId) {
-                            return Service.query({orgId: organizationId}).$promise;
-                        },
                         ServiceVersion: 'ServiceVersion',
-                        svcVersions: function ($q, svcData, ServiceVersion) {
-                            var svcVersions = {};
-                            var promises = [];
+                        svcData: function ($q, Service, ServiceVersion, organizationId) {
+                            var deferred = $q.defer();
 
-                            angular.forEach(svcData, function (svc) {
-                                promises.push(ServiceVersion.query(
-                                    {orgId: svc.organizationId, svcId: svc.id}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    svcVersions[value[0].id] = value[0];
+                            Service.query({ orgId: organizationId }, function (services) {
+                                var promises = [];
+                                angular.forEach(services, function (svc) {
+                                    promises.push(ServiceVersion.query(
+                                        { orgId: svc.organizationId, svcId: svc.id }, function (reply) {
+                                            svc.serviceVersionDetails = reply[0];
+                                        }).$promise);
                                 });
-                                return svcVersions;
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(services);
+                                });
                             });
+                            return deferred.promise;
                         }
                     },
                     controller: 'ServicesCtrl'
