@@ -60,10 +60,9 @@
 
     }
 
-    function myOrganizationsCtrl($scope, $modal, filterFilter, appOrgData, svcOrgData, orgService, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $modal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
-        $scope.orgService = orgService;
         $scope.toastService = toastService;
         $scope.modalNewOrganization = modalNewOrganization;
 
@@ -107,10 +106,9 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, orgService, SearchOrgs) {
+    function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, SearchOrgs) {
 
         $scope.doSearch = doSearch;
-        $scope.orgService = orgService;
         init();
 
         function init() {

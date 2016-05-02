@@ -9,10 +9,10 @@
             <td class="text-left">
                 <div>
                     <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
-                    <span class="text-default text-light"> by </span>
+                    <span ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0"><span class="text-default text-light"> by </span>
                     <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
                         {{api.service.organization.friendlyName}}
-                    </a>
+                    </a></span>
                 </div>
                 <div class="description">
                     {{api.service.description}}

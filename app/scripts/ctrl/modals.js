@@ -389,22 +389,32 @@
                 }
 
                 function createContractToast() {
+                    var serviceOrgName = $scope.service.service.organization.name;
+                    if ($scope.service.service.organization.friendlyName && $scope.service.service.organization.friendlyName.length > 0) {
+                        serviceOrgName = $scope.service.service.organization.friendlyName;
+                    }
+
                     var msg = '<b>Contract created!</b><br>' +
                         'A contract was created between application <b>' +
                         $scope.selectedAppVersion.name + ' ' +
                         $scope.selectedAppVersion.version + '</b> and service <b>' +
-                        $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
+                        serviceOrgName + ' ' + $scope.service.service.name + ' ' +
                         $scope.service.version + '</b>, using plan <b>' +
                         $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
                     toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
                 }
 
                 function requestContractToast() {
+                    var serviceOrgName = $scope.service.service.organization.name;
+                    if ($scope.service.service.organization.friendlyName && $scope.service.service.organization.friendlyName.length > 0) {
+                        serviceOrgName = $scope.service.service.organization.friendlyName;
+                    }
+
                     var msg = '<b>Contract requested!</b><br>' +
                         'A contract request between application <b>' +
                         $scope.selectedAppVersion.name + ' ' +
                         $scope.selectedAppVersion.version + '</b> and service <b>' +
-                        $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
+                        serviceOrgName + ' ' + $scope.service.service.name + ' ' +
                         $scope.service.version + '</b>, using plan <b>' +
                         $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b> was sent to the service owner for review.';
                     toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
@@ -621,7 +631,7 @@
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, orgService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
+            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
@@ -630,7 +640,6 @@
                 $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
-                $scope.orgName = orgService.name(org);
 
                 function addMember(username, email) {
                     var searchObj = {
@@ -690,12 +699,11 @@
 
         /// ==== MemberRemoveCtrl Controller
         .controller('MemberRemoveCtrl',
-            function ($scope, $modal, $state, member, org, orgService, toastService, TOAST_TYPES, Member) {
+            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
                 $scope.doRemove = doRemove;
                 $scope.member = member;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
-                $scope.orgName = orgService.name(org);
 
                 function doRemove() {
                     var name = member.userName ? member.userName : member.userId;
@@ -716,13 +724,12 @@
 
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
-            function ($scope, $modal, $state, currentOwner, newOwner, org, orgService, toastService, TOAST_TYPES,
+            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
                       currentUserModel, OrganizationOwnershipTransfer) {
                 $scope.doTransfer = doTransfer;
                 $scope.newOwner = newOwner;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
-                $scope.orgName = orgService.name(org);
 
                 function doTransfer() {
                     var user = newOwner.userName ? newOwner.userName : newOwner.userId;

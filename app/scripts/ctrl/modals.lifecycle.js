@@ -442,7 +442,7 @@
         /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
             function ($scope, $modal, $state, publisherMode, admin,
-                      currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, orgService, Organization) {
+                      currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, Organization) {
 
                 $scope.admin = admin;
                 $scope.createOrganization = createOrganization;

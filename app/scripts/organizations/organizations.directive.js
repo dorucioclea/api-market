@@ -15,8 +15,7 @@
                 publisherMode: '='
             },
             templateUrl: 'views/templates/organization/organizations-table.html',
-            controller: function ($scope, $modal, memberService, orgService, toastService) {
-                $scope.orgService = orgService;
+            controller: function ($scope, $modal, memberService, toastService) {
                 $scope.isMember = isMember;
                 $scope.requestMembership = requestMembership;
 

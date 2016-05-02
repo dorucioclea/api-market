@@ -4,9 +4,9 @@
             <div class="col-sm-12 text-left">
                 <h4 class="mb0">
                     <!--<i class="fa fa-shield icon text-primary"></i>-->
-                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="org.isMember && !publisherMode">{{orgService.name(org)}}</a>
-                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="org.isMember && publisherMode">{{orgService.name(org)}}</a>
-                    <span class="text-primary not-clickable" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are not a member of this organization." ng-if="!org.isMember">{{orgService.name(org)}}</span>
+                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="org.isMember && !publisherMode">{{org.name}}</a>
+                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="org.isMember && publisherMode">{{org.name}}</a>
+                    <span class="text-primary not-clickable" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are not a member of this organization." ng-if="!org.isMember">{{org.name}}</span>
                     <span class="xsmall text-muted ml10 mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span> Public</span>
                     <span class="xsmall text-muted ml10 mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span> Private</span>
                 </h4>
