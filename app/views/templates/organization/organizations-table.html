@@ -29,7 +29,7 @@
                     <h6 ng-class="org.numMembers ? 'text-success':''" class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h6>
                     <p  ng-class="org.numMembers ? 'text-success':''" class="xsmall">{{ org.numMembers === 1 ? 'Member' : 'Members' }}</p>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" ng-if="org.isMember">
                     <h6 ng-class="org.numEvents ? 'text-warning':''" class="mb0">{{org.numEvents ? org.numEvents : '0' }}</h6>
                     <p  ng-class="org.numEvents ? 'text-warning':''" class="xsmall">{{ org.numEvents === 1 ? 'Action' : 'Actions' }}</p>
                 </div>
