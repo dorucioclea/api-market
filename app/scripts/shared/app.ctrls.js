@@ -248,7 +248,8 @@
 
         .controller('HeadCtrl',
             function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUser, notifications, currentUserModel, headerModel, orgScreenModel, notificationService,
+                     currentUser, notifications, pendingNotifications,
+                     currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper) {
                 $scope.showExplore = headerModel.showExplore;
                 $scope.showDash = headerModel.showDash;
@@ -256,6 +257,7 @@
                 $scope.orgScreenModel = orgScreenModel;
                 currentUserModel.setCurrentUserInfo(currentUser);
                 $scope.notifications = notifications;
+                $scope.pendingNotifications = pendingNotifications;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.clearNotification = clearNotification;

@@ -62,6 +62,12 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
                 NOTIFICATIONS.CONTRACT_PENDING);
         })
+        .factory('Notifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications');
+        })
+        .factory('PendingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/pending');
+        })
         .factory('UserIncomingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/:notificationId');
         })

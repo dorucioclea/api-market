@@ -38,8 +38,8 @@
                 notification: '='
             },
             templateUrl: 'views/templates/notification/partials/contract-pending.html',
-            controller: function () {
-
+            controller: function ($scope, CONFIG) {
+                $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
             }
         }
     }
@@ -135,8 +135,8 @@
                 notification: '='
             },
             templateUrl: 'views/templates/notification/partials/membership-pending.html',
-            controller: function () {
-                
+            controller: function ($scope, CONFIG) {
+                $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
             }
         }
     }    

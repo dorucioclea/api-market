@@ -70,7 +70,27 @@
 
 
 <ul class="list-unstyled right-elems">
-    <li class="notify-drop hidden-xs dropdown" dropdown="">
+
+    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="pendingNotifications.length > 0">
+        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-inbox fa-lg"></i>
+            <span class="badge badge-warning badge-sm circle" ng-if="pendingNotifications.length > 0">{{pendingNotifications.length}}</span>
+        </a>
+        <div class="panel panel-default dropdown-menu dropdown-menu-right ps-container" custom-scrollbar="">
+            <div class="panel-heading">
+                You have {{pendingNotifications.length}} pending {{ pendingNotifications.length > 1 ? 'decisions' : 'decision'}}
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li class="clearfix" ng-repeat="notification in pendingNotifications">
+                        <apim-notification notification="notification" clear-function="clearNotification"></apim-notification>
+                    </li>
+                </ul>
+            </div>
+            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
+    </li>
+
+    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="notifications.length > 0">
         <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell-o fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="notifications.length > 0">{{notifications.length}}</span>

@@ -1,9 +1,9 @@
-<a ui-sref="root.market-dash">
+<a>
     <span class="ion ion-email left bg-danger"></span>
     <div class="desc">
         <span class="close ion ion-android-close" ng-click="clear($event)"></span>
         <strong>Contract Rejected</strong>
-        <p class="small text-light">Your contract request for <span class="text-primary text-bold">ServiceName v1</span> has been rejected.</p>
+        <p class="small text-light">Your contract request for <span class="text-primary text-bold">{{notification.serviceName}} {{notification.serviceVersion}}</span> has been rejected.</p>
         <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
     </div>
 </a>

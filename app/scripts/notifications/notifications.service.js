@@ -5,13 +5,15 @@
         .service('notificationService', notificationService);
 
 
-    function notificationService($q, orgService, UserIncomingNotifications, UserOutgoingNotifications,
+    function notificationService($q, orgService, PendingNotifications, Notifications,
+                                 UserIncomingNotifications, UserOutgoingNotifications,
                                  OrgIncomingNotifications, OrgOutgoingNotifications,
                                  NOTIFICATIONS) {
         this.clear = clear;
         this.getIncomingForOrg = getIncomingForOrg;
         this.getNotificationsForUser = getNotificationsForUser;
         this.getOrgsWithPendingRequest = getOrgsWithPendingRequest;
+        this.getPendingNotificationsForUser = getPendingNotificationsForUser;
         this.getOutgoingForOrg = getOutgoingForOrg;
         
         function clear(notification) {
@@ -23,31 +25,32 @@
         }
         
         function getNotificationsForUser() {
-            // TODO rework to reduce number of backend calls
-            var notifications = [];
-            
-            return $q.all([UserIncomingNotifications.query().$promise, UserOutgoingNotifications.query().$promise])
-                .then(function (results) {
-                    angular.forEach(results, function (result) {
-                        result.forEach(function (res) {
-                            switch (res.type) {
-                                case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
-                                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
-                                    orgService.orgInfo(res.originId).then(function (orgInfo) {
-                                        res.orgDetails = orgInfo;
-                                    });
-                                    break;
-                                case NOTIFICATIONS.MEMBERSHIP_PENDING.toUpperCase():
-                                    orgService.orgInfo(res.destinationId).then(function (orgInfo) {
-                                        res.orgDetails = orgInfo;
-                                    });
-                                    break;
-                            }
-                            notifications.push(res);
-                        });
-                    });
-                    return notifications;
-                })
+            return Notifications.query().$promise;
+            // // TODO rework to reduce number of backend calls
+            // var notifications = [];
+            //
+            // return $q.all([UserIncomingNotifications.query().$promise, UserOutgoingNotifications.query().$promise])
+            //     .then(function (results) {
+            //         angular.forEach(results, function (result) {
+            //             result.forEach(function (res) {
+            //                 switch (res.type) {
+            //                     case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
+            //                     case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
+            //                         orgService.orgInfo(res.originId).then(function (orgInfo) {
+            //                             res.orgDetails = orgInfo;
+            //                         });
+            //                         break;
+            //                     case NOTIFICATIONS.MEMBERSHIP_PENDING.toUpperCase():
+            //                         orgService.orgInfo(res.destinationId).then(function (orgInfo) {
+            //                             res.orgDetails = orgInfo;
+            //                         });
+            //                         break;
+            //                 }
+            //                 notifications.push(res);
+            //             });
+            //         });
+            //         return notifications;
+            //     })
         }
 
         function getOrgsWithPendingRequest() {
@@ -62,6 +65,10 @@
                     return results;
                 })
             });
+        }
+
+        function getPendingNotificationsForUser() {
+            return PendingNotifications.query().$promise;
         }
 
         function getOutgoingForOrg(orgId) {

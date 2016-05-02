@@ -122,6 +122,9 @@
                         notificationService: 'notificationService',
                         notifications: function (notificationService) {
                             return notificationService.getNotificationsForUser();
+                        },
+                        pendingNotifications: function (notificationService) {
+                            return notificationService.getPendingNotificationsForUser();
                         }
                     },
                     controller: 'HeadCtrl'
