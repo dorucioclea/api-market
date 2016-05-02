@@ -5,8 +5,8 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, appService, AcceptContract, ContractRequests, OrgIncomingPendingContracts,
-                             OrgOutgoingPendingContracts, RejectContract, RequestContract) {
+    function contractService($q, $rootScope, appService, AcceptContract, ContractRequests, OrgIncomingPendingContracts,
+                             OrgOutgoingPendingContracts, RejectContract, RequestContract, EVENTS) {
         this.accept = accept;
         this.break = breakContract;
         this.getPendingForApp = getPendingForApp;
@@ -25,7 +25,9 @@
                 planId: contract.planDetails.id
             };
             return AcceptContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
-                acceptObj).$promise;
+                acceptObj, function () {
+                    $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+                }).$promise;
         }
 
         function breakContract(orgId, appId, versionId, contractId) {
@@ -78,7 +80,9 @@
                 planId: contract.planDetails.id
             };
             return RejectContract.save({ orgId: contract.appOrg, appId: contract.appId, versionId: contract.appVersion },
-                rejectObj).$promise;
+                rejectObj, function () {
+                    $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+                }).$promise;
         }
 
         function requestContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {
@@ -88,7 +92,9 @@
                 applicationVersion: appVersion,
                 planId: planId
             };
-            return RequestContract.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion}, requestObj).$promise;
+            return RequestContract.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion}, requestObj, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
         }
 
     }

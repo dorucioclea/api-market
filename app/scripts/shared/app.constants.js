@@ -20,7 +20,8 @@
         })
         
         .constant('EVENTS', {
-            'MEMBER_LIST_UPDATED': 'member-list-updated'
+            'MEMBER_LIST_UPDATED': 'member-list-updated',
+            'NOTIFICATIONS_UPDATED': 'notifications-updated'
         })
 
         .constant('NOTIFICATIONS', {

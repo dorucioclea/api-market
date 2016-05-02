@@ -250,7 +250,7 @@
             function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                      currentUser, notifications, pendingNotifications,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
-                     toastService, jwtHelper) {
+                     toastService, jwtHelper, EVENTS) {
                 $scope.showExplore = headerModel.showExplore;
                 $scope.showDash = headerModel.showDash;
                 $scope.currentUserModel = currentUserModel;
@@ -269,6 +269,15 @@
                 $scope.toMarketDash = toMarketDash;
 
                 checkIsEmailPresent();
+
+                $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
+                    notificationService.getNotificationsForUser().then(function (notifs) {
+                        $scope.notifications = notifs;
+                        notificationService.getPendingNotificationsForUser().then(function (pending) {
+                            $scope.pendingNotifications = pending;
+                        })
+                    })
+                });
 
                 function checkIsEmailPresent() {
                     if (!$scope.User.currentUser.email) {
@@ -289,7 +298,7 @@
                         });
                     }
                 }
-                
+
                 function clearNotification(notification) {
                     $scope.notifications.splice($scope.notifications.indexOf(notification), 1);
                     notificationService.clear(notification).then(function () {
