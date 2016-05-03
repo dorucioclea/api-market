@@ -15,8 +15,7 @@
                 <div class="info mt20">
                     <a class="text-nowrap text-ellipsis" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"
                        ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0">
-                        <!--<img class="img img-circle publisher-img" src="images/digipolis-logo.svg">-->
-                        <span class="mt0 text-primary publisher-text text-uppercase">{{api.service.organization.friendlyName}}</span>
+                        <h5 class="mt0 text-primary text-uppercase">{{api.service.organization.friendlyName}}</h5>
                     </a>
                     <span ng-if="!(useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0)">&nbsp;</span>
                 </div>
