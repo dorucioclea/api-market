@@ -4,57 +4,12 @@
             <div><h1><span class="fa fa-warning text-warning"></span> Under construction! <span class="fa fa-warning text-warning"></span></h1></div>
         </div>
     </div>
+
     <div class="panel panel-default mb30">
         <div class="panel-heading">
-            <h3>Kong Cluster</h3>
+            <h3>Gateway Status</h3>
         </div>
         <div class="panel-body">
-
-            <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'node' : 'nodes'}} in the cluster.</p>
-
-            <table class="table table-striped cluster-info-table mt20 mb30">
-                <thead>
-                <tr>
-                    <!--<th class="cluster-node-index"></th>-->
-                    <th class="cluster-node-name">Node</th>
-                    <th class="cluster-node-address">Address</th>
-                    <th class="cluster-node-status">Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="kong in kongCluster.data">
-                    <!--<td>-->
-                    <!--{{$index + 1}}.-->
-                    <!--</td>-->
-                    <td>
-                        {{kong.name}}
-                    </td>
-                    <td>
-                        {{kong.address}}
-                    </td>
-                    <td>
-                        <span class="fa fa-2x fa-check text-success" tooltip="Alive" tooltip-placement="bottom" ng-if="kong.status === 'alive'"></span>
-                        <span class="fa fa-2x fa-warning text-warning" tooltip="Experiencing Issues" ng-if="kong.status != 'alive'"></span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            </div>
-        </div>
-    <div class="panel panel-default mb30">
-        <div class="panel-heading">
-            <h3>Kong Status</h3>
-        </div>
-        <div class="panel-body">
-
-
-
-            <!--<h3>Kong Info</h3>-->
-
-            <!--<div class="col-sm-12 well">-->
-            <!--{{kongInfo}}-->
-            <!--</div>-->
-
 
             <div class="col-md-4 col-sm-6">
                 <div class="panel panel-default mb20 mini-box panel-hovered text-center">
@@ -154,4 +109,160 @@
 
         </div>
     </div>
+
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Gateway Cluster</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'node' : 'nodes'}} in the cluster.</p>
+
+            <table class="table table-striped cluster-info-table mt20 mb30">
+                <thead>
+                <tr>
+                    <!--<th class="cluster-node-index"></th>-->
+                    <th class="cluster-node-name">Node</th>
+                    <th class="cluster-node-address">Address</th>
+                    <th class="cluster-node-status">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="kong in kongCluster.data">
+                    <!--<td>-->
+                    <!--{{$index + 1}}.-->
+                    <!--</td>-->
+                    <td>
+                        {{kong.name}}
+                    </td>
+                    <td>
+                        {{kong.address}}
+                    </td>
+                    <td>
+                        <span class="fa fa-2x fa-check text-success" tooltip="Alive" tooltip-placement="bottom" ng-if="kong.status === 'alive'"></span>
+                        <span class="fa fa-2x fa-warning text-warning" tooltip="Experiencing Issues" tooltip-placement="bottom" ng-if="kong.status != 'alive'"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Database Cluster</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-3">
+                Database:
+            </div>
+            <div class="col-md-9 text-bold mb30">
+                <apim-database-logo db-name="{{kongInfo.configuration.database}}"></apim-database-logo>
+            </div>
+            <!--<div class="col-md-12">-->
+                <!--<p>There {{kongInfo.configuration.cassandra.contact_points.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongInfo.configuration.cassandra.contact_points.length}}</span> {{kongInfo.configuration.cassandra.contact_points.length === 1 ? 'node' : 'nodes'}} in the cluster.</p>-->
+            <!--</div>-->
+            <div class="col-md-3">
+                Replication factor:
+            </div>
+            <div class="col-md-9 text-bold">
+                {{kongInfo.configuration.cassandra.replication_factor}}
+            </div>
+            <div class="col-md-3">
+                Replication strategy:
+            </div>
+            <div class="col-md-9 text-bold">
+                {{kongInfo.configuration.cassandra.replication_strategy}}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Available Plugins</h3>
+        </div>
+        <div class="panel-body">
+
+            <div>
+                <table class="table plugin-info-table">
+                    <thead>
+                    <tr>
+                        <!--<th class="cluster-node-index"></th>-->
+                        <th class="cluster-node-name">Name</th>
+                        <th class="cluster-node-status text-center">In use?</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="plugin in kongInfo.plugins.available_on_server" ng-class="{ 'in-use': kongInfo.plugins.enabled_in_cluster.indexOf(plugin) > -1, 'not-in-use': kongInfo.plugins.enabled_in_cluster.indexOf(plugin) === -1}">
+                        <td>
+                            {{plugin}}
+                        </td>
+                        <td class="text-center">
+                            <span class="fa fa-check text-success" tooltip="In Use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(plugin) > -1"></span>
+                            <span class="fa fa-times text-danger" tooltip="Not in use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(plugin) === -1"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Kong Info</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="col-md-2">
+                Kong version:
+            </div>
+            <div class="col-md-10 text-bold">
+                {{kongInfo.version}}
+            </div>
+            <div class="col-md-2">
+                LUA version:
+            </div>
+            <div class="col-md-10 text-bold">
+                {{kongInfo.lua_version}}
+            </div>
+
+            <!--<h4>Configuration</h4>-->
+
+            <!--<h4>Plugins <span class="small">(<span class="text-bold text-primary">bold</span> = in use)</span></h4>-->
+            <!--<p class="text-light text-muted" ng-repeat="plugin in kongInfo.plugins.available_on_server" ng-class="{'text-bold text-primary': kongInfo.plugins.enabled_in_cluster.indexOf(plugin) > -1 }">{{plugin}}</p>-->
+
+        </div>
+    </div>
+
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Engine Info</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="col-md-2">
+                Environment:
+            </div>
+            <div class="col-md-10 text-bold">
+                {{status.environment}}
+            </div>
+            <div class="col-md-2">
+                Version:
+            </div>
+            <div class="col-md-10 text-bold">
+                {{status.version}}
+            </div>
+            <div class="col-md-2">
+                Built on:
+            </div>
+            <div class="col-md-10 text-bold">
+                {{builtOn | date:'fullDate'}} @ {{builtOn | date:'HH:mm:ss'}}
+            </div>
+        </div>
+        <div class="panel-body text-center mt30">
+            <a ng-href="{{status.moreInfo}}">{{status.moreInfo}}</a>
+        </div>
+    </div>
+
 </div>
