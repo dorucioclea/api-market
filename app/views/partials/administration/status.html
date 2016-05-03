@@ -1,19 +1,155 @@
 <div class="row mb30">
-  <div class="panel panel-default mb30">
-    <div class="panel-body">
-      <div>Under construction!</div>
-      <div class="col-sm-12 well">
-        {{kongCluster}}
-      </div>
+    <div class="panel panel-default mb30">
+        <div class="panel-body">
+            <div><h1><span class="fa fa-warning fa-lg text-warning"></span>Under construction!<span class="fa fa-warning fa-lg text-warning"></span></h1></div>
 
-<!--      <div class="col-sm-12 well">
-        {{kongInfo}}
-      </div>-->
+            <h3>Kong Cluster</h3>
+            <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'gateway' : 'gateways'}} in the cluster.</p>
 
-<!--      <div class="col-sm-12 well">
-        {{kongStatus}}
-      </div>-->
+            <table class="table table-striped cluster-info-table mt20 mb30">
+                <thead>
+                <tr>
+                    <!--<th class="cluster-node-index"></th>-->
+                    <th class="cluster-node-name">Node</th>
+                    <th class="cluster-node-address">Address</th>
+                    <th class="cluster-node-status">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="kong in kongCluster.data">
+                    <!--<td>-->
+                    <!--{{$index + 1}}.-->
+                    <!--</td>-->
+                    <td>
+                        {{kong.name}}
+                    </td>
+                    <td>
+                        {{kong.address}}
+                    </td>
+                    <td>
+                        <span class="fa fa-2x" ng-class="{'fa-check text-success': kong.status === 'alive', 'fa-warning text-warning': kong.status != 'alive'}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
+            <hr class="mt30 mb30">
+
+
+            <!--<h3>Kong Info</h3>-->
+
+            <!--<div class="col-sm-12 well">-->
+            <!--{{kongInfo}}-->
+            <!--</div>-->
+
+
+            <h3 class="mt20 mb20">Kong Status</h3>
+            <!---->
+            <!--<div class="col-md-12">-->
+                <!--<div class="dash-head clearfix mt15 mb20">-->
+                    <!--<div class="left">-->
+                        <!--<h3 class="mb5 text-light">Kong Status</h3>-->
+                        <!--<h4>Server</h4>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb20 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-success">{{kongStatus.server.connections_accepted}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-success">
+                        <p class="mt0 mb0">Connections Accepted</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb20 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-primary">{{kongStatus.server.connections_active}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
+                        <p class="mt0 mb0">Connections Active</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb20 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-info">{{kongStatus.server.connections_handled}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-info">
+                        <p class="mt0 mb0">Connections Handled</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb10 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-pink">{{kongStatus.server.connections_reading}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-pink">
+                        <p class="mt0 mb0">Connections Reading</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb10 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-danger">{{kongStatus.server.connections_writing}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-danger">
+                        <p class="mt0 mb0">Connections Writing</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="panel panel-default mb10 mini-box panel-hovered text-center">
+                    <div class="panel-body">
+                        <div class="clearfix">
+                            <div class="mt0">
+                                <h3 class="text-warning">{{kongStatus.server.connections_waiting}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix panel-footer-sm panel-footer-warning">
+                        <p class="mt0 mb0">Connections Waiting</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="dash-head clearfix mt10 mb20">
+                    <div class="left">
+                        <h4 class="text-bold text-primary">Total Requests</h4>
+                    </div>
+                    <div class="right mt10">
+                        <h5 class="text-bold mb0 mt5">{{kongStatus.server.total_requests}}</h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
 </div>
