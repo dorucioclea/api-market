@@ -1,9 +1,11 @@
 <div class="row mb30">
     <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Kong Cluster</h3>
+        </div>
         <div class="panel-body">
             <div><h1><span class="fa fa-warning fa-lg text-warning"></span>Under construction!<span class="fa fa-warning fa-lg text-warning"></span></h1></div>
 
-            <h3>Kong Cluster</h3>
             <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'gateway' : 'gateways'}} in the cluster.</p>
 
             <table class="table table-striped cluster-info-table mt20 mb30">
@@ -27,13 +29,20 @@
                         {{kong.address}}
                     </td>
                     <td>
-                        <span class="fa fa-2x" ng-class="{'fa-check text-success': kong.status === 'alive', 'fa-warning text-warning': kong.status != 'alive'}"></span>
+                        <span class="fa fa-2x fa-check text-success" tooltip="Alive" tooltip-placement="bottom" ng-if="kong.status === 'alive'"></span>
+                        <span class="fa fa-2x fa-warning text-warning" tooltip="Experiencing Issues" ng-if="kong.status != 'alive'"></span>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            </div>
+        </div>
+    <div class="panel panel-default mb30">
+        <div class="panel-heading">
+            <h3>Kong Status</h3>
+        </div>
+        <div class="panel-body">
 
-            <hr class="mt30 mb30">
 
 
             <!--<h3>Kong Info</h3>-->
@@ -42,17 +51,6 @@
             <!--{{kongInfo}}-->
             <!--</div>-->
 
-
-            <h3 class="mt20 mb20">Kong Status</h3>
-            <!---->
-            <!--<div class="col-md-12">-->
-                <!--<div class="dash-head clearfix mt15 mb20">-->
-                    <!--<div class="left">-->
-                        <!--<h3 class="mb5 text-light">Kong Status</h3>-->
-                        <!--<h4>Server</h4>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
 
             <div class="col-md-4 col-sm-6">
                 <div class="panel panel-default mb20 mini-box panel-hovered text-center">
