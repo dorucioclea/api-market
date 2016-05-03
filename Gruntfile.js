@@ -470,6 +470,114 @@ module.exports = function (grunt) {
           }
         }
       },
+      acc: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true,
+              'USE_DIGIPOLIS_CONSENT_PAGE': false
+            },
+            'BASE': {
+              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_t1tacc-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine-ACC',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'accapim.t1t.be'
+            }
+          }
+        }
+      },
+      accInt: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false,
+              'USE_DIGIPOLIS_CONSENT_PAGE': false
+            },
+            'BASE': {
+              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_t1tacc-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
+              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine-ACC',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'accapim.t1t.be'
+            }
+          }
+        }
+      },
+      accExt: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false,
+              'USE_DIGIPOLIS_CONSENT_PAGE': false
+            },
+            'BASE': {
+              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+            },
+            'CONSENT': {
+              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_t1tacc-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
+              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'APIEngine-ACC',
+              'CLIENT_TOKEN': 'jwt'
+            },
+            KONG: {
+              HOST: 'accapim.t1t.be'
+            }
+          }
+        }
+      },
       t1tprod: {
         constants: {
           'CONFIG': {
@@ -1089,6 +1197,63 @@ module.exports = function (grunt) {
     'clean:dist',
     'wiredep',
     'ngconstant:devExt',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('acc-pub', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:acc',
+    'replace:pub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('acc-mkt-int', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:accInt',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('acc-mkt-ext', [
+    'clean:dist',
+    'wiredep',
+    'ngconstant:accExt',
     'replace:mkt',
     'less:dist',
     'useminPrepare',
