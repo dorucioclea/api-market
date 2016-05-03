@@ -18,7 +18,7 @@
         <div class="panel-body">
           <div class="col-sm-12">
             <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
-            <h5 ng-if="User.currentUser.admin"><span ng-if="org.friendlyName && org.friendlyName.length > 0">({{ org.friendlyName }})</span><span class="text-muted" ng-if="!org.friendlyName || org.friendlyName.length === 0">No friendly name set.</span>&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgFriendlyName()"></a></h5>
+            <h5 ng-if="User.currentUser.admin"><span ng-if="org.friendlyName && org.friendlyName.length > 0">({{ org.friendlyName }})</span><span class="text-muted" ng-if="!org.friendlyName || org.friendlyName.length === 0">No branding name set.</span>&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgFriendlyName()"></a></h5>
             <span class="small text-muted mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span>&nbsp;Public Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
             <span class="small text-muted mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span>&nbsp;Private Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
             <hr>
