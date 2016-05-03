@@ -1,12 +1,16 @@
 <div class="row mb30">
     <div class="panel panel-default mb30">
+        <div class="panel-body">
+            <div><h1><span class="fa fa-warning text-warning"></span> Under construction! <span class="fa fa-warning text-warning"></span></h1></div>
+        </div>
+    </div>
+    <div class="panel panel-default mb30">
         <div class="panel-heading">
             <h3>Kong Cluster</h3>
         </div>
         <div class="panel-body">
-            <div><h1><span class="fa fa-warning fa-lg text-warning"></span>Under construction!<span class="fa fa-warning fa-lg text-warning"></span></h1></div>
 
-            <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'gateway' : 'gateways'}} in the cluster.</p>
+            <p>There {{kongCluster.data.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongCluster.data.length}}</span> {{kongCluster.data.length === 1 ? 'node' : 'nodes'}} in the cluster.</p>
 
             <table class="table table-striped cluster-info-table mt20 mb30">
                 <thead>
