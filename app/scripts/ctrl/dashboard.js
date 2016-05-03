@@ -217,6 +217,7 @@
             function($scope, $stateParams, svcData, headerModel,
                      ServiceVersion, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(true, true, true);
+                $scope.availableAPIs = [];
                 $scope.svcStats = [];
                 $scope.queryString = $stateParams.query;
 
@@ -239,7 +240,6 @@
                                 svcId: version.id,
                                 versionId: version.version},
                             function (reply) {
-                                if (!$scope.availableAPIs) $scope.availableAPIs = [];
                                 $scope.availableAPIs.push(reply);
                                 getStats(reply);
                             });
