@@ -883,8 +883,8 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
+              'SP_NAME': 'apiengine-astad',
               'CLIENT_TOKEN': 'jwt'
             },
             KONG: {
