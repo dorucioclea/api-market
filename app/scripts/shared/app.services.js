@@ -665,47 +665,69 @@
 
                 function needsCallback(appOrgId, appId, appVersion) {
                     // Disable callback url not being required for Client Credentials grant,
-                    // Now compulsory for all types of OAuth 
-                    return $q.when(true);
+                    // Now compulsory for all types of OAuth
 
-                    // return ApplicationContract.query({
-                    //     orgId: appOrgId,
-                    //     appId: appId,
-                    //     versionId: appVersion}).$promise
-                    //     .then(function (contracts) {
-                    //         var promises = [];
-                    //         var secondaryPromises = [];
-                    //
-                    //         angular.forEach(contracts, function (contract) {
-                    //             promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
-                    //                 svcId: contract.serviceId,
-                    //                 versionId: contract.serviceVersion}, function (policies) {
-                    //                 angular.forEach(policies, function (policy) {
-                    //                     if (policy.policyDefinitionId === 'OAuth2') {
-                    //                         secondaryPromises.push(ServiceVersionPolicy.get(
-                    //                             {orgId: contract.serviceOrganizationId,
-                    //                                 svcId: contract.serviceId,
-                    //                                 versionId: contract.serviceVersion,
-                    //                                 policyId: policy.id}).$promise);
-                    //                     }
-                    //                 })
-                    //             }).$promise);
-                    //         });
-                    //         return $q.all(promises).then(function (result) {
-                    //             return $q.all(secondaryPromises).then(function (policyList) {
-                    //                 var needsCallback = false;
-                    //                 for (var i = 0; i < policyList.length; i++) {
-                    //                     var policyConfiguration = angular.fromJson(policyList[i].configuration);
-                    //                     if (policyConfiguration.enable_implicit_grant ||
-                    //                         policyConfiguration.enable_authorization_code) {
-                    //                         needsCallback = true;
-                    //                         break;
-                    //                     }
-                    //                 }
-                    //                 return needsCallback;
-                    //             });
-                    //         });
-                    //     });
+                    return ApplicationContract.query({
+                        orgId: appOrgId,
+                        appId: appId,
+                        versionId: appVersion}).$promise
+                        .then(function (contracts) {
+                            var promises = [];
+
+                            angular.forEach(contracts, function (contract) {
+                                promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
+                                    svcId: contract.serviceId,
+                                    versionId: contract.serviceVersion}).$promise);
+                            });
+                            return $q.all(promises).then(function (result) {
+                                var needsCallback = false;
+                                for (var i = 0; i < result.length; i++) {
+                                    for (var j = 0; j < result[i].length; j++) {
+                                        if (result[i][j].policyDefinitionId === 'OAuth2') {
+                                            needsCallback = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                return needsCallback;
+                            });
+
+                            // Old method preserved here for revert purposes
+                            // =============================================
+
+                            // var promises = [];
+                            // // var secondaryPromises = [];
+                            //
+                            // angular.forEach(contracts, function (contract) {
+                            //     promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
+                            //         svcId: contract.serviceId,
+                            //         versionId: contract.serviceVersion}, function (policies) {
+                            //         angular.forEach(policies, function (policy) {
+                            //             if (policy.policyDefinitionId === 'OAuth2') {
+                            //                 secondaryPromises.push(ServiceVersionPolicy.get(
+                            //                     {orgId: contract.serviceOrganizationId,
+                            //                         svcId: contract.serviceId,
+                            //                         versionId: contract.serviceVersion,
+                            //                         policyId: policy.id}).$promise);
+                            //             }
+                            //         })
+                            //     }).$promise);
+                            // });
+                            // return $q.all(promises).then(function (result) {
+                            //     return $q.all(secondaryPromises).then(function (policyList) {
+                            //         var needsCallback = false;
+                            //         for (var i = 0; i < policyList.length; i++) {
+                            //             var policyConfiguration = angular.fromJson(policyList[i].configuration);
+                            //             if (policyConfiguration.enable_implicit_grant ||
+                            //                 policyConfiguration.enable_authorization_code) {
+                            //                 needsCallback = true;
+                            //                 break;
+                            //             }
+                            //         }
+                            //         return needsCallback;
+                            //     });
+                            // });
+                        });
                 }
 
                 function postFormEncoded(url, data) {

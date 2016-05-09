@@ -38,9 +38,6 @@
 
         function publish(organizationId, appId, versionId) {
             
-            // Check if OAuth callback is present
-            
-            
             return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId},
                 function (appVersion) {
                     // Check if contracts are all still valid
