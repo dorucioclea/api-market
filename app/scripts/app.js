@@ -285,9 +285,11 @@
                     url: '/apis',
                     templateUrl: '/views/dashboard.html',
                     resolve: {
-                        SearchSvcsWithStatus: 'SearchSvcsWithStatus',
-                        svcData: function (SearchSvcsWithStatus) {
-                            return SearchSvcsWithStatus.query({status: 'Published'}).$promise;
+                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
+                        svcData: function (SearchLatestServiceVersions) {
+                            return SearchLatestServiceVersions.query({},
+                                {filters: [{name: "status", value: "Published", operator: 'eq'}]}
+                            ).$promise;
                         },
                         PublishedCategories: 'PublishedCategories',
                         categories: function (PublishedCategories) {
@@ -313,10 +315,11 @@
                     url: '/search?query',
                     templateUrl: '/views/search.html',
                     resolve: {
-                        SearchSvcs: 'SearchSvcs',
-                        svcData: function (SearchSvcs, $stateParams) {
-                            return SearchSvcs.query({},
-                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'}]}
+                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
+                        svcData: function (SearchLatestServiceVersions, $stateParams) {
+                            return SearchLatestServiceVersions.query({},
+                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'},
+                                    {name: 'status', value: 'Published', operator: 'eq'}]}
                             ).$promise;
                         }
                     },

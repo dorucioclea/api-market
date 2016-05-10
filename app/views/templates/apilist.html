@@ -22,9 +22,9 @@
                 <div class="text-bold text-uppercase">{{api.version}}</div>
             </td>
             <td>
-                <div class="col-xs-4"><b>{{stats[api.service.id].developers}}</b><br>developers</div>
+                <div class="col-xs-4"><b>{{api.marketInfo.developers}}</b><br>developers</div>
                 <div class="col-xs-4"><b>{{api.service.followers.length}}</b><br>followers<br></div>
-                <div class="col-xs-4"><b>{{stats[api.service.id].uptime}}%</b><br>uptime</div>
+                <div class="col-xs-4"><b>{{api.marketInfo.uptime}}%</b><br>uptime</div>
             </td>
             <td>
                 <div><a href ng-click="followAction(api)">
