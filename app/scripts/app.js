@@ -294,7 +294,8 @@
                         PublishedCategories: 'PublishedCategories',
                         categories: function (PublishedCategories) {
                             return PublishedCategories.query().$promise;
-                        }
+                        },
+                        SearchLatestPublishedSvcsInCategories: 'SearchLatestPublishedSvcsInCategories'
                     },
                     controller: 'DashboardCtrl'
                 })

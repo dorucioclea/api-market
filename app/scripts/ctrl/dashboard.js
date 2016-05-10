@@ -6,8 +6,8 @@
         /// ==== MarketDash Controller
         .controller('MarketDashCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
-                      appData, appVersions, appVersionDetails, appContracts, headerModel,
-                      selectedApp, applicationManager, docTester, toastService,
+                      appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
+                      selectedApp, applicationManager, docTester, toastService, service,
                       ApplicationContract) {
                 headerModel.setIsButtonVisible(true, false);
                 orgScreenModel.updateOrganization(orgData);
@@ -19,6 +19,7 @@
                 $scope.applicationVersions = appVersions;
                 $scope.applicationVersionDetails = appVersionDetails;
                 $scope.applicationContracts = appContracts;
+                $scope.orgId = $stateParams.orgId;
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.collapseAll = collapseAll;
@@ -41,6 +42,17 @@
                 $scope.copyKey = copyKey;
                 $scope.copyProvisionKey = copyProvisionKey;
 
+                pendingContracts.forEach(function (contract) {
+                    $scope.pendingContracts = [];
+                    if ($scope.applicationVersions[contract.appId] && $scope.applicationVersions[contract.appId].version === contract.appVersion) {
+                        if (!$scope.pendingContracts[contract.appId]) $scope.pendingContracts[contract.appId] = [];
+                        contract.planDetails = angular.fromJson(contract.body);
+                        service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
+                            contract.svcDetails = svcVersion;
+                        });
+                        $scope.pendingContracts[contract.appId].push(contract);
+                    }
+                });
                 function toggle(app) {
                     app.contractsExpanded = !app.contractsExpanded;
                 }
@@ -157,18 +169,31 @@
 
         /// ==== Marketplace Members Controller
         .controller('MarketMembersCtrl',
-            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, roleData, orgScreenModel,
-                      toastService, TOAST_TYPES, memberHelper) {
+            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
+                      toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
                 $scope.memberDetails = memberDetails;
+                $scope.pendingRequests = requests;
                 $scope.removeMember = removeMember;
                 $scope.roles = roleData;
                 $scope.transferOwnership = transferOwnership;
 
                 orgScreenModel.updateTab('Members');
                 orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
+
+                $scope.$on(EVENTS.MEMBER_LIST_UPDATED, function () {
+                    memberService.getMembersForOrg($scope.orgId).then(function (members) {
+                        members.forEach(function (member) {
+                            if (!$scope.memberDetails[member.userId]) memberService.getMemberDetails(member.userId)
+                                .then(function (memberDetails) {
+                                    $scope.memberDetails[memberDetails.username] = memberDetails;
+                                })
+                        });
+                        $scope.members = members;
+                    })
+                });
 
                 function addMember() {
                     memberHelper.addMember(orgScreenModel.organization, $scope.roles);
@@ -189,19 +214,54 @@
 
         /// ==== API Search Controller
         .controller('ApiSearchCtrl',
-            function($scope, $stateParams, svcData, headerModel) {
+            function($scope, $stateParams, svcData, headerModel,
+                     ServiceVersion, ServiceMarketInfo) {
                 headerModel.setIsButtonVisible(true, true, true);
                 $scope.availableAPIs = [];
+                $scope.svcStats = [];
                 $scope.queryString = $stateParams.query;
 
                 angular.forEach(svcData.beans, function (data) {
-                    $scope.availableAPIs.push(data);
+                    getServiceVersions(data);
                 });
+
+                function getServiceVersions(data) {
+                    ServiceVersion.query({orgId: data.organizationId, svcId: data.id}, function (reply) {
+                        angular.forEach(reply, function (version) {
+                            getDetailsIfPublished(version);
+                        });
+                    });
+                }
+
+                function getDetailsIfPublished(version) {
+                    if (version.status === 'Published') {
+                        ServiceVersion.get(
+                            {orgId: version.organizationId,
+                                svcId: version.id,
+                                versionId: version.version},
+                            function (reply) {
+                                $scope.availableAPIs.push(reply);
+                                getStats(reply);
+                            });
+                    }
+                }
+
+                function getStats(svc) {
+                    ServiceMarketInfo.get({
+                        orgId: svc.service.organization.id,
+                        svcId: svc.service.id,
+                        versionId: svc.version
+                    }, function (stats) {
+                        $scope.svcStats[svc.service.id] = stats;
+                    });
+                }
+
             })
 
         /// ==== Dashboard Controller
         .controller('DashboardCtrl',
-            function($scope, $state, svcData, categories, headerModel, toastService, SearchLatestPublishedSvcsInCategories, SearchLatestServiceVersions) {
+            function($scope, $state, svcData, categories, headerModel, toastService,
+                     SearchLatestServiceVersions, SearchLatestPublishedSvcsInCategories) {
                 headerModel.setIsButtonVisible(false, true, true);
                 $scope.currentSorting = 'Popular';
                 $scope.currentPricing = 'All';
@@ -219,7 +279,7 @@
                 init();
 
                 function init() {
-                    filterAPIVersions(svcData.beans);
+                    $scope.availableAPIs = svcData.beans;
                 }
 
                 function getInitialDisplayMode() {
@@ -228,12 +288,6 @@
                     } else {
                         return 'List';
                     }
-                }
-
-                function filterAPIVersions(apis) {
-                    angular.forEach(apis, function (api) {
-                        $scope.availableAPIs.push(api)
-                    });
                 }
 
                 function toggleCategories(category) {
@@ -250,12 +304,12 @@
 
                 function refreshServiceList() {
                     if ($scope.currentCategories.length === 0) {
-                        // No categories selected, refresh all
                         SearchLatestServiceVersions.query({},
                             {filters: [{name: "status", value: "Published", operator: 'eq'}]}
-                        , function (data) {
-                            $scope.availableAPIs = data;
-                        });
+                            , function (data) {
+                                $scope.availableAPIs = data.beans;
+                            });
+
                     } else {
                         // Get APIs for selected categories
                         var selection = {};
