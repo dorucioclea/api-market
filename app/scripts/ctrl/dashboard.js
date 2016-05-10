@@ -219,7 +219,7 @@
                 init();
 
                 function init() {
-                    filterAPIVersions(svcData);
+                    filterAPIVersions(svcData.beans);
                 }
 
                 function getInitialDisplayMode() {
