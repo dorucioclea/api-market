@@ -205,6 +205,9 @@
                 }
             });
         })
+        .factory('ServiceVersionMarketInfo', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/marketinfo');
+        })
         .factory('ServiceVersionDefinition', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition',
                 {}, {
@@ -378,8 +381,22 @@
                 }
             });
         })
+        .factory('SearchLatestPublishedSvcsInCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest/categories', {}, {
+                query: {
+                    method: 'POST', isArray: true
+                }
+            });
+        })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/services/:status');
+        })
+        .factory('SearchLatestServiceVersions', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest', {}, {
+                query: {
+                    method: 'POST'
+                }
+            });
         })
 
         /// ========== SYSTEM ============================================================================

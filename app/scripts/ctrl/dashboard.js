@@ -214,54 +214,19 @@
 
         /// ==== API Search Controller
         .controller('ApiSearchCtrl',
-            function($scope, $stateParams, svcData, headerModel,
-                     ServiceVersion, ServiceMarketInfo) {
+            function($scope, $stateParams, svcData, headerModel) {
                 headerModel.setIsButtonVisible(true, true, true);
-                $scope.availableAPIs = [];
-                $scope.svcStats = [];
+                $scope.availableAPIs = svcData.beans;
                 $scope.queryString = $stateParams.query;
 
-                angular.forEach(svcData.beans, function (data) {
-                    getServiceVersions(data);
-                });
 
-                function getServiceVersions(data) {
-                    ServiceVersion.query({orgId: data.organizationId, svcId: data.id}, function (reply) {
-                        angular.forEach(reply, function (version) {
-                            getDetailsIfPublished(version);
-                        });
-                    });
-                }
-
-                function getDetailsIfPublished(version) {
-                    if (version.status === 'Published') {
-                        ServiceVersion.get(
-                            {orgId: version.organizationId,
-                                svcId: version.id,
-                                versionId: version.version},
-                            function (reply) {
-                                $scope.availableAPIs.push(reply);
-                                getStats(reply);
-                            });
-                    }
-                }
-
-                function getStats(svc) {
-                    ServiceMarketInfo.get({
-                        orgId: svc.service.organization.id,
-                        svcId: svc.service.id,
-                        versionId: svc.version
-                    }, function (stats) {
-                        $scope.svcStats[svc.service.id] = stats;
-                    });
-                }
 
             })
 
         /// ==== Dashboard Controller
         .controller('DashboardCtrl',
             function($scope, $state, svcData, categories, headerModel, toastService,
-                     SearchSvcsWithStatus, SearchPublishedSvcsInCategories, ServiceMarketInfo) {
+                     SearchLatestServiceVersions, SearchLatestPublishedSvcsInCategories) {
                 headerModel.setIsButtonVisible(false, true, true);
                 $scope.currentSorting = 'Popular';
                 $scope.currentPricing = 'All';
@@ -279,11 +244,7 @@
                 init();
 
                 function init() {
-                    filterAPIVersions(svcData);
-
-                    angular.forEach($scope.availableAPIs, function (svc) {
-                        getStats(svc);
-                    });
+                    $scope.availableAPIs = svcData.beans;
                 }
 
                 function getInitialDisplayMode() {
@@ -292,37 +253,6 @@
                     } else {
                         return 'List';
                     }
-                }
-
-                function filterAPIVersions(apis) {
-                    angular.forEach(apis, function (api) {
-                        var found = false;
-                        for (var i = 0; i < $scope.availableAPIs.length; i++) {
-                            if ($scope.availableAPIs[i].service.id === api.service.id) {
-                                found = true;
-                                // Service already has a version in the array, check if this one is newer
-                                if ($scope.availableAPIs[i].createdOn < api.createdOn) {
-                                    // Newer, so replace the existing version with this one
-                                    $scope.availableAPIs[i] = api;
-                                }
-                                break;
-                            }
-                        }
-                        // If after going through the entire array we have not found a service with this ID, add it.
-                        if (!found) {
-                            $scope.availableAPIs.push(api);
-                        }
-                    });
-                }
-
-                function getStats(svc) {
-                    ServiceMarketInfo.get({
-                        orgId: svc.service.organization.id,
-                        svcId: svc.service.id,
-                        versionId: svc.version
-                    }, function (stats) {
-                        $scope.svcStats[svc.service.id] = stats;
-                    });
                 }
 
                 function toggleCategories(category) {
@@ -339,15 +269,17 @@
 
                 function refreshServiceList() {
                     if ($scope.currentCategories.length === 0) {
-                        // No categories selected, refresh all
-                        SearchSvcsWithStatus.query({status: 'Published'}, function (data) {
-                            $scope.availableAPIs = data;
-                        });
+                        SearchLatestServiceVersions.query({},
+                            {filters: [{name: "status", value: "Published", operator: 'eq'}]}
+                            , function (data) {
+                                $scope.availableAPIs = data.beans;
+                            });
+
                     } else {
                         // Get APIs for selected categories
                         var selection = {};
                         selection.categories = $scope.currentCategories;
-                        SearchPublishedSvcsInCategories.query(selection, function (data) {
+                        SearchLatestPublishedSvcsInCategories.query(selection, function (data) {
                             $scope.availableAPIs = data;
                         });
                     }
