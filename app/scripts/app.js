@@ -63,11 +63,11 @@
         })
 
         // ngStorage key config
-        .config(function ($localStorageProvider) {
-            $localStorageProvider.setKeyPrefix('apim-');
+        .config(function ($localStorageProvider, CONFIG) {
+            $localStorageProvider.setKeyPrefix(CONFIG.STORAGE.LOCAL_STORAGE);
         })
-        .config(function ($sessionStorageProvider) {
-            $sessionStorageProvider.setKeyPrefix('apim_session-');
+        .config(function ($sessionStorageProvider, CONFIG) {
+            $sessionStorageProvider.setKeyPrefix(CONFIG.STORAGE.SESSION_STORAGE);
         })
 
         // UI-Router states
