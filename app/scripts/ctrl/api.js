@@ -169,6 +169,7 @@
 
             function canGrant() {
                 var canDoGrant = false;
+                if ($stateParams.scopes == undefined || $stateParams.scopes == null) return true;
                 angular.forEach($scope.selectedScopes, function (value) {
                     if (value.checked) {
                         canDoGrant = true;

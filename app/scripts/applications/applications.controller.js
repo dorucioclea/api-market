@@ -166,10 +166,11 @@
 
     }
     
-    function contractsCtrl($scope, $state, contractData, appScreenModel, docTester) {
+    function contractsCtrl($scope, $state, contractData, appScreenModel, docTester, ApplicationContract) {
 
         $scope.contracts = contractData;
         $scope.toApiDoc = toApiDoc;
+        $scope.breakContract = breakContract;
 
         init();
 
@@ -184,6 +185,15 @@
                     svcId: contract.serviceId,
                     versionId: contract.serviceVersion}));
             docTester.setPreferredContract(contract);
+        }
+
+        function breakContract(contract) {
+            ApplicationContract.delete(
+                {orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion,
+                    contractId: contract.contractId},
+                function (reply) {
+                    $state.forceReload();
+                });
         }
     }
 
