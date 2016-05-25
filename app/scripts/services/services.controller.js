@@ -538,12 +538,11 @@
 
         /*set the current state of the service version*/
         function init(){
-            if(serviceMkts.length > 0){
+            if(Object.keys(serviceMkts).length > 0){
                 angular.forEach(serviceMkts, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt){
                         if(mkt.code === svmkt.code) {
                             mkt.checked = true;
-                            mkt.selectedVisibility = (svmkt.show)?'Show':'Hide';
                         }
                     });
                 });
