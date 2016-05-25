@@ -63,14 +63,21 @@
             });
 
 
-            // Checl for pending contracts if the user is authorized
-            if ($scope.User.isAuthorizedFor('svcAdmin')) {
+            // Checl for pending contracts if the user is authorized to see them
+            if ($scope.User.isAuthorizedFor('svcEdit')) {
                 contractService.getPendingForSvc($stateParams.orgId, $stateParams.svcId, $stateParams.versionId)
                     .then(function (contracts) {
                         $scope.pendingContracts = contracts;
                     })
             } else {
                 $scope.pendingContracts = [];
+            }
+            // Check if user is authorized to accept or reject contracts
+            if ($scope.User.isAuthorizedFor('svcAdmin')) {
+                $scope.canAccept = true;
+            }
+            else {
+                $scope.canAccept= false;
             }
 
             checkNeedsReadMe();

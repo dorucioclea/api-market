@@ -18,10 +18,10 @@
         </td>
         <td class="request-actions text-center">
             <div>
-                <button class="btn btn-block btn-line-success btn-sm" ng-click="acceptContract(contract)">Accept</button>
+                <button class="btn btn-block btn-line-success btn-sm" ng-click="acceptContract(contract)" ng-disabled="!canAccept">Accept</button>
             </div>
             <div class="mt10">
-                <button class="btn btn-block btn-line-warning btn-sm" ng-click="rejectContract(contract)">Reject</button>
+                <button class="btn btn-block btn-line-warning btn-sm" ng-click="rejectContract(contract)" ng-disabled="!canAccept">Reject</button>
             </div>
         </td>
     </tr>
