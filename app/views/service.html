@@ -11,10 +11,22 @@
                 <div ng-bind-html="toast.msg">Test Toast</div>
             </alert>
         </div>
-        <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc()">Publish</button>
-        <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && !isDeprecated && User.isAuthorizedFor('svcEdit')" ng-click="confirmDeprecateSvc()">Deprecate</button>
-        <button class="btn btn-line-purple btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc()">Retire</button>
-        <button class="btn btn-line-danger btn-sm" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
+        <div class="text-center">
+            <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('svcAdmin')" ng-if="!isPublished" ng-click="confirmPublishSvc()">Publish</button>
+            <button class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired && !isDeprecated" ng-click="confirmDeprecateSvc()">Deprecate</button>
+            <button class="btn btn-line-purple btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired" ng-click="confirmRetireSvc()">Retire</button>
+            <button class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
+            <div class="mt-10" ng-show="!User.isAuthorizedFor('svcAdmin') && !isPublished">
+                <p class="text-justify text-warning xsmall">
+                    You do not have the necessary permissions to publish services.
+                </p>
+            </div>
+            <div class="mt-10" ng-show="!User.isAuthorizedFor('svcAdmin') && isPublished">
+                <p class="text-justify text-warning xsmall">
+                    You do not have the necessary permissions to perform these actions.
+                </p>
+            </div>
+        </div>
     </overview-header>
 
     <overview-tabs>

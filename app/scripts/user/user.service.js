@@ -43,6 +43,10 @@
             }
             return false;
         };
+
+        this.isAuthorizedForIn = function(permission, orgId) {
+            return permissionTree[orgId].indexOf(permission) !== -1;
+        };
     }
 
 })();

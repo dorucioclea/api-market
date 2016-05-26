@@ -1,7 +1,7 @@
 <a>
     <span class="ion ion-email left bg-success"></span>
     <div class="desc">
-        <span class="close ion ion-android-close" ng-click="clear($event)"></span>
+        <span class="close ion ion-android-close" ng-click="clear($event)" ng-hide="!canClear"></span>
         <strong>Contract Accepted</strong>
         <p class="small text-light">Your contract with <span class="text-primary text-bold">{{notification.serviceName}} {{notification.serviceVersion}}</span> has been accepted!</p>
         <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
