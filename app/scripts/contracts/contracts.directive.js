@@ -53,7 +53,8 @@
                 $scope.acceptContract = acceptContract;
                 $scope.getPlanDetails = getPlanDetails;
                 $scope.rejectContract = rejectContract;
-                
+
+                $scope.canAccept = $scope.$parent.canAccept;
                 
                 function acceptContract(contract) {
                     contractService.accept(contract).then(function () {
