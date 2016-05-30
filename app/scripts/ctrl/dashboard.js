@@ -5,7 +5,7 @@
 
         /// ==== MarketDash Controller
         .controller('MarketDashCtrl',
-            function ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
+            function ($scope, $uibModal, $state, $stateParams, $timeout, orgData, orgScreenModel,
                       appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
                       selectedApp, applicationManager, docTester, toastService, service,
                       ApplicationContract) {
@@ -145,7 +145,7 @@
                 }
 
                 function modalNewApplication() {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/applicationCreate.html',
                         size: 'lg',
                         controller: 'NewApplicationCtrl as ctrl',
@@ -169,7 +169,7 @@
 
         /// ==== Marketplace Members Controller
         .controller('MarketMembersCtrl',
-            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
+            function ($scope, $state, $uibModal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
                       toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
                 $scope.addMember = addMember;
                 $scope.grantRoleToMember = grantRoleToMember;

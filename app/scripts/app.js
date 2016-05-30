@@ -27,6 +27,7 @@
             'angular-jwt',
             'angular-ladda',
             'btford.markdown',
+            'swaggerUi',
 
             /* custom modules */
             'app.ctrls',

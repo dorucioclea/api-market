@@ -4,7 +4,7 @@
     angular.module('app.ctrl.api', [])
 
         /// ==== Service Doc Main Controller
-        .controller('ApiDocCtrl', function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
+        .controller('ApiDocCtrl', function($scope, $state, $stateParams, $uibModal, svcData, svcModel, svcTab,
                                            headerModel, toastService, followerService, support) {
             headerModel.setIsButtonVisible(true, true, true);
             svcModel.setService(svcData);
@@ -31,7 +31,7 @@
             }
 
             function modalSelectApplicationForContract() {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/planSelect.html',
                     size: 'lg',
                     controller: 'PlanSelectCtrl as ctrl',
@@ -52,7 +52,7 @@
             }
 
             function modalClose() {
-                $scope.$close();	// this method is associated with $modal scope which is this.
+                $scope.$close();	// this method is associated with $uibModal scope which is this.
             }
 
             function followAction() {
@@ -66,7 +66,7 @@
 
 /// ==== Service Swagger Documentation Controller
         .controller('DocumentationCtrl',
-        function($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
+        function($scope, $uibModal, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                  docTester, docDownloader, svcTab, ApplicationVersion, ServiceVersionDefinition,
                  oAuthService, toastService, TOAST_TYPES) {
             $scope.addHeader = addHeader;
@@ -82,7 +82,7 @@
             $scope.selectedScopes = [];
             $scope.selectContract = selectContract;
             $scope.updateHeaders = updateHeaders;
-            var currentDefinitionSpec;
+            $scope.currentDefinitionSpec;
 
             init();
 
@@ -116,8 +116,8 @@
                 ServiceVersionDefinition.get(
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                     function (definitionSpec) {
-                        currentDefinitionSpec = definitionSpec;
-                        $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container', endpoint);
+                        $scope.currentDefinitionSpec = definitionSpec;
+                        // $scope.loadSwaggerUi($scope.currentDefinitionSpec, 'swagger-ui-container', endpoint);
                         if (jwtEnabled) {
                             $scope.addJWTHeader();
                         }

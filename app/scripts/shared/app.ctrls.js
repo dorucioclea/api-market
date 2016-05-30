@@ -4,9 +4,9 @@
     angular.module('app.ctrls', [])
 
         // Root Controller
-        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$modal', '$timeout',
+        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$uibModal', '$timeout',
             'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage', 'CONFIG',
-            function($rs, $scope, $state, $modal, $timeout,
+            function($rs, $scope, $state, $uibModal, $timeout,
                      Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage, CONFIG) {
                 var mm = window.matchMedia('(max-width: 767px)');
 
@@ -205,7 +205,7 @@
                 };
 
                 $scope.modalNewVersion = function() {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: '/views/modals/versionCreate.html',
                         size: 'lg',
                         controller: 'NewVersionCtrl as ctrl',
@@ -217,12 +217,12 @@
                 };
             }])
 
-        .controller('EditLogoCtrl', function($scope, $modal) {
+        .controller('EditLogoCtrl', function($scope, $uibModal) {
 
             $scope.modalEditLogo = modalEditLogo;
 
             function modalEditLogo() {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/logoEdit.html',
                     size: 'lg',
                     controller: 'EditImgCtrl as ctrl',
@@ -247,7 +247,7 @@
         })
 
         .controller('HeadCtrl',
-            function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+            function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                      currentUser, notifications, pendingNotifications,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, EVENTS) {
@@ -283,7 +283,7 @@
                     if (!$scope.User.currentUser.email) {
                         console.log('no email!');
 
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/emailPrompt.html',
                             // size: 'lg',
                             controller: 'EmailPromptCtrl as ctrl',
@@ -361,7 +361,7 @@
 
             })
 
-        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
+        .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
             $scope.updateEmail = updateEmail;
             $scope.username = currentInfo.fullName;
 
@@ -379,7 +379,7 @@
                 CurrentUserInfo.update({}, updateObject, function (reply) {
                     currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
-                        $modalInstance.close('Updated');
+                        $uibModalInstance.close('Updated');
                     });
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');

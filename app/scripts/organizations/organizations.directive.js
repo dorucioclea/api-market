@@ -15,7 +15,7 @@
                 publisherMode: '='
             },
             templateUrl: 'views/templates/organization/organizations-table.html',
-            controller: function ($scope, $modal, memberService, toastService) {
+            controller: function ($scope, $uibModal, memberService, toastService) {
                 $scope.isMember = isMember;
                 $scope.requestMembership = requestMembership;
 
@@ -30,7 +30,7 @@
                 }
 
                 function requestMembership(org){
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/membershipRequestConfirm.html',
                         controller: 'ConfirmMembershipRequestModalCtrl as ctrl',
                         resolve: {

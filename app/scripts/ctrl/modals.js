@@ -8,7 +8,7 @@
 
         /// ==== AddPolicy Controller
         .controller('AddPolicyCtrl',
-            function ($scope, $modal, $state, $stateParams, policyDefs,
+            function ($scope, $uibModal, $state, $stateParams, policyDefs,
                       toastService, TOAST_TYPES, PlanVersionPolicy, PolicyDefs, ServiceVersionPolicy) {
 
                 $scope.form = ['*'];
@@ -65,7 +65,7 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function setValid(isValid) {
@@ -159,7 +159,7 @@
 
         /// ==== NewAnnouncement Controller
         .controller('NewAnnouncementCtrl',
-            function ($scope, $modal, $state, svcVersion, ServiceAnnouncements,
+            function ($scope, $uibModal, $state, svcVersion, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
@@ -190,13 +190,13 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== ViewAnnouncement Controller
         .controller('ViewAnnouncementCtrl',
-            function ($scope, $modal, $state, announcement, ServiceAnnouncements,
+            function ($scope, $uibModal, $state, announcement, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
 
                 $scope.announcement = announcement;
@@ -217,13 +217,13 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
-            function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
+            function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
                       serviceVersion, svcPolicies) {
@@ -431,22 +431,22 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== Help Dialog Controller
         .controller('HelpCtrl',
-            function ($scope, $modal, type) {
+            function ($scope, $uibModal, type) {
                 $scope.type = type;
                 $scope.modalClose = modalClose;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
-        .controller('HowToInvokeCtrl', function ($scope, $modal, contract, endpoint) {
+        .controller('HowToInvokeCtrl', function ($scope, $uibModal, contract, endpoint) {
             $scope.contract = contract;
             $scope.endpoint = endpoint;
             $scope.modalClose = modalClose;
@@ -458,7 +458,7 @@
 
         /// ==== OAuthConfig Controller
         .controller('OAuthConfigCtrl',
-            function ($scope, $rootScope, $modal, $state, appVersionDetails, needsCallback,
+            function ($scope, $rootScope, $uibModal, $state, appVersionDetails, needsCallback,
                       ApplicationOAuthCallback, toastService, TOAST_TYPES) {
 
                 $scope.appVersionDetails = appVersionDetails;
@@ -472,7 +472,7 @@
                 $scope.updateCallback = updateCallback;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function copyId(id) {
@@ -515,7 +515,7 @@
 
         /// ==== EditImgCtrl Controller
         .controller('EditImgCtrl',
-            function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
+            function ($scope, $uibModal, $state, $stateParams, flowFactory, alertService,
                       imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
                       Application, CurrentUserInfo, Service) {
                 $scope.imageService = imageService;
@@ -625,13 +625,13 @@
 
                 function modalClose() {
                     imageService.clear();
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
+            function ($scope, $uibModal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
@@ -685,7 +685,7 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function selectMethod(method) {
@@ -699,7 +699,7 @@
 
         /// ==== MemberRemoveCtrl Controller
         .controller('MemberRemoveCtrl',
-            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
+            function ($scope, $uibModal, $state, member, org, toastService, TOAST_TYPES, Member) {
                 $scope.doRemove = doRemove;
                 $scope.member = member;
                 $scope.org = org;
@@ -718,13 +718,13 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
-            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
+            function ($scope, $uibModal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
                       currentUserModel, OrganizationOwnershipTransfer) {
                 $scope.doTransfer = doTransfer;
                 $scope.newOwner = newOwner;
@@ -753,50 +753,50 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             });
 
-    function confirmMembershipRequestCtrl($scope, $modalInstance, org) {
+    function confirmMembershipRequestCtrl($scope, $uibModalInstance, org) {
         $scope.org = org;
         $scope.cancel = cancel;
         $scope.ok = ok;
 
         function cancel() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         }
 
         function ok() {
-            $modalInstance.close('ok');
+            $uibModalInstance.close('ok');
         }
     }
 
-    function grantMembershipModalCtrl($scope, $modalInstance, role, user) {
+    function grantMembershipModalCtrl($scope, $uibModalInstance, role, user) {
         $scope.user = user;
         $scope.role = role;
         $scope.cancel = cancel;
         $scope.ok = ok;
 
         function cancel() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         }
 
         function ok() {
-            $modalInstance.close('ok');
+            $uibModalInstance.close('ok');
         }
     }
 
-    function rejectMembershipModalCtrl($scope, $modalInstance, user) {
+    function rejectMembershipModalCtrl($scope, $uibModalInstance, user) {
         $scope.user = user;
         $scope.cancel = cancel;
         $scope.ok = ok;
 
         function cancel() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         }
 
         function ok() {
-            $modalInstance.close('ok');
+            $uibModalInstance.close('ok');
         }
     }
 

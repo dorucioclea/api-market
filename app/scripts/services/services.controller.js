@@ -17,7 +17,7 @@
         .controller('ServiceMetricsController', serviceMetricsCtrl);
 
 
-    function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
+    function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
                          svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
                          toastService, ALERT_TYPES, TOAST_TYPES, service) {
 
@@ -77,7 +77,7 @@
         }
 
         function confirmDeleteSvc() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceDelete.html',
                 size: 'lg',
                 controller: 'DeleteServiceCtrl as ctrl',
@@ -104,7 +104,7 @@
         }
 
         function confirmDeprecateSvc() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceDeprecate.html',
                 size: 'lg',
                 controller: 'DeprecateServiceCtrl as ctrl',
@@ -122,7 +122,7 @@
             if (checkNeedsReadMe()) {
                 toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
             } else {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/servicePublish.html',
                     size: 'lg',
                     controller: 'PublishServiceCtrl as ctrl',
@@ -138,7 +138,7 @@
         }
 
         function confirmRetireSvc() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceRetire.html',
                 size: 'lg',
                 controller: 'RetireServiceCtrl as ctrl',
@@ -181,7 +181,7 @@
         }
 
         function showInfoModal() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
                 controller: 'HelpCtrl as ctrl',
@@ -624,7 +624,7 @@
         };
     }
 
-    function servicePoliciesCtrl($scope, $modal, $stateParams, policyData, policyConfiguration,
+    function servicePoliciesCtrl($scope, $uibModal, $stateParams, policyData, policyConfiguration,
                                  svcScreenModel, service) {
 
         $scope.policies = policyData;
@@ -645,7 +645,7 @@
         $scope.modalAnim = 'default';
 
         $scope.modalAddPolicy = function () {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: '/views/modals/policyAdd.html',
                 size: 'lg',
                 controller: 'AddPolicyCtrl as ctrl',
@@ -693,7 +693,7 @@
 
     }
 
-    function serviceAnnouncementsCtrl($scope, $modal, svcScreenModel, announcements) {
+    function serviceAnnouncementsCtrl($scope, $uibModal, svcScreenModel, announcements) {
 
         svcScreenModel.updateTab('Announcements');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
@@ -701,7 +701,7 @@
         $scope.announcements = announcements;
 
         function modalNewAnnouncement() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementCreate.html',
                 size: 'lg',
                 controller: 'NewAnnouncementCtrl as ctrl',
@@ -716,7 +716,7 @@
         }
 
         function modalViewAnnouncement(announcement) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementView.html',
                 size: 'lg',
                 controller: 'ViewAnnouncementCtrl as ctrl',
@@ -732,14 +732,14 @@
 
     }
 
-    function serviceSupportCtrl($scope, $modal, svcScreenModel) {
+    function serviceSupportCtrl($scope, $uibModal, svcScreenModel) {
 
         svcScreenModel.updateTab('Support');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
         $scope.modalViewAnnouncement = modalViewAnnouncement;
 
         function modalNewAnnouncement() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementCreate.html',
                 size: 'lg',
                 controller: 'NewAnnouncementCtrl as ctrl',
@@ -754,7 +754,7 @@
         }
 
         function modalViewAnnouncement(announcement) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementView.html',
                 size: 'lg',
                 controller: 'ViewAnnouncementCtrl as ctrl',

@@ -14,7 +14,7 @@
                 filter: '='
             },
             templateUrl: 'views/templates/members/pending-list.html',
-            controller: function ($scope, $rootScope, $modal, filterFilter, memberService, toastService, EVENTS) {
+            controller: function ($scope, $rootScope, $uibModal, filterFilter, memberService, toastService, EVENTS) {
                 $scope.grantMembership = grantMembership;
                 $scope.rejectRequest = rejectRequest;
 
@@ -29,7 +29,7 @@
                 function grantMembership(request, roleId) {
                     // TODO add modal confirmation?
 
-                    var modalinstance = $modal.open({
+                    var modalinstance = $uibModal.open({
                         templateUrl: 'views/modals/membershipGrant.html',
                         controller: 'GrantMembershipModalCtrl as ctrl',
                         resolve: {
@@ -57,7 +57,7 @@
 
                 function rejectRequest(request) {
                     
-                    var modalinstance = $modal.open({
+                    var modalinstance = $uibModal.open({
                         templateUrl: 'views/modals/membershipReject.html',
                         controller: 'RejectMembershipModalCtrl as ctrl',
                         resolve: {

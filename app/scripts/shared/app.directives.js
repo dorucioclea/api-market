@@ -425,11 +425,11 @@
                     publisherMode: '='
                 },
                 controller:
-                    function ($scope, $modal) {
+                    function ($scope, $uibModal) {
                         $scope.modalNewTicketOpen = modalNewTicketOpen;
 
                         function modalNewTicketOpen() {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: 'views/modals/ticketCreate.html',
                                 size: 'lg',
                                 controller: 'CreateSupportTicketCtrl',
@@ -454,7 +454,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $modal, Users, ServiceTicketComments) {
+                    function ($scope, $uibModal, Users, ServiceTicketComments) {
                         $scope.openTicket = openTicket;
                         $scope.user = {};
                         $scope.comments = [];
@@ -470,7 +470,7 @@
                         );
 
                         function openTicket() {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: 'views/modals/ticketView.html',
                                 size: 'lg',
                                 controller: 'ViewSupportTicketCtrl',
@@ -499,7 +499,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $modal, ServiceTicketComments, CurrentUserInfo,
+                    function ($scope, $uibModal, ServiceTicketComments, CurrentUserInfo,
                               toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
@@ -573,7 +573,7 @@
                     };
                 },
                 controller:
-                    function ($scope, $modal, Users) {
+                    function ($scope, $uibModal, Users) {
                         $scope.user = {};
                         $scope.editMode = false;
                         $scope.editComment = editComment;
