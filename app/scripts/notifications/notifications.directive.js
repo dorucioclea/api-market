@@ -19,11 +19,10 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/contract-accepted.html',
-            controller: function ($scope) {
+            controller: function ($scope, currentUserModel) {
                 $scope.clear = clear;
-                //TODO - Someone who knows what he's doing should clean this up
                 //Only a user with appAdmin rights can delete an organization-wide contract rejection notification
-                $scope.canClear = $scope.$parent.$parent.$parent.$parent.$parent.$parent.currentUserModel.isAuthorizedForIn("appAdmin", $scope.notification.applicationOrgId);
+                $scope.canClear = currentUserModel.isAuthorizedForIn("appAdmin", $scope.notification.applicationOrgId);
 
 
                 function clear($event) {
@@ -56,11 +55,10 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/contract-rejected.html',
-            controller: function ($scope) {
+            controller: function ($scope, currentUserModel) {
                 $scope.clear = clear;
-                //TODO - Someone who knows what he's doing should clean this up
                 //Only a user with appAdmin rights can delete an organization-wide contract rejection notification
-                $scope.canClear = $scope.$parent.$parent.$parent.$parent.$parent.$parent.currentUserModel.isAuthorizedForIn("appAdmin", $scope.notification.applicationOrgId);
+                $scope.canClear = currentUserModel.isAuthorizedForIn("appAdmin", $scope.notification.applicationOrgId);
 
                 function clear($event) {
                     $event.preventDefault();
