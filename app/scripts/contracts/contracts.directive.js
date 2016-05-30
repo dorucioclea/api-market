@@ -46,16 +46,15 @@
         return {
             restrict: 'E',
             scope: {
-                contracts: '='
+                contracts: '=',
+                canAccept: '='
             },
             templateUrl: 'views/templates/contracts/pending-contracts-for-svc.html',
-            controller: function ($scope, contractService, toastService) {
+            controller: function ($scope, contractService, currentUserModel, toastService) {
                 $scope.acceptContract = acceptContract;
                 $scope.getPlanDetails = getPlanDetails;
                 $scope.rejectContract = rejectContract;
 
-                $scope.canAccept = $scope.$parent.canAccept;
-                
                 function acceptContract(contract) {
                     contractService.accept(contract).then(function () {
                         toastService.success('Contract with <b>' + contract.appDetails.application.name + ' '
