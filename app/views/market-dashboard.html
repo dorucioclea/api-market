@@ -54,10 +54,17 @@
                             </div>
                             <!-- The list of applications in the org -->
 
-                            <div class="col-sm-12" ng-hide="applications.length > 0">
+                            <div class="col-sm-12" ng-if="!User.isAuthorizedFor('appEdit')" ng-hide="applications.length > 0">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1 well">
+                                        No applications found. Probably because none have been created yet!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" ng-if="User.isAuthorizedFor('appEdit')" ng-hide="applications.length > 0">
                                 <div class="row">
                                     <div class="col-sm-8 col-sm-offset-1 well">
-                                        It looks like there you have not yet created any applications! Now might be a good time to click the New App button up above...
+                                        It looks like no applications have been created yet! Now might be a good time to click the New App button up above...
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="no-entities-arrow"></div>
