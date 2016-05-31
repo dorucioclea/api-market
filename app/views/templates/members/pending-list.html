@@ -2,7 +2,7 @@
     <tr ng-repeat="request in filteredRequests">
         <td class="request-pic-wrapper">
             <img class="request-pic img-circle" ng-src="data:image/png;base64,{{request.userDetails.base64pic}}" ng-if="request.userDetails.base64pic.length > 0">
-            <img class="request-pic img-cirlce" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">
+            <img class="request-pic img-circle" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">
         </td>
         <td class="request-info">
             <div class="col-sm-12 text-left">

@@ -95,7 +95,7 @@
         }
     }
 
-    function memberService($rootScope, Member, MembershipRequests, RejectRequest, RequestMembership, Users, EVENTS) {
+    function memberService($rootScope, $q, Member, MembershipRequests, RejectRequest, RequestMembership, Users, EVENTS) {
         this.getMemberDetails = getMemberDetails;
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
@@ -107,15 +107,27 @@
         function getMemberDetails(userId) {
             return Users.get({ userId: userId }).$promise;
         }
-        
+
         function getMembersForOrg(orgId) {
-            return Member.query({orgId: orgId}).$promise;
+            var deferred = $q.defer();
+            Member.query({orgId: orgId}).$promise.then(function (memberData) {
+                var promises = [];
+                angular.forEach(memberData, function (member) {
+                    promises.push(getMemberDetails(member.userId).then(function (results) {
+                        member.userDetails = results;
+                    }));
+                });
+                $q.all(promises).then(function () {
+                    deferred.resolve(memberData);
+                });
+            });
+            return deferred.promise;
         }
 
         function getPendingRequests(orgId) {
             return MembershipRequests.query({ orgId: orgId }).$promise;
         }
-        
+
         function grantMembership(orgId, request, roleId) {
             var newMemberObj = {
                 userId: request.userDetails.username,
@@ -125,13 +137,13 @@
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
             }).$promise;
         }
-        
+
         function rejectMembershipRequest(orgId, userId) {
             return RejectRequest.save({ orgId: orgId, userId: userId },{}, function () {
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
             }).$promise;
         }
-        
+
         function requestMembership(orgId) {
             return RequestMembership.save({orgId: orgId}, {}, function () {
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);

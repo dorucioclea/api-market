@@ -1,0 +1,36 @@
+<table class="table member-list">
+    <tr class="member-row" ng-repeat="member in filteredMembers">
+        <td class="member-pic-wrapper">
+            <img class="member-pic img-circle" ng-src="data:image/png;base64,{{member.userDetails.base64pic}}" ng-if="member.userDetails.base64pic.length > 0">
+            <img class="member-pic img-circle" src="images/no-image-available.svg" ng-if="member.userDetails.base64pic === null || member.userDetails.base64pic.length === 0">
+        </td>
+        <td class="member-info">
+            <div class="col-sm-12 text-left">
+                <h5 class="mb0">
+                    <span class="text-primary">{{member.userDetails.fullName}}</span>&nbsp;<span class="small text-light text-muted">{{member.userDetails.username}}</span>
+                </h5>
+            </div>
+            <div class="col-sm-12 divider-line">
+                <hr class="mt10 mb10">
+            </div>
+            <div class="col-sm-12 actions">
+                <div class="btn-group-xs pull-right" ng-if="User.isAuthorizedFor('orgAdmin') && member.userId !== User.currentUser.username">
+                    <button class="btn btn-warning btn-xs action-icon fa fa-exchange" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Tranfer ownership" ng-click="transferOwnership(member)"></button>
+                    <button class="btn btn-danger btn-xs action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Remove member" ng-click="removeMember(member)"></button>
+                </div>
+                <div ng-if="!User.isAuthorizedFor('orgAdmin')">
+                    {{member.roles[0].roleName}}
+                </div>
+                <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                        {{member.roles[0].roleName}}<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li ng-repeat="role in roles | excludeRole:member.roles[0]" ng-click="grantRoleToMember(role, member)"><a>{{role.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+</table>

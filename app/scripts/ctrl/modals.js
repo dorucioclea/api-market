@@ -665,13 +665,14 @@
                                 userId: user.username,
                                 roleId: $scope.selectedRole.id
                             };
-                            var name = user.name ? user.name : user.username;
-                            Member.save({orgId: org.id}, newMemberObj, function (success) {
+                            var msg = user.name ? 'Added <b>' + user.name + '</b> (' + user.username + ') to <b>'
+                            + $scope.orgName + ' </b> as <b>' + $scope.selectedRole.name + '</b>.' :
+                            'Added <b>' + user.username + '</b> to <b>' + $scope.org.name + ' </b> as <b>' +
+                                $scope.selectedRole.name + '</b>.' ;
+                            Member.save({orgId: org.id}, newMemberObj, function () {
                                 $scope.modalClose();
                                 $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + $scope.orgName +
-                                    '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
+                                toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');
                             });

@@ -2,8 +2,48 @@
     'use strict';
 
     angular.module('app.members')
+        .directive('apimMemberList', memberList)
         .directive('apimPendingMemberList', pendingMemberList);
 
+
+    function memberList() {
+        return {
+            restrict: 'E',
+            scope: {
+                members: '=',
+                roles: '=',
+                filter: '='
+            },
+            templateUrl: 'views/templates/members/member-list.html',
+            controller: function ($scope, $rootScope, filterFilter, currentUserModel, memberHelper, orgScreenModel) {
+                $scope.User = currentUserModel;
+
+                $scope.transferOwnership = transferOwnership;
+                $scope.removeMember = removeMember;
+                $scope.grantRoleToMember = grantRoleToMember;
+                
+                $scope.$watch('filter', function () {
+                    applyFilter();
+                });
+
+                function applyFilter() {
+                    $scope.filteredMembers = filterFilter($scope.members, $scope.filter);
+                }
+
+                function grantRoleToMember(role, member) {
+                    memberHelper.grantRoleToMember(orgScreenModel.organization, role, $scope.User.currentUser, member);
+                }
+
+                function removeMember(member) {
+                    memberHelper.removeMember(orgScreenModel.organization, member);
+                }
+
+                function transferOwnership(member) {
+                    memberHelper.transferOwnership(orgScreenModel.organization, $scope.User.currentUser, member);
+                }
+            }
+        }
+    }
 
     function pendingMemberList() {
         return {
@@ -27,8 +67,6 @@
                 }
 
                 function grantMembership(request, roleId) {
-                    // TODO add modal confirmation?
-
                     var modalinstance = $modal.open({
                         templateUrl: 'views/modals/membershipGrant.html',
                         controller: 'GrantMembershipModalCtrl as ctrl',
@@ -56,7 +94,6 @@
                 }
 
                 function rejectRequest(request) {
-                    
                     var modalinstance = $modal.open({
                         templateUrl: 'views/modals/membershipReject.html',
                         controller: 'RejectMembershipModalCtrl as ctrl',

@@ -172,13 +172,10 @@
             function ($scope, $state, $modal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
                       toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
                 $scope.addMember = addMember;
-                $scope.grantRoleToMember = grantRoleToMember;
                 $scope.members = memberData;
                 $scope.memberDetails = memberDetails;
                 $scope.pendingRequests = requests;
-                $scope.removeMember = removeMember;
                 $scope.roles = roleData;
-                $scope.transferOwnership = transferOwnership;
 
                 orgScreenModel.updateTab('Members');
                 orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
@@ -197,18 +194,6 @@
 
                 function addMember() {
                     memberHelper.addMember(orgScreenModel.organization, $scope.roles);
-                }
-
-                function grantRoleToMember(role, member) {
-                    memberHelper.grantRoleToMember(orgScreenModel.organization, role, $scope.User.currentUser, member);
-                }
-
-                function removeMember(member) {
-                    memberHelper.removeMember(orgScreenModel.organization, member);
-                }
-
-                function transferOwnership(member) {
-                    memberHelper.transferOwnership(orgScreenModel.organization, $scope.User.currentUser, member);
                 }
             })
 
