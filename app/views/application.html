@@ -15,8 +15,8 @@
       <button class="btn btn-line-success btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('appAdmin')" ng-if="!isRegistered" ng-click="confirmPublishApp(applicationVersion)">Register</button>
       <button class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-if="isRegistered && !isRetired" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
       <button class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete</button>
-      <div class="mt-10" ng-show="!User.isAuthorizedFor('appAdmin')">
-        <p class="text-justify text-warning xsmall">
+      <div class="mt10" ng-show="!User.isAuthorizedFor('appAdmin')">
+        <p class="text-muted xsmall">
           You do not have the necessary permissions to register, retire or delete applications.
         </p>
       </div>

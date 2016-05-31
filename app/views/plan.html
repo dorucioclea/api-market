@@ -11,8 +11,8 @@
     </div>
     <div class="text-center">
       <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked" ng-click="confirmLockPlan()" ng-disabled="!User.isAuthorizedFor('planAdmin')">Lock Plan</button>
-      <div class="mt-10" ng-show="!User.isAuthorizedFor('planAdmin')">
-        <p class="text-justify text-warning xsmall">
+      <div class="mt10" ng-show="!User.isAuthorizedFor('planAdmin') && !locked">
+        <p class="text-muted xsmall">
           You do not have the necessary permissions to lock plans.
         </p>
       </div>
