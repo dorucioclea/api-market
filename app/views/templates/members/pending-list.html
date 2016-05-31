@@ -1,5 +1,5 @@
-<table class="table table-striped pending-list">
-    <tr ng-repeat="request in filteredRequests">
+<table class="table pending-list">
+    <tr class="pending-row" ng-repeat="request in filteredRequests">
         <td class="request-pic-wrapper">
             <img class="request-pic img-circle" ng-src="data:image/png;base64,{{request.userDetails.base64pic}}" ng-if="request.userDetails.base64pic.length > 0">
             <img class="request-pic img-circle" src="images/no-image-available.svg" ng-if="request.userDetails.base64pic === null || request.userDetails.base64pic.length === 0">
@@ -9,13 +9,15 @@
                 <h5 class="mb0">
                     <span class="text-primary">{{request.userDetails.fullName}}</span>&nbsp;<span class="small text-light text-muted">{{request.userDetails.username}}</span>
                 </h5>
+            </div>
+            <div class="col-sm-12 divider-line">
                 <hr class="mt10 mb10">
             </div>
             <div class="col-sm-12">
                 <div class="actions">
                     <div class="btn-group" dropdown>
-                        <button id="split-button" type="button" class="btn btn-sm btn-line-primary" ng-click="grantMembership(request, 'Developer')">Add as Developer</button>
-                        <button type="button" class="btn btn-sm btn-line-primary" dropdown-toggle>
+                        <button id="split-button" type="button" class="btn btn-sm btn-default" ng-click="grantMembership(request, 'Developer')">Add as Developer</button>
+                        <button type="button" class="btn btn-sm btn-default" dropdown-toggle>
                             <span class="caret" style="margin-left: 0 !important;"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-left" dropdown-menu role="menu" aria-labelledby="split-button">
@@ -23,10 +25,9 @@
                             <li role="menuitem"><a ng-click="grantMembership(request, 'Watcher')">Add as Watcher</a></li>
                         </ul>
                     </div>
-                    <button class="btn btn-line-warning btn-sm" ng-click="rejectRequest(request)">Reject</button>
+                    <button class="btn btn-line-danger btn-sm pull-right" ng-click="rejectRequest(request)">Reject</button>
                 </div>
             </div>
         </td>
-
     </tr>
 </table>

@@ -11,6 +11,7 @@
             restrict: 'E',
             scope: {
                 members: '=',
+                org: '=',
                 roles: '=',
                 filter: '='
             },
@@ -31,15 +32,15 @@
                 }
 
                 function grantRoleToMember(role, member) {
-                    memberHelper.grantRoleToMember(orgScreenModel.organization, role, $scope.User.currentUser, member);
+                    memberHelper.grantRoleToMember($scope.org, role, $scope.User.currentUser, member);
                 }
 
                 function removeMember(member) {
-                    memberHelper.removeMember(orgScreenModel.organization, member);
+                    memberHelper.removeMember($scope.org, member);
                 }
 
                 function transferOwnership(member) {
-                    memberHelper.transferOwnership(orgScreenModel.organization, $scope.User.currentUser, member);
+                    memberHelper.transferOwnership($scope.org, $scope.User.currentUser, member);
                 }
             }
         }

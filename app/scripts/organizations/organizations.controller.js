@@ -30,34 +30,17 @@
 
     }
 
-    function membersCtrl($scope, $stateParams, memberData, memberDetails, roleData, orgScreenModel, memberHelper) {
+    function membersCtrl($scope, $stateParams, memberData, roleData, orgScreenModel, memberHelper) {
         $scope.addMember = addMember;
-        $scope.grantRoleToMember = grantRoleToMember;
         $scope.members = memberData;
-        $scope.memberDetails = memberDetails;
         $scope.orgId = $stateParams.orgId;
-        $scope.removeMember = removeMember;
         $scope.roles = roleData;
-        $scope.transferOwnership = transferOwnership;
 
         orgScreenModel.updateTab('Members');
 
         function addMember() {
             memberHelper.addMember($scope.org, $scope.roles);
         }
-
-        function grantRoleToMember(role, member) {
-            memberHelper.grantRoleToMember($scope.org, role, $scope.User.currentUser, member);
-        }
-
-        function removeMember(member) {
-            memberHelper.removeMember($scope.org, member);
-        }
-
-        function transferOwnership(member) {
-            memberHelper.transferOwnership($scope.org, $scope.User.currentUser, member);
-        }
-
     }
 
     function myOrganizationsCtrl($scope, $modal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {

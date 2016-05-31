@@ -1,17 +1,48 @@
 .pending-list {
+  .pending-row {
+    border-bottom: 10px solid transparent;
 
-  .request-pic-wrapper {
-    width: 10%;
-    padding: 10px;
+    &:hover {
+      hr {
+        border-color: @brand-primary
+      }
 
-    .request-pic {
-      width: 75px;
-      height: 75px;
+
+      .request-pic-wrapper>.request-pic {
+        border-color: @brand-primary
+      }
     }
-  }
 
-  .request-info {
-    width: 90%;
-    padding-left: 10px;
+    hr {
+      border-top: 1px solid #ccc;
+    }
+
+    td {
+      border: 0;
+      background-color: transparent;
+    }
+
+    .request-pic-wrapper {
+      width: 10%;
+      padding: 10px;
+      padding-right: 0;
+      text-align: right;
+
+      .request-pic {
+        width: 78px;
+        height: 78px;
+        border: 3px solid #ccc;
+      }
+    }
+
+    .request-info {
+      width: 90%;
+      padding-left: 0;
+
+
+      .divider-line {
+        padding-left: 0;
+      }
+    }
   }
 }

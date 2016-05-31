@@ -35,7 +35,7 @@
     </div>
 
     <div class="col-sm-12">
-        <apim-member-list members="members" roles="roles" filter="searchText"></apim-member-list>
+        <apim-member-list members="members" org="orgScreenModel.organization" roles="roles" filter="searchText"></apim-member-list>
     </div>
 
     <div class="col-sm-12 mt30" ng-if="User.isAuthorizedFor('orgAdmin') && pendingRequests.length > 0">

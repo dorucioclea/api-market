@@ -169,25 +169,19 @@
 
         /// ==== Marketplace Members Controller
         .controller('MarketMembersCtrl',
-            function ($scope, $state, $modal, $stateParams, memberData, memberDetails, requests, roleData, orgScreenModel,
+            function ($scope, $state, $modal, $stateParams, memberData, requests, roleData, orgScreenModel,
                       toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
                 $scope.addMember = addMember;
                 $scope.members = memberData;
-                $scope.memberDetails = memberDetails;
                 $scope.pendingRequests = requests;
                 $scope.roles = roleData;
+                $scope.orgScreenModel = orgScreenModel;
 
                 orgScreenModel.updateTab('Members');
                 orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
 
                 $scope.$on(EVENTS.MEMBER_LIST_UPDATED, function () {
                     memberService.getMembersForOrg($scope.orgId).then(function (members) {
-                        members.forEach(function (member) {
-                            if (!$scope.memberDetails[member.userId]) memberService.getMemberDetails(member.userId)
-                                .then(function (memberDetails) {
-                                    $scope.memberDetails[memberDetails.username] = memberDetails;
-                                })
-                        });
                         $scope.members = members;
                     })
                 });
