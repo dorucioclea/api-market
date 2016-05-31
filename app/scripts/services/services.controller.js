@@ -676,7 +676,7 @@
                 function (reply) {
                     $state.forceReload();
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Terms & Conditions for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Readme for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update the terms & conditions.');
