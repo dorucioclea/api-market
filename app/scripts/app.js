@@ -15,7 +15,6 @@
             'ngStorage',
             'ui.bootstrap',
             'angular-loading-bar',
-            'FBAngular',
             'matchMedia',
             'ngTagsInput',
             'schemaForm',

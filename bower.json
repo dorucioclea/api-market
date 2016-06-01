@@ -1,47 +1,44 @@
 {
   "name": "apim-market",
-  "version": "0.0.1",
-  "description": "AngularJS API Market",
+  "version": "0.7.1",
+  "description": "API Marketplace",
   "appPath": "app",
   "moduleName": "apimMarketApp",
   "dependencies": {
-    "angular": "1.4.10",
-    "angular-animate": "1.4.10",
-    "angular-aria": "1.4.10",
+    "angular": "1.5.6",
+    "angular-animate": "1.5.6",
+    "angular-aria": "1.5.6",
     "angular-bootstrap": "1.3.3",
-    "angular-clipboard": "~1.0.1",
-    "angular-fullscreen": "~1.0.1",
-    "angular-loading-bar": "~0.8.0",
-    "angular-material": "0.10.1",
-    "angular-media-queries": "~0.4.1",
-    "angular-relative-date": "~1.0.0",
-    "angular-resource": "1.4.10",
-    "angular-sanitize": "1.4.10",
-    "angular-schema-form": "~0.8.8",
-    "angular-ui-router": "0.2.15",
-    "backbone": "1.1.2",
-    "c3-angular": "1.2",
-    "handlebars": "2.0.0",
-    "highlight": "~8.8.0",
-    "jquery": "2.1.3",
-    "marked": "~0.3.5",
-    "ng-flow": "~2",
+    "angular-clipboard": "1.4.2",
+    "angular-loading-bar": "0.9.0",
+    "angular-material": "1.0.9",
+    "angular-media-queries": "0.5.1",
+    "angular-relative-date": "1.0.0",
+    "angular-resource": "1.5.6",
+    "angular-sanitize": "1.5.6",
+    "angular-schema-form": "0.8.13",
+    "angular-ui-router": "0.3.0",
+    "backbone": "1.3.3",
+    "c3-angular": "1.2.0",
+    "handlebars": "4.0.5",
+    "highlight": "8.8.0",
+    "jquery": "2.2.4",
+    "marked": "0.3.5",
+    "ng-flow": "2.7.1",
     "ng-tags-input": "2.2.0",
-    "ngstorage": "~0.3.9",
-    "perfect-scrollbar": "~0.6.5",
-    "textAngular": "~1.4.6",
-    "underscore": "~1.8.3",
-    "angular-jwt": "~0.0.9",
-    "angular-ladda": "~0.3.1",
-    "angular-ui-switch": "angular-ui-switch2#^0.1.0",
-    "sweetalert": "^1.1.3",
-    "angular-markdown-directive": "^0.3.1",
-    "swagger-ui": "2.1.4",
-    "angular-swagger-ui": "^0.3.1"
+    "ngstorage": "0.3.10",
+    "perfect-scrollbar": "0.6.11",
+    "textAngular": "1.5.1",
+    "underscore": "1.8.3",
+    "angular-jwt": "0.0.9",
+    "angular-ladda": "0.3.4",
+    "angular-ui-switch": "angular-ui-switch2#0.1.0",
+    "angular-markdown-directive": "0.3.1",
+    "angular-swagger-ui": "0.3.1"
   },
   "devDependencies": {
-    "less": "~2.2.0",
-    "angular-mocks": "1.4.10"
+    "less": "2.5.1",
+    "angular-mocks": "1.5.6"
   },
   "overrides": {
     "bootstrap": {
@@ -53,6 +50,6 @@
     }
   },
   "resolutions": {
-    "angular": "1.4.10"
+    "angular": "1.5.6"
   }
 }
