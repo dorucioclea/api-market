@@ -136,7 +136,7 @@
                 <div class="col-sm-12 text-center" ng-if="customHeaders.length === 0">
                     <button class="btn btn-default" ng-click="addHeader()">Add Custom Header</button>
                 </div>
-                <accordion class="accordion-panel" ng-show="customHeaders.length > 0">
+                <uib-accordion class="accordion-panel" ng-show="customHeaders.length > 0">
                     <div ng-repeat="header in customHeaders">
                         <auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">
                             <form role="form" class="form">
@@ -154,7 +154,7 @@
                         </auth-accordion-group>
                     </div>
                     <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" tooltip="Add Header" ng-click="addHeader()"></p>
-                </accordion>
+                </uib-accordion>
                 <div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">
                     <button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>
                 </div>
@@ -213,7 +213,7 @@
             </div>
             <div class="panel-body">
                 <!-- #start accordion -->
-                <accordion class="accordion-panel">
+                <uib-accordion class="accordion-panel">
                     <auth-accordion-group heading="OAuth 2.0">
                         <form role="form" class="form">
                             <div class="form-group mb30">
@@ -265,7 +265,7 @@
                             </div>
                         </div>
                     </auth-accordion-group>
-                </accordion>
+                </uib-accordion>
                 <!-- #end accordion -->
             </div>
         </div><!-- end authorization panel -->
