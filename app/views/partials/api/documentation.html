@@ -39,7 +39,7 @@
                             <div class="input-group">
                                 <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
                                 <div class="input-group-btn">
-                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="input-group">
                                 <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                             <div class="input-group">
                                 <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="input-group">
                                 <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                             <div class="input-group">
                                 <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                             </form>
                         </auth-accordion-group>
                     </div>
-                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" tooltip="Add Header" ng-click="addHeader()"></p>
+                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>
                 </uib-accordion>
                 <div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">
                     <button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>
