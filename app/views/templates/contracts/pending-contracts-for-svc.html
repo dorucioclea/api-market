@@ -2,8 +2,8 @@
     <tr ng-repeat="contract in contracts">
         {{contract}}
         <td class="request-pic-wrapper">
-            <img class="request-pic entity-logo-overview" ng-src="data:image/png;base64,{{contract.appDetails.application.base64logo}}" ng-if="contract.appDetails.application.base64logo.length > 0">
-            <img class="request-pic img-cirlce" src="images/no-image-available.svg" ng-if="contract.appDetails.application.base64logo === null || contract.appDetails.application.base64logo.length === 0">
+            <img class="request-pic" ng-src="data:image/png;base64,{{contract.appDetails.application.base64logo}}" ng-if="contract.appDetails.application.base64logo.length > 0">
+            <img class="request-pic" src="images/no-image-available.svg" ng-if="contract.appDetails.application.base64logo === null || contract.appDetails.application.base64logo.length === 0">
         </td>
         <td class="request-info">
             <div class="col-sm-12 text-left">
