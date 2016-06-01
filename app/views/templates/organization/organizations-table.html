@@ -19,11 +19,11 @@
                 </div>
                 <div class="col-sm-3" ng-if="publisherMode">
                     <h6 ng-class="org.numServices ? 'text-success':''"  class="mb0">{{org.numServices ? org.numServices : '0' }}</h6>
-                    <p  ng-class="org.numServices ? 'text-success':''"  class="xsmall">{{ org.numServices === 1 ? 'Service' : 'Services' }}</p>
+                    <p  ng-class="org.numServices ? 'text-success':''"  class="xsmall">Published {{ org.numServices === 1 ? 'Service' : 'Services' }}</p>
                 </div>
                 <div class="col-sm-3" ng-if="!publisherMode">
                     <h6 ng-class="org.numApps ? 'text-success':''"  class="mb0">{{org.numApps ? org.numApps : '0' }}</h6>
-                    <p  ng-class="org.numApps ? 'text-success':''"  class="xsmall">{{ org.numApps === 1 ? 'App' : 'Apps' }}</p>
+                    <p  ng-class="org.numApps ? 'text-success':''"  class="xsmall">Registered {{ org.numApps === 1 ? 'App' : 'Apps' }}</p>
                 </div>
                 <div class="col-sm-3">
                     <h6 ng-class="org.numMembers ? 'text-success':''" class="mb0">{{org.numMembers ? org.numMembers : '0' }}</h6>
