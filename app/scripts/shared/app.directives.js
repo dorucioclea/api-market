@@ -216,7 +216,6 @@
                 save: '=',
                 editPermission: '@'
             },
-            bindToController: true,
             transclude: true,
             templateUrl: '/views/templates/overview/overview-header.html'
         };
