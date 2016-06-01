@@ -4,9 +4,9 @@
         <li class="active"><a ui-sref="root.administration.users">Administration</a></li>
     </ol>
     <div class="toast toast-bottomRight">
-        <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
             <div ng-bind-html="toast.msg">Test Toast</div>
-        </alert>
+        </uib-alert>
     </div>
     <div class="col col-md-4 mb30">
         <div class="panel panel-default">

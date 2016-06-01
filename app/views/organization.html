@@ -6,9 +6,9 @@
     <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.name}}</a></li>
   </ol>
   <div class="toast toast-bottomRight">
-    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+    <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
       <div ng-bind-html="toast.msg">Test Toast</div>
-    </alert>
+    </uib-alert>
   </div>
   <div class="row">
 

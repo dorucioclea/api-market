@@ -5,9 +5,9 @@
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
-      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
         <div ng-bind-html="toast.msg">Test Toast</div>
-      </alert>
+      </uib-alert>
     </div>
     <button class="btn btn-line-primary btn-sm" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersion)">New Contract</button>
     <button class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
