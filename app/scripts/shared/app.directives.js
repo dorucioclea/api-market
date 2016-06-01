@@ -273,7 +273,6 @@
 
                 $scope.pluginName = $scope.$parent.pluginName;
             },
-            controllerAs: 'ctrl',
             templateUrl: 'views/templates/policyList.html'
         };
     })
