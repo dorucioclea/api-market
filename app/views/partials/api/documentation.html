@@ -112,8 +112,8 @@
                 </div>
                 <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
                     <p>Application API key to use for testing:</p>
-                    <div class="btn-group dropdown" dropdown>
-                        <button type="button" class="btn btn-line-info dropdown-toggle" dropdown-toggle>
+                    <div class="btn-group dropdown" uib-dropdown>
+                        <button type="button" class="btn btn-line-info dropdown-toggle" uib-dropdown-toggle>
                             <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
                             <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
                         </button>

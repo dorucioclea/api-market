@@ -21,8 +21,8 @@
         <button ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>
     </li>
 
-    <!--<li class="notify-drop hidden-xs dropdown" dropdown="">-->
-    <!--<a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">-->
+    <!--<li class="notify-drop hidden-xs uib-dropdown" uib-dropdown="">-->
+    <!--<a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">-->
     <!--<i class="ion ion-speakerphone"></i>-->
     <!--<span class="badge badge-danger badge-xs circle">3</span>-->
     <!--</a>-->
@@ -71,8 +71,8 @@
 
 <ul class="list-unstyled right-elems">
 
-    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="pendingNotifications.length > 0">
-        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="pendingNotifications.length > 0">
+        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-inbox fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="pendingNotifications.length > 0">{{pendingNotifications.length}}</span>
         </a>
@@ -90,8 +90,8 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
 
-    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="notifications.length > 0">
-        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="notifications.length > 0">
+        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell-o fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="notifications.length > 0">{{notifications.length}}</span>
         </a>
@@ -109,8 +109,8 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
     <!-- profile drop -->
-    <li class="profile-drop dropdown" dropdown>
-        <a href dropdown-toggle>
+    <li class="profile-drop dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>
             <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
             <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
             <span class="text-primary"></span>

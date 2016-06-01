@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="btn-group dropdown pull-right">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
                                 Version: {{plan.selectedVersion}}<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
