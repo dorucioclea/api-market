@@ -515,7 +515,6 @@
 
     function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces, service,
                               toastService, TOAST_TYPES, svcData) {
-        $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
         $scope.visibilities = ['Show', 'Hide'];
         svcScreenModel.updateTab('Scopes');
@@ -531,6 +530,11 @@
 
         /*set the current state of the service version*/
         function init(){
+            $scope.mkts = [];
+            angular.forEach(marketplaces.availableMarketplaces, function (mkt) {
+                $scope.mkts.push(mkt);
+            });
+
             if(serviceMkts.length > 0){
                 angular.forEach(serviceMkts, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt){
