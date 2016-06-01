@@ -172,7 +172,6 @@
                 type: '@',
                 activities: '='
             },
-            bindToController: true,
             templateUrl: '/views/templates/activity.html'
         };
     })
@@ -275,7 +274,6 @@
                 $scope.pluginName = $scope.$parent.pluginName;
             },
             controllerAs: 'ctrl',
-            bindToController: true,
             templateUrl: 'views/templates/policyList.html'
         };
     })
