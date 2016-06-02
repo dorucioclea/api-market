@@ -82,7 +82,6 @@
             $scope.selectedScopes = [];
             $scope.selectContract = selectContract;
             $scope.updateHeaders = updateHeaders;
-            $scope.currentDefinitionSpec;
 
             init();
 
@@ -117,7 +116,7 @@
                     {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                     function (definitionSpec) {
                         $scope.currentDefinitionSpec = definitionSpec;
-                        // $scope.loadSwaggerUi($scope.currentDefinitionSpec, 'swagger-ui-container', endpoint);
+                        $scope.loadSwaggerUi($scope.currentDefinitionSpec, 'swagger-ui-container', endpoint);
                         if (jwtEnabled) {
                             $scope.addJWTHeader();
                         }
