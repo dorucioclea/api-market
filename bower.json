@@ -33,8 +33,7 @@
     "angular-jwt": "0.0.9",
     "angular-ladda": "0.3.4",
     "angular-ui-switch": "angular-ui-switch2#0.1.0",
-    "angular-markdown-directive": "0.3.1",
-    "angular-swagger-ui": "0.3.1"
+    "angular-markdown-directive": "0.3.1"
   },
   "devDependencies": {
     "less": "2.5.1",
