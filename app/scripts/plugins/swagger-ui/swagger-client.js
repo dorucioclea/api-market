@@ -93,7 +93,12 @@ angular
 			// add headers
 			headers.Accept = values.responseType;
 			headers['Content-Type'] = body ? values.contentType : 'text/plain';
+            
+            // add API key if present
             if (operation.apikey) headers.apikey = operation.apikey;
+            
+            // add JWT if present
+            if (operation.jwt && operation.jwt.trim() !== '') headers.Authorization = 'Bearer ' + operation.jwt;
 
             // add custom headers if present
             if (operation.customHeaders && operation.customHeaders.length > 0) {

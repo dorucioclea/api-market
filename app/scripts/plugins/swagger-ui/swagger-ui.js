@@ -55,7 +55,9 @@ angular
 				// API key to use for requests
 				apikey: '=',
                 // Custom headers to be appended to requests
-                customHeaders: '='
+                customHeaders: '=',
+                // Indicates if the JWT should be sent along with the request
+                jwtEnabled: '='
 			},
 			link: function(scope) {
 				// check parameters
@@ -71,7 +73,7 @@ angular
 			}
 		};
 	})
-	.controller('swaggerUiController', function($scope, $http, $location, $anchorScroll, $timeout, swaggerClient, swaggerModules, swaggerTranslator) {
+	.controller('swaggerUiController', function($scope, $http, $location, $anchorScroll, $sessionStorage, $timeout, swaggerClient, swaggerModules, swaggerTranslator) {
 
 		var swagger;
 
@@ -255,9 +257,8 @@ angular
 		$scope.submitExplorer = function(operation) {
 			operation.loading = true;
             if ($scope.apikey) operation.apikey = $scope.apikey;
-            if ($scope.customHeaders && $scope.customHeaders.length > 0) {
-                operation.customHeaders = $scope.customHeaders;
-            }
+            if ($scope.customHeaders && $scope.customHeaders.length > 0) operation.customHeaders = $scope.customHeaders;
+            if ($scope.jwtEnabled) operation.jwt = encodeURIComponent($sessionStorage.jwt);
 			swaggerClient
 				.send(swagger, operation, $scope.form[operation.id])
 				.then(function(result) {
