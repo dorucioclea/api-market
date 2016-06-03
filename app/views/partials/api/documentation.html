@@ -11,10 +11,10 @@
                 <span class="btn btn-xs btn-info pull-right" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
             </div>
             <div class="panel-body">
-                <div id="swagger-ui-container2" swagger-ui input-type="json"
+                <div swagger-ui input-type="json"
                      template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
                      api-explorer="true" apikey="docTester.apikey"
-                     custom-headers="customHeaders" extra-headers="extraHeaders"
+                     custom-headers="customHeaders"
                      jwt-enabled="jwtEnabled">
                 </div>
             </div>
