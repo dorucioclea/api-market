@@ -19,7 +19,7 @@ angular
 				infoBaseUrl: 'BASE URL',
 				infoApiVersion: 'API VERSION',
 				infoHost: 'HOST',
-				endPointToggleOperations: 'Open/Hide',
+				endPointToggleOperations: 'Show/Hide',
 				endPointListOperations: 'List operations',
 				endPointExpandOperations: 'Expand operations',
 				operationDeprected: 'Warning: Deprecated',
