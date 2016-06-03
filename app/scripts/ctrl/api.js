@@ -118,7 +118,7 @@
                         $scope.currentDefinitionSpec = definitionSpec;
                         $scope.loadSwaggerUi($scope.currentDefinitionSpec, 'swagger-ui-container', endpoint);
                         if (jwtEnabled) {
-                            $scope.addJWTHeader();
+                            // $scope.addJWTHeader();
                         }
                     });
             }

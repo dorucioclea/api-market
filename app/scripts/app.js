@@ -52,6 +52,7 @@
             'app.notifications',
             'app.organizations',
             'app.service',
+            'app.swagger',
             'app.user'
 
         ])
