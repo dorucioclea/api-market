@@ -276,7 +276,7 @@
 
     }
 
-    function serviceDefinitionCtrl($scope, $state, $stateParams, endpoint, resourceUtil, toastService, TOAST_TYPES,
+    function serviceDefinitionCtrl($scope, $state, $stateParams, $timeout, resourceUtil, toastService, TOAST_TYPES,
                                    SwaggerDocFetch, svcScreenModel, service) {
 
         svcScreenModel.updateTab('Definition');
@@ -285,7 +285,6 @@
         $scope.noDefinition = false;
         $scope.doFetch = doFetch;
         $scope.loadDefinition = loadDefinition;
-        $scope.loadPreview = loadPreview;
         $scope.reset = reset;
         $scope.saveDefinition = saveDefinition;
         $scope.selectMethod = selectMethod;
@@ -299,8 +298,6 @@
                 if (Object.keys(cleanReply).length > 0) {
                     $scope.currentDefinition = cleanReply;
                     $scope.updatedDefinition = $scope.currentDefinition;
-                    $scope.loadSwaggerUi($scope.currentDefinition,
-                        'original-swagger-ui-container', endpoint, true);
                 } else {
                     $scope.noDefinition = true;
                 }
@@ -309,35 +306,37 @@
             });
 
         function doFetch(uri) {
-            $scope.isSubmitting = true;
+            $scope.isLoading = true;
             var swaggerDocObj = {
                 swaggerURI: uri
             };
             SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
-                $scope.isSubmitting = false;
+                $scope.isLoading = false;
                 $scope.result = 'success';
                 loadDefinition(angular.fromJson(reply.swaggerDoc));
             }, function (error) {
-                $scope.isSubmitting = false;
+                $scope.isLoading = false;
                 $scope.result = 'error';
+                toastService.warning('<b>Could not retrieve a Swagger JSON.</b><br><span class="small">Please double-check the URL.</span>')
             });
         }
 
         function loadDefinition($fileContent) {
-            try {
-                $scope.updatedDefinition = angular.fromJson($fileContent);
-                $scope.loadPreview($scope.updatedDefinition);
-            } catch (err) {
-                toastService.warning("<b>Error parsing Swagger JSON!</b>" +
-                    "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
-                    "<br>Please double-check your JSON syntax.</span>" +
-                    "<br><span class='small'><b>" + err + '</b></span>');
-            }
-        }
+            $scope.isLoading = true;
+            $timeout(function() {
+                try {
+                    $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.definitionLoaded = true;
+                    $scope.isLoading = false;
+                } catch (err) {
+                    $scope.isLoading = false;
+                    toastService.warning("<b>Error parsing Swagger JSON!</b>" +
+                        "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
+                        "<br>Please double-check your JSON syntax.</span>" +
+                        "<br><span class='small'><b>" + err + '</b></span>');
+                }
+            }, 500);
 
-        function loadPreview(spec) {
-            $scope.definitionLoaded = true;
-            $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
         }
 
         function reset() {

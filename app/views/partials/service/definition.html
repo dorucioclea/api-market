@@ -30,28 +30,18 @@
   </div>
 
   <!-- Existing Swagger API documentation panel -->
-  <div class="col-sm-12" ng-hide="definitionLoaded || noDefinition">
+  <div class="col-sm-12" ng-hide="noDefinition">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Current Documentation
+        {{ definitionLoaded ? 'Updated Documentation Preview' : 'Current Documentation' }}
       </div>
       <div class="panel-body">
-        <div class="swagger-section">
-          <div class="swagger-ui-wrap" id="original-swagger-ui-container"></div>
+        <div ng-hide="isLoading" swagger-ui input-type="json" loading="isLoading"
+             template-url="views/templates/swagger/main.html" input="updatedDefinition"
+             api-explorer="false">
         </div>
-      </div>
-    </div>
-  </div><!-- end Swagger Documentation panel -->
-
-  <!-- Uploaded Swagger API documentation panel -->
-  <div class="col-sm-12" ng-show="definitionLoaded">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Updated Documentation Preview
-      </div>
-      <div class="panel-body">
-        <div class="swagger-section">
-          <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
+        <div class="text-center" ng-show="isLoading">
+          <span class="fa fa-spinner fa-pulse fa-4x"></span>
         </div>
       </div>
     </div>
@@ -76,7 +66,7 @@
         <input type="file" class="form-control" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
         <input type="url" name="uri" class="form-control" ng-model="ctrl.uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
         <div class="input-group-btn" ng-class="{'hidden': selectedMethod === 'JSON File'}">
-          <button class="btn btn-line-primary" ladda="isSubmitting" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
+          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
         </div>
       </div>
       <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'URI'}">You can use the button above to select the JSON file you want to upload.</p>
