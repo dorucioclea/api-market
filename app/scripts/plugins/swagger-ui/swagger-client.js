@@ -14,7 +14,6 @@ angular
 		 * format API explorer response before display
 		 */
 		function formatResult(deferred, response) {
-			console.log(response);
 			var query = '',
 				data = response.data,
 				config = response.config;
@@ -94,6 +93,14 @@ angular
 			// add headers
 			headers.Accept = values.responseType;
 			headers['Content-Type'] = body ? values.contentType : 'text/plain';
+            if (operation.apikey) headers.apikey = operation.apikey;
+
+            // add custom headers if present
+            if (operation.customHeaders && operation.customHeaders.length > 0) {
+                operation.customHeaders.forEach(function (customHeader) {
+                    headers[customHeader.name] = customHeader.value;
+                })
+            }
 
 			// build request
 			var baseUrl = [

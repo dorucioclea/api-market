@@ -53,7 +53,9 @@ angular
 				// Allows rendering an external Swagger specification (string or object, optional)
 				input: '=?',
 				// API key to use for requests
-				apikey: '='
+				apikey: '=',
+                // Custom headers to be appended to requests
+                customHeaders: '='
 			},
 			link: function(scope) {
 				// check parameters
@@ -252,6 +254,10 @@ angular
 		 */
 		$scope.submitExplorer = function(operation) {
 			operation.loading = true;
+            if ($scope.apikey) operation.apikey = $scope.apikey;
+            if ($scope.customHeaders && $scope.customHeaders.length > 0) {
+                operation.customHeaders = $scope.customHeaders;
+            }
 			swaggerClient
 				.send(swagger, operation, $scope.form[operation.id])
 				.then(function(result) {

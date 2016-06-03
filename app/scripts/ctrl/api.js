@@ -73,15 +73,16 @@
             $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
             $scope.endpoint = endpoint;
             $scope.docDownloader = docDownloader;
+            $scope.docTester = docTester;
             $scope.copy = copy;
             $scope.contractApps = [];
             $scope.canGrant = canGrant;
             $scope.customHeaders = [];
             $scope.doGrant = doGrant;
             $scope.hasGrant = false;
+            $scope.removeHeader = removeHeader;
             $scope.selectedScopes = [];
             $scope.selectContract = selectContract;
-            $scope.updateHeaders = updateHeaders;
 
             init();
 
@@ -118,7 +119,7 @@
                         $scope.currentDefinitionSpec = definitionSpec;
                         $scope.loadSwaggerUi($scope.currentDefinitionSpec, 'swagger-ui-container', endpoint);
                         if (jwtEnabled) {
-                            // $scope.addJWTHeader();
+                            $scope.addJWTHeader();
                         }
                     });
             }
@@ -221,31 +222,35 @@
                 }
             }
 
-            function updateHeaders() {
-                var didSet = false;
-                var hasInvalid = false;
-                angular.forEach($scope.customHeaders, function (header) {
-                    if (header.name.length > 0 && header.value.length > 0) {
-                        $scope.addCustomSwaggerHeader(header);
-                        didSet = true;
-                    } else {
-                        hasInvalid = true;
-                    }
-                });
-
-                if (didSet && !hasInvalid) {
-                    toastService.createToast(TOAST_TYPES.INFO,
-                        '<b>Headers set!</b>', true);
-                } else if (didSet && hasInvalid) {
-                    toastService.createToast(TOAST_TYPES.WARNING,
-                        '<b>Could not set all headers.</b>' +
-                        '<br>One or more headers had an invalid configuration and were not set', true);
-                } else {
-                    toastService.createToast(TOAST_TYPES.WARNING,
-                        '<b>No headers were set.</b>' +
-                        '<br>Could not find a valid header configuration', true);
-                }
+            function removeHeader(header) {
+                $scope.customHeaders.splice($scope.customHeaders.indexOf(header), 1);
             }
+
+            // function updateHeaders() {
+            //     var didSet = false;
+            //     var hasInvalid = false;
+            //     angular.forEach($scope.customHeaders, function (header) {
+            //         if (header.name.length > 0 && header.value.length > 0) {
+            //             $scope.addCustomSwaggerHeader(header);
+            //             didSet = true;
+            //         } else {
+            //             hasInvalid = true;
+            //         }
+            //     });
+            //
+            //     if (didSet && !hasInvalid) {
+            //         toastService.createToast(TOAST_TYPES.INFO,
+            //             '<b>Headers set!</b>', true);
+            //     } else if (didSet && hasInvalid) {
+            //         toastService.createToast(TOAST_TYPES.WARNING,
+            //             '<b>Could not set all headers.</b>' +
+            //             '<br>One or more headers had an invalid configuration and were not set', true);
+            //     } else {
+            //         toastService.createToast(TOAST_TYPES.WARNING,
+            //             '<b>No headers were set.</b>' +
+            //             '<br>Could not find a valid header configuration', true);
+            //     }
+            // }
         })
 
         /// ==== Service Plans Controller

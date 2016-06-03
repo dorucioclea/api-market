@@ -11,7 +11,9 @@
                 <span class="btn btn-xs btn-info pull-right" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
             </div>
             <div class="panel-body">
-                <div id="swagger-ui-container2" swagger-ui input-type="json" template-url="views/templates/swagger/main.html" input="currentDefinitionSpec" api-explorer="true"></div>
+                <div id="swagger-ui-container2" swagger-ui input-type="json"
+                     template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
+                     api-explorer="true" apikey="docTester.apikey" custom-headers="customHeaders"></div>
             </div>
             <div class="panel-body">
                 <div class="swagger-section">
@@ -142,7 +144,7 @@
                     <div ng-repeat="header in customHeaders">
                         <auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">
                             <form role="form" class="form">
-                                <div class="form-group mb30">
+                                <div class="form-group">
                                     <div class="input-group mb5">
                                         <span class="input-group-addon fa fa-fw fa-header"></span>
                                         <input type="text" class="form-control" placeholder="Header Name" ng-model="header.name">
@@ -153,13 +155,14 @@
                                     </div>
                                 </div>
                             </form>
+                            <p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="removeHeader(header)"><span class="fa fa-trash"></span></p>
                         </auth-accordion-group>
                     </div>
                     <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>
                 </uib-accordion>
-                <div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">
-                    <button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>
-                </div>
+                <!--<div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">-->
+                    <!--<button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>-->
+                <!--</div>-->
             </div>
         </div><!-- end Custom Headers panel -->
 
