@@ -204,19 +204,16 @@
 
             function processUri(uri) {
                 var paramStart = uri.indexOf('access_token=');
-                console.log("uri: "+uri);
-                console.log("params: "+paramStart);
                 if (paramStart > -1) {
                     var paramString = uri.substr(paramStart + 13);
                     //remove every param that are send after bearer token
                     var n = paramString.indexOf('&');
                     paramString = paramString.substring(0, n != -1 ? n : s.length);
-                    console.log(paramString);
                     var headerObj = {
                         name: 'Authorization',
                         value: 'Bearer ' + paramString
                     };
-                    $scope.addCustomSwaggerHeader(headerObj);
+                    $scope.customHeaders.push(headerObj);
                     return true;
                 } else {
                     return false;
