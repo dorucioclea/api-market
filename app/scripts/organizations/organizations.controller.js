@@ -92,7 +92,9 @@
     function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, SearchOrgs) {
 
         $scope.doSearch = doSearch;
+        $scope.orgNameRegex = '\\w+';
         init();
+        doSearch();
 
         function init() {
             if ($scope.publisherMode) {
@@ -107,6 +109,7 @@
 
         function doSearch(searchString) {
             var search = {};
+            searchString = searchString||'*';
             search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'}];
             search.orderBy = {ascending: true, name: 'name'};
             search.paging = {page: 1, pageSize: 100};
@@ -119,9 +122,11 @@
                             org.isMember = true;
                         }
                     }
-                    for (var j = 0; j < $scope.pendingOrgs.length; j++) {
-                        if ($scope.pendingOrgs[j].id === org.id) {
-                            org.requestPending = true;
+                    if(typeof pendingOrgs !== "undefined"){
+                        for (var j = 0; j < $scope.pendingOrgs.length; j++) {
+                            if ($scope.pendingOrgs[j].id === org.id) {
+                                org.requestPending = true;
+                            }
                         }
                     }
                 });

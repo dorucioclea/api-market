@@ -17,7 +17,7 @@
                     <div class="col-sm-6 ">
                         <form>
                             <div class="input-group">
-                                <input type="text" class="form-control" ng-model="searchString" placeholder="Enter a word or phrase to search by; or '*' to see all organizations...">
+                                <input type="text" class="form-control" ng-model="searchString" placeholder="Search for an organization name..." ng-pattern="orgNameRegex">
                                 <div class="input-group-btn">
                                     <button class="btn btn-default ion ion-search" ng-click="doSearch(searchString)"></button>
                                 </div>
