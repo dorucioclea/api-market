@@ -227,7 +227,6 @@
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
                       serviceVersion, svcPolicies) {
-
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
@@ -242,6 +241,7 @@
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
                 var hasAppContext = false;
+
                 init();
 
                 function init() {

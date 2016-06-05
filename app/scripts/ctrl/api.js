@@ -5,7 +5,7 @@
 
         /// ==== Service Doc Main Controller
         .controller('ApiDocCtrl', function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
-                                           headerModel, toastService, followerService, support) {
+                                           headerModel, toastService,TOAST_TYPES, followerService, support) {
             headerModel.setIsButtonVisible(true, true, true);
             svcModel.setService(svcData);
             $scope.serviceVersion = svcData;
@@ -42,7 +42,11 @@
                             return ServiceVersionPolicy.query(
                                 {orgId: $scope.serviceVersion.service.organization.id,
                                     svcId: $scope.serviceVersion.service.id,
-                                    versionId: $scope.serviceVersion.version}).$promise;
+                                    versionId: $scope.serviceVersion.version}).$promise.then(function (data){},function(error){
+                                console.log(error.data.message);
+                                toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
+                                throw new Error('Service does not exist anymore, this error occurs when the service has been requests, but in mean time deleted from the publisher');
+                            });
                         }
                     },
                     backdrop : 'static',
