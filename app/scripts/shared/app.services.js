@@ -776,7 +776,7 @@
         })
 
         // LOGIN HELPER SERVICE
-        .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
+        .service('loginHelper', function ($http, $sessionStorage, $state, $location, CONFIG) {
             this.checkLoggedIn = checkLoggedIn;
             this.checkJWTInUrl = checkJWTInUrl;
             this.logout = logout;
@@ -787,15 +787,16 @@
             }
 
             function checkJWTInUrl() {
-                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-                if (jwt.length > 0) {
+                var jwt = $location.search().jwt;
+                if (jwt && jwt.length > 0) {
                     $sessionStorage.jwt = jwt;
                     delete $sessionStorage.loginInProgress;
                     window.location.href = $sessionStorage.apimredurl;
                     delete $sessionStorage.apimredurl;
+                    return true;
+                } else {
+                    return false;
                 }
-
-                return jwt.length > 0;
             }
 
             function logout() {
@@ -830,7 +831,7 @@
             function redirectToLogin() {
                 if (!$sessionStorage.loginInProgress) {
                     $sessionStorage.loginInProgress = true;
-                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
+                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.href;
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
@@ -857,14 +858,6 @@
                     });
                 }
             }
-
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                    results = regex.exec(location.search);
-                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-            }
-
         })
 
         // USER SCREEN MODEL
