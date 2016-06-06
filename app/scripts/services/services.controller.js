@@ -6,6 +6,7 @@
         .controller('ServiceActivityCtrl', serviceActivityCtrl)
         .controller('ServiceImplementationCtrl', serviceImplCtrl)
         .controller('ServiceDefinitionCtrl', serviceDefinitionCtrl)
+        .controller('ServicePendingContractsCtrl', servicePendingCtrl)
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
         .controller('ServicePoliciesCtrl', servicePoliciesCtrl)
@@ -17,7 +18,8 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, toastService, TOAST_TYPES, service) {
+                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
+                         toastService, ALERT_TYPES, TOAST_TYPES, service) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
@@ -37,24 +39,44 @@
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
+        $scope.selectVersion = selectVersion;
+        $scope.showInfoModal = showInfoModal;
+        $scope.updateDesc = updateDesc;
 
-        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(function (reply) {
-            // Clean the reply so we have the pure data object, then
-            // Check number of properties in the object, if 0, there is no definition present
-            if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
-                svcScreenModel.setHasDefinition(true);
-            } else {
+        init();
+
+
+        function init() {
+            if ($scope.serviceVersion.plans.length > 0) svcScreenModel.setHasPlan(true);
+            else svcScreenModel.setHasPlan(false);
+
+            service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(function (reply) {
+                // Clean the reply so we have the pure data object, then
+                // Check number of properties in the object, if 0, there is no definition present
+                if (Object.keys(resourceUtil.cleanResponse(reply)).length > 0) {
+                    svcScreenModel.setHasDefinition(true);
+                } else {
+                    svcScreenModel.setHasDefinition(false);
+                }
+            }, function (error) {
                 svcScreenModel.setHasDefinition(false);
+            });
+
+
+            // Check for pending contracts if the user is authorized to see them
+            if ($scope.User.isAuthorizedFor('svcEdit')) {
+                contractService.getPendingForSvc($stateParams.orgId, $stateParams.svcId, $stateParams.versionId)
+                    .then(function (contracts) {
+                        $scope.pendingContracts = contracts;
+                    })
+            } else {
+                $scope.pendingContracts = [];
             }
-        }, function (error) {
-            svcScreenModel.setHasDefinition(false);
-        });
+            // Check if user is authorized to accept or reject contracts
+            $scope.canAccept = !!$scope.User.isAuthorizedFor('svcAdmin');
 
-        $scope.selectVersion = function (version) {
-            $state.go($state.$current.name,
-                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
-        };
-
+            checkNeedsReadMe();
+        }
 
         function confirmDeleteSvc() {
             var modalInstance = $modal.open({
@@ -99,18 +121,22 @@
         }
 
         function confirmPublishSvc() {
-            $modal.open({
-                templateUrl: 'views/modals/servicePublish.html',
-                size: 'lg',
-                controller: 'PublishServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
+            if (checkNeedsReadMe()) {
+                toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
+            } else {
+                $modal.open({
+                    templateUrl: 'views/modals/servicePublish.html',
+                    size: 'lg',
+                    controller: 'PublishServiceCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return $scope.serviceVersion;
+                        }
+                    },
+                    backdrop: 'static',
+                    windowClass: $scope.modalAnim	// Animation Class put here.
+                });
+            }
         }
 
         function confirmRetireSvc() {
@@ -128,15 +154,35 @@
             });
         }
 
-        $scope.updateDesc = function (newValue) {
+        function checkNeedsReadMe() {
+            alertService.resetAllAlerts();
+            var needsReadMe = !$scope.serviceVersion.autoAcceptContracts &&
+                (!$scope.serviceVersion.service.terms || $scope.serviceVersion.service.terms.length === 0);
+            if (needsReadMe) {
+                alertService.addAlert(ALERT_TYPES.INFO,
+                    '<b>Please provide a README file!</b><br><span class="small text-light">You have indicated that you want to manually manage the' +
+                    ' contracts for this service, but no README has been found.' +
+                    ' Please update the README to include steps developers need to take' +
+                    ' to get their contract request approved (how to contact you, information to provide, etc...).' +
+                    ' Without a README you will not be able to publish the service!</span>');
+            }
+            return needsReadMe;
+        }
+
+        function updateDesc(newValue) {
             service.updateDescription($stateParams.orgId, $stateParams.svcId, newValue).then(function (reply) {
                 toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not update service\'s description.');
             });
-        };
+        }
 
-        $scope.showInfoModal = function () {
+        function selectVersion(version) {
+            $state.go($state.$current.name,
+                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
+        }
+
+        function showInfoModal() {
             $modal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
@@ -149,10 +195,14 @@
                 backdrop: 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
-        };
+        }
 
     }
 
+    function servicePendingCtrl($scope, svcScreenModel) {
+        svcScreenModel.updateTab('Pending');
+    }
+    
     function serviceActivityCtrl($scope, activityData, svcScreenModel) {
 
         $scope.activities = activityData.beans;
@@ -329,86 +379,22 @@
     function servicePlansCtrl($scope, $state, $stateParams, $q, planData, svcScreenModel, service,
                               toastService, TOAST_TYPES, PlanVersion) {
 
-        svcScreenModel.updateTab('Plans');
         var definedPlans = planData;
         var lockedPlans = [];
         $scope.updatedService = {};
+        $scope.reset = reset;
+        $scope.saveService = saveService;
         $scope.version = svcScreenModel.service;
 
-        var getSelectedPlans = function () {
-            var selectedPlans = [];
-            for (var i = 0; i < lockedPlans.length; i++) {
-                var plan = lockedPlans[i];
-                if (plan.checked) {
-                    var selectedPlan = {};
-                    selectedPlan.planId = plan.id;
-                    selectedPlan.version = plan.selectedVersion;
-                    selectedPlans.push(selectedPlan);
-                }
-            }
-            return selectedPlans;
-        };
-
-        //find locked plan versions
-        $q(function (resolve) {
-            var promises = [];
-            angular.forEach(definedPlans, function (plan) {
-                promises.push($q(function (resolve, reject) {
-                    PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
-                        var lockedVersions = [];
-                        for (var j = 0; j < planVersions.length; j++) {
-                            var planVersion = planVersions[j];
-                            if (planVersion.status === 'Locked') {
-                                lockedVersions.push(planVersion.version);
-                            }
-                        }
-                        // if we found locked plan versions then add them
-                        if (lockedVersions.length > 0) {
-                            plan.lockedVersions = lockedVersions;
-                            lockedPlans.push(plan);
-                        }
-                        resolve(planVersions);
-                    }, reject);
-                }));
-            });
-            $q.all(promises).then(function () {
-                lockedPlans.sort(function (a, b) {
-                    if (a.id.toLowerCase() < b.id.toLowerCase()) {
-                        return -1;
-                    } else if (b.id < a.id) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                resolve(lockedPlans);
-                $scope.plans = lockedPlans;
-                $scope.reset();
-            });
-        });
+        init();
 
         $scope.$watch('plans', function (newValue) {
             $scope.updatedService.plans = getSelectedPlans();
         }, true);
 
-        $scope.reset = function () {
-            for (var i = 0; i < lockedPlans.length; i++) {
-                lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
-                for (var j = 0; j < $scope.version.plans.length; j++) {
-                    if (lockedPlans[i].id === $scope.version.plans[j].planId) {
-                        lockedPlans[i].checked = true;
-                        lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
-                        break;
-                    }
-                    lockedPlans[i].checked = false;
-                }
-            }
-            $scope.updatedService.plans = getSelectedPlans();
-            $scope.isDirty = false;
-        };
-
         $scope.$watch('updatedService', function (newValue) {
             var dirty = false;
+            if (newValue.autoAcceptContracts != $scope.version.autoAcceptContracts) dirty = true;
             if (newValue.plans && $scope.version.plans &&
                 newValue.plans.length !== $scope.version.plans.length) {
                 dirty = true;
@@ -428,24 +414,104 @@
                     }
                 }
             }
+            if (newValue.plans.length > 0) $scope.isValid = true;
             $scope.isDirty = dirty;
         }, true);
 
-        $scope.saveService = function () {
+        function init() {
+            svcScreenModel.updateTab('Plans');
+
+            //find locked plan versions
+            $q(function (resolve) {
+                var promises = [];
+                angular.forEach(definedPlans, function (plan) {
+                    promises.push($q(function (resolve, reject) {
+                        PlanVersion.query({orgId: $stateParams.orgId, planId: plan.id}, function (planVersions) {
+                            var lockedVersions = [];
+                            for (var j = 0; j < planVersions.length; j++) {
+                                var planVersion = planVersions[j];
+                                if (planVersion.status === 'Locked') {
+                                    lockedVersions.push(planVersion.version);
+                                }
+                            }
+                            // if we found locked plan versions then add them
+                            if (lockedVersions.length > 0) {
+                                plan.lockedVersions = lockedVersions;
+                                lockedPlans.push(plan);
+                            }
+                            resolve(planVersions);
+                        }, reject);
+                    }));
+                });
+                $q.all(promises).then(function () {
+                    lockedPlans.sort(function (a, b) {
+                        if (a.id.toLowerCase() < b.id.toLowerCase()) {
+                            return -1;
+                        } else if (b.id < a.id) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    resolve(lockedPlans);
+                    $scope.plans = lockedPlans;
+                    $scope.reset();
+                });
+            });
+            $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+        }
+
+        var getSelectedPlans = function () {
+            var selectedPlans = [];
+            for (var i = 0; i < lockedPlans.length; i++) {
+                var plan = lockedPlans[i];
+                if (plan.checked) {
+                    var selectedPlan = {};
+                    selectedPlan.planId = plan.id;
+                    selectedPlan.version = plan.selectedVersion;
+                    selectedPlans.push(selectedPlan);
+                }
+            }
+            return selectedPlans;
+        };
+
+        function reset() {
+            for (var i = 0; i < lockedPlans.length; i++) {
+                lockedPlans[i].selectedVersion = lockedPlans[i].lockedVersions[0];
+                for (var j = 0; j < $scope.version.plans.length; j++) {
+                    if (lockedPlans[i].id === $scope.version.plans[j].planId) {
+                        lockedPlans[i].checked = true;
+                        lockedPlans[i].selectedVersion = $scope.version.plans[j].version;
+                        break;
+                    }
+                    lockedPlans[i].checked = false;
+                }
+            }
+            $scope.updatedService.plans = getSelectedPlans();
+            $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+            $scope.isDirty = false;
+        }
+
+
+
+        function saveService() {
             service.updateServiceVersion($stateParams.orgId, $stateParams.svcId, $stateParams.versionId,
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Available Plans for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Available Plans & Contract Management for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
-                    $state.go('^.scopes').then(function () {
+                    if ($scope.tabStatus.hasPlan) {
                         $state.forceReload();
-                    });
+                    } else {
+                        svcScreenModel.setHasPlan(true);
+                        $state.go('^.scopes');
+                    }
                 },
                 function (error) {
                     toastService.createErrorToast(error, 'Could not update the enabled plans.');
                 });
-        };
+        }
 
     }
 
@@ -453,7 +519,6 @@
                               toastService, TOAST_TYPES, svcData) {
         $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
-        init();
         $scope.visibilities = ['Show', 'Hide'];
         svcScreenModel.updateTab('Scopes');
         $scope.updatedService = {};
@@ -464,27 +529,35 @@
         $scope.svcId = svcData.service.id;
         $scope.versionId = svcData.version;
 
+        init();
+
         /*set the current state of the service version*/
         function init(){
-            if(serviceMkts){
+            if(Object.keys(serviceMkts).length > 0){
                 angular.forEach(serviceMkts, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt){
                         if(mkt.code === svmkt.code) {
                             mkt.checked = true;
-                            mkt.selectedVisibility = (svmkt.show)?'Show':'Hide';
                         }
                     });
                 });
+            } else {
+                angular.forEach($scope.mkts, function (market) {
+                    // if no market has been selected for the service, enable the internal market by default
+                    if ( market.code === 'int') {
+                        market.checked = true;
+                    }
+                })
             }
         }
 
         $scope.$watch('mkts', function (newValue) {
-            selectedMarketplaces=[];
+            selectedMarketplaces = [];
             angular.forEach(newValue,function(val){
                 if(val.checked===true)selectedMarketplaces.push(val);
             });
             setSelectedMarketplaces(selectedMarketplaces);
-            $scope.isDirty = selectedMarketplaces.length>0;
+            $scope.isDirty = selectedMarketplaces.length > 0;
         }, true);
 
         function setSelectedMarketplaces(selectedMkts){
@@ -518,7 +591,7 @@
                 originalConfig.push(serviceMkts[key]);
             }
             console.log("verify original reformatted: "+JSON.stringify(originalConfig));
-            console.log("Compare: "+arraysEqual(newConfig,originalConfig));
+            console.log("Compare: "+ arraysEqual(newConfig,originalConfig));
             return ! arraysEqual(newConfig,originalConfig);
         }
 
@@ -603,7 +676,7 @@
                 function (reply) {
                     $state.forceReload();
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Terms & Conditions for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Readme for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update the terms & conditions.');

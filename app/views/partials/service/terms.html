@@ -2,8 +2,8 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-12">
-                <h4>Service Terms & Conditions</h4>
-                <p>Below you can specify the Terms & Conditions that apply to use of the Service.</p>
+                <h4>Service Readme</h4>
+                <p>Below you can specify the readme file for the Service. Readme files should be provided in markdown format.</p>
                 <hr>
             </div>
         </div>
@@ -12,9 +12,19 @@
             <!-- text editor -->
             <div class="col-md-12">
                 <div class="panel panel-default mb20">
-                    <div class="panel-heading">Editor</div>
+                    <div class="panel-heading">Markdown Editor</div>
                     <div class="panel-body">
-                        <div text-angular ng-model="htmlTerms"></div>
+                        <textarea class="form-control" rows="20" placeholder="Enter your README file contents (optional)" ng-model="htmlTerms" style="overflow-y: scroll; resize: none;"></textarea>
+                        <p class="text-muted xsmall">README file in markdown format</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Output preview</div>
+                    <div class="panel-body">
+                        <p class="well" ng-if="!htmlTerms || htmlTerms.length === 0">No input yet.</p>
+                        <div btf-markdown="htmlTerms" ng-if="htmlTerms.length > 0"></div>
                     </div>
                 </div>
             </div>

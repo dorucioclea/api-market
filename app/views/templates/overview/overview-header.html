@@ -6,13 +6,13 @@
     </div>
     <div ng-class="{'col-sm-12': !hasLogo, 'col-sm-10': hasLogo}">
       <div class="row">
-        <div class="col-sm-6 text-primary">
+        <div class="col-sm-8 text-primary">
           <h4><i class="fa fa-{{icon}}"></i>
             {{name}}&nbsp;&nbsp;<label class="label label-primary" ng-show="endpoint.length > 0">{{endpoint}}</label>
           </h4>
           <status-label style="display: inline-block; margin: 5px 0 20px 0;" class="xlarge text-center" status="{{entityVersion.status}}"></status-label>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="pull-right">
             <div class="btn-group dropdown" dropdown>
               <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
@@ -36,7 +36,6 @@
           <overview-status created-by="{{entityVersion.createdBy}}" created-on="{{entityVersion.createdOn}}" status="{{entityVersion.status}}"></overview-status>
         </div>
         <div class="col-md-5">
-          <!-- The Lock Action -->
           <div class="pull-right" ng-transclude>
           </div>
         </div>

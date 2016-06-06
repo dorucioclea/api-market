@@ -1,0 +1,48 @@
+.member-list {
+  .member-row {
+    border-bottom: 10px solid transparent;
+
+    &:hover {
+      hr {
+        border-color: @brand-primary
+      }
+
+
+      .member-pic-wrapper>.member-pic {
+        border-color: @brand-primary
+      }
+    }
+
+    hr {
+      border-top: 1px solid #ccc;
+    }
+
+    td {
+      border: 0;
+      background-color: transparent;
+    }
+
+    .member-pic-wrapper {
+      width: 10%;
+      padding: 10px;
+      padding-right: 0;
+      text-align: right;
+
+      .member-pic {
+        width: 78px;
+        height: 78px;
+        border: 3px solid #ccc;
+      }
+    }
+
+    .member-info {
+      width: 90%;
+      padding-left: 0;
+
+
+      .divider-line {
+        padding-left: 0;
+      }
+    }
+  }
+}

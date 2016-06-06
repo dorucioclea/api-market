@@ -441,24 +441,28 @@
 
         /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
-            function ($scope, $modal, $state, publisherMode,
-                      currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, orgService, Organization) {
+            function ($scope, $modal, $state, publisherMode, admin,
+                      currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, Organization) {
 
+                $scope.admin = admin;
                 $scope.createOrganization = createOrganization;
                 $scope.modalClose = modalClose;
                 $scope.regex = REGEX;
                 $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
 
-                function createOrganization(org) {
-                    org.name = org.name.trim();
+                // New organization defaults to Private
+                $scope.organization = {
+                    organizationPrivate: true
+                };
 
-                    if (!org.friendlyName || org.friendlyName.length === 0) {
-                        org.friendlyName = org.name;
-                    } else {
-                        org.friendlyName = org.friendlyName.trim();
+                function createOrganization() {
+                    $scope.organization.name = $scope.organization.name.trim();
+
+                    if ($scope.organization.friendlyName) {
+                        $scope.organization.friendlyName = $scope.organization.friendlyName.trim();
                     }
 
-                    Organization.save(org, function (newOrg) {
+                    Organization.save($scope.organization, function (newOrg) {
                         currentUserModel.updateCurrentUserInfo(currentUserModel);
                         $scope.modalClose();
                         if (publisherMode) {

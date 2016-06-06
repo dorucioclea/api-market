@@ -14,6 +14,73 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
+        /// ========== CONTRACTS ==========================================================================
+        .factory('RequestContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+                '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');
+        })
+        .factory('AcceptContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+            '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/accept')
+        })
+        .factory('RejectContract', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL +
+            '/organizations/:orgId/applications/:appId/versions/:versionId/contracts/reject')
+        })
+        .factory('OrgIncomingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
+        .factory('OrgOutgoingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
+
+        /// ========== MEMBERSHIP ==========================================================================
+        .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.MEMBERSHIP_PENDING);
+        })
+        .factory('UserMembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing/' +
+                NOTIFICATIONS.MEMBERSHIP_PENDING);
+        })
+        .factory('UserMembershipGranted', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
+                NOTIFICATIONS.MEMBERSHIP_GRANTED);
+        })
+        .factory('UserMembershipRejected', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
+                NOTIFICATIONS.MEMBERSHIP_REJECTED);
+        })
+        .factory('RejectRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
+        })
+
+        /// ========== NOTIFICATIONS =====================================================================
+        .factory('ContractRequests', function ($resource, CONFIG, NOTIFICATIONS) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
+                NOTIFICATIONS.CONTRACT_PENDING);
+        })
+        .factory('Notifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications');
+        })
+        .factory('PendingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/pending');
+        })
+        .factory('UserIncomingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/:notificationId');
+        })
+        .factory('UserOutgoingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
+        })
+        .factory('OrgIncomingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming');
+        })
+        .factory('OrgOutgoingNotifications', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing');
+        })
+            
         /// ========== ORGANIZATION =====================================================================
 
         .factory('Organization', function ($resource, CONFIG) {
@@ -137,6 +204,9 @@
                     method: 'PUT'
                 }
             });
+        })
+        .factory('ServiceVersionMarketInfo', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/marketinfo');
         })
         .factory('ServiceVersionDefinition', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition',
@@ -311,8 +381,22 @@
                 }
             });
         })
+        .factory('SearchLatestPublishedSvcsInCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest/categories', {}, {
+                query: {
+                    method: 'POST', isArray: true
+                }
+            });
+        })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/services/:status');
+        })
+        .factory('SearchLatestServiceVersions', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest', {}, {
+                query: {
+                    method: 'POST'
+                }
+            });
         })
 
         /// ========== SYSTEM ============================================================================

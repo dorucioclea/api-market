@@ -61,7 +61,8 @@
         this.service = {};
         this.tabStatus = {
             hasImplementation: false,
-            hasDefinition: false
+            hasDefinition: false,
+            hasPlan: false
         };
 
         this.updateTab = function (newTab) {
@@ -80,6 +81,10 @@
         this.setHasDefinition = function (bool) {
             this.tabStatus.hasDefinition = bool;
         };
+        
+        this.setHasPlan = function (bool) {
+            this.tabStatus.hasPlan = bool;
+        }
     }
 
 })();

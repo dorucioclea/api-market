@@ -111,8 +111,6 @@
                 };
 
                 this.publishApp = function (applicationVersion, shouldReload) {
-                    console.log(applicationVersion);
-                    console.log(this.createAction(applicationVersion, ACTIONS.REGISTER));
                     var msg = '<b>' + applicationVersion.application.name + ' ' + applicationVersion.version +
                         '</b> was successfully published!';
                     return doAction(this.createAction(
@@ -360,6 +358,22 @@
         .service('toastService', function ($timeout, TOAST_TYPES) {
             var toasts = [];
             this.toasts = toasts;
+            
+            this.info = info;
+            this.success = success;
+            this.warning = warning;
+            
+            function info(msg) {
+                createToast(TOAST_TYPES.INFO, msg, true);
+            }
+            
+            function success(msg) {
+                createToast(TOAST_TYPES.SUCCESS, msg, true);
+            }
+            
+            function warning(msg) {
+                createToast(TOAST_TYPES.WARNING, msg, true);
+            }
 
             var closeToastAtIndex = function (index) {
                 toasts.splice(index, 1);
@@ -399,7 +413,7 @@
 
             this.createErrorToast = function(error, heading) {
                 var toastType = TOAST_TYPES.DANGER;
-                var errorMsg = '<b>' + heading + '</b>';
+                var errorMsg = '<b>' + heading + '</b><br>' + error.data.message;
 
                 switch (error.status) {
                     case 404:
@@ -407,10 +421,8 @@
                         break;
                     case 409: //CONFLICT
                         toastType = TOAST_TYPES.WARNING;
-                        errorMsg += '<br>This name is already in use!<br>Please try again with a different name.';
                         break;
                     default:
-                        errorMsg += '<br>An unexpected error has occurred.';
                         break;
                 }
                 this.createToast(toastType, errorMsg, true);
@@ -558,47 +570,6 @@
             };
         })
 
-        // CURRENT USER MODEL
-        .service('currentUserModel', function (orgScreenModel, CurrentUserInfo) {
-            var permissionTree = [];
-            this.currentUser = {};
-
-            this.updateCurrentUserInfo = function (currentUserModel) {
-                return CurrentUserInfo.get({}, function (userInfo) {
-                    currentUserModel.currentUser = userInfo;
-                    createPermissionsTree(userInfo.permissions);
-                }).$promise;
-            };
-
-            this.setCurrentUserInfo = function (currentUserInfo) {
-                this.currentUser = currentUserInfo;
-                createPermissionsTree(currentUserInfo.permissions);
-            };
-
-            var createPermissionsTree = function (permissions) {
-                permissionTree = [];
-                angular.forEach(permissions, function (value) {
-                    if (!permissionTree[value.organizationId]) {
-                        permissionTree[value.organizationId] = [];
-                    }
-                    permissionTree[value.organizationId].push(value.name);
-                });
-            };
-
-            this.isAuthorizedFor = function(permission) {
-                return permissionTree[orgScreenModel.organization.id].indexOf(permission) !== -1;
-            };
-
-            this.isAuthroizedForAny = function (permissions) {
-                for (var i = 0; i < permissions.length; i++) {
-                    if (this.isAuthorizedFor(permissions[i])) {
-                        return true;
-                    }
-                }
-                return false;
-            };
-        })
-
         // FOLLOWER SERVICE
         .service('followerService',
             function ($state, currentUserModel, toastService, TOAST_TYPES,
@@ -693,6 +664,8 @@
                 }
 
                 function needsCallback(appOrgId, appId, appVersion) {
+                    // Disable callback url not being required for Client Credentials grant,
+                    // Now compulsory for all types of OAuth
 
                     return ApplicationContract.query({
                         orgId: appOrgId,
@@ -700,37 +673,60 @@
                         versionId: appVersion}).$promise
                         .then(function (contracts) {
                             var promises = [];
-                            var secondaryPromises = [];
 
                             angular.forEach(contracts, function (contract) {
                                 promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
                                     svcId: contract.serviceId,
-                                    versionId: contract.serviceVersion}, function (policies) {
-                                    angular.forEach(policies, function (policy) {
-                                        if (policy.policyDefinitionId === 'OAuth2') {
-                                            secondaryPromises.push(ServiceVersionPolicy.get(
-                                                {orgId: contract.serviceOrganizationId,
-                                                    svcId: contract.serviceId,
-                                                    versionId: contract.serviceVersion,
-                                                    policyId: policy.id}).$promise);
-                                        }
-                                    })
-                                }).$promise);
+                                    versionId: contract.serviceVersion}).$promise);
                             });
                             return $q.all(promises).then(function (result) {
-                                return $q.all(secondaryPromises).then(function (policyList) {
-                                    var needsCallback = false;
-                                    for (var i = 0; i < policyList.length; i++) {
-                                        var policyConfiguration = angular.fromJson(policyList[i].configuration);
-                                        if (policyConfiguration.enable_implicit_grant ||
-                                            policyConfiguration.enable_authorization_code) {
+                                var needsCallback = false;
+                                for (var i = 0; i < result.length; i++) {
+                                    for (var j = 0; j < result[i].length; j++) {
+                                        if (result[i][j].policyDefinitionId === 'OAuth2') {
                                             needsCallback = true;
                                             break;
                                         }
                                     }
-                                    return needsCallback;
-                                });
+                                }
+                                return needsCallback;
                             });
+
+                            // Old method preserved here for revert purposes
+                            // =============================================
+
+                            // var promises = [];
+                            // // var secondaryPromises = [];
+                            //
+                            // angular.forEach(contracts, function (contract) {
+                            //     promises.push(ServiceVersionPolicy.query({orgId: contract.serviceOrganizationId,
+                            //         svcId: contract.serviceId,
+                            //         versionId: contract.serviceVersion}, function (policies) {
+                            //         angular.forEach(policies, function (policy) {
+                            //             if (policy.policyDefinitionId === 'OAuth2') {
+                            //                 secondaryPromises.push(ServiceVersionPolicy.get(
+                            //                     {orgId: contract.serviceOrganizationId,
+                            //                         svcId: contract.serviceId,
+                            //                         versionId: contract.serviceVersion,
+                            //                         policyId: policy.id}).$promise);
+                            //             }
+                            //         })
+                            //     }).$promise);
+                            // });
+                            // return $q.all(promises).then(function (result) {
+                            //     return $q.all(secondaryPromises).then(function (policyList) {
+                            //         var needsCallback = false;
+                            //         for (var i = 0; i < policyList.length; i++) {
+                            //             var policyConfiguration = angular.fromJson(policyList[i].configuration);
+                            //             if (policyConfiguration.enable_implicit_grant ||
+                            //                 policyConfiguration.enable_authorization_code) {
+                            //                 needsCallback = true;
+                            //                 break;
+                            //             }
+                            //         }
+                            //         return needsCallback;
+                            //     });
+                            // });
                         });
                 }
 
@@ -776,97 +772,6 @@
 
             function fetchWithServiceVersion(svcVersion) {
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
-            }
-        })
-
-        // MEMBER SERVICE
-        .service('memberHelper', function ($modal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {
-            this.addMember = addMember;
-            this.grantRoleToMember = grantRoleToMember;
-            this.removeMember = removeMember;
-            this.transferOwnership = transferOwnership;
-
-            function addMember(org, roles) {
-                $modal.open({
-                    templateUrl: 'views/modals/organizationAddMember.html',
-                    size: 'lg',
-                    controller: 'AddOrgMemberCtrl as ctrl',
-                    resolve: {
-                        org: function() {
-                            return org;
-                        },
-                        roles: function() {
-                            return roles;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
-            }
-
-            function grantRoleToMember(org, role, currentUser, member) {
-                var updateObject = {
-                    userId: member.userId,
-                    roleId: role.id
-                };
-                Member.update({orgId: org.id, userId: member.userId},
-                    updateObject,
-                    function (reply) {
-                        Member.query({orgId: org.id}, function (updatedList) {
-                            if (member.userId === currentUser.username) {
-                                // We changed our own role, need to update the CurrentUserInfo
-                                currentUserModel.updateCurrentUserInfo(currentUserModel);
-                            }
-                            $state.forceReload();
-                            var name = member.userName ? member.userName : member.userId;
-                            toastService.createToast(TOAST_TYPES.INFO,
-                                '<b>' + name + '</b> now has the <b>' + role.name + '</b> role.', true);
-                        }, function (error) {
-                            toastService.createErrorToast(error, 'Could not retrieve updated member roles');
-                        });
-                    },
-                    function (error) {
-                        toastService.createErrorToast(error, 'Could not update member role');
-                    });
-            }
-
-            function removeMember(org, member) {
-                $modal.open({
-                    templateUrl: 'views/modals/organizationRemoveMember.html',
-                    size: 'lg',
-                    controller: 'MemberRemoveCtrl as ctrl',
-                    resolve: {
-                        org: function () {
-                            return org;
-                        },
-                        member: function () {
-                            return member;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
-            }
-
-            function transferOwnership(org, currentUser, member) {
-                $modal.open({
-                    templateUrl: 'views/modals/organizationTransferOwner.html',
-                    size: 'lg',
-                    controller: 'TransferOrgCtrl as ctrl',
-                    resolve: {
-                        org: function () {
-                            return org;
-                        },
-                        currentOwner: function () {
-                            return currentUser;
-                        },
-                        newOwner: function () {
-                            return member;
-                        }
-                    },
-                    backdrop : 'static',
-                    windowClass: 'default'	// Animation Class put here.
-                });
             }
         })
 

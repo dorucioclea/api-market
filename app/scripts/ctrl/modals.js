@@ -2,6 +2,9 @@
     'use strict';
 
     angular.module('app.ctrl.modals', [])
+        .controller('ConfirmMembershipRequestModalCtrl', confirmMembershipRequestCtrl)
+        .controller('GrantMembershipModalCtrl', grantMembershipModalCtrl)
+        .controller('RejectMembershipModalCtrl', rejectMembershipModalCtrl)
 
         /// ==== AddPolicy Controller
         .controller('AddPolicyCtrl',
@@ -19,6 +22,7 @@
                 $scope.addPolicy = addPolicy;
                 $scope.selectPolicy = selectPolicy;
                 $scope.type = $state.current.data.type;
+                $scope.policiesAvailable = true;
 
                 init();
 
@@ -30,6 +34,8 @@
                                     planId: $stateParams.planId,
                                     versionId: $stateParams.versionId},
                                 function (reply) {
+                                    if(reply.length === (policyDefs.filter(function(pol){return pol.scopePlan;})).length){$scope.policiesAvailable = false;}
+                                    else $scope.policiesAvailable = true;
                                     removeUsedPolicies(reply);
                                 });
                             break;
@@ -39,6 +45,8 @@
                                     svcId: $stateParams.svcId,
                                     versionId: $stateParams.versionId},
                                 function(reply) {
+                                    if(reply.length === (policyDefs.filter(function(pol){return pol.scopeService;})).length){$scope.policiesAvailable = false;}
+                                    else $scope.policiesAvailable = true;
                                     removeUsedPolicies(reply);
                                 });
                             break;
@@ -149,7 +157,7 @@
                 }
             })
 
-/// ==== NewAnnouncement Controller
+        /// ==== NewAnnouncement Controller
         .controller('NewAnnouncementCtrl',
             function ($scope, $modal, $state, svcVersion, ServiceAnnouncements,
                       toastService, TOAST_TYPES) {
@@ -199,7 +207,7 @@
                     console.log('delete');
                     console.log(announcement);
                     ServiceAnnouncements.remove({orgId: $scope.announcement.organizationId,
-                        svcId: $scope.announcement.serviceId, announcementId: $scope.announcement.id},
+                            svcId: $scope.announcement.serviceId, announcementId: $scope.announcement.id},
                         function (reply) {
                             $scope.modalClose();
                             var msg = '<b>Announcement deleted!</b>';
@@ -213,13 +221,12 @@
                 }
             })
 
-/// ==== Contract creation: Plan Selection Controller
+        /// ==== Contract creation: Plan Selection Controller
         .controller('PlanSelectCtrl',
             function ($scope, $modal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
-                      policyConfig, toastService, TOAST_TYPES, Application, ApplicationContract, ApplicationVersion,
+                      policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
                       serviceVersion, svcPolicies) {
-
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
@@ -234,6 +241,7 @@
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
                 var hasAppContext = false;
+
                 init();
 
                 function init() {
@@ -362,33 +370,64 @@
                 }
 
                 function startCreateContract() {
-                    var contract = {
-                        serviceOrgId: $scope.service.service.organization.id,
-                        serviceId: $scope.service.service.id,
-                        serviceVersion: $scope.service.version,
-                        planId: $scope.selectedPlan.plan.id
-                    };
-                    ApplicationContract.save(
-                        {orgId: $scope.selectedAppVersion.organizationId,
-                            appId: $scope.selectedAppVersion.id,
-                            versionId: $scope.selectedAppVersion.version},
-                        contract,
-                        function (data) {
-                            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
-                            $scope.modalClose();
-                            var msg = '<b>Contract created!</b><br>' +
-                                'A contract was created between application <b>' +
-                                $scope.selectedAppVersion.name + ' ' +
-                                $scope.selectedAppVersion.version + '</b> and service <b>' +
-                                $scope.service.service.organization.friendlyName + ' ' + $scope.service.service.name + ' ' +
-                                $scope.service.version + '</b>, using plan <b>' +
-                                $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
-                            toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
-                        }, function (error) {
-                            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
-                            $scope.modalClose();
+                    requestContract().then(function () {
+                        $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
+                        $scope.modalClose();
+                        if ($scope.service.autoAcceptContracts) {
+                            createContractToast();
+                        } else {
+                            requestContractToast();
+                        }
+                    }, function (error) {
+                        $scope.modalClose();
+                        if ($scope.service.autoAcceptContracts) {
                             toastService.createErrorToast(error, 'Could not create the contract.');
-                        });
+                        } else {
+                            toastService.createErrorToast(error, 'Could not request the contract.');
+                        }
+                    })
+                }
+
+                function createContractToast() {
+                    var serviceOrgName = $scope.service.service.organization.name;
+                    if ($scope.service.service.organization.friendlyName && $scope.service.service.organization.friendlyName.length > 0) {
+                        serviceOrgName = $scope.service.service.organization.friendlyName;
+                    }
+
+                    var msg = '<b>Contract created!</b><br>' +
+                        'A contract was created between application <b>' +
+                        $scope.selectedAppVersion.name + ' ' +
+                        $scope.selectedAppVersion.version + '</b> and service <b>' +
+                        serviceOrgName + ' ' + $scope.service.service.name + ' ' +
+                        $scope.service.version + '</b>, using plan <b>' +
+                        $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b>.';
+                    toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+                }
+
+                function requestContractToast() {
+                    var serviceOrgName = $scope.service.service.organization.name;
+                    if ($scope.service.service.organization.friendlyName && $scope.service.service.organization.friendlyName.length > 0) {
+                        serviceOrgName = $scope.service.service.organization.friendlyName;
+                    }
+
+                    var msg = '<b>Contract requested!</b><br>' +
+                        'A contract request between application <b>' +
+                        $scope.selectedAppVersion.name + ' ' +
+                        $scope.selectedAppVersion.version + '</b> and service <b>' +
+                        serviceOrgName + ' ' + $scope.service.service.name + ' ' +
+                        $scope.service.version + '</b>, using plan <b>' +
+                        $scope.selectedPlan.plan.name + ' ' + $scope.selectedPlan.version + '</b> was sent to the service owner for review.';
+                    toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
+                }
+
+                function requestContract() {
+                    return contractService.request($scope.service.service.organization.id,
+                        $scope.service.service.id,
+                        $scope.service.version,
+                        $scope.selectedPlan.plan.id,
+                        $scope.selectedAppVersion.organizationId,
+                        $scope.selectedAppVersion.id,
+                        $scope.selectedAppVersion.version)
                 }
 
                 function modalClose() {
@@ -396,7 +435,7 @@
                 }
             })
 
-/// ==== Help Dialog Controller
+        /// ==== Help Dialog Controller
         .controller('HelpCtrl',
             function ($scope, $modal, type) {
                 $scope.type = type;
@@ -417,7 +456,7 @@
             }
         })
 
-/// ==== OAuthConfig Controller
+        /// ==== OAuthConfig Controller
         .controller('OAuthConfigCtrl',
             function ($scope, $rootScope, $modal, $state, appVersionDetails, needsCallback,
                       ApplicationOAuthCallback, toastService, TOAST_TYPES) {
@@ -474,7 +513,7 @@
 
             })
 
-/// ==== EditImgCtrl Controller
+        /// ==== EditImgCtrl Controller
         .controller('EditImgCtrl',
             function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
                       imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
@@ -592,7 +631,7 @@
 
         /// ==== AddOrgMemberCtrl Controller
         .controller('AddOrgMemberCtrl',
-            function ($scope, $modal, $state, org, roles, toastService, orgService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
+            function ($scope, $modal, $state, org, roles, toastService, Member, UserSearch, EmailSearch, TOAST_TYPES) {
                 $scope.addMember = addMember;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
@@ -601,7 +640,6 @@
                 $scope.selectMethod = selectMethod;
                 $scope.selectedRole = null;
                 $scope.selectRole = selectRole;
-                $scope.orgName = orgService.name(org);
 
                 function addMember(username, email) {
                     var searchObj = {
@@ -627,13 +665,14 @@
                                 userId: user.username,
                                 roleId: $scope.selectedRole.id
                             };
-                            var name = user.name ? user.name : user.username;
-                            Member.save({orgId: org.id}, newMemberObj, function (success) {
+                            var msg = user.name ? 'Added <b>' + user.name + '</b> (' + user.username + ') to <b>'
+                            + $scope.orgName + ' </b> as <b>' + $scope.selectedRole.name + '</b>.' :
+                            'Added <b>' + user.username + '</b> to <b>' + $scope.org.name + ' </b> as <b>' +
+                                $scope.selectedRole.name + '</b>.' ;
+                            Member.save({orgId: org.id}, newMemberObj, function () {
                                 $scope.modalClose();
                                 $state.forceReload();
-                                toastService.createToast(TOAST_TYPES.SUCCESS,
-                                    'Added <b>' + name + '</b> (' + email + ') to <b>' + $scope.orgName +
-                                    '</b> as <b>' + $scope.selectedRole.name + '</b>.', true);
+                                toastService.createToast(TOAST_TYPES.SUCCESS, msg, true);
                             }, function (error) {
                                 toastService.createErrorToast(error, 'Failed to add user to organization :(');
                             });
@@ -661,12 +700,11 @@
 
         /// ==== MemberRemoveCtrl Controller
         .controller('MemberRemoveCtrl',
-            function ($scope, $modal, $state, member, org, orgService, toastService, TOAST_TYPES, Member) {
+            function ($scope, $modal, $state, member, org, toastService, TOAST_TYPES, Member) {
                 $scope.doRemove = doRemove;
                 $scope.member = member;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
-                $scope.orgName = orgService.name(org);
 
                 function doRemove() {
                     var name = member.userName ? member.userName : member.userId;
@@ -687,13 +725,12 @@
 
         /// ==== TransferOrgCtrl Controller
         .controller('TransferOrgCtrl',
-            function ($scope, $modal, $state, currentOwner, newOwner, org, orgService, toastService, TOAST_TYPES,
+            function ($scope, $modal, $state, currentOwner, newOwner, org, toastService, TOAST_TYPES,
                       currentUserModel, OrganizationOwnershipTransfer) {
                 $scope.doTransfer = doTransfer;
                 $scope.newOwner = newOwner;
                 $scope.org = org;
                 $scope.modalClose = modalClose;
-                $scope.orgName = orgService.name(org);
 
                 function doTransfer() {
                     var user = newOwner.userName ? newOwner.userName : newOwner.userId;
@@ -720,6 +757,49 @@
                     $scope.$close();	// this method is associated with $modal scope which is this.
                 }
             });
+
+    function confirmMembershipRequestCtrl($scope, $modalInstance, org) {
+        $scope.org = org;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }
+
+    function grantMembershipModalCtrl($scope, $modalInstance, role, user) {
+        $scope.user = user;
+        $scope.role = role;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }
+
+    function rejectMembershipModalCtrl($scope, $modalInstance, user) {
+        $scope.user = user;
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+
+        function cancel() {
+            $modalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+            $modalInstance.close('ok');
+        }
+    }
 
     // #end
 })(window.angular);

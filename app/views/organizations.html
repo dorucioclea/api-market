@@ -1,65 +1,55 @@
-<div class="page" ng-controller="OrganizationsCtrl">
-
-  <div class="col-sm-10 col-sm-offset-1">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="col-sm-12">
-          <div class="col-sm-12">
-            <h3 class="text-primary">Find an Organization</h3>
-          </div>
-          <div class="col-sm-6">
-            <p class="text-light">Use this page to find Organizations you may wish to join.</p>
-          </div>
-          <div class="col-sm-6 ">
-            <form ng-submit="doSearch(searchString)">
-            <div class="input-group">
-              <input type="text" class="form-control" ng-model="searchString" placeholder="Enter a word or phrase to search by; or '*' to see all organizations...">
-              <div class="input-group-btn">
-                <button class="btn btn-default ion ion-search" ng-click="doSearch(searchString)"></button>
-              </div>
-            </div>
-            </form>
-          </div>
-          <div class="col-sm-12">
-            <hr>
-          </div>
-        </div>
-
-        <div class="col-sm-12 browse-items">
-          <div class="col-sm-12">
-
-            <div class="col-sm-12" ng-hide="orgs.length > 0">
-              <div class="col-sm-10 col-sm-offset-1 well">
-                No organizations found. Either no organizations matched the query or you haven't queried yet!
-              </div>
-            </div>
-
-            <div class="col-sm-12" ng-show="orgs.length > 0">
-              <div class="col-sm-12">
-                <p>Found {{totalOrgs}} matching organizations.</p>
-              </div>
-
-              <div class="col-sm-12">
-                <div class="organization-item" ng-repeat="org in orgs">
-                  <div class="text-primary">
-                    <i class="fa fa-shield icon"></i>
-                    <a class="ng-binding" ng-if="!isMember(org)">{{orgService.name(org)}}</a>
-                    <a class="ng-binding" ui-sref="root.organization.plans({orgId: org.id})" ng-if="isMember(org) && publisherMode">{{orgService.name(org)}}</a>
-                    <a class="ng-binding" ui-sref="root.market-dash({orgId: org.id})" ng-if="isMember(org) && !publisherMode">{{orgService.name(org)}}</a>
-                  </div>
-                  <div class="text-light text-nowrap text-ellipsis">
-                    {{org.description}}
-                  </div>
-                  <div class="actions" ng-hide="isMember(org)">
-                    <button class="btn btn-default btn-sm" ng-click="requestMembership(org)">Request Membership</button>
-                  </div>
-                  <a class="is-member" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="You are already a member of this Organization." ng-show="isMember(org)"></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="page page-ui-notifications">
+    <div class="toast toast-bottomRight">
+        <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+            <div ng-bind-html="toast.msg"></div>
+        </alert>
     </div>
-  </div>
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <h3 class="text-primary">Find an Organization</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-light">Use this page to find Organizations you may wish to join.</p>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="searchString" placeholder="Search for an organization name..." ng-pattern="orgNameRegex">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default ion ion-search" ng-click="doSearch(searchString)"></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 browse-items">
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-12" ng-hide="orgs.length > 0">
+                            <div class="col-sm-10 col-sm-offset-1 well">
+                                No organizations found. Either no organizations matched the query or you haven't queried yet!
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" ng-show="orgs.length > 0">
+                            <div class="col-sm-12">
+                                <p>Found {{totalOrgs}} matching organizations.</p>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <apim-org-table orgs="orgs" member-orgs="memberOrgs" publisher-mode="publisherMode"></apim-org-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

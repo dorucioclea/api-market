@@ -238,7 +238,15 @@
         return {
             restrict:'E',
             transclude: true,
-            templateUrl: '/views/templates/overview/overview-tabs.html'
+            templateUrl: '/views/templates/overview/overview-tabs.html',
+            controller: function ($scope, alertService) {
+                $scope.alerts = alertService.alerts;
+                $scope.closeAlert = closeAlert;
+
+                function closeAlert(index) {
+                    alertService.closeAlert(index);
+                }
+            }
         };
     })
 
@@ -383,8 +391,9 @@
                     apis: '=',
                     stats: '='
                 },
-                controller: function ($scope, currentUserModel, followerService) {
+                controller: function ($scope, currentUserModel, followerService, CONFIG) {
                         $scope.followAction = followAction;
+                        $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
                         $scope.userIsFollowing = userIsFollowing;
 
                         function followAction(api) {

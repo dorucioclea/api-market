@@ -1,0 +1,14 @@
+<div class="modal-header clearfix">
+    <h4 class="modal-title">Are you sure you want to reject this membership application?</h4>
+    <span class="close ion ion-android-close" ng-click="cancel()"></span>
+</div>
+<!-- Application Create panel -->
+<div class="modal-body">
+    <p><span class="text-primary"><strong>{{user.fullName}}</strong></span> will be notified of your decision and the pending membership request will be removed.</p>
+    <p>Do you wish to proceed?</p>
+</div>
+<div class="modal-footer">
+    <button id="cancel" class="btn btn-line-default ml15" ng-click="cancel()">Cancel</button>
+    <button id="lock" class="btn btn-line-warning" ng-click="ok()">Reject</button>
+</div>
+

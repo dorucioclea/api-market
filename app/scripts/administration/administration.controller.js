@@ -47,10 +47,10 @@
         $scope.kongCluster = angular.fromJson(status.kongCluster);
         $scope.kongInfo = angular.fromJson(status.kongInfo);
         $scope.kongStatus = angular.fromJson(status.kongStatus);
-        console.log($scope.kongCluster);
-        console.log($scope.kongInfo);
-        console.log($scope.kongStatus);
+        // console.log($scope.kongInfo);
+        // console.log($scope.kongStatus);
         $scope.status = status;
+        $scope.builtOn = new Date($scope.status.builtOn);
     }
 
     function adminUsersCtrl($scope, adminData) {
@@ -134,7 +134,7 @@
             AdminUser.delete({id: admin.username}, function (success) {
                 $state.forceReload();
                 toastService.createToast(TOAST_TYPES.INFO,
-                    '<b>' + name + '</b> admin priviledges are removed.', true);
+                    '<b>' + name + '</b> admin privileges are removed.', true);
                 $scope.modalClose();
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not remove admin privileges.');

@@ -21,11 +21,11 @@
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">Create Contract</button>
+              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
             </div>
             <div class="col-sm-12 text-primary">
               <span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}
-              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10 fa fa-globe" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"></a>&nbsp;{{serviceVersion.onlinedoc}}
+              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>
               <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}
               <span class="ml10 text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}
             </div>
@@ -48,7 +48,7 @@
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans & Policies</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API Terms</label>
+          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API README</label>
         </div>
       </div>
       <div>

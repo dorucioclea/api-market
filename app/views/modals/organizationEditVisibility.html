@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Organization Accessibility</h4>
+  <span class="close ion ion-android-close" ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+  <div class="col-sm-12">
+    <p class="text-light">Update the accessibility of your Organization.</p>
+    <hr>
+  </div>
+  <div class="panel">
+    <div class="panel-body">
+
+      <div class="col-sm-12">
+        <div class="ui-radio ui-radio-primary">
+          <label>
+            <input type="radio" ng-checked="!setPrivate" ng-click="setPrivate = false" name="orgVisibility">
+            <span class="text-muted"><b>Public</b>: Anyone can request to join this organization.</span>
+          </label>
+        </div>
+        <div class="ui-radio ui-radio-primary">
+          <label>
+            <input type="radio" ng-checked="setPrivate" ng-click="setPrivate = true" name="orgVisibility">
+            <span class="text-muted"><b>Private</b>: Only people I invite will be able to join the organization.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default ml15" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" ng-click="ok(setPrivate)" ng-disabled="setPrivate === currentlyPrivate">Update</button>
+</div>
