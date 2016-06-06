@@ -42,10 +42,14 @@
                             return ServiceVersionPolicy.query(
                                 {orgId: $scope.serviceVersion.service.organization.id,
                                     svcId: $scope.serviceVersion.service.id,
-                                    versionId: $scope.serviceVersion.version}).$promise.then(function (data){},function(error){
-                                console.log(error.data.message);
-                                toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
-                                throw new Error('Service does not exist anymore, this error occurs when the service has been requests, but in mean time deleted from the publisher');
+                                    versionId: $scope.serviceVersion.version}).$promise.then(
+                                function (data) {
+                                    return data;
+                                },
+                                function (error) {
+                                    console.log(error.data.message);
+                                    toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
+                                    throw new Error('Service does not exist anymore, this error occurs when the service has been requests, but in mean time deleted from the publisher');
                             });
                         }
                     },
