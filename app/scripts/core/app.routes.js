@@ -571,6 +571,10 @@
                         },
                         svcOrgData: function (CurrentUserSvcOrgs) {
                             return CurrentUserSvcOrgs.query().$promise;
+                        },
+                        orgService: 'orgService',
+                        orgs: function (orgService) {
+                            return orgService.search();
                         }
                     },
                     controller: 'OrganizationsCtrl'
