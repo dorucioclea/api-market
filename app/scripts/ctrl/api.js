@@ -5,7 +5,7 @@
 
         /// ==== Service Doc Main Controller
         .controller('ApiDocCtrl', function($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
-                                           headerModel, toastService,TOAST_TYPES, followerService, support) {
+                                           headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
             headerModel.setIsButtonVisible(true, true, true);
             svcModel.setService(svcData);
             $scope.serviceVersion = svcData;
@@ -18,6 +18,7 @@
             $scope.toastService = toastService;
             $scope.support = support;
             $scope.modalAnim = 'default';
+            $scope.showDeveloper = CONFIG.APP.SHOW_API_DEVELOPER_NAME_IN_STORE;
             $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
             $scope.modalClose = modalClose;
             $scope.hasTerms = hasTerms;
