@@ -89,7 +89,7 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, notificationService, orgService, toastService) {
+    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
@@ -101,10 +101,9 @@
             } else {
                 $scope.memberOrgs = appOrgData;
             }
-            notificationService.getOrgsWithPendingRequest().then(function (orgs) {
-                $scope.pendingOrgs = orgs;
-            });
-            $scope.orgs = orgs.beans;
+            $scope.pendingOrgs = pendingOrgs;
+            $scope.orgs = processResults(orgs.beans);
+            $scope.totalOrgs = orgs.totalSize;
         }
 
         function doSearch(searchString) {
@@ -125,10 +124,34 @@
                         }
                     }
                 });
-                $scope.orgs = results.beans;
+                $scope.orgs = processResults(results.beans);
             }, function (error) {
                 toastService.warning('<b>Could not complete search!</b><br><span class="small">An error occurred while executing the search. Please try again later.</span>');
             });
+        }
+
+        function processResults(orgs) {
+            var processedOrgs = [];
+            orgs.forEach(function (org) {
+                // check if member
+                for (var i = 0; i < $scope.memberOrgs.length; i++) {
+                    if ($scope.memberOrgs[i].id === org.id ) {
+                        org.isMember = true;
+                        break;
+                    }
+                }
+                // if not member, check for pending membership
+                if (!org.isMember) {
+                    for (var j = 0; j < $scope.pendingOrgs.length; j++){
+                        if ($scope.pendingOrgs[j].id === org.id) {
+                            org.requestPending = true;
+                            break;
+                        }
+                    }
+                }
+                processedOrgs.push(org);
+            });
+            return processedOrgs;
         }
     }
 

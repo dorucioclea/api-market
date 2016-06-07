@@ -575,6 +575,10 @@
                         orgService: 'orgService',
                         orgs: function (orgService) {
                             return orgService.search();
+                        },
+                        notificationService: 'notificationService',
+                        pendingOrgs: function (notificationService) {
+                            return notificationService.getOrgsWithPendingRequest()
                         }
                     },
                     controller: 'OrganizationsCtrl'
