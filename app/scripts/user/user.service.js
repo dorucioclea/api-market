@@ -2,9 +2,22 @@
     'use strict';
 
     angular.module('app.user')
+        .service('currentUser', currentUser)
         .service('currentUserModel', currentUserModel);
-    
-    
+
+    function currentUser(CurrentUserInfo) {
+        this.getInfo = getInfo;
+        this.update = update;
+
+        function getInfo() {
+            return CurrentUserInfo.get().$promise;
+        }
+
+        function update(newUserInfo) {
+            return CurrentUserInfo.update({}, newUserInfo).$promise;
+        }
+    }
+
     function currentUserModel(orgScreenModel, CurrentUserInfo) {
         var permissionTree = [];
         this.currentUser = {};

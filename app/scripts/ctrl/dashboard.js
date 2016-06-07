@@ -197,9 +197,6 @@
                 headerModel.setIsButtonVisible(true, true, true);
                 $scope.availableAPIs = svcData.beans;
                 $scope.queryString = $stateParams.query;
-
-
-
             })
 
         /// ==== Dashboard Controller

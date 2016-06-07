@@ -778,12 +778,29 @@
         // LOGIN HELPER SERVICE
         .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
             this.checkLoggedIn = checkLoggedIn;
+            this.checkLoginRequiredForState = checkLoginRequiredForState;
             this.checkJWTInUrl = checkJWTInUrl;
             this.logout = logout;
             this.redirectToLogin = redirectToLogin;
 
             function checkLoggedIn() {
                 return !!$sessionStorage.jwt;
+            }
+
+            function checkLoginRequiredForState(currentState) {
+                console.log(currentState);
+                switch (currentState.name) {
+                    case '':
+                    case 'error':
+                    case 'oauth':
+                    case 'logout':
+                    case 'root.apis.grid':
+                    case 'root.apis.list':
+                    case 'root.search':
+                        return false;
+                    default:
+                        return true;
+                }
             }
 
             function checkJWTInUrl() {
@@ -794,7 +811,6 @@
                     window.location.href = $sessionStorage.apimredurl;
                     delete $sessionStorage.apimredurl;
                 }
-
                 return jwt.length > 0;
             }
 

@@ -71,10 +71,11 @@
         })
 
         // UI-Router states
-        .config(function ($stateProvider, $urlRouterProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             $urlRouterProvider.otherwise('/');
-            $urlRouterProvider.when('/', '/my-organizations');
+            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
+            else $urlRouterProvider.when('/', '/apis/grid');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
@@ -115,9 +116,13 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function (CurrentUserInfo) {
-                            return CurrentUserInfo.get().$promise;
+                        currentUser: 'currentUser',
+                        currentUserInfo: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
+                            else {
+                                if (loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
+                                else return {};
+                            }
                         },
                         notificationService: 'notificationService',
                         notifications: function (notificationService) {
@@ -1047,6 +1052,17 @@
         })
 
         .run(function($state, $rootScope, loginHelper) {
+
+            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+                if (loginHelper.checkLoginRequiredForState(toState)) {
+                    console.log('login required!');
+                    if (!loginHelper.checkLoggedIn()) {
+                        event.preventDefault();
+                        loginHelper.redirectToLogin();
+                    }
+                }
+            });
+
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {

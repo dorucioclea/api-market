@@ -248,14 +248,15 @@
 
         .controller('HeadCtrl',
             function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUser, notifications, pendingNotifications,
+                     currentUserInfo, notifications, pendingNotifications,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
-                     toastService, jwtHelper, EVENTS) {
+                     toastService, jwtHelper, loginHelper, EVENTS) {
+                $scope.loggedIn = loginHelper.checkLoggedIn();
                 $scope.showExplore = headerModel.showExplore;
                 $scope.showDash = headerModel.showDash;
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
-                currentUserModel.setCurrentUserInfo(currentUser);
+                currentUserModel.setCurrentUserInfo(currentUserInfo);
                 $scope.notifications = notifications;
                 $scope.pendingNotifications = pendingNotifications;
                 $scope.toasts = toastService.toasts;
@@ -280,7 +281,7 @@
                 });
 
                 function checkIsEmailPresent() {
-                    if (!$scope.User.currentUser.email) {
+                    if ($scope.loggedIn && !$scope.User.currentUser.email) {
                         console.log('no email!');
 
                         $modal.open({
@@ -361,7 +362,7 @@
 
             })
 
-        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
+        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, currentUser) {
             $scope.updateEmail = updateEmail;
             $scope.username = currentInfo.fullName;
 
@@ -376,7 +377,7 @@
                     pic: currentInfo.base64pic
                 };
 
-                CurrentUserInfo.update({}, updateObject, function (reply) {
+                currentUser.update(updateObject).then(function () {
                     currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
                         $modalInstance.close('Updated');

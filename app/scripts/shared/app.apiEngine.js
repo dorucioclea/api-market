@@ -251,7 +251,7 @@
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
         })
         .factory('ServiceMarketInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
         })
         .factory('ServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/support/:supportId', {},
@@ -362,20 +362,20 @@
             return $resource(CONFIG.BASE.URL + '/search/service/categories/all');
         })
         .factory('PublishedCategories', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/service/categories/published');
+            return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
         })
         .factory('SearchOrgs', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/organizations');
         })
         .factory('SearchSvcs', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services', {}, {
                 query: {
                     method: 'POST'
                 }
             });
         })
         .factory('SearchPublishedSvcsInCategories', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services/versions', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions', {}, {
                 query: {
                     method: 'POST', isArray: true
                 }
@@ -389,7 +389,7 @@
             });
         })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services/:status');
+            return $resource(CONFIG.AUTH.URL + '/search/services/:status');
         })
         .factory('SearchLatestServiceVersions', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/services/versions/latest', {}, {
