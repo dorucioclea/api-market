@@ -4,9 +4,9 @@
         <li class="active"><a ui-sref="root.administration.users">Administration</a></li>
     </ol>
     <div class="toast toast-bottomRight">
-        <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+        <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
             <div ng-bind-html="toast.msg">Test Toast</div>
-        </alert>
+        </uib-alert>
     </div>
     <div class="col col-md-4 mb30">
         <div class="panel panel-default">
@@ -28,9 +28,9 @@
     </div>
     <div class="col-md-8 mb20">
         <div class="btn-group btn-radio">
-            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" btn-radio="'Users'" id="users" ui-sref=".users">Admins</label>
-            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" btn-radio="'Expiration'" id="expiration" ui-sref=".expiration">Expiration</label>
-            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" btn-radio="'Status'" id="status" ui-sref=".status">Status</label>
+            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" uib-btn-radio="'Users'" id="users" ui-sref=".users">Admins</label>
+            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" uib-btn-radio="'Expiration'" id="expiration" ui-sref=".expiration">Expiration</label>
+            <label class="btn btn-primary btn-justified" ng-model="adminTab.selectedTab" uib-btn-radio="'Status'" id="status" ui-sref=".status">Status</label>
         </div>
         <div class="col-sm-12 mt10" ui-view></div>
 

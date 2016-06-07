@@ -4,9 +4,9 @@
     angular.module('app.ctrls', [])
 
         // Root Controller
-        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$modal', '$timeout',
+        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$uibModal', '$timeout',
             'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage', 'CONFIG',
-            function($rs, $scope, $state, $modal, $timeout,
+            function($rs, $scope, $state, $uibModal, $timeout,
                      Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage, CONFIG) {
                 var mm = window.matchMedia('(max-width: 767px)');
 
@@ -50,82 +50,6 @@
                     $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Marketplace');
                 };
                 setHeader();
-
-                $scope.loadSwaggerUi = function(spec, domId, endpoint, disableTryout) {
-                    $scope.swaggerUi = new SwaggerUi({
-                        spec: spec,
-                        dom_id: domId,
-                        showRequestHeaders: true,
-                        url: (endpoint === undefined || endpoint === null) ? '/' : endpoint.managedEndpoint,
-                        supportedSubmitMethods: (disableTryout || endpoint === undefined || endpoint === null) ?
-                            [] : ['get', 'post', 'put', 'delete', 'patch'],
-                        validatorUrl: null,
-                        apisSorter: 'alpha',
-                        operationsSorter: 'alpha',
-                        docExpansion: 'none',
-                        onComplete: function() {
-                            $('#' + domId).find('a').each(function(idx, elem) {
-                                    var href = $(elem).attr('href');
-                                    if (href[0] === '#') {
-                                        $(elem).removeAttr('href');
-                                    }
-                                })
-                                .find('div.sandbox_header').each(function(idx, elem) {
-                                    $(elem).remove();
-                                })
-                                .find('li.operation div.auth').each(function(idx, elem) {
-                                    $(elem).remove();
-                                })
-                                .find('li.operation div.access').each(function(idx, elem) {
-                                $(elem).remove();
-                            });
-                            $scope.$apply(function(error) {
-                                $scope.definitionStatus = 'complete';
-                            });
-                            addApiKeyAuthorization();
-                        },
-                        onFailure: function() {
-                            $scope.$apply(function(error) {
-                                $scope.definitionStatus = 'error';
-                                $scope.hasError = true;
-                                $scope.error = error;
-                            });
-                        }
-                    });
-                    function addApiKeyAuthorization() {
-                        //Add API key
-                        var key;
-                        if (docTester.preferredContract) {
-                            key = docTester.apikey;
-                        } else {
-                            key = encodeURIComponent(CONFIG.SECURITY.API_KEY);
-                        }
-                        if (key && key.trim() !== '') {
-                            $scope.swaggerUi.api.clientAuthorizations.add('key',
-                                new SwaggerClient.ApiKeyAuthorization('apikey', key, 'header'));
-                        }
-                    }
-                    $scope.swaggerUi.load();
-                };
-
-                $scope.updateSwaggerApiKeyHeader = function () {
-                    $scope.swaggerUi.api.clientAuthorizations.add('key',
-                        new SwaggerClient.ApiKeyAuthorization('apikey', docTester.apikey, 'header'));
-                };
-
-                $scope.addJWTHeader = function () {
-                    // Add JWT
-                    var jwt = encodeURIComponent($sessionStorage.jwt);
-                    if (jwt && jwt.trim() !== '') {
-                        $scope.swaggerUi.api.clientAuthorizations.add('jwt',
-                            new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + jwt, 'header'));
-                    }
-                };
-
-                $scope.addCustomSwaggerHeader = function (header) {
-                    $scope.swaggerUi.api.clientAuthorizations.add(header.name,
-                        new SwaggerClient.ApiKeyAuthorization(header.name, header.value, 'header'));
-                };
 
                 $scope.navFull = true;
                 $scope.toggleNav = function() {
@@ -205,7 +129,7 @@
                 };
 
                 $scope.modalNewVersion = function() {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: '/views/modals/versionCreate.html',
                         size: 'lg',
                         controller: 'NewVersionCtrl as ctrl',
@@ -217,12 +141,12 @@
                 };
             }])
 
-        .controller('EditLogoCtrl', function($scope, $modal) {
+        .controller('EditLogoCtrl', function($scope, $uibModal) {
 
             $scope.modalEditLogo = modalEditLogo;
 
             function modalEditLogo() {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/logoEdit.html',
                     size: 'lg',
                     controller: 'EditImgCtrl as ctrl',
@@ -247,7 +171,7 @@
         })
 
         .controller('HeadCtrl',
-            function($scope, $modal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+            function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                      currentUser, notifications, pendingNotifications,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, EVENTS) {
@@ -283,7 +207,7 @@
                     if (!$scope.User.currentUser.email) {
                         console.log('no email!');
 
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/emailPrompt.html',
                             // size: 'lg',
                             controller: 'EmailPromptCtrl as ctrl',
@@ -361,7 +285,7 @@
 
             })
 
-        .controller('EmailPromptCtrl', function($scope, $modalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
+        .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
             $scope.updateEmail = updateEmail;
             $scope.username = currentInfo.fullName;
 
@@ -379,7 +303,7 @@
                 CurrentUserInfo.update({}, updateObject, function (reply) {
                     currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
-                        $modalInstance.close('Updated');
+                        $uibModalInstance.close('Updated');
                     });
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');

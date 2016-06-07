@@ -15,7 +15,6 @@
             'ngStorage',
             'ui.bootstrap',
             'angular-loading-bar',
-            'FBAngular',
             'matchMedia',
             'ngTagsInput',
             'schemaForm',
@@ -27,6 +26,7 @@
             'angular-jwt',
             'angular-ladda',
             'btford.markdown',
+            'swaggerUi',
 
             /* custom modules */
             'app.ctrls',
@@ -53,6 +53,7 @@
             'app.organizations',
             'app.routes',
             'app.service',
+            'app.swagger',
             'app.user'
 
         ])
@@ -96,7 +97,8 @@
         .factory('apikeyInjector', function(CONFIG) {
             return {
                 request: function (config) {
-                    config.headers.apikey = CONFIG.SECURITY.API_KEY;
+                    // Add API key header, unless the request originates from Swagger UI
+                    if (!config.isSwaggerUIRequest) config.headers.apikey = CONFIG.SECURITY.API_KEY;
                     return config;
                 }
             };
@@ -113,6 +115,11 @@
                     }
                     // Skip authentication for oauth requests
                     if (config.url.indexOf('/oauth2/') > -1 ) {
+                        return null;
+                    }
+
+                    // Skip authentication for Swagger UI requests
+                    if (config.isSwaggerUIRequest) {
                         return null;
                     }
 

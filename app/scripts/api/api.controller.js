@@ -12,9 +12,8 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $state, $stateParams, $modal, svcData, svcModel, svcTab,
+    function apiDocCtrl($scope, $uibModal, svcData, svcModel, svcTab,
                         headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
-        
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
@@ -42,7 +41,7 @@
         }
 
         function modalSelectApplicationForContract() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/planSelect.html',
                 size: 'lg',
                 controller: 'PlanSelectCtrl as ctrl',
@@ -60,7 +59,7 @@
                             function (error) {
                                 console.log(error.data.message);
                                 toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
-                                throw new Error('Service does not exist anymore, this error occurs when the service has been requests, but in mean time deleted from the publisher');
+                                throw new Error('<b>Service does not exist anymore!</b><br><span class="small">This error occurs when the service was available when loading the page, but in meantime has been retired, or otherwise deleted from the publisher.</span>');
                             });
                     }
                 },
@@ -71,7 +70,7 @@
         }
 
         function modalClose() {
-            $scope.$close();	// this method is associated with $modal scope which is this.
+            $scope.$close();	// this method is associated with $uibModal scope which is this.
         }
 
         function followAction() {
@@ -84,25 +83,26 @@
     }
 
     /// ==== Service Swagger Documentation Controller
-    function documentationCtrl ($scope, $modal, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
+    function documentationCtrl ($scope, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                                 docTester, docDownloader, svcTab, ApplicationVersion, ServiceVersionDefinition,
                                 oAuthService, toastService, TOAST_TYPES) {
         $scope.addHeader = addHeader;
         $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
         $scope.endpoint = endpoint;
         $scope.docDownloader = docDownloader;
+        $scope.docTester = docTester;
         $scope.copy = copy;
         $scope.contractApps = [];
         $scope.canGrant = canGrant;
         $scope.customHeaders = [];
         $scope.doGrant = doGrant;
         $scope.hasGrant = false;
+        $scope.jwtEnabled = jwtEnabled;
+        $scope.removeHeader = removeHeader;
         $scope.selectedScopes = [];
         $scope.selectContract = selectContract;
-        $scope.updateHeaders = updateHeaders;
-        var currentDefinitionSpec;
-        
-        
+
+
         init();
 
         function init() {
@@ -135,14 +135,10 @@
             ServiceVersionDefinition.get(
                 {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                 function (definitionSpec) {
-                    currentDefinitionSpec = definitionSpec;
-                    $scope.loadSwaggerUi(currentDefinitionSpec, 'swagger-ui-container', endpoint);
-                    if (jwtEnabled) {
-                        $scope.addJWTHeader();
-                    }
+                    $scope.currentDefinitionSpec = definitionSpec;
                 });
         }
-        
+
         function addHeader() {
             $scope.customHeaders.push({name: '', value: ''});
         }
@@ -165,7 +161,7 @@
                 }
             }
         }
-        
+
         function selectContract(contract) {
             $scope.selectedContract = contract;
             if ($scope.hasOAuth) {
@@ -185,7 +181,6 @@
                 }
             );
         }
-
 
         function canGrant() {
             var canDoGrant = false;
@@ -220,57 +215,31 @@
                 toastService.createErrorToast(error, 'Could not complete grant process');
             });
         }
-        
+
         function processUri(uri) {
             var paramStart = uri.indexOf('access_token=');
-            console.log("uri: "+uri);
-            console.log("params: "+paramStart);
             if (paramStart > -1) {
                 var paramString = uri.substr(paramStart + 13);
                 //remove every param that are send after bearer token
                 var n = paramString.indexOf('&');
                 paramString = paramString.substring(0, n != -1 ? n : s.length);
-                console.log(paramString);
                 var headerObj = {
                     name: 'Authorization',
                     value: 'Bearer ' + paramString
                 };
-                $scope.addCustomSwaggerHeader(headerObj);
+                $scope.customHeaders.push(headerObj);
                 return true;
             } else {
                 return false;
             }
         }
 
-        function updateHeaders() {
-            var didSet = false;
-            var hasInvalid = false;
-            angular.forEach($scope.customHeaders, function (header) {
-                if (header.name.length > 0 && header.value.length > 0) {
-                    $scope.addCustomSwaggerHeader(header);
-                    didSet = true;
-                } else {
-                    hasInvalid = true;
-                }
-            });
-
-            if (didSet && !hasInvalid) {
-                toastService.createToast(TOAST_TYPES.INFO,
-                    '<b>Headers set!</b>', true);
-            } else if (didSet && hasInvalid) {
-                toastService.createToast(TOAST_TYPES.WARNING,
-                    '<b>Could not set all headers.</b>' +
-                    '<br>One or more headers had an invalid configuration and were not set', true);
-            } else {
-                toastService.createToast(TOAST_TYPES.WARNING,
-                    '<b>No headers were set.</b>' +
-                    '<br>Could not find a valid header configuration', true);
-            }
+        function removeHeader(header) {
+            $scope.customHeaders.splice($scope.customHeaders.indexOf(header), 1);
         }
     }
 
     /// ==== Service Plans Controller
-
     function svcPlanCtrl($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
                          planData, policyConfig, PlanVersionPolicy) {
         $scope.svcPolicies = svcPolicies;
@@ -322,7 +291,6 @@
                         policyConfig.createConfigObject(policyDetails);
                 });
         }
-
     }
 
     /// ==== Service Announcements Controller

@@ -43,7 +43,7 @@
         }
     }
 
-    function myOrganizationsCtrl($scope, $modal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -69,7 +69,7 @@
         });
 
         function modalNewOrganization() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationCreate.html',
                 size: 'lg',
                 controller: 'NewOrganizationCtrl as ctrl',
@@ -155,7 +155,7 @@
         }
     }
 
-    function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
+    function organizationCtrl($scope, $uibModal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
                               pendingMemberships, memberService, toastService, TOAST_TYPES, Organization, Member,
                               orgScreenModel, CONFIG) {
 
@@ -190,7 +190,7 @@
         }
 
         function updateOrgFriendlyName() {
-            var modalinstance = $modal.open({
+            var modalinstance = $uibModal.open({
                 templateUrl: 'views/modals/organizationEditFriendlyName.html',
                 controller: 'OrgFriendlyNameModalCtrl as ctrl',
                 resolve: {
@@ -212,7 +212,7 @@
         }
 
         function updateOrgVisibility() {
-            var modalinstance = $modal.open({
+            var modalinstance = $uibModal.open({
                 templateUrl: 'views/modals/organizationEditVisibility.html',
                 controller: 'OrgVisibilityModalCtrl as ctrl',
                 resolve: {
@@ -239,7 +239,7 @@
         orgScreenModel.updateTab('Pending');
     }
 
-    function plansCtrl($scope, $modal, planData, planVersions, orgScreenModel, PlanVersion) {
+    function plansCtrl($scope, $uibModal, planData, planVersions, orgScreenModel, PlanVersion) {
 
         $scope.plans = planData;
         $scope.planVersions = planVersions;
@@ -251,7 +251,7 @@
         orgScreenModel.updateTab('Plans');
 
         function modalNewPlan() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/planCreate.html',
                 size: 'lg',
                 controller: 'NewPlanCtrl as ctrl',
@@ -270,7 +270,7 @@
             PlanVersion.get(
                 {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
@@ -287,7 +287,7 @@
 
     }
 
-    function orgFriendlyNameModalCtrl($scope, $modalInstance, orgFriendlyName, REGEX) {
+    function orgFriendlyNameModalCtrl($scope, $uibModalInstance, orgFriendlyName, REGEX) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.orgFriendlyName = angular.copy(orgFriendlyName);
@@ -295,15 +295,15 @@
 
 
         function cancel() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }
 
         function ok() {
-            $modalInstance.close($scope.orgFriendlyName);
+            $uibModalInstance.close($scope.orgFriendlyName);
         }
     }
 
-    function orgVisibilityModalCtrl($scope, $modalInstance, currentlyPrivate) {
+    function orgVisibilityModalCtrl($scope, $uibModalInstance, currentlyPrivate) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.currentlyPrivate = currentlyPrivate;
@@ -311,15 +311,15 @@
 
 
         function cancel() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }
 
         function ok() {
-            $modalInstance.close($scope.setPrivate);
+            $uibModalInstance.close($scope.setPrivate);
         }
     }
 
-    function servicesCtrl($scope, $state, $modal, svcData,
+    function servicesCtrl($scope, $state, $uibModal, svcData,
                           orgScreenModel, ServiceVersion) {
 
         $scope.services = svcData;
@@ -350,7 +350,7 @@
         }
 
         function modalNewService() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceCreate.html',
                 size: 'lg',
                 controller: 'NewServiceCtrl as ctrl',
@@ -370,7 +370,7 @@
         }
 
         function confirmDeleteSvc(svcVersion) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceDelete.html',
                 size: 'lg',
                 controller: 'DeleteServiceCtrl as ctrl',
@@ -400,7 +400,7 @@
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/servicePublish.html',
                         size: 'lg',
                         controller: 'PublishServiceCtrl as ctrl',
@@ -419,7 +419,7 @@
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/serviceRetire.html',
                         size: 'lg',
                         controller: 'RetireServiceCtrl as ctrl',

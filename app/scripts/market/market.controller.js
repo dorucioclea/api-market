@@ -8,9 +8,9 @@
         .controller('MarketMembersCtrl', marketMembersCtrl)
         .controller('ApiSearchCtrl', apiSearchCtrl)
         .controller('DashboardCtrl', dashboardCtrl);
+    
 
-
-    function marketDashCtrl ($scope, $modal, $state, $stateParams, $timeout, orgData, orgScreenModel,
+    function marketDashCtrl ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
                              appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
                              selectedApp, applicationManager, docTester, toastService, service,
                              ApplicationContract) {
@@ -46,6 +46,7 @@
         $scope.modalNewApplication = modalNewApplication;
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
+
 
         pendingContracts.forEach(function (contract) {
             $scope.pendingContracts = [];
@@ -150,7 +151,7 @@
         }
 
         function modalNewApplication() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/applicationCreate.html',
                 size: 'lg',
                 controller: 'NewApplicationCtrl as ctrl',
@@ -173,13 +174,13 @@
     }
 
     /// ==== Marketplace Members Controller
-    function marketMembersCtrl ($scope, $state, $modal, $stateParams, memberData, requests, roleData, orgScreenModel,
-                                toastService, EVENTS, TOAST_TYPES, memberHelper, memberService) {
+    function marketMembersCtrl ($scope, $stateParams, memberData, requests, roleData, orgScreenModel,
+                                EVENTS, memberHelper, memberService) {
+
         $scope.addMember = addMember;
         $scope.members = memberData;
         $scope.pendingRequests = requests;
         $scope.roles = roleData;
-        $scope.orgScreenModel = orgScreenModel;
 
         orgScreenModel.updateTab('Members');
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
@@ -218,6 +219,7 @@
         $scope.toggleCategories = toggleCategories;
         $scope.isCategorySelected = isCategorySelected;
         $scope.clearSelectedCategories = clearSelectedCategories;
+
 
         init();
 

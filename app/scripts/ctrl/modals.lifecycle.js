@@ -5,7 +5,7 @@
 
         /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
-            function ($scope, $modal, $state, flowFactory, alertService, imageService,
+            function ($scope, $uibModal, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
 
                 $scope.currentOrg = orgScreenModel.organization;
@@ -62,13 +62,13 @@
 
                 function modalClose() {
                     imageService.clear();
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== PublishApplication Controller
         .controller('PublishApplicationCtrl',
-            function ($scope, $rootScope, $state, $modal,
+            function ($scope, $rootScope, $state, $uibModal,
                       appVersion, appContracts, actionService) {
 
                 $scope.selectedAppVersion = appVersion;
@@ -77,7 +77,7 @@
                 $scope.doPublish = doPublish;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doPublish() {
@@ -88,7 +88,7 @@
 
         /// ==== RetireApplication Controller
         .controller('RetireApplicationCtrl',
-            function ($scope, $rootScope, $modal,
+            function ($scope, $rootScope, $uibModal,
                       appVersion, appContracts, actionService) {
 
                 $scope.applicationVersion = appVersion;
@@ -97,7 +97,7 @@
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doRetire() {
@@ -109,28 +109,28 @@
 
         /// ==== DeleteApplication Controller
         .controller('DeleteApplicationCtrl',
-            function ($scope, $modalInstance, organizationId, applicationId, applicationName, actionService) {
+            function ($scope, $uibModalInstance, organizationId, applicationId, applicationName, actionService) {
 
                 $scope.applicationName = applicationName;
                 $scope.modalClose = modalClose;
                 $scope.doDelete = doDelete;
 
                 function modalClose() {
-                    $modalInstance.dismiss("cancel");
+                    $uibModalInstance.dismiss("cancel");
                 }
 
                 function doDelete() {
                     actionService.deleteApp(organizationId, applicationId, applicationName).then(function (success) {
-                        $modalInstance.close("success");
+                        $uibModalInstance.close("success");
                     }, function (fail) {
-                        $modalInstance.close("fail");
+                        $uibModalInstance.close("fail");
                     })
                 }
             })
 
         /// ==== NewPlan Controller
         .controller('NewPlanCtrl',
-            function ($scope, $modal, $state, $stateParams, orgScreenModel,
+            function ($scope, $uibModal, $state, $stateParams, orgScreenModel,
                       toastService, REGEX, TOAST_TYPES, Plan) {
 
                 $scope.org = orgScreenModel.organization;
@@ -157,13 +157,13 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== LockPlan Controller
         .controller('LockPlanCtrl',
-            function ($scope, $modal,
+            function ($scope, $uibModal,
                       planVersion, actionService) {
 
                 $scope.planVersion = planVersion;
@@ -171,7 +171,7 @@
                 $scope.doLock = doLock;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doLock() {
@@ -183,7 +183,7 @@
 
         /// ==== NewService Controller
         .controller('NewServiceCtrl',
-            function ($scope, $modal, $state, $stateParams, flowFactory, alertService,
+            function ($scope, $uibModal, $state, $stateParams, flowFactory, alertService,
                       imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Categories, Service) {
 
                 $scope.org = orgScreenModel.organization;
@@ -253,13 +253,13 @@
 
                 function modalClose() {
                     imageService.clear();
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             })
 
         /// ==== DeprecateService Controller
         .controller('DeprecateServiceCtrl',
-            function ($scope, $modal,
+            function ($scope, $uibModal,
                       svcVersion, actionService) {
 
                 $scope.serviceVersion = svcVersion;
@@ -267,7 +267,7 @@
                 $scope.doDeprecate = doDeprecate;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doDeprecate() {
@@ -279,7 +279,7 @@
         
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
-            function ($scope, $modal,
+            function ($scope, $uibModal,
                       svcVersion, actionService) {
 
                 $scope.selectedSvcVersion = svcVersion;
@@ -287,7 +287,7 @@
                 $scope.doPublish = doPublish;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doPublish() {
@@ -299,7 +299,7 @@
 
         /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
-            function ($scope, $modal,
+            function ($scope, $uibModal,
                       svcVersion, actionService, toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
@@ -308,7 +308,7 @@
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doDeprecate() {
@@ -331,21 +331,21 @@
 
         /// ==== DeleteService Controller
         .controller('DeleteServiceCtrl',
-            function ($scope, $modalInstance, organizationId, serviceId, serviceName, actionService) {
+            function ($scope, $uibModalInstance, organizationId, serviceId, serviceName, actionService) {
 
                 $scope.serviceName = serviceName;
                 $scope.modalClose = modalClose;
                 $scope.doDelete = doDelete;
 
                 function modalClose() {
-                    $modalInstance.dismiss("cancel");
+                    $uibModalInstance.dismiss("cancel");
                 }
 
                 function doDelete() {
                     actionService.deleteSvc(organizationId, serviceId, serviceName).then(function (success) {
-                        $modalInstance.close("success");
+                        $uibModalInstance.close("success");
                     }, function (fail) {
-                        $modalInstance.close("fail");
+                        $uibModalInstance.close("fail");
                     })
                 }
             })
@@ -434,14 +434,14 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
             })
 
         /// ==== NewOrganization Controller
         .controller('NewOrganizationCtrl',
-            function ($scope, $modal, $state, publisherMode, admin,
+            function ($scope, $uibModal, $state, publisherMode, admin,
                       currentUserModel, toastService, CONFIG, REGEX, TOAST_TYPES, Organization) {
 
                 $scope.admin = admin;
@@ -484,7 +484,7 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
             });
 
