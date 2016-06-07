@@ -89,12 +89,11 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, SearchOrgs) {
+    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
         init();
-        doSearch();
 
         function init() {
             if ($scope.publisherMode) {
@@ -102,19 +101,14 @@
             } else {
                 $scope.memberOrgs = appOrgData;
             }
-            notificationService.getOrgsWithPendingRequest().then(function (orgs) {
-                $scope.pendingOrgs = orgs;
-            });
+            $scope.pendingOrgs = pendingOrgs;
+            $scope.orgs = processResults(orgs.beans);
+            $scope.totalOrgs = orgs.totalSize;
         }
 
         function doSearch(searchString) {
-            var search = {};
-            searchString = searchString||'*';
-            search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'}];
-            search.orderBy = {ascending: true, name: 'name'};
-            search.paging = {page: 1, pageSize: 100};
 
-            SearchOrgs.save(search, function (results) {
+            orgService.search(searchString).then(function (results) {
                 $scope.totalOrgs = results.totalSize;
                 results.beans.forEach(function (org) {
                     for (var i = 0; i < $scope.memberOrgs.length; i++) {
@@ -130,8 +124,34 @@
                         }
                     }
                 });
-                $scope.orgs = results.beans;
+                $scope.orgs = processResults(results.beans);
+            }, function (error) {
+                toastService.warning('<b>Could not complete search!</b><br><span class="small">An error occurred while executing the search. Please try again later.</span>');
             });
+        }
+
+        function processResults(orgs) {
+            var processedOrgs = [];
+            orgs.forEach(function (org) {
+                // check if member
+                for (var i = 0; i < $scope.memberOrgs.length; i++) {
+                    if ($scope.memberOrgs[i].id === org.id ) {
+                        org.isMember = true;
+                        break;
+                    }
+                }
+                // if not member, check for pending membership
+                if (!org.isMember) {
+                    for (var j = 0; j < $scope.pendingOrgs.length; j++){
+                        if ($scope.pendingOrgs[j].id === org.id) {
+                            org.requestPending = true;
+                            break;
+                        }
+                    }
+                }
+                processedOrgs.push(org);
+            });
+            return processedOrgs;
         }
     }
 
