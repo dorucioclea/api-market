@@ -1134,7 +1134,7 @@ module.exports = function (grunt) {
         cwd: '<%=config.dist%>',
         src: ['**/*']
       }
-    } // End Compresss
+    } // End Compress
   });
 
 
