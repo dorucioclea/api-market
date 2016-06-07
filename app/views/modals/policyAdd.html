@@ -7,7 +7,7 @@
 
 <div class="modal-body style-placeholders">
 
-    <div class="row">  <!-- Policy Type -->
+    <div class="row" ng-show="policiesAvailable">  <!-- Policy Type -->
         <div class="col-sm-12">
             <span class="text-bold">Policy Type</span>
             <div dropdown>
@@ -23,8 +23,16 @@
                     </li>
                 </ul>
             </div>
+        </div>
+        <div class="col-sm-12" ng-hide="policiesAvailable">
+            <span class="text-bold">All available policies have been added.</span>
+        </div>
 
+    </div>
 
+    <div class="row" ng-hide="policiesAvailable">  <!-- Policy Type -->
+        <div class="col-sm-12">
+            <span class="text-bold">All available policies are already added.</span>
         </div>
     </div>
 
@@ -54,7 +62,10 @@
     </div>
 
 </div>
-<div class="modal-footer">
+<div class="modal-footer" ng-show="policiesAvailable">
     <button class="btn btn-default" ng-click="modalClose()">Cancel</button>
     <button id="add-policy" ng-disabled="policyForm.$invalid" class="btn btn-primary" placeholder="Adding..." data-icon="fa-cog" ng-click="addPolicy(policyForm)">Add Policy</button>
+</div>
+<div class="modal-footer" ng-hide="policiesAvailable">
+    <button class="btn btn-default" ng-click="modalClose()">Cancel</button>
 </div>

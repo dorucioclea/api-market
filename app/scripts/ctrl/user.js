@@ -5,7 +5,7 @@
 
         /// ==== User Controller
         .controller('UserCtrl',
-        function ($scope, headerModel, userScreenModel, toastService, currentUser) {
+        function ($scope, headerModel, userScreenModel, toastService, CurrentUserInfo) {
 
             init();
 
@@ -60,12 +60,18 @@
                     email: details.email,
                     pic: details.base64pic
                 };
-                currentUser.update(updateObject).then(function () {
-                    $scope.User.updateCurrentUserInfo($scope.User);
-                    toastService.createToast('info', 'Profile updated!', true);
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update your Profile. ');
-                });
+                if (details.bio.length > 1000000) {
+                    toastService.error("Maximum character limit of 1,000,000 for Bio exceeded");
+                }
+                else{
+                    CurrentUserInfo.update({}, updateObject, function (reply) {
+                        $scope.User.updateCurrentUserInfo($scope.User);
+                        toastService.createToast('info', 'Profile updated!', true);
+                    }, function (error) {
+                        console.log(error);
+                        toastService.createErrorToast(error, 'Could not update your Profile. ');
+                    });    
+                }
             }
         })
 

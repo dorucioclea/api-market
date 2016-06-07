@@ -2,43 +2,31 @@
     'use strict';
 
     angular.module('app.user')
-        .service('currentUser', currentUser)
-        .service('currentUserModel', currentUserModel)
-        .service('loginHelper', loginHelper);
-
-
-    function currentUser(CurrentUserInfo) {
-        this.getInfo = getInfo;
-        this.update = update;
-        
-        function getInfo() {
-            return CurrentUserInfo.get().$promise;
-        }
-        
-        function update(newUserInfo) {
-            return CurrentUserInfo.update({}, newUserInfo).$promise;
-        }
-    }
+        .service('currentUserModel', currentUserModel);
+    
     
     function currentUserModel(orgScreenModel, CurrentUserInfo) {
         var permissionTree = [];
         this.currentUser = {};
+        
+        this.isAuthorizedFor = isAuthorizedFor;
+        this.isAuthorizedForAny = isAuthorizedForAny;
+        this.isAuthorizedForIn = isAuthorizedForIn;
+        this.updateCurrentUserInfo = updateCurrentUserInfo;
 
-        this.updateCurrentUserInfo = function (currentUserModel) {
-            console.log('update user info');
+        function updateCurrentUserInfo(currentUserModel) {
             return CurrentUserInfo.get({}, function (userInfo) {
                 currentUserModel.currentUser = userInfo;
-                console.log(currentUserModel.currentUser);
                 createPermissionsTree(userInfo.permissions);
             }).$promise;
-        };
+        }
 
         this.setCurrentUserInfo = function (currentUserInfo) {
             this.currentUser = currentUserInfo;
             createPermissionsTree(currentUserInfo.permissions);
         };
 
-        var createPermissionsTree = function (permissions) {
+        function createPermissionsTree(permissions) {
             permissionTree = [];
             angular.forEach(permissions, function (value) {
                 if (!permissionTree[value.organizationId]) {
@@ -46,126 +34,23 @@
                 }
                 permissionTree[value.organizationId].push(value.name);
             });
-        };
+        }
 
-        this.isAuthorizedFor = function(permission) {
+        function isAuthorizedFor(permission) {
             return permissionTree[orgScreenModel.organization.id].indexOf(permission) !== -1;
-        };
+        }
 
-        this.isAuthroizedForAny = function (permissions) {
+        function isAuthorizedForAny(permissions) {
             for (var i = 0; i < permissions.length; i++) {
-                if (this.isAuthorizedFor(permissions[i])) {
+                if (isAuthorizedFor(permissions[i])) {
                     return true;
                 }
             }
             return false;
-        };
-    }
-
-    // LOGIN HELPER SERVICE
-    function loginHelper($http, $sessionStorage, $state, currentUser, jwtHelper, LogOutRedirect, CONFIG) {
-        this.checkLoggedIn = checkLoggedIn;
-        this.checkJWTInUrl = checkJWTInUrl;
-        this.checkLoginRequiredForState = checkLoginRequiredForState;
-        this.logout = logout;
-        this.redirectToLogin = redirectToLogin;
-
-        function checkLoggedIn() {
-            return !!$sessionStorage.jwt;
         }
 
-        function checkJWTInUrl() {
-            var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-            if (jwt.length > 0) {
-                $sessionStorage.jwt = jwt;
-                delete $sessionStorage.loginInProgress;
-                window.location.href = $sessionStorage.apimredurl;
-                delete $sessionStorage.apimredurl;
-            }
-            
-            return jwt.length > 0;
-        }
-
-        function checkLoginRequiredForState(currentState) {
-            switch (currentState.name) {
-                case '':
-                case 'error':
-                case 'oauth':
-                case 'logout':
-                case 'root.apis.grid':
-                case 'root.apis.list':
-                case 'root.search':
-                    return false;
-                default:
-                    return true;
-            }
-        }
-
-        function logout() {
-            currentUser.getInfo().then(function (info) {
-                var logOutObject = {
-                    idpUrl: CONFIG.SECURITY.IDP_URL,
-                    spName: CONFIG.SECURITY.SP_NAME,
-                    username: info.username
-                };
-                LogOutRedirect.save({}, logOutObject, function (reply) {
-                    console.log(reply);
-                    var string = '';
-                    angular.forEach(reply, function (value) {
-                        if (typeof value === 'string') {
-                            string += value;
-                        }
-                    });
-                    console.log(string);
-                    if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                        $state.go('logout');
-                    } else {
-                        window.location.href = string;
-                    }
-                    delete $sessionStorage.jwt;
-                    delete $sessionStorage.apimredurl;
-                    delete $sessionStorage.loginInProgress;
-                });
-            })
-
-        }
-
-        function redirectToLogin() {
-            if (!$sessionStorage.loginInProgress) {
-                $sessionStorage.loginInProgress = true;
-                if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
-                var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
-                var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                    CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                    '", "clientAppRedirect": "' + $sessionStorage.apimredurl + '", "token": "' +
-                    CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-                //TODO redirect to correct page!
-
-                return $http({
-                    method: 'POST',
-                    skipAuthorization: true,
-                    url: url,
-                    data: data,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    responseType: 'text'
-                }).then(function (result) {
-                    console.log("redirect result: "+JSON.stringify(result));
-                    window.location.href = result.data;
-                }, function (error) {
-                    $state.go('accessdenied');
-                    console.log('Request failed with error code: ', error.status);
-                    console.log(error);
-                });
-            }
-        }
-
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        function isAuthorizedForIn(permission, orgId) {
+            return permissionTree[orgId].indexOf(permission) !== -1;
         }
     }
 

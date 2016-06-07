@@ -18,6 +18,20 @@
             'WARNING': 'warning',
             'DANGER': 'danger'
         })
+        
+        .constant('EVENTS', {
+            'MEMBER_LIST_UPDATED': 'member-list-updated',
+            'NOTIFICATIONS_UPDATED': 'notifications-updated'
+        })
+
+        .constant('NOTIFICATIONS', {
+            'MEMBERSHIP_PENDING': 'membership_pending',
+            'MEMBERSHIP_GRANTED': 'membership_granted',
+            'MEMBERSHIP_REJECTED': 'membership_rejected',
+            'CONTRACT_PENDING': 'contract_pending',
+            'CONTRACT_ACCEPTED': 'contract_accepted',
+            'CONTRACT_REJECTED': 'contract_rejected'
+        })
 
         .constant('PERMISSIONS', {
             'APP': {'ADMIN': 'appAdmin', 'EDIT': 'appEdit', 'VIEW': 'appView'},
@@ -28,7 +42,7 @@
 
         .constant('REGEX', {
             'BASEPATH': /^[a-z\-]+$/,
-            'IMPLEMENTATION': /^(?:http|ftp)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[\/?]\S+)$/gi,
+            'IMPLEMENTATION': /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S)?@)?(?:(?:.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){3}(?:.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)[a-z\u00a1-\uffff0-9]+)(?:.(?:[a-z\u00a1-\uffff0-9]+-?)[a-z\u00a1-\uffff0-9]+)(?:.(?:[a-z\u00a1-\uffff]{2,}))*)(?::\d{1,5})?(?:\/[^\s]*)?$/i,
             'APPLICATION_NAME': /^([a-zA-Z0-9-_]+\s)*[a-zA-Z0-9-_]+$/,
             'ORG_NAME': /^([a-zA-Z0-9-_]+\s)*[a-zA-Z0-9-_]+$/,
             'PLAN_NAME': /^([a-zA-Z0-9-_]+\s)*[a-zA-Z0-9-_]+$/,

@@ -1,5 +1,10 @@
 <div class="panel">
   <div class="panel-body">
+
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+      <div ng-bind-html="alert.msg"></div>
+    </alert>
+
     <div class="btn-group btn-radio" ng-transclude></div>
 
     <div class="mt10 panel panel-default">

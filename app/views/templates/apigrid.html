@@ -13,10 +13,11 @@
             </div>
             <div class="clearfix">
                 <div class="info">
-                    <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
-                        <img class="img img-circle publisher-img" src="images/digipolis-logo.svg">
-                        <span class="mt0 text-primary publisher-text text-uppercase">{{api.service.organization.friendlyName}}</span>
+                    <a class="text-nowrap text-ellipsis" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"
+                       ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0">
+                        <p class="mt0 text-primary text-uppercase">{{api.service.organization.friendlyName}}</p>
                     </a>
+                    <span ng-if="!(useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0)">&nbsp;</span>
                 </div>
                 <div class="media media-middle">
                     <base64-logo logo-class="entity-logo-grid" logo="{{api.service.base64logo}}"></base64-logo>
@@ -30,9 +31,9 @@
             <div class="text-uppercase">{{api.version}}</div>
         </div>
         <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i>&nbsp;{{stats[api.service.id].developers}}</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i>&nbsp;{{api.marketInfo.developers}}</div>
             <div class="fa-hover col-xs-4"><i class="fa fa-star"></i>&nbsp;{{api.service.followers.length}}</div>
-            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i>&nbsp;{{stats[api.service.id].uptime}}%</div>
+            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i>&nbsp;{{api.marketInfo.uptime}}%</div>
         </div>
     </div>
 </div>

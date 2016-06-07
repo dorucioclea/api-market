@@ -15,10 +15,10 @@
         </div>
     </div>
     <div class="right" ng-if="!editMode">
-        <button class="btn btn-default btn-xs fa fa-pencil" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Edit issue" ng-click="editIssue()" ng-if="isOwnIssue() || isServiceOwner()">&nbsp;Edit</button>
-        <button class="btn btn-line-warning btn-xs fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Close issue" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN' && (publisherMode || isServiceOwner())">&nbsp;Close</button>
-        <button class="btn btn-line-warning btn-xs fa fa-folder-open" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Reopen issue" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED' && (publisherMode || isServiceOwner())">&nbsp;Reopen</button>
-        <button class="btn btn-line-danger btn-xs fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete issue" ng-click="deleteIssue()" ng-if="publisherMode || isServiceOwner()">&nbsp;Delete</button>
+        <button class="btn btn-default btn-xs" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Edit issue" ng-click="editIssue()" ng-if="isOwnIssue() || isServiceOwner()"><i class="fa fa-pencil"></i>Edit</button>
+        <button class="btn btn-line-warning btn-xs" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Close issue" ng-click="closeIssue()" ng-if="ticket.status === 'OPEN' && (publisherMode || isServiceOwner())"><i class="fa fa-lock"></i>Close</button>
+        <button class="btn btn-line-warning btn-xs" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Reopen issue" ng-click="reOpenIssue()" ng-if="ticket.status === 'CLOSED' && (publisherMode || isServiceOwner())"><i class="fa fa-folder-open"></i>Reopen</button>
+        <button class="btn btn-line-danger btn-xs" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Delete issue" ng-click="deleteIssue()" ng-if="publisherMode || isServiceOwner()"><i class="fa fa-ban"></i>Delete</button>
     </div>
 
     <div class="ml10 mr10" ng-if="editMode">
@@ -37,8 +37,8 @@
         </form>
     </div>
     <div class="right" ng-if="editMode">
-        <button class="btn btn-default fa fa-undo" ng-click="cancelEdit()">&nbsp;&nbsp;Cancel</button>
-        <button class="btn btn-success fa fa-check" ng-click="saveIssue()" ng-disabled="isUnedited()">&nbsp;&nbsp;Save</button>
+        <button class="btn btn-default" ng-click="cancelEdit()"><i class="fa fa-undo"></i>&nbsp;Cancel</button>
+        <button class="btn btn-success" ng-click="saveIssue()" ng-disabled="isUnedited()"><i class="fa fa-check"></i>&nbsp;Save</button>
     </div>
 </div>
 <div class="modal-body">

@@ -15,7 +15,7 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($modal, $q, $state, toastService, TOAST_TYPES, currentUserModel, Admins, StatusInfo,OAuthCentralExpTime,JWTCentralExpTime){
+    function adminHelper($modal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
@@ -62,9 +62,8 @@
             var updateOAuthObj = {
                 expirationTime: oauthExpTime
             };
-            JWTCentralExpTime.save({},updateJWTObj);
-            OAuthCentralExpTime.save({},updateOAuthObj);
-            return $q.when('nothing special!');
+            return $q.all(JWTCentralExpTime.save({},updateJWTObj).$promise,
+                OAuthCentralExpTime.save({},updateOAuthObj).$promise);
         }
     }
 

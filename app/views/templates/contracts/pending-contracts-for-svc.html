@@ -1,0 +1,28 @@
+<table class="table table-striped pending-contracts-for-svc">
+    <tr ng-repeat="contract in contracts">
+        {{contract}}
+        <td class="request-pic-wrapper">
+            <img class="request-pic" ng-src="data:image/png;base64,{{contract.appDetails.application.base64logo}}" ng-if="contract.appDetails.application.base64logo.length > 0">
+            <img class="request-pic" src="images/no-image-available.svg" ng-if="contract.appDetails.application.base64logo === null || contract.appDetails.application.base64logo.length === 0">
+        </td>
+        <td class="request-info">
+            <div class="col-sm-12 text-left">
+                <h4 class="mb0">
+                    Application:&nbsp;<span class="text-primary">{{contract.appDetails.application.name}}&nbsp;{{contract.appDetails.version}}</span>
+                </h4>
+                <hr>
+                <h4>
+                    Plan:&nbsp;<span class="text-primary">{{getPlanDetails(contract).plan.name}}&nbsp;{{getPlanDetails(contract).version}}</span>
+                </h4>
+            </div>
+        </td>
+        <td class="request-actions text-center">
+            <div>
+                <button class="btn btn-block btn-line-success btn-sm" ng-click="acceptContract(contract)" ng-disabled="!canAccept">Accept</button>
+            </div>
+            <div class="mt10">
+                <button class="btn btn-block btn-line-warning btn-sm" ng-click="rejectContract(contract)" ng-disabled="!canAccept">Reject</button>
+            </div>
+        </td>
+    </tr>
+</table>

@@ -11,9 +11,22 @@
                 <div ng-bind-html="toast.msg">Test Toast</div>
             </alert>
         </div>
-        <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')" ng-click="confirmPublishSvc()">Publish</button>
-        <button class="btn btn-line-warning btn-sm" ng-if="isPublished && !isRetired && User.isAuthorizedFor('svcEdit')" ng-click="confirmRetireSvc()">Retire</button>
-        <button class="btn btn-line-danger btn-sm" ng-if="User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
+        <div class="text-center">
+            <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('svcAdmin')" ng-if="!isPublished" ng-click="confirmPublishSvc()">Publish</button>
+            <button class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired && !isDeprecated" ng-click="confirmDeprecateSvc()">Deprecate</button>
+            <button class="btn btn-line-purple btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired" ng-click="confirmRetireSvc()">Retire</button>
+            <button class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
+            <div class="mt10" ng-show="!User.isAuthorizedFor('svcAdmin') && !isPublished">
+                <p class="text-muted xsmall">
+                    You do not have the necessary permissions to publish services.
+                </p>
+            </div>
+            <div class="mt10" ng-show="!User.isAuthorizedFor('svcAdmin') && isPublished">
+                <p class="text-muted xsmall">
+                    You do not have the necessary permissions to perform these actions.
+                </p>
+            </div>
+        </div>
     </overview-header>
 
     <overview-tabs>
@@ -30,15 +43,16 @@
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">3</span>&nbsp;&nbsp;</span>Plans
         </label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Scopes'" id="scopes" ui-sref=".scopes"
-               ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
+               ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition && tabStatus.hasPlan)">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">4</span>&nbsp;&nbsp;</span>Availability
         </label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Terms</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Readme</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
         <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" id="metrics" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
         <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
     </overview-tabs>
 </overview>

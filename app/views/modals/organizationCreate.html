@@ -10,36 +10,55 @@
   <div class="panel">
     <div class="panel-body">
       <div class="col-sm-12">
+
         <form role="form" name="orgForm" class="form-horizontal">
           <div class="form-group col-md-6">
             <div class="col-md-11">
               <label class="control-label text-primary">Organization Name</label>
             </div>
             <div class="col-md-11">
-              <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="ctrl.organization.name" required ng-pattern="regex.ORG_NAME" validate-on-timeout>
+              <input type="text" name="orgName" class="form-control" placeholder="Enter organization name..." ng-model="organization.name" required ng-pattern="regex.ORG_NAME" validate-on-timeout>
               <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.required && orgForm.orgName.$timedout" ng-if="orgForm.orgName.$touched">Organization name is required.</p>
               <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.pattern && orgForm.orgName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-              <p class="text-muted xsmall">Human-readable {{ useFriendlyNames ? 'internal' : '' }} name of the new organization</p>
+              <p class="text-muted xsmall">Human-readable {{ admin ? 'internal' : '' }} name of the new organization</p>
             </div>
           </div>
-          <div class="form-group col-md-6" ng-if="useFriendlyNames">
+          <div class="form-group col-md-6" ng-if="admin">
             <div class="col-md-11 col-md-offset-1">
-              <label class="control-label text-primary">Friendly Name</label>
+              <label class="control-label text-primary">Branding Name</label>
             </div>
             <div class="col-md-11 col-md-offset-1">
-              <input type="text" name="orgFriendlyName" class="form-control" placeholder="Enter friendly name..." ng-model="ctrl.organization.friendlyName" ng-pattern="regex.ORG_NAME" validate-on-timeout>
-              <p class="text-danger xsmall" ng-show="orgForm.orgName.$error.pattern && orgForm.orgName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-              <p class="text-muted xsmall">Name that will be shown to end users on the Marketplace. If left blank, the internal name will be used.</p>
+              <input type="text" name="orgFriendlyName" class="form-control" placeholder="Enter branding name..." ng-model="organization.friendlyName" ng-pattern="regex.ORG_NAME" validate-on-timeout>
+              <p class="text-danger xsmall" ng-show="orgForm.orgFriendlyName.$error.pattern && orgForm.orgFriendlyName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+              <p class="text-muted xsmall">Name that will be shown to end users on the Marketplace. If left blank, no name will be shown.</p>
             </div>
           </div>
 
           <div class="form-group col-md-12 mt30">
             <div class="col-md-12">
               <label class="control-label text-primary">Organization Description</label>
-              <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="ctrl.organization.description"></textarea>
+              <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="organization.description"></textarea>
               <p class="text-muted xsmall">Short description of the organization</p>
             </div>
           </div>
+
+
+          <div class="form-group col-sm-12 mt30">
+            <label class="control-label text-primary">Organization Accessibility</label>
+            <div class="ui-radio ui-radio-primary mt15">
+              <label>
+                <input type="radio" ng-checked="!organization.organizationPrivate" ng-click="organization.organizationPrivate = false" name="orgVisibility">
+                <span class="text-muted"><b>Public</b>: Anyone can request to join this organization.</span>
+              </label>
+            </div>
+            <div class="ui-radio ui-radio-primary">
+              <label>
+                <input type="radio" ng-checked="organization.organizationPrivate" ng-click="organization.organizationPrivate = true" name="orgVisibility">
+                <span class="text-muted"><b>Private</b>: Only people I invite will be able to join the organization.</span>
+              </label>
+            </div>
+          </div>
+
         </form>
 
       </div>
@@ -48,5 +67,5 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-  <button class="btn btn-primary" ng-click="createOrganization(ctrl.organization)" ng-disabled="orgForm.$invalid">Create Organization</button>
+  <button class="btn btn-primary" ng-click="createOrganization()" ng-disabled="orgForm.$invalid">Create Organization</button>
 </div>

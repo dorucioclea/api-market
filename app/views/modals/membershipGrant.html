@@ -1,0 +1,15 @@
+<div class="modal-header clearfix">
+    <h4 class="modal-title">Are you sure you want to grant membership to this user?</h4>
+    <span class="close ion ion-android-close" ng-click="cancel()"></span>
+</div>
+<!-- Application Create panel -->
+<div class="modal-body">
+    <p><span class="text-primary"><strong>{{user.fullName}}</strong></span> will be added to your organization as a <span class="text-primary"><strong>{{role}}</strong></span>.</p>
+
+    <p>Do you wish to proceed?</p>
+</div>
+<div class="modal-footer">
+    <button id="cancel" class="btn btn-line-default ml15" ng-click="cancel()">Cancel</button>
+    <button id="lock" class="btn btn-line-success" ng-click="ok()">Add Member</button>
+</div>
+

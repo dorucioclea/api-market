@@ -26,6 +26,7 @@
             'relativeDate',
             'angular-jwt',
             'angular-ladda',
+            'btford.markdown',
 
             /* custom modules */
             'app.ctrls',
@@ -42,13 +43,15 @@
             'app.ctrl.modals.lifecycle',
             'app.ctrl.modals.support',
             'app.ctrl.api',
-            'app.ctrl.service',
-            'app.ctrl.application',
-            'app.ctrl.organization',
             'app.ctrl.plan',
             'app.ctrl.user',
             'app.administration',
+            'app.applications',
+            'app.contracts',
+            'app.members',
+            'app.notifications',
             'app.organizations',
+            'app.service',
             'app.user'
 
         ])
@@ -60,19 +63,18 @@
         })
 
         // ngStorage key config
-        .config(function ($localStorageProvider) {
-            $localStorageProvider.setKeyPrefix('apim-');
+        .config(function ($localStorageProvider, CONFIG) {
+            $localStorageProvider.setKeyPrefix(CONFIG.STORAGE.LOCAL_STORAGE);
         })
-        .config(function ($sessionStorageProvider) {
-            $sessionStorageProvider.setKeyPrefix('apim_session-');
+        .config(function ($sessionStorageProvider, CONFIG) {
+            $sessionStorageProvider.setKeyPrefix(CONFIG.STORAGE.SESSION_STORAGE);
         })
 
         // UI-Router states
-        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/');
-            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
-            else $urlRouterProvider.when('/', '/apis/grid');
+            $urlRouterProvider.when('/', '/my-organizations');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
@@ -113,13 +115,16 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        loginHelper: 'loginHelper',
-                        currentUser: 'currentUser',
-                        currentUserInfo: function (currentUser, loginHelper) {
-                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
-                            else {
-                                if (!loginHelper.checkJWTInUrl()) return {};
-                            }
+                        CurrentUserInfo: 'CurrentUserInfo',
+                        currentUser: function (CurrentUserInfo) {
+                            return CurrentUserInfo.get().$promise;
+                        },
+                        notificationService: 'notificationService',
+                        notifications: function (notificationService) {
+                            return notificationService.getNotificationsForUser();
+                        },
+                        pendingNotifications: function (notificationService) {
+                            return notificationService.getPendingNotificationsForUser();
                         }
                     },
                     controller: 'HeadCtrl'
@@ -216,6 +221,10 @@
                                 });
                                 return appContracts;
                             });
+                        },
+                        contractService: 'contractService',
+                        pendingContracts: function (organizationId, contractService) {
+                            return contractService.outgoingPendingForOrg(organizationId);
                         }
                     },
                     controller: 'MarketDashCtrl'
@@ -226,30 +235,28 @@
                     url: '/members',
                     templateUrl: '/views/partials/market/members.html',
                     resolve: {
-                        Member: 'Member',
-                        memberData: function (Member, organizationId) {
-                            return Member.query({orgId: organizationId}).$promise;
-                        },
-                        Users: 'Users',
-                        memberDetails: function ($q, memberData, Users) {
-                            var memberDetails = [];
-                            var promises = [];
-
-                            angular.forEach(memberData, function (member) {
-                                promises.push(Users.get(
-                                    {userId: member.userId}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (details) {
-                                    memberDetails[details.username] = details;
-                                });
-                                return memberDetails;
-                            });
+                        memberService: 'memberService',
+                        memberData: function (memberService, organizationId) {
+                            return memberService.getMembersForOrg(organizationId);
                         },
                         Roles: 'Roles',
                         roleData: function (Roles) {
                             return Roles.query().$promise;
+                        },
+                        requests: function ($q, $stateParams, memberService) {
+                            var deferred = $q.defer();
+                            memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
+                                var promises = [];
+                                requests.forEach(function (req) {
+                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                        req.userDetails = results;
+                                    }));
+                                });
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(requests);
+                                });
+                            });
+                            return deferred.promise;
                         }
                     },
                     controller: 'MarketMembersCtrl'
@@ -261,14 +268,17 @@
                     url: '/apis',
                     templateUrl: '/views/dashboard.html',
                     resolve: {
-                        SearchSvcsWithStatus: 'SearchSvcsWithStatus',
-                        svcData: function (SearchSvcsWithStatus) {
-                            return SearchSvcsWithStatus.query({status: 'Published'}).$promise;
+                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
+                        svcData: function (SearchLatestServiceVersions) {
+                            return SearchLatestServiceVersions.query({},
+                                {filters: [{name: "status", value: "Published", operator: 'eq'}]}
+                            ).$promise;
                         },
                         PublishedCategories: 'PublishedCategories',
                         categories: function (PublishedCategories) {
                             return PublishedCategories.query().$promise;
-                        }
+                        },
+                        SearchLatestPublishedSvcsInCategories: 'SearchLatestPublishedSvcsInCategories'
                     },
                     controller: 'DashboardCtrl'
                 })
@@ -289,10 +299,11 @@
                     url: '/search?query',
                     templateUrl: '/views/search.html',
                     resolve: {
-                        SearchSvcs: 'SearchSvcs',
-                        svcData: function (SearchSvcs, $stateParams) {
-                            return SearchSvcs.query({},
-                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'}]}
+                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
+                        svcData: function (SearchLatestServiceVersions, $stateParams) {
+                            return SearchLatestServiceVersions.query({},
+                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'},
+                                    {name: 'status', value: 'Published', operator: 'eq'}]}
                             ).$promise;
                         }
                     },
@@ -304,10 +315,9 @@
                     url: '/org/:orgId/api/:svcId/:versionId',
                     templateUrl: 'views/api.html',
                     resolve: {
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
-                            return ServiceVersion.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        service: 'service',
+                        svcData: function (service, organizationId, serviceId, versionId) {
+                            return service.getVersion(organizationId, serviceId, versionId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
@@ -464,6 +474,25 @@
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
+                        },
+                        contractService: 'contractService',
+                        pendingContracts: function ($stateParams, contractService) {
+                            return contractService.incomingPendingForOrg($stateParams.orgId);
+                        },
+                        pendingMemberships: function ($q, $stateParams, memberService) {
+                            var deferred = $q.defer();
+                            memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
+                                var promises = [];
+                                requests.forEach(function (req) {
+                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                        req.userDetails = results;
+                                    }));
+                                });
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(requests);
+                                });
+                            });
+                            return deferred.promise;
                         }
                     },
                     controller: 'OrganizationCtrl'
@@ -474,25 +503,23 @@
                     templateUrl: 'views/partials/organization/services.html',
                     resolve: {
                         Service: 'Service',
-                        svcData: function (Service, organizationId) {
-                            return Service.query({orgId: organizationId}).$promise;
-                        },
                         ServiceVersion: 'ServiceVersion',
-                        svcVersions: function ($q, svcData, ServiceVersion) {
-                            var svcVersions = {};
-                            var promises = [];
+                        svcData: function ($q, Service, ServiceVersion, organizationId) {
+                            var deferred = $q.defer();
 
-                            angular.forEach(svcData, function (svc) {
-                                promises.push(ServiceVersion.query(
-                                    {orgId: svc.organizationId, svcId: svc.id}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    svcVersions[value[0].id] = value[0];
+                            Service.query({ orgId: organizationId }, function (services) {
+                                var promises = [];
+                                angular.forEach(services, function (svc) {
+                                    promises.push(ServiceVersion.query(
+                                        { orgId: svc.organizationId, svcId: svc.id }, function (reply) {
+                                            svc.serviceVersionDetails = reply[0];
+                                        }).$promise);
                                 });
-                                return svcVersions;
+                                $q.all(promises).then(function () {
+                                    deferred.resolve(services);
+                                });
                             });
+                            return deferred.promise;
                         }
                     },
                     controller: 'ServicesCtrl'
@@ -531,26 +558,9 @@
                     url: '/members',
                     templateUrl: 'views/partials/organization/members.html',
                     resolve: {
-                        Member: 'Member',
-                        memberData: function (Member, organizationId) {
-                            return Member.query({orgId: organizationId}).$promise;
-                        },
-                        Users: 'Users',
-                        memberDetails: function ($q, memberData, Users) {
-                            var memberDetails = [];
-                            var promises = [];
-
-                            angular.forEach(memberData, function (member) {
-                                promises.push(Users.get(
-                                    {userId: member.userId}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (details) {
-                                    memberDetails[details.username] = details;
-                                });
-                                return memberDetails;
-                            });
+                        memberService: 'memberService',
+                        memberData: function (memberService, organizationId) {
+                            return memberService.getMembersForOrg(organizationId);
                         },
                         Roles: 'Roles',
                         roleData: function (Roles) {
@@ -558,6 +568,12 @@
                         }
                     },
                     controller: 'MembersCtrl'
+                })                
+                // Pending Members View
+                .state('root.organization.pending', {
+                    url: '/pending',
+                    templateUrl: 'views/partials/organization/pending.html',
+                    controller: 'PendingCtrl'
                 })
 
                 // ADMINISTRATION OVERVIEW PAGE =================================================
@@ -611,6 +627,16 @@
                 .state('root.organizations', {
                     url: '/organizations',
                     templateUrl: 'views/organizations.html',
+                    resolve: {
+                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
+                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
+                        appOrgData: function (CurrentUserAppOrgs) {
+                            return CurrentUserAppOrgs.query().$promise;
+                        },
+                        svcOrgData: function (CurrentUserSvcOrgs) {
+                            return CurrentUserSvcOrgs.query().$promise;
+                        }
+                    },
                     controller: 'OrganizationsCtrl'
                 })
 
@@ -847,6 +873,12 @@
                     },
                     controller: 'ServiceOverviewCtrl'
                 })
+                // Pending Contracts Tab
+                .state('root.service.pending', {
+                    url: '/pending',
+                    templateUrl: 'views/partials/service/pending.html',
+                    controller: 'ServicePendingContractsCtrl'
+                })                
                 // Implementation Tab
                 .state('root.service.implementation', {
                     url: '/implementation',
@@ -1015,23 +1047,13 @@
         })
 
         .run(function($state, $rootScope, loginHelper) {
-
-            $rootScope.$on('$stateChangeStart',
-                function(event, toState, toParams, fromState, fromParams, options){
-                    if (loginHelper.checkLoginRequiredForState(toState)) {
-                        console.log('login required!');
-                        if (!loginHelper.checkLoggedIn()) {
-                            loginHelper.redirectToLogin();
-                        }
-                    }
-                });
-
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
+                            if (!loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
                             break;
                         default:
                             $state.get('error').error = error;
@@ -1060,12 +1082,10 @@
             jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
                 'config', 'CONFIG',
                 function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
-
                     // Skip authentication for any requests ending in .html
                     if (config.url.substr(config.url.length - 5) == '.html') {
                         return null;
                     }
-
                     // Skip authentication for oauth requests
                     if (config.url.indexOf('/oauth2/') > -1 ) {
                         return null;
@@ -1102,7 +1122,6 @@
                             }
                         }
                     }
-                    
                 }];
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');
