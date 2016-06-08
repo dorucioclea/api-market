@@ -830,7 +830,11 @@
 
             function redirectToLogin() {
                 if (!$sessionStorage.loginInProgress) {
-                    $sessionStorage.loginInProgress = true;
+                    // WSO2 Fix -- WSO2 has race condition when multiple redirect requests are sent with same SAML
+                    // Setting this boolean prevents additional requests from being sent
+                    if (CONFIG.SECURITY.WSO2_LOGIN_FIX) {
+                        $sessionStorage.loginInProgress = true;
+                    }
                     if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.href;
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +

@@ -319,7 +319,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-local',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: '192.168.99.100'
@@ -356,7 +357,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'devapim.t1t.be'
@@ -393,7 +395,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'devapim.t1t.be'
@@ -430,7 +433,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'devapim.t1t.be'
@@ -467,7 +471,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'devapim.t1t.be'
@@ -504,7 +509,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'accapim.t1t.be'
@@ -541,7 +547,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'accapim.t1t.be'
@@ -578,7 +585,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'accapim.t1t.be'
@@ -615,7 +623,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': false
             },
             KONG: {
               HOST: 'apim.t1t.be'
@@ -652,7 +661,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-o.antwerpen.be'
@@ -689,7 +699,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-o.antwerpen.be'
@@ -726,7 +737,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-o.antwerpen.be'
@@ -763,7 +775,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
               'SP_NAME': 'apiengine-astad',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-o.antwerpen.be'
@@ -797,7 +810,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-a.antwerpen.be'
@@ -831,7 +845,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-a.antwerpen.be'
@@ -865,7 +880,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-a.antwerpen.be'
@@ -902,7 +918,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
               'SP_NAME': 'apiengine-astad',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-a.antwerpen.be'
@@ -936,7 +953,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-p.antwerpen.be'
@@ -970,7 +988,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-p.antwerpen.be'
@@ -1004,7 +1023,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-p.antwerpen.be'
@@ -1041,7 +1061,8 @@ module.exports = function (grunt) {
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
-              'CLIENT_TOKEN': 'jwt'
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
             },
             KONG: {
               HOST: 'api-gw-p.antwerpen.be'
