@@ -2,13 +2,14 @@
     'use strict';
 
     angular.module('app.routes', ['ui.router'])
-
-        // UI-Router Routing Config
+        
+    // UI-Router Routing Config
         .config(function ($stateProvider, $urlRouterProvider) {
 
             // UI-Router Conditional Redirects
             $urlRouterProvider.otherwise('/');
-            $urlRouterProvider.when('/', '/my-organizations');
+            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
+            else $urlRouterProvider.when('/', '/apis/grid');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
                 '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
@@ -51,9 +52,13 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function (CurrentUserInfo) {
-                            return CurrentUserInfo.get().$promise;
+                        currentUser: 'currentUser',
+                        currentUserInfo: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
+                            else {
+                                if (loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
+                                else return {};
+                            }
                         },
                         notificationService: 'notificationService',
                         notifications: function (notificationService) {
