@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('app.routes', ['ui.router'])
-        
+
     // UI-Router Routing Config
-        .config(function ($stateProvider, $urlRouterProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             // UI-Router Conditional Redirects
             $urlRouterProvider.otherwise('/');
