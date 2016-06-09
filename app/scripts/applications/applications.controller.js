@@ -9,7 +9,7 @@
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl);
 
-    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions,
+    function appCtrl($scope, $modal, $state, $stateParams, appData, appVersions,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
                      contractService, toastService, selectedApp) {
         headerModel.setIsButtonVisible(true, true, false);
@@ -91,7 +91,7 @@
         }
 
         function showInfoModal() {
-            $uibModal.open({
+            $modal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
                 controller: 'HelpCtrl as ctrl',
@@ -123,7 +123,7 @@
 
     }
     
-    function apisCtrl($scope, $uibModal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
+    function apisCtrl($scope, $modal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
 
         $scope.contracts = contractData;
         $scope.docDownloader = docDownloader;
@@ -143,7 +143,7 @@
         }
 
         function howToInvoke(contract) {
-            $uibModal.open({
+            $modal.open({
                 templateUrl: 'views/modals/serviceHowToInvoke.html',
                 size: 'lg',
                 controller: 'HowToInvokeCtrl as ctrl',

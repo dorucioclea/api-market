@@ -14,7 +14,6 @@
   <title ng-bind="header"></title>
 
   <!-- build:css styles/vendor.min.css -->
-  <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
@@ -24,7 +23,9 @@
   <link rel="stylesheet" href="../bower_components/textAngular/dist/textAngular.css" />
   <link rel="stylesheet" href="../bower_components/ladda/dist/ladda.min.css" />
   <link rel="stylesheet" href="../bower_components/angular-ui-switch/angular-ui-switch.css" />
+  <link rel="stylesheet" href="../bower_components/sweetalert/dist/sweetalert.css" />
   <!-- endbower -->
+  <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
   <!-- endbuild -->
 
   <!-- fonts -->
@@ -52,8 +53,8 @@
 <script src="../bower_components/angular-aria/angular-aria.js"></script>
 <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="../bower_components/angular-clipboard/angular-clipboard.js"></script>
+<script src="../bower_components/angular-fullscreen/src/angular-fullscreen.js"></script>
 <script src="../bower_components/angular-loading-bar/build/loading-bar.js"></script>
-<script src="../bower_components/angular-messages/angular-messages.js"></script>
 <script src="../bower_components/angular-material/angular-material.js"></script>
 <script src="../bower_components/angular-media-queries/match-media.js"></script>
 <script src="../bower_components/angular-translate/angular-translate.js"></script>
@@ -92,28 +93,16 @@
 <script src="../bower_components/ladda/dist/ladda.min.js"></script>
 <script src="../bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
 <script src="../bower_components/angular-ui-switch/angular-ui-switch.js"></script>
+<script src="../bower_components/sweetalert/dist/sweetalert.min.js"></script>
 <script src="../bower_components/showdown/src/showdown.js"></script>
 <script src="../bower_components/angular-markdown-directive/markdown.js"></script>
 <!-- endbower -->
+<script src="scripts/plugins/backbone.fix.js"></script>
 <script src="../bower_components/highlight/src/highlight.js"></script>
 <!-- endbuild -->
 
-<!--build:js scripts/swagger.js -->
-<!-- Swagger UI scripts -->
-<script src="scripts/plugins/swagger-ui/swagger-ui.js"></script>
-<script src="scripts/plugins/swagger-ui/swagger-client.js"></script>
-<script src="scripts/plugins/swagger-ui/swagger-i18n.js"></script>
-<script src="scripts/plugins/swagger-ui/swagger-model.js"></script>
-<script src="scripts/plugins/swagger-ui/swagger-modules.js"></script>
-<script src="scripts/plugins/swagger-ui/swagger-parser.js"></script>
-<script src="scripts/plugins/swagger-ui/modules/swagger1-to-swagger2-converter.js"></script>
-<script src="scripts/plugins/swagger-ui/modules/swagger-external-references.js"></script>
-<script src="scripts/plugins/swagger-ui/modules/swagger-xml-formatter.js"></script>
-<script src="scripts/plugins/swagger-ui/modules/swagger-yaml-parser.js"></script>
-<script src="scripts/plugins/swagger-ui/i18n/en.js"></script>
-<script src="scripts/plugins/swagger-ui/i18n/fr.js"></script>
-<script src="scripts/plugins/swagger-ui/i18n/jp.js"></script>
-<!-- endbuild -->
+<script src="scripts/plugins/swagger-oauth.js"></script>
+<script src="scripts/plugins/swagger-ui.js"></script>
 
 <!-- build:js scripts/app.js -->
 <!-- Custom scripts -->
@@ -127,21 +116,18 @@
 <script src="scripts/shared/app.apiEngine.js"></script>
 <script src="scripts/ctrl/oauth.js"></script>
 <script src="scripts/ctrl/login.js"></script>
+<script src="scripts/ctrl/dashboard.js"></script>
 <script src="scripts/ctrl/modals.js"></script>
 <script src="scripts/ctrl/modals.lifecycle.js"></script>
 <script src="scripts/ctrl/modals.support.js"></script>
+<script src="scripts/ctrl/api.js"></script>
 <script src="scripts/ctrl/plan.js"></script>
 <script src="scripts/ctrl/user.js"></script>
-
-<script src="scripts/core/app.routes.js"></script>
 
 <script src="scripts/administration/administration.module.js"></script>
 <script src="scripts/administration/administration.controller.js"></script>
 <script src="scripts/administration/administration.directive.js"></script>
 <script src="scripts/administration/administration.service.js"></script>
-
-<script src="scripts/api/api.module.js"></script>
-<script src="scripts/api/api.controller.js"></script>
 
 <script src="scripts/applications/applications.module.js"></script>
 <script src="scripts/applications/applications.controller.js"></script>
@@ -150,9 +136,6 @@
 <script src="scripts/contracts/contracts.module.js"></script>
 <script src="scripts/contracts/contracts.directive.js"></script>
 <script src="scripts/contracts/contracts.service.js"></script>
-
-<script src="scripts/market/market.module.js"></script>
-<script src="scripts/market/market.controller.js"></script>
 
 <script src="scripts/members/members.module.js"></script>
 <script src="scripts/members/members.directive.js"></script>
@@ -170,8 +153,6 @@
 <script src="scripts/services/services.module.js"></script>
 <script src="scripts/services/services.controller.js"></script>
 <script src="scripts/services/services.service.js"></script>
-
-<script src="scripts/swagger/swagger.module.js"></script>
 
 <script src="scripts/user/user.module.js"></script>
 <script src="scripts/user/user.service.js"></script>

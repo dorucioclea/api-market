@@ -5,7 +5,7 @@
 
         /// ==== Plan Controller
         .controller('PlanCtrl',
-            function ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
+            function ($scope, $modal, $state, $stateParams, orgData, orgScreenModel,
                       planData, planVersions, planScreenModel, actionService, toastService, TOAST_TYPES, Plan) {
 
                 $scope.planVersion = planData;
@@ -45,7 +45,7 @@
                 }
 
                 function confirmLockPlan() {
-                    $uibModal.open({
+                    $modal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
@@ -60,7 +60,7 @@
                 }
 
                 function showInfoModal() {
-                    $uibModal.open({
+                    $modal.open({
                         templateUrl: 'views/modals/helpView.html',
                         size: 'lg',
                         controller: 'HelpCtrl as ctrl',
@@ -85,7 +85,7 @@
             })
         /// ==== Policies Controller
         .controller('PlanPoliciesCtrl',
-            function ($scope, $uibModal, $stateParams, policyData, policyConfiguration,
+            function ($scope, $modal, $stateParams, policyData, policyConfiguration,
                       planScreenModel, PlanVersionPolicy) {
 
                 $scope.policies = policyData;
@@ -110,7 +110,7 @@
                 }
 
                 function modalAddPolicy() {
-                    $uibModal.open({
+                    $modal.open({
                         templateUrl: 'views/modals/policyAdd.html',
                         size: 'lg',
                         controller: 'AddPolicyCtrl as ctrl',

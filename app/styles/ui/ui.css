@@ -3831,70 +3831,70 @@ fieldset[disabled] .btn-danger.active {
 .ui-toggle-pink label > input + i {
   background-color: #f8bbd0;
 }
-[uib-datepicker] {
+[datepicker] {
   border: none!important;
 }
-[uib-datepicker],
+[datepicker],
 .datepicker {
   border: 1px solid #eeeeee;
   display: inline-block;
   padding: 15px 20px;
   background: #fff;
 }
-[uib-datepicker] table > thead > tr,
+[datepicker] table > thead > tr,
 .datepicker table > thead > tr {
   font-weight: 500;
 }
-[uib-datepicker] table > thead > tr > th,
+[datepicker] table > thead > tr > th,
 .datepicker table > thead > tr > th {
   text-transform: uppercase;
   font-size: 12px;
   padding: 4px 0;
 }
-[uib-datepicker] table > thead > tr > th i,
+[datepicker] table > thead > tr > th i,
 .datepicker table > thead > tr > th i {
   font-style: normal;
   font-size: 18px;
   line-height: .5;
 }
-[uib-datepicker] table > thead > tr > th small[aria-label],
+[datepicker] table > thead > tr > th small[aria-label],
 .datepicker table > thead > tr > th small[aria-label] {
   color: #f8bbd0;
 }
-[uib-datepicker] table > thead > tr > th .glyphicon-chevron-left:before,
+[datepicker] table > thead > tr > th .glyphicon-chevron-left:before,
 .datepicker table > thead > tr > th .glyphicon-chevron-left:before {
   content: "«";
 }
-[uib-datepicker] table > thead > tr > th .glyphicon-chevron-right:before,
+[datepicker] table > thead > tr > th .glyphicon-chevron-right:before,
 .datepicker table > thead > tr > th .glyphicon-chevron-right:before {
   content: "»";
 }
-[uib-datepicker] table > thead > tr > th > .btn,
+[datepicker] table > thead > tr > th > .btn,
 .datepicker table > thead > tr > th > .btn {
   border: none;
   box-shadow: none;
   background: transparent;
 }
-[uib-datepicker] table > thead > tr > th > .btn:hover,
+[datepicker] table > thead > tr > th > .btn:hover,
 .datepicker table > thead > tr > th > .btn:hover {
   background: #f7f7f7;
 }
-[uib-datepicker] table > tbody > tr td:first-child,
+[datepicker] table > tbody > tr td:first-child,
 .datepicker table > tbody > tr td:first-child {
   color: #f8bbd0;
 }
-[uib-datepicker] table > tbody > tr td:first-child em,
+[datepicker] table > tbody > tr td:first-child em,
 .datepicker table > tbody > tr td:first-child em {
   font-style: normal;
 }
-[uib-datepicker] table > tbody > tr td > button,
+[datepicker] table > tbody > tr td > button,
 .datepicker table > tbody > tr td > button {
   border-radius: 2px;
   background: transparent;
   border: none;
   box-shadow: none;
 }
-[uib-datepicker] table > tbody > tr td > button.active,
+[datepicker] table > tbody > tr td > button.active,
 .datepicker table > tbody > tr td > button.active {
   box-shadow: none;
   -webkit-transition: 0s;
@@ -3902,11 +3902,11 @@ fieldset[disabled] .btn-danger.active {
   transition: 0s;
   color: #fff;
 }
-[uib-datepicker] table > tbody > tr td > button > span,
+[datepicker] table > tbody > tr td > button > span,
 .datepicker table > tbody > tr td > button > span {
   background: transparent;
 }
-[uib-datepicker] table > tbody > tr td > button:not(.active):hover,
+[datepicker] table > tbody > tr td > button:not(.active):hover,
 .datepicker table > tbody > tr td > button:not(.active):hover {
   background: #f7f7f7;
 }

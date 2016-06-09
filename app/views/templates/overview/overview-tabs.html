@@ -1,9 +1,9 @@
 <div class="panel">
   <div class="panel-body">
 
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
       <div ng-bind-html="alert.msg"></div>
-    </uib-alert>
+    </alert>
 
     <div class="btn-group btn-radio" ng-transclude></div>
 

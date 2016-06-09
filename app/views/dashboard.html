@@ -32,9 +32,9 @@
 
 <div class="page page-dashboard page-ui-notifications" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
   <div class="toast toast-bottomRight">
-    <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
       <div ng-bind-html="toast.msg">Test Toast</div>
-    </uib-alert>
+    </alert>
   </div>
 	<div class="page-wrap">
     <div class="row">
@@ -50,13 +50,13 @@
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9 hidden-xs right">
             <div class="mt5 mb5 ml10 mr10 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
-              <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" uib-btn-radio="'Grid'" ui-sref=".grid"></label>
-              <label class="btn btn-primary fa fa-bars" ng-model="displayMode" uib-btn-radio="'List'" ui-sref=".list"></label>
+              <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
+              <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
             </div>
             <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
               <ul class="list-unstyled right-elems">
-                <li uib-dropdown>
-                  <a href uib-dropdown-toggle>
+                <li dropdown>
+                  <a href dropdown-toggle>
                     <span class="text-primary mt10">Sort by:</span>
                     <button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                       {{currentSorting}}
@@ -75,8 +75,8 @@
             </div>
             <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
               <ul class="list-unstyled right-elems">
-                <li uib-dropdown>
-                  <a href uib-dropdown-toggle>
+                <li dropdown>
+                  <a href dropdown-toggle>
                     <span class="text-primary mt10">Pricing:</span>
                     <button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                       {{currentPricing}}

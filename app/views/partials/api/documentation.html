@@ -1,4 +1,8 @@
 <div class="row">
+    <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+    <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+    <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+
     <!-- Swagger API documentation panel -->
     <div class="col-md-9">
         <div class="panel panel-default mb15">
@@ -7,11 +11,8 @@
                 <span class="btn btn-xs btn-info pull-right" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
             </div>
             <div class="panel-body">
-                <div swagger-ui input-type="json"
-                     template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
-                     api-explorer="true" apikey="docTester.apikey"
-                     custom-headers="customHeaders"
-                     jwt-enabled="jwtEnabled">
+                <div class="swagger-section">
+                    <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
                 </div>
             </div>
         </div>
@@ -37,7 +38,7 @@
                             <div class="input-group">
                                 <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
                                 <div class="input-group-btn">
-                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +51,7 @@
                             <div class="input-group">
                                 <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                             <div class="input-group">
                                 <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +77,7 @@
                             <div class="input-group">
                                 <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +90,7 @@
                             <div class="input-group">
                                 <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
                                 <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
+                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Copy to clipboard"></button>
                                 </div>
                             </div>
                         </div>
@@ -110,8 +111,8 @@
                 </div>
                 <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
                     <p>Application API key to use for testing:</p>
-                    <div class="btn-group dropdown" uib-dropdown>
-                        <button type="button" class="btn btn-line-info dropdown-toggle" uib-dropdown-toggle>
+                    <div class="btn-group dropdown" dropdown>
+                        <button type="button" class="btn btn-line-info dropdown-toggle" dropdown-toggle>
                             <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
                             <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
                         </button>
@@ -134,11 +135,11 @@
                 <div class="col-sm-12 text-center" ng-if="customHeaders.length === 0">
                     <button class="btn btn-default" ng-click="addHeader()">Add Custom Header</button>
                 </div>
-                <uib-accordion class="accordion-panel" ng-show="customHeaders.length > 0">
+                <accordion class="accordion-panel" ng-show="customHeaders.length > 0">
                     <div ng-repeat="header in customHeaders">
                         <auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">
                             <form role="form" class="form">
-                                <div class="form-group">
+                                <div class="form-group mb30">
                                     <div class="input-group mb5">
                                         <span class="input-group-addon fa fa-fw fa-header"></span>
                                         <input type="text" class="form-control" placeholder="Header Name" ng-model="header.name">
@@ -149,11 +150,13 @@
                                     </div>
                                 </div>
                             </form>
-                            <p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="removeHeader(header)"><span class="fa fa-trash"></span></p>
                         </auth-accordion-group>
                     </div>
-                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>
-                </uib-accordion>
+                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" tooltip="Add Header" ng-click="addHeader()"></p>
+                </accordion>
+                <div class="col-sm-12 text-center" ng-if="customHeaders.length > 0">
+                    <button class="btn btn-default" ng-click="updateHeaders()">Set Headers</button>
+                </div>
             </div>
         </div><!-- end Custom Headers panel -->
 
@@ -209,7 +212,7 @@
             </div>
             <div class="panel-body">
                 <!-- #start accordion -->
-                <uib-accordion class="accordion-panel">
+                <accordion class="accordion-panel">
                     <auth-accordion-group heading="OAuth 2.0">
                         <form role="form" class="form">
                             <div class="form-group mb30">
@@ -261,7 +264,7 @@
                             </div>
                         </div>
                     </auth-accordion-group>
-                </uib-accordion>
+                </accordion>
                 <!-- #end accordion -->
             </div>
         </div><!-- end authorization panel -->

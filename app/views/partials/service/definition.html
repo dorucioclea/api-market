@@ -1,4 +1,7 @@
 <div class="row">
+  <link href='styles/plugins/swagger/typography.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/reset.css' media='screen' rel='stylesheet' type='text/css' property=""/>
+  <link href='styles/plugins/swagger/screen.css' media='screen' rel='stylesheet' type='text/css' property=""/>
   <div class="col-sm-12">
     <h4>Service Definition</h4>
     <p>
@@ -27,18 +30,28 @@
   </div>
 
   <!-- Existing Swagger API documentation panel -->
-  <div class="col-sm-12" ng-hide="noDefinition">
+  <div class="col-sm-12" ng-hide="definitionLoaded || noDefinition">
     <div class="panel panel-default">
       <div class="panel-heading">
-        {{ definitionLoaded ? 'Updated Documentation Preview' : 'Current Documentation' }}
+        Current Documentation
       </div>
       <div class="panel-body">
-        <div ng-hide="isLoading" swagger-ui input-type="json" loading="isLoading"
-             template-url="views/templates/swagger/main.html" input="updatedDefinition"
-             api-explorer="false">
+        <div class="swagger-section">
+          <div class="swagger-ui-wrap" id="original-swagger-ui-container"></div>
         </div>
-        <div class="text-center" ng-show="isLoading">
-          <span class="fa fa-spinner fa-pulse fa-4x"></span>
+      </div>
+    </div>
+  </div><!-- end Swagger Documentation panel -->
+
+  <!-- Uploaded Swagger API documentation panel -->
+  <div class="col-sm-12" ng-show="definitionLoaded">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Updated Documentation Preview
+      </div>
+      <div class="panel-body">
+        <div class="swagger-section">
+          <div class="swagger-ui-wrap" id="swagger-ui-container"></div>
         </div>
       </div>
     </div>
@@ -49,8 +62,8 @@
     <form name="docForm">
       <div class="input-group">
         <div class="input-group-btn">
-          <div class="dropdown" uib-dropdown>
-            <button class="btn btn-primary dropdown-toggle" uib-dropdown-toggle
+          <div class="dropdown" dropdown>
+            <button class="btn btn-primary dropdown-toggle" dropdown-toggle
                     type="button">
               {{selectedMethod}}<span class="caret"></span>
             </button>
@@ -63,7 +76,7 @@
         <input type="file" class="form-control" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
         <input type="url" name="uri" class="form-control" ng-model="ctrl.uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
         <div class="input-group-btn" ng-class="{'hidden': selectedMethod === 'JSON File'}">
-          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
+          <button class="btn btn-line-primary" ladda="isSubmitting" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
         </div>
       </div>
       <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'URI'}">You can use the button above to select the JSON file you want to upload.</p>
