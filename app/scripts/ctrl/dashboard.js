@@ -267,15 +267,15 @@
                 function isCategorySelected(category) {
                     if ($scope.currentCategories.length === 0) {
                         // No filtering on category yet, show all buttons as enabled
-                        return 'btn-tag-primary';
+                        return true;
                     } else {
                         var index = $scope.currentCategories.indexOf(category);
                         if (index > -1) {
                             // Category is enabled, show in primary color
-                            return 'btn-tag-primary';
+                            return true;
                         } else {
                             // Category not enabled, show in default color
-                            return 'btn-tag-default';
+                            return false;
                         }
                     }
                 }

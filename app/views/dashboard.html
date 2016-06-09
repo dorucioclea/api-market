@@ -10,8 +10,11 @@
   <nav class="site-nav clearfix" role="navigation">
     <!-- categories -->
     <ul class="list-unstyled clearfix col-sm-offset-1 mb30">
-      <li ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
-        <a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>
+      <li class="category" ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
+        <p class="clickable"><a ng-class="{ 'text-primary': isCategorySelected(category), 'text-muted': !isCategorySelected(category) }">
+          <span class="fa fa-tag"></span><span class="ml5">{{category}}</span>
+        </a></p>
+        <!--<a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>-->
       </li>
       <li class="btn btn-xs" ng-click="clearSelectedCategories()" ng-hide="currentCategories.length == 0">
         <h5 class="text-primary">Reset</h5>
