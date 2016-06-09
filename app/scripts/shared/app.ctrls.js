@@ -338,7 +338,7 @@
 
                 function toApis() {
                     docTester.reset();
-                    $state.go('root.apis.grid');
+                    $state.go('root.apis.list');
                 }
 
                 function toAccessDenied(){
