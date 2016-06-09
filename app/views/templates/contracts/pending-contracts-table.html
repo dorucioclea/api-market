@@ -13,7 +13,7 @@
         <td><a ui-sref="root.api.documentation({orgId: contract.serviceOrg, svcId: contract.serviceId, versionId: contract.serviceVersion})">{{contract.svcDetails.service.name}} - {{contract.serviceVersion}}</a></td>
         <td>{{contract.planDetails.name}} - {{contract.planDetails.version}}</td>
         <!--<td class="text-right">-->
-            <!--<button class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Break contract" ng-if="userCanBreak" ng-click="breakContract(contract)"></button>-->
+            <!--<button class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Break contract" ng-if="userCanBreak" ng-click="breakContract(contract)"></button>-->
         <!--</td>-->
     </tr>
     </tbody>

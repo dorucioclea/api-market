@@ -21,8 +21,8 @@
                 <div ng-if="!User.isAuthorizedFor('orgAdmin')">
                     {{member.roles[0].roleName}}
                 </div>
-                <div class="btn-group dropdown" dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
-                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                <div class="btn-group dropdown" uib-dropdown ng-if="User.isAuthorizedFor('orgAdmin')">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
                         {{member.roles[0].roleName}}<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-left">

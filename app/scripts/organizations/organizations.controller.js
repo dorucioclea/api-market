@@ -43,7 +43,7 @@
         }
     }
 
-    function myOrganizationsCtrl($scope, $modal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -69,7 +69,7 @@
         });
 
         function modalNewOrganization() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationCreate.html',
                 size: 'lg',
                 controller: 'NewOrganizationCtrl as ctrl',
@@ -89,12 +89,11 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, svcOrgData, notificationService, SearchOrgs) {
+    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
         init();
-        doSearch();
 
         function init() {
             if ($scope.publisherMode) {
@@ -102,19 +101,14 @@
             } else {
                 $scope.memberOrgs = appOrgData;
             }
-            notificationService.getOrgsWithPendingRequest().then(function (orgs) {
-                $scope.pendingOrgs = orgs;
-            });
+            $scope.pendingOrgs = pendingOrgs;
+            $scope.orgs = processResults(orgs.beans);
+            $scope.totalOrgs = orgs.totalSize;
         }
 
         function doSearch(searchString) {
-            var search = {};
-            searchString = searchString||'*';
-            search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'}];
-            search.orderBy = {ascending: true, name: 'name'};
-            search.paging = {page: 1, pageSize: 100};
 
-            SearchOrgs.save(search, function (results) {
+            orgService.search(searchString).then(function (results) {
                 $scope.totalOrgs = results.totalSize;
                 results.beans.forEach(function (org) {
                     for (var i = 0; i < $scope.memberOrgs.length; i++) {
@@ -130,12 +124,38 @@
                         }
                     }
                 });
-                $scope.orgs = results.beans;
+                $scope.orgs = processResults(results.beans);
+            }, function (error) {
+                toastService.warning('<b>Could not complete search!</b><br><span class="small">An error occurred while executing the search. Please try again later.</span>');
             });
+        }
+
+        function processResults(orgs) {
+            var processedOrgs = [];
+            orgs.forEach(function (org) {
+                // check if member
+                for (var i = 0; i < $scope.memberOrgs.length; i++) {
+                    if ($scope.memberOrgs[i].id === org.id ) {
+                        org.isMember = true;
+                        break;
+                    }
+                }
+                // if not member, check for pending membership
+                if (!org.isMember) {
+                    for (var j = 0; j < $scope.pendingOrgs.length; j++){
+                        if ($scope.pendingOrgs[j].id === org.id) {
+                            org.requestPending = true;
+                            break;
+                        }
+                    }
+                }
+                processedOrgs.push(org);
+            });
+            return processedOrgs;
         }
     }
 
-    function organizationCtrl($scope, $modal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
+    function organizationCtrl($scope, $uibModal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
                               pendingMemberships, memberService, toastService, TOAST_TYPES, Organization, Member,
                               orgScreenModel, CONFIG) {
 
@@ -170,7 +190,7 @@
         }
 
         function updateOrgFriendlyName() {
-            var modalinstance = $modal.open({
+            var modalinstance = $uibModal.open({
                 templateUrl: 'views/modals/organizationEditFriendlyName.html',
                 controller: 'OrgFriendlyNameModalCtrl as ctrl',
                 resolve: {
@@ -192,7 +212,7 @@
         }
 
         function updateOrgVisibility() {
-            var modalinstance = $modal.open({
+            var modalinstance = $uibModal.open({
                 templateUrl: 'views/modals/organizationEditVisibility.html',
                 controller: 'OrgVisibilityModalCtrl as ctrl',
                 resolve: {
@@ -219,7 +239,7 @@
         orgScreenModel.updateTab('Pending');
     }
 
-    function plansCtrl($scope, $modal, planData, planVersions, orgScreenModel, PlanVersion) {
+    function plansCtrl($scope, $uibModal, planData, planVersions, orgScreenModel, PlanVersion) {
 
         $scope.plans = planData;
         $scope.planVersions = planVersions;
@@ -231,7 +251,7 @@
         orgScreenModel.updateTab('Plans');
 
         function modalNewPlan() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/planCreate.html',
                 size: 'lg',
                 controller: 'NewPlanCtrl as ctrl',
@@ -250,7 +270,7 @@
             PlanVersion.get(
                 {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
@@ -267,7 +287,7 @@
 
     }
 
-    function orgFriendlyNameModalCtrl($scope, $modalInstance, orgFriendlyName, REGEX) {
+    function orgFriendlyNameModalCtrl($scope, $uibModalInstance, orgFriendlyName, REGEX) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.orgFriendlyName = angular.copy(orgFriendlyName);
@@ -275,15 +295,15 @@
 
 
         function cancel() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }
 
         function ok() {
-            $modalInstance.close($scope.orgFriendlyName);
+            $uibModalInstance.close($scope.orgFriendlyName);
         }
     }
 
-    function orgVisibilityModalCtrl($scope, $modalInstance, currentlyPrivate) {
+    function orgVisibilityModalCtrl($scope, $uibModalInstance, currentlyPrivate) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.currentlyPrivate = currentlyPrivate;
@@ -291,15 +311,15 @@
 
 
         function cancel() {
-            $modalInstance.dismiss('canceled');
+            $uibModalInstance.dismiss('canceled');
         }
 
         function ok() {
-            $modalInstance.close($scope.setPrivate);
+            $uibModalInstance.close($scope.setPrivate);
         }
     }
 
-    function servicesCtrl($scope, $state, $modal, svcData,
+    function servicesCtrl($scope, $state, $uibModal, svcData,
                           orgScreenModel, ServiceVersion) {
 
         $scope.services = svcData;
@@ -330,7 +350,7 @@
         }
 
         function modalNewService() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceCreate.html',
                 size: 'lg',
                 controller: 'NewServiceCtrl as ctrl',
@@ -350,7 +370,7 @@
         }
 
         function confirmDeleteSvc(svcVersion) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceDelete.html',
                 size: 'lg',
                 controller: 'DeleteServiceCtrl as ctrl',
@@ -380,7 +400,7 @@
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/servicePublish.html',
                         size: 'lg',
                         controller: 'PublishServiceCtrl as ctrl',
@@ -399,7 +419,7 @@
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: 'views/modals/serviceRetire.html',
                         size: 'lg',
                         controller: 'RetireServiceCtrl as ctrl',

@@ -5,7 +5,7 @@
         .service('applicationManager', applicationManager)
         .service('appService', appService);
 
-    function applicationManager($modal, $q, oAuthService, toastService,
+    function applicationManager($uibModal, $q, oAuthService, toastService,
                                 ApplicationContract, ApplicationVersion, ServiceVersion) {
         this.delete = deleteApp;
         this.publish = publish;
@@ -13,7 +13,7 @@
         this.oAuthConfig = oAuthConfig;
 
         function deleteApp(organizationId, appId, appName) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/applicationDelete.html',
                 size: 'lg',
                 controller: 'DeleteApplicationCtrl as ctrl',
@@ -66,7 +66,7 @@
                                             toastService.warning('<b>No OAuth callback defined!</b><br>' +
                                                 'The application cannot be registered without an OAuth callback URL');
                                         } else {
-                                            $modal.open({
+                                            $uibModal.open({
                                                 templateUrl: 'views/modals/applicationPublish.html',
                                                 size: 'lg',
                                                 controller: 'PublishApplicationCtrl as ctrl',
@@ -92,7 +92,7 @@
 
         function retire(organizationId, appId, versionId) {
             return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/applicationRetire.html',
                     size: 'lg',
                     controller: 'RetireApplicationCtrl as ctrl',
@@ -113,7 +113,7 @@
 
         function oAuthConfig(organizationId, appId, versionId) {
             return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/oauthConfigEdit.html',
                     size: 'lg',
                     controller: 'OAuthConfigCtrl as ctrl',
