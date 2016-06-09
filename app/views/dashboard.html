@@ -53,45 +53,45 @@
               <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
               <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
             </div>
-            <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
-              <ul class="list-unstyled right-elems">
-                <li dropdown>
-                  <a href dropdown-toggle>
-                    <span class="text-primary mt10">Sort by:</span>
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      {{currentSorting}}
-                      <span class="caret"></span>
-                    </button>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li ng-click="currentSorting = 'Popular'"><a href="javascript:;">Popular</a></li>
-                    <li ng-click="currentSorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>
-                    <li ng-click="currentSorting = 'Newest'"><a href="javascript:;">Newest</a></li>
-                    <li class="divider"></li>
-                    <li ng-click="currentSorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
-              <ul class="list-unstyled right-elems">
-                <li dropdown>
-                  <a href dropdown-toggle>
-                    <span class="text-primary mt10">Pricing:</span>
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      {{currentPricing}}
-                      <span class="caret"></span>
-                    </button>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li ng-click="currentPricing = 'All'"><a href="javascript:;">All</a></li>
-                    <li ng-click="currentPricing = 'Free'"><a href="javascript:;">Free</a></li>
-                    <li ng-click="currentPricing = 'Freemium'"><a href="javascript:;">Freemium</a></li>
-                    <li ng-click="currentPricing = 'Paid'"><a href="javascript:;">Paid</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+            <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
+              <!--<ul class="list-unstyled right-elems">-->
+                <!--<li dropdown>-->
+                  <!--<a href dropdown-toggle>-->
+                    <!--<span class="text-primary mt10">Sort by:</span>-->
+                    <!--<button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                      <!--{{currentSorting}}-->
+                      <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                  <!--</a>-->
+                  <!--<ul class="dropdown-menu">-->
+                    <!--<li ng-click="currentSorting = 'Popular'"><a href="javascript:;">Popular</a></li>-->
+                    <!--<li ng-click="currentSorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>-->
+                    <!--<li ng-click="currentSorting = 'Newest'"><a href="javascript:;">Newest</a></li>-->
+                    <!--<li class="divider"></li>-->
+                    <!--<li ng-click="currentSorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
+              <!--<ul class="list-unstyled right-elems">-->
+                <!--<li dropdown>-->
+                  <!--<a href dropdown-toggle>-->
+                    <!--<span class="text-primary mt10">Pricing:</span>-->
+                    <!--<button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                      <!--{{currentPricing}}-->
+                      <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                  <!--</a>-->
+                  <!--<ul class="dropdown-menu">-->
+                    <!--<li ng-click="currentPricing = 'All'"><a href="javascript:;">All</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Free'"><a href="javascript:;">Free</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Freemium'"><a href="javascript:;">Freemium</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Paid'"><a href="javascript:;">Paid</a></li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
           </div>
         </div>
       </div>
