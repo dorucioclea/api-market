@@ -12,7 +12,7 @@
     <ul class="list-unstyled clearfix col-sm-offset-1 mb30">
       <li class="category" ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
         <p class="clickable"><a ng-class="{ 'text-primary': isCategorySelected(category), 'text-muted': !isCategorySelected(category) }">
-          <span class="fa fa-tag"></span><span class="ml5">{{category}}</span>
+          <span class="fa fa-lg fa-tag"></span><span class="ml10">{{category}}</span>
         </a></p>
         <!--<a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>-->
       </li>
