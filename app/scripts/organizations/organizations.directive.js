@@ -10,27 +10,14 @@
             restrict: 'E',
             scope: {
                 orgs: '=',
-                memberOrgs: '=',
-                pendingOrgs: '=',
                 publisherMode: '='
             },
             templateUrl: 'views/templates/organization/organizations-table.html',
-            controller: function ($scope, $modal, memberService, toastService) {
-                $scope.isMember = isMember;
+            controller: function ($scope, $uibModal, memberService, toastService) {
                 $scope.requestMembership = requestMembership;
 
-
-                function isMember(org) {
-                    for (var i = 0; i < $scope.memberOrgs.length; i++) {
-                        if ($scope.memberOrgs[i].id === org.id) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
                 function requestMembership(org){
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/membershipRequestConfirm.html',
                         controller: 'ConfirmMembershipRequestModalCtrl as ctrl',
                         resolve: {

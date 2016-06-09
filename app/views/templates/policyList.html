@@ -1,5 +1,5 @@
 <div ng-model="ctrl.policies">
-  <div class="col-sm-12" ng-repeat="policy in ctrl.policies">
+  <div class="col-sm-12" ng-repeat="policy in policies">
     <div class="row">
       <div class="col-md-1">
         <h3 class="fa fa-policy-big-icon {{policy.icon}} fa-fw"></h3>
@@ -16,7 +16,7 @@
           <span>{{ policy.createdOn | date:'yyyy-MM-dd' }}</span>
         </div>
         <div class="description apiman-label-faded">
-          <div ng-repeat="config in ctrl.policyConfiguration[policy.id]">
+          <div ng-repeat="config in policyConfiguration[policy.id]">
             <p class="text-bold">{{config.key}}: {{config.value}}</p>
           </div>
           {{ policy.description }}

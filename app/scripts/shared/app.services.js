@@ -179,7 +179,7 @@
 
         // APPLICATION MANAGER
         .service('applicationManager',
-            function ($modal, $q, oAuthService, toastService,
+            function ($uibModal, $q, oAuthService, toastService,
                       ApplicationContract, ApplicationVersion, ServiceVersion) {
                 this.delete = deleteApp;
                 this.publish = publish;
@@ -187,7 +187,7 @@
                 this.oAuthConfig = oAuthConfig;
 
                 function deleteApp(organizationId, appId, appName) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/applicationDelete.html',
                         size: 'lg',
                         controller: 'DeleteApplicationCtrl as ctrl',
@@ -239,7 +239,7 @@
                                                     toastService.warning('<b>No OAuth callback defined!</b><br>' +
                                                         'The application cannot be registered without an OAuth callback URL');
                                                 } else {
-                                                    $modal.open({
+                                                    $uibModal.open({
                                                         templateUrl: 'views/modals/applicationPublish.html',
                                                         size: 'lg',
                                                         controller: 'PublishApplicationCtrl as ctrl',
@@ -265,7 +265,7 @@
 
                 function retire(organizationId, appId, versionId) {
                     return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/applicationRetire.html',
                             size: 'lg',
                             controller: 'RetireApplicationCtrl as ctrl',
@@ -286,7 +286,7 @@
 
                 function oAuthConfig(organizationId, appId, versionId) {
                     return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/oauthConfigEdit.html',
                             size: 'lg',
                             controller: 'OAuthConfigCtrl as ctrl',
@@ -776,7 +776,7 @@
         })
 
         // LOGIN HELPER SERVICE
-        .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
+        .service('loginHelper', function ($http, $sessionStorage, $state, $location, CONFIG) {
             this.checkLoggedIn = checkLoggedIn;
             this.checkLoginRequiredForState = checkLoginRequiredForState;
             this.checkJWTInUrl = checkJWTInUrl;
@@ -804,14 +804,16 @@
             }
 
             function checkJWTInUrl() {
-                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-                if (jwt.length > 0) {
+                var jwt = $location.search().jwt;
+                if (jwt && jwt.length > 0) {
                     $sessionStorage.jwt = jwt;
                     delete $sessionStorage.loginInProgress;
                     window.location.href = $sessionStorage.apimredurl;
                     delete $sessionStorage.apimredurl;
+                    return true;
+                } else {
+                    return false;
                 }
-                return jwt.length > 0;
             }
 
             function logout() {
@@ -845,8 +847,12 @@
 
             function redirectToLogin() {
                 if (!$sessionStorage.loginInProgress) {
-                    $sessionStorage.loginInProgress = true;
-                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
+                    // WSO2 Fix -- WSO2 has race condition when multiple redirect requests are sent with same SAML
+                    // Setting this boolean prevents additional requests from being sent
+                    if (CONFIG.SECURITY.WSO2_LOGIN_FIX) {
+                        $sessionStorage.loginInProgress = true;
+                    }
+                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.href;
                     var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                     var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
@@ -873,14 +879,6 @@
                     });
                 }
             }
-
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                    results = regex.exec(location.search);
-                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-            }
-
         })
 
         // USER SCREEN MODEL
