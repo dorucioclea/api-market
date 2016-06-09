@@ -237,8 +237,8 @@
                             </div>
                         </form>
                         <div class="text-center">
-                            <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || appVersion.oauthClientRedirect.length == 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
-                            <div class="mt10" ng-show="appVersion.oauthClientRedirect.length == 0">
+                            <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
+                            <div class="mt10" ng-show="!appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0">
                                 <p class="text-justified text-warning xsmall">
                                     The grant button is disabled because the selected Application does not
                                     have a OAuth Callback URL defined. Without a callback URL the grant
