@@ -33,11 +33,11 @@
         {{ definitionLoaded ? 'Updated Documentation Preview' : 'Current Documentation' }}
       </div>
       <div class="panel-body">
-        <div ng-hide="isLoading" swagger-ui input-type="json" loading="isLoading"
+        <div ng-if="!isLoading" swagger-ui input-type="json" loading="isLoading"
              template-url="views/templates/swagger/main.html" input="updatedDefinition"
              api-explorer="false">
         </div>
-        <div class="text-center" ng-show="isLoading">
+        <div class="text-center" ng-if="isLoading">
           <span class="fa fa-spinner fa-pulse fa-4x"></span>
         </div>
       </div>

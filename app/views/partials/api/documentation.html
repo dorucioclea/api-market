@@ -11,7 +11,10 @@
                      template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
                      api-explorer="true" apikey="docTester.apikey"
                      custom-headers="customHeaders"
-                     jwt-enabled="jwtEnabled">
+                     jwt-enabled="jwtEnabled" ng-if="!isLoading">
+                </div>
+                <div class="text-center" ng-if="isLoading">
+                    <span class="fa fa-spinner fa-pulse fa-4x"></span>
                 </div>
             </div>
         </div>
