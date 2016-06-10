@@ -130,6 +130,12 @@
                     controller: 'HeadCtrl'
                 })
 
+                    // UX Improvements testing state
+                .state('root.ux', {
+                    url: '/ux',
+                    templateUrl: 'views/ux.html'
+                })
+
                 // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
                     url: '/org/:orgId/applications',
