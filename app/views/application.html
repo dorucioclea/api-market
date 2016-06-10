@@ -5,9 +5,9 @@
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
-      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
         <div ng-bind-html="toast.msg">Test Toast</div>
-      </alert>
+      </uib-alert>
     </div>
     <div class="text-center">
       <button class="btn btn-line-primary btn-sm" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersion)">New Contract</button>
@@ -25,11 +25,11 @@
   </overview-header>
 
   <overview-tabs>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'APIs'" ui-sref=".apis" ng-if="isRegistered">APIs</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isRegistered">Metrics</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Contracts'" ui-sref=".contracts">Contracts</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'APIs'" ui-sref=".apis" ng-if="isRegistered">APIs</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isRegistered">Metrics</label>
     <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
   </overview-tabs>
 </overview>

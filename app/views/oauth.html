@@ -37,9 +37,9 @@
                 <div class="panel-body">
                     <button class="btn btn-default" ng-click="doCancel()">Cancel</button>
                     <button class="btn btn-success" ng-click="doGrant()" ng-disabled="!canGrant()">Grant</button>
-                    <alert class="mt10" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                    <uib-alert class="mt10" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
                         <div ng-bind-html="alert.msg"></div>
-                    </alert>
+                    </uib-alert>
                 </div>
             </div>
             <div class="panel-footer text-muted text-normal small">

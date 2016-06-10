@@ -296,7 +296,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://192.168.99.100/dev/apiengine/v1',
@@ -333,7 +334,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -370,7 +372,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -408,7 +411,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -445,7 +449,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
@@ -482,7 +487,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
@@ -519,7 +525,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
@@ -556,7 +563,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
@@ -593,7 +601,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
             'BASE': {
               'URL': 'https://apim.t1t.be/apiengine/v1',
@@ -630,7 +639,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -667,7 +677,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -704,7 +715,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -741,7 +753,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': true
+              'USE_DIGIPOLIS_CONSENT_PAGE': true,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-o.antwerpen.be/apiengine/v1',
@@ -778,7 +791,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -812,7 +826,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -846,7 +861,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -880,7 +896,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': true
+              'USE_DIGIPOLIS_CONSENT_PAGE': true,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-a.antwerpen.be/apiengine/v1',
@@ -917,7 +934,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -951,7 +969,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -985,7 +1004,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -1019,7 +1039,8 @@ module.exports = function (grunt) {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
               'PUBLISHER_MODE': false,
-              'USE_DIGIPOLIS_CONSENT_PAGE': true
+              'USE_DIGIPOLIS_CONSENT_PAGE': true,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false
             },
             'BASE': {
               'URL': 'https://api-gw-p.antwerpen.be/apiengine/v1',
@@ -1135,7 +1156,7 @@ module.exports = function (grunt) {
         cwd: '<%=config.dist%>',
         src: ['**/*']
       }
-    } // End Compresss
+    } // End Compress
   });
 
 

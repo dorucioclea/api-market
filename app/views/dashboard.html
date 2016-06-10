@@ -32,9 +32,9 @@
 
 <div class="page page-dashboard page-ui-notifications" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
   <div class="toast toast-bottomRight">
-    <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+    <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
       <div ng-bind-html="toast.msg">Test Toast</div>
-    </alert>
+    </uib-alert>
   </div>
 	<div class="page-wrap">
     <div class="row">
@@ -50,8 +50,8 @@
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9 hidden-xs right">
             <div class="mt5 mb5 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
-              <label class="btn btn-dashboard fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
-              <label class="btn btn-dashboard fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
+              <label class="btn btn-dashboard fa fa-bars" ng-model="displayMode" uib-btn-radio="'List'" ui-sref=".list"></label>
+              <label class="btn btn-dashboard fa fa-th-large" ng-model="displayMode" uib-btn-radio="'Grid'" ui-sref=".grid"></label>
             </div>
             <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
               <!--<ul class="list-unstyled right-elems">-->

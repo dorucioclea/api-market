@@ -26,9 +26,9 @@
             <span class="btn btn-line-danger btn-sm" ng-if="flow.files.length" ng-click="cancel()">Remove</span>
           </div>
           <div class="col-sm-8 mt10">
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
               <div ng-bind-html="alert.msg"></div>
-            </alert>
+            </uib-alert>
           </div>
         </div>
       </div>

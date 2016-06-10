@@ -5,14 +5,14 @@
         .service('memberHelper', memberHelper)
         .service('memberService', memberService);
 
-    function memberHelper($modal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {
+    function memberHelper($uibModal, $state, toastService, TOAST_TYPES, currentUserModel, Member) {
         this.addMember = addMember;
         this.grantRoleToMember = grantRoleToMember;
         this.removeMember = removeMember;
         this.transferOwnership = transferOwnership;
 
         function addMember(org, roles) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationAddMember.html',
                 size: 'lg',
                 controller: 'AddOrgMemberCtrl as ctrl',
@@ -56,7 +56,7 @@
         }
 
         function removeMember(org, member) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationRemoveMember.html',
                 size: 'lg',
                 controller: 'MemberRemoveCtrl as ctrl',
@@ -74,7 +74,7 @@
         }
 
         function transferOwnership(org, currentUser, member) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationTransferOwner.html',
                 size: 'lg',
                 controller: 'TransferOrgCtrl as ctrl',

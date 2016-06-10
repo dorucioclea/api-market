@@ -56,7 +56,7 @@
         </div>
         <div class="col-sm-2 col-sm-offset-3">
           <div class="btn-group-xs">
-            <button class="btn btn-success action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" tooltip="Lock {{plan.name}} - {{planVersions[plan.id].version}}" ng-if="canLock(planVersions[plan.id]) && User.isAuthorizedFor('planAdmin')" ng-click="confirmLockPlan(planVersions[plan.id])"></button>
+            <button class="btn btn-success action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Lock {{plan.name}} - {{planVersions[plan.id].version}}" ng-if="canLock(planVersions[plan.id]) && User.isAuthorizedFor('planAdmin')" ng-click="confirmLockPlan(planVersions[plan.id])"></button>
           </div>
         </div>
         <div class="col-sm-12">

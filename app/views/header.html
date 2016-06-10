@@ -24,14 +24,14 @@
     <!--</li>	&lt;!&ndash; #end search-box &ndash;&gt;-->
 
     <!--<li ng-show="showExplore">-->
-        <!--<button ng-click="toApis()" class="btn btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>-->
+        <!--<button id="apis" ng-click="toApis()" class="btn btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>-->
     <!--</li>-->
     <!--<li ng-show="showDash">-->
-        <!--<button ng-click="toMarketDash()" class="btn btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>-->
+        <!--<button id="market-dash" ng-click="toMarketDash()" class="btn btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>-->
     <!--</li>-->
 
-    <!--<li class="notify-drop hidden-xs dropdown" dropdown="">-->
-    <!--<a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">-->
+    <!--<li class="notify-drop hidden-xs uib-dropdown" uib-dropdown="">-->
+    <!--<a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">-->
     <!--<i class="ion ion-speakerphone"></i>-->
     <!--<span class="badge badge-danger badge-xs circle">3</span>-->
     <!--</a>-->
@@ -84,8 +84,8 @@
         <span ui-sref="root.myOrganizations" class="btn btn-header ml10 mr15">My Orgs</span>
     </li>
 
-    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="pendingNotifications.length > 0">
-        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="pendingNotifications.length > 0">
+        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-inbox fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="pendingNotifications.length > 0">{{pendingNotifications.length}}</span>
         </a>
@@ -103,8 +103,8 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
 
-    <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="notifications.length > 0">
-        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="notifications.length > 0">
+        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell-o fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="notifications.length > 0">{{notifications.length}}</span>
         </a>
@@ -122,24 +122,24 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
     <!-- profile drop -->
-    <li class="profile-drop dropdown" dropdown>
-        <a class="text-default" href dropdown-toggle>
+    <li class="profile-drop dropdown" uib-dropdown>
+        <a class="text-default" href uib-dropdown-toggle>
             <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
             <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
             <span></span>
             <span class="text-default caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserModel.currentUser.fullName}}</a></li>
+            <li><a id="user-profile" ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserModel.currentUser.fullName}}</a></li>
             <li class="divider"></li>
-            <li><a ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
-            <li><a ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
+            <li><a id="orgs" ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
+            <li><a id="my-orgs" ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
             <li class="divider"></li>
-            <li ng-if="currentUserModel.currentUser.admin"><a ui-sref="root.administration.users"><span class="ion ion-gear-a">&nbsp;&nbsp;</span>Administration</a></li>
+            <li ng-if="currentUserModel.currentUser.admin"><a id="admin-page" ui-sref="root.administration.users"><span class="ion ion-gear-a">&nbsp;&nbsp;</span>Administration</a></li>
             <li class="divider" ng-if="currentUserModel.currentUser.admin"></li>
             <!--<li><a href="javascript:;" ng-click="togglePublisher()"><span class="ion ion-power">&nbsp;&nbsp;</span>Toggle PublisherMode</a></li>-->
             <!--<li class="divider"></li>-->
-            <li><a href ng-click="doLogOut()"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
+            <li><a id="logout" href ng-click="doLogOut()"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
         </ul>
     </li>
     <!-- #end profile-drop -->
