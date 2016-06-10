@@ -369,7 +369,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
-              'PUBLISHER_MODE': false,
+              'PUBLISHER_MODE': true,
               'USE_DIGIPOLIS_CONSENT_PAGE': false
             },
             'BASE': {
