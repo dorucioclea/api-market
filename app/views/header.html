@@ -1,7 +1,10 @@
 <ul class="list-unstyled left-elems">
 
     <li class="hidden-xs">
-        <a ui-sref="root.myOrganizations" class="logo"><img class="logo"></a>
+        <a ui-sref="root.apis.list" class="logo"><img class="logo"></a>
+    </li>
+    <li>
+        <a class="btn btn-logo" ui-sref="root.apis.list"><h4>{{title}}</h4></a>
     </li>
 
     <!-- Search box -->
@@ -14,12 +17,12 @@
         <!--</div>-->
     <!--</li>	&lt;!&ndash; #end search-box &ndash;&gt;-->
 
-    <li ng-show="showExplore">
-        <button ng-click="toApis()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
-    </li>
-    <li ng-show="showDash">
-        <button ng-click="toMarketDash()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>
-    </li>
+    <!--<li ng-show="showExplore">-->
+        <!--<button ng-click="toApis()" class="btn btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>-->
+    <!--</li>-->
+    <!--<li ng-show="showDash">-->
+        <!--<button ng-click="toMarketDash()" class="btn btn-header ml15"><i class="ion ion-home"></i>Explore Applications</button>-->
+    <!--</li>-->
 
     <!--<li class="notify-drop hidden-xs dropdown" dropdown="">-->
     <!--<a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">-->
@@ -71,6 +74,10 @@
 
 <ul class="list-unstyled right-elems">
 
+    <li>
+        <span ui-sref="root.myOrganizations" class="btn btn-header ml10 mr15">My Orgs</span>
+    </li>
+
     <li class="notify-drop hidden-xs dropdown" dropdown="" ng-if="pendingNotifications.length > 0">
         <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-inbox fa-lg"></i>
@@ -108,16 +115,13 @@
             </div>
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
-    <li>
-        <span ui-sref="root.myOrganizations" class="btn btn-tag-primary btn-header ml10 mr15">My Orgs</span>
-    </li>
     <!-- profile drop -->
     <li class="profile-drop dropdown" dropdown>
-        <a href dropdown-toggle>
+        <a class="text-default" href dropdown-toggle>
             <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
             <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
-            <span class="text-primary"></span>
-            <span class="text-primary caret"></span>
+            <span></span>
+            <span class="text-default caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
             <li><a ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserModel.currentUser.fullName}}</a></li>

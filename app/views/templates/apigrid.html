@@ -1,16 +1,17 @@
 <div ng-repeat="api in apis"
      class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12 clickable"
      ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
-    <div class="panel panel-primary panel-hovered mb20 text-center">
-        <div class="panel-heading">
-            <h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4>
+    <div class="panel panel-default panel-hovered api-panel mt15 text-center">
+        <div id="api-name" class="panel-heading">
+            <a><h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4></a>
         </div>
-        <div class="panel-body">
-            <div class="pull-right" ng-click="$event.stopPropagation()">
+        <div id="follow" ng-click="$event.stopPropagation()">
                 <a ng-click="followAction(api)" class="clickable pull-right">
-                    <i class="text-primary follow-icon-grid fa" ng-class="{'fa-star-o': !userIsFollowing(api), 'fa-star': userIsFollowing(api)}"></i>
+                <i class="follow-icon-grid fa fa-star" ng-class="{'not-following': !userIsFollowing(api), 'following': userIsFollowing(api)}"></i>
                 </a>
-            </div>
+        </div>
+        <div id="api-info" class="panel-body">
+
             <div class="clearfix">
                 <div class="info">
                     <a class="text-nowrap text-ellipsis" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"
@@ -27,13 +28,16 @@
                 </div>
             </div>
         </div>
-        <div class="panel-footer clearfix">
+        <div id="api-version" class="panel-footer api-version clearfix mb10">
             <div class="text-uppercase">{{api.version}}</div>
         </div>
-        <div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-            <div class="fa-hover col-xs-4"><i class="fa fa-users"></i>&nbsp;{{api.marketInfo.developers}}</div>
-            <div class="fa-hover col-xs-4"><i class="fa fa-star"></i>&nbsp;{{api.service.followers.length}}</div>
-            <div class="fa-hover col-xs-4"><i class="fa fa-arrows-v"></i>&nbsp;{{api.marketInfo.uptime}}%</div>
+        <div id="api-metrics" class="panel-footer clearfix panel-footer-sm mt20 mb20">
+            <div class="col-xs-4 text-bold">{{api.marketInfo.developers}}</div>
+            <div class="col-xs-4 text-bold">{{api.service.followers.length}}</div>
+            <div class="col-xs-4 text-bold">{{api.marketInfo.uptime}}%</div>
+            <div class="col-xs-4 small text-light">developers</div>
+            <div class="col-xs-4 small text-light">followers</div>
+            <div class="col-xs-4 small text-light">uptime</div>
         </div>
     </div>
 </div>

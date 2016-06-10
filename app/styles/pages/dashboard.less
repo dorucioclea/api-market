@@ -449,25 +449,63 @@
   }
 
   .follow-icon-grid {
-	position: absolute;
+    border-radius: 50%;
+	position: relative;
 	z-index: 2;
 	cursor: pointer;
 	cursor: hand;
-	top: 70px;
-	right: 11px;
-	padding: 10px 15px;
-	color: @brand-primary;
-	background: @tink-gray-lighter;
-	-ms-box-shadow: inset 1px -1px 2px rgba(9,26,35,.1);
-	-o-box-shadow: inset 1px -1px 2px rgba(9,26,35,.1);
-	box-shadow: inset 1px -1px 2px rgba(9,26,35,.1);
-	border: none;
-	border-radius: 0 0 0 3px;
+	top: -18px;
+	right: 132px;
+	padding: 10px 10px;
+	  color: @tink-gray-lighter;
+	background: #fff;
+	border: 1px solid @tink-gray-lighter;
 	-webkit-transition: all .3s ease-out;
 	transition: all .3s ease-out;
 	font-weight: bolder;
 	font-size: 15px;
+
+	  &.not-following {
+		  color: @tink-gray-lighter;
+		  &:hover {
+			  color: @brand-info;
+		  }
+	  }
+
+	  &.following {
+		  color: @brand-primary;
+		  &:hover {
+			  color: @brand-info;
+		  }
+	  }
   }
+}
+
+.api-panel {
+	border-radius: 5px;
+    border: 0;
+
+	#api-info {
+		padding: 10px 5px;
+	}
+
+	.panel-footer {
+		&#api-version {
+			background-color: transparent;
+			border-top: 0;
+		}
+
+		&#api-metrics {
+			margin: 0 22px;
+			border-top-color: #e4e4e4;
+			padding: 15px 0 20px 0;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			background-color: transparent;
+			color: @text-muted;
+		}
+	}
+
 }
 
 

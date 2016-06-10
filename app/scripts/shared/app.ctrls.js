@@ -263,6 +263,7 @@
                 $scope.clearNotification = clearNotification;
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
+                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Marketplace';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;

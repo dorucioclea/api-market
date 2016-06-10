@@ -39,19 +39,19 @@
 	<div class="page-wrap">
     <div class="row">
       <!-- dashboard header -->
-      <div class="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs">
-        <div class="dash-head clearfix mb20">
+      <div class="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs" style="padding-left: 0; padding-right: 0;">
+        <div class="dash-head clearfix">
           <div class="group left col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <button href class="mt5 btn btn-primary" ng-click="toggleNav()">
+            <span href class="mt5 btn btn-dashboard transparent-bg" ng-click="toggleNav()">
               <i class="ion ion-eye" ng-hide="navFull"></i>
               <i class="ion ion-eye-disabled" ng-show="navFull"></i>
               <span class="text">{{navFull? 'Hide' : 'Show' }} categories</span>
-            </button>
+            </span>
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9 hidden-xs right">
-            <div class="mt5 mb5 ml10 mr10 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
-              <label class="btn btn-primary fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
-              <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
+            <div class="mt5 mb5 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
+              <label class="btn btn-dashboard fa fa-bars" ng-model="displayMode" btn-radio="'List'" ui-sref=".list"></label>
+              <label class="btn btn-dashboard fa fa-th-large" ng-model="displayMode" btn-radio="'Grid'" ui-sref=".grid"></label>
             </div>
             <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
               <!--<ul class="list-unstyled right-elems">-->
