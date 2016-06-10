@@ -47,7 +47,6 @@
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
 
-
         pendingContracts.forEach(function (contract) {
             $scope.pendingContracts = [];
             if ($scope.applicationVersions[contract.appId] && $scope.applicationVersions[contract.appId].version === contract.appVersion) {
@@ -59,6 +58,7 @@
                 $scope.pendingContracts[contract.appId].push(contract);
             }
         });
+
         function toggle(app) {
             app.contractsExpanded = !app.contractsExpanded;
         }
@@ -104,7 +104,7 @@
 
         function newContract(appVersion) {
             selectedApp.updateApplication(appVersion);
-            $state.go('root.apis.grid');
+            $state.go('root.apis.list');
         }
 
         function toApiDoc(contract) {
@@ -171,6 +171,7 @@
             var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
             toastService.info(msg);
         }
+
     }
 
     /// ==== Marketplace Members Controller
@@ -181,6 +182,7 @@
         $scope.members = memberData;
         $scope.pendingRequests = requests;
         $scope.roles = roleData;
+        $scope.orgScreenModel = orgScreenModel;
 
         orgScreenModel.updateTab('Members');
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
@@ -206,6 +208,7 @@
     /// ==== Dashboard Controller
     function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService,
                             SearchLatestServiceVersions, SearchLatestPublishedSvcsInCategories) {
+
         headerModel.setIsButtonVisible(false, true, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
@@ -268,16 +271,9 @@
         function isCategorySelected(category) {
             if ($scope.currentCategories.length === 0) {
                 // No filtering on category yet, show all buttons as enabled
-                return 'btn-tag-primary';
+                return true;
             } else {
-                var index = $scope.currentCategories.indexOf(category);
-                if (index > -1) {
-                    // Category is enabled, show in primary color
-                    return 'btn-tag-primary';
-                } else {
-                    // Category not enabled, show in default color
-                    return 'btn-tag-default';
-                }
+                return $scope.currentCategories.indexOf(category) > -1;
             }
         }
 

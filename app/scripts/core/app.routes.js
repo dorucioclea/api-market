@@ -3,6 +3,8 @@
 
     angular.module('app.routes', ['ui.router'])
 
+    // UI-Router states
+
         // UI-Router Routing Config
         .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -64,6 +66,12 @@
                         }
                     },
                     controller: 'HeadCtrl'
+                })
+
+                // UX Improvements testing state
+                .state('root.ux', {
+                    url: '/ux',
+                    templateUrl: 'views/ux.html'
                 })
 
                 // MARKETPLACE CONSUMER DASHBOARD =================================================
