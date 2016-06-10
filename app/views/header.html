@@ -5,14 +5,14 @@
     </li>
 
     <!-- Search box -->
-    <li ng-show="showSearch">
-        <div class="form-search hidden-xs">
-            <form id="site-search" ng-submit="doSearch(query)">
-                <input type="search" class="form-control" ng-model="query" placeholder="Search APIs">
-                <button type="submit" class="ion ion-ios-search-strong"></button>
-            </form>
-        </div>
-    </li>	<!-- #end search-box -->
+    <!--<li ng-show="showSearch">-->
+        <!--<div class="form-search hidden-xs">-->
+            <!--<form id="site-search" ng-submit="doSearch(query)">-->
+                <!--<input type="search" class="form-control" ng-model="query" placeholder="Search APIs">-->
+                <!--<button type="submit" class="ion ion-ios-search-strong"></button>-->
+            <!--</form>-->
+        <!--</div>-->
+    <!--</li>	&lt;!&ndash; #end search-box &ndash;&gt;-->
 
     <li ng-show="showExplore">
         <button ng-click="toApis()" class="btn btn-tag-primary btn-header ml15"><i class="ion ion-map"></i>Explore APIs</button>
@@ -107,6 +107,9 @@
                 </ul>
             </div>
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
+    </li>
+    <li>
+        <span ui-sref="root.myOrganizations" class="btn btn-tag-primary btn-header ml10 mr15">My Orgs</span>
     </li>
     <!-- profile drop -->
     <li class="profile-drop dropdown" dropdown>
