@@ -171,7 +171,11 @@ angular
 				$scope.form = {};
 				if (data) {
 					swagger = data;
-					swaggerLoaded(null, 'application/' + $scope.inputType);
+					swaggerModules
+						.execute(swaggerModules.BEFORE_PARSE, null, swagger)
+						.then(function () {
+							swaggerLoaded(null, 'application/' + $scope.inputType);
+						})
 				}
 			});
 		}
