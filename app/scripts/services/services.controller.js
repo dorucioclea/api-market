@@ -304,6 +304,7 @@
                     if (Object.keys(cleanReply).length > 0) {
                         $scope.currentDefinition = cleanReply;
                         $scope.updatedDefinition = $scope.currentDefinition;
+                        $scope.displayDefinition = angular.copy($scope.currentDefinition);
                         $timeout(function () {
                             $scope.isLoading = false;
                         }, 100);
@@ -339,6 +340,7 @@
             $timeout(function() {
                 try {
                     $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.displayDefinition = angular.copy($scope.updatedDefinition);
                     $scope.noDefinition = false;
                     $scope.definitionLoaded = true;
                     $scope.isLoading = false;
