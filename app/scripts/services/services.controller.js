@@ -339,6 +339,7 @@
             $timeout(function() {
                 try {
                     $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.noDefinition = false;
                     $scope.definitionLoaded = true;
                     $scope.isLoading = false;
                 } catch (err) {
