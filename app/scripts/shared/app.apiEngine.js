@@ -4,6 +4,20 @@
     angular.module('app.apiEngine', ['ngResource'])
 
         /// ########### ENDPOINT FACTORIES #####################
+        
+        /// ########### SPECIAL MARKETPLACE ENDPOINTS: NO JWT REQUIRED ########################
+
+        .factory('MarketplaceSearchLatestServiceVersions', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions/latest', {}, {
+                query: {
+                    method: 'POST'
+                }
+            });
+        })
+        .factory('MarketplacePublishedCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
+        })
+            
 
         /// ========== ACTIONS ==========================================================================
         .factory('Action', function ($resource, CONFIG) {

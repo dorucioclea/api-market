@@ -219,15 +219,12 @@
                     url: '/apis',
                     templateUrl: '/views/dashboard.html',
                     resolve: {
-                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
-                        svcData: function (SearchLatestServiceVersions) {
-                            return SearchLatestServiceVersions.query({},
-                                {filters: [{name: "status", value: "Published", operator: 'eq'}]}
-                            ).$promise;
+                        apiService: 'apiService',
+                        svcData: function (apiService) {
+                            return apiService.getMarketplaceApis();
                         },
-                        PublishedCategories: 'PublishedCategories',
-                        categories: function (PublishedCategories) {
-                            return PublishedCategories.query().$promise;
+                        categories: function (apiService) {
+                            return apiService.getPublishedCategories();
                         }
                     },
                     controller: 'DashboardCtrl'
