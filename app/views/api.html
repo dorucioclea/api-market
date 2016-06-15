@@ -7,7 +7,18 @@
   <div class="page-wrap">
 
     <div class="row">
-      <div class="panel panel-primary ">
+      <div class="panel">
+        <div class="panel-body">
+          <ol class="breadcrumb breadcrumb-small mb0">
+            <li><a ui-sref="root.apis.list">Marketplace</a></li>
+            <li class="active"><a ui-sref="root.api.documentation({orgId: serviceVersion.service.organization.id, svcId: serviceVersion.service.id})">{{serviceVersion.service.name}}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel">
         <div class="panel-body">
           <!-- Main API info panel -->
           <div class="col-sm-1">
@@ -52,7 +63,7 @@
         </div>
       </div>
       <div>
-        <div class="panel panel-primary">
+        <div class="panel">
           <div class="panel-body">
             <div class="mt30" ui-view></div>
           </div>

@@ -37,6 +37,8 @@
             'app.filters',
             'app.api',
             'app.apiEngine',
+            'app.core.components',
+            'app.core.routes',
             'app.ctrl.auth.oauth',
             'app.ctrl.login',
             'app.ctrl.modals',
@@ -51,7 +53,6 @@
             'app.members',
             'app.notifications',
             'app.organizations',
-            'app.routes',
             'app.service',
             'app.swagger',
             'app.user'
