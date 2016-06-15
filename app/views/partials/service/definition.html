@@ -33,18 +33,18 @@
         {{ definitionLoaded ? 'Updated Documentation Preview' : 'Current Documentation' }}
       </div>
       <div class="panel-body">
-        <div ng-hide="isLoading" swagger-ui input-type="json" loading="isLoading"
-             template-url="views/templates/swagger/main.html" input="updatedDefinition"
+        <div ng-if="!isLoading" swagger-ui input-type="json" loading="isLoading"
+             template-url="views/templates/swagger/main.html" input="displayDefinition"
              api-explorer="false">
         </div>
-        <div class="text-center" ng-show="isLoading">
+        <div class="text-center" ng-if="isLoading">
           <span class="fa fa-spinner fa-pulse fa-4x"></span>
         </div>
       </div>
     </div>
   </div><!-- end Swagger Documentation panel -->
 
-  <div class="col-md-12 mt30" ng-if="!isRetire && User.isAuthorizedFor('svcEdit')">
+  <div class="col-md-12 mt30" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
     <h5>Update Swagger definiton</h5>
     <form name="docForm">
       <div class="input-group">

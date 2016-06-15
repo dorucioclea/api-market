@@ -188,6 +188,7 @@
                 $scope.clearNotification = clearNotification;
                 $scope.doSearch = doSearch;
                 $scope.doLogOut = doLogOut;
+                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Marketplace';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
@@ -263,7 +264,7 @@
 
                 function toApis() {
                     docTester.reset();
-                    $state.go('root.apis.grid');
+                    $state.go('root.apis.list');
                 }
 
                 function toAccessDenied(){

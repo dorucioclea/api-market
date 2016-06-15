@@ -47,7 +47,7 @@
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
 
-        
+
         init();
 
 
@@ -110,7 +110,7 @@
 
         function newContract(appVersion) {
             selectedApp.updateApplication(appVersion);
-            $state.go('root.apis.grid');
+            $state.go('root.apis.list');
         }
 
         function toApiDoc(contract) {
@@ -187,10 +187,8 @@
         $scope.members = memberData;
         $scope.pendingRequests = requests;
         $scope.roles = roleData;
-            $scope.orgScreenModel = orgScreenModel;
-
-
-            orgScreenModel.updateTab('Members');
+        $scope.orgScreenModel = orgScreenModel;
+        orgScreenModel.updateTab('Members');
         orgScreenModel.getOrgDataForId(orgScreenModel, $stateParams.orgId);
 
         $scope.$on(EVENTS.MEMBER_LIST_UPDATED, function () {
@@ -214,6 +212,7 @@
     /// ==== Dashboard Controller
     function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService,
                             SearchLatestServiceVersions, SearchLatestPublishedSvcsInCategories) {
+
         headerModel.setIsButtonVisible(false, true, true);
         $scope.currentSorting = 'Popular';
         $scope.currentPricing = 'All';
@@ -275,16 +274,9 @@
         function isCategorySelected(category) {
             if ($scope.currentCategories.length === 0) {
                 // No filtering on category yet, show all buttons as enabled
-                return 'btn-tag-primary';
+                return true;
             } else {
-                var index = $scope.currentCategories.indexOf(category);
-                if (index > -1) {
-                    // Category is enabled, show in primary color
-                    return 'btn-tag-primary';
-                } else {
-                    // Category not enabled, show in default color
-                    return 'btn-tag-default';
-                }
+                return $scope.currentCategories.indexOf(category) > -1;
             }
         }
 

@@ -43,6 +43,24 @@
   }
 }
 
+.button-transparent-variant(@color, @active-color) {
+  box-shadow: 0 0 0 0;
+  color: @color;
+  background-color: transparent;
+  border-color: transparent;
+
+  &:hover,
+  &:focus,
+  &.focus,
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    color: @active-color;
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
 // Button sizes
 .button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
   padding: @padding-vertical @padding-horizontal;

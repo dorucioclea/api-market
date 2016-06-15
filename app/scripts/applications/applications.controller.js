@@ -67,7 +67,7 @@
                 version: appVersion.version
             };
             selectedApp.updateApplication(appObject);
-            $state.go('root.apis.grid');
+            $state.go('root.apis.list');
         }
 
         function confirmDeleteApp(appVersion) {

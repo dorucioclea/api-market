@@ -292,20 +292,32 @@
         $scope.selectMethod = selectMethod;
         $scope.isSubmitting = false;
 
-        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(
-            function (reply) {
-                // Clean the reply so we have the pure data object
-                var cleanReply = resourceUtil.cleanResponse(reply);
-                // Check number of properties in the object, if 0, there is no definition present
-                if (Object.keys(cleanReply).length > 0) {
-                    $scope.currentDefinition = cleanReply;
-                    $scope.updatedDefinition = $scope.currentDefinition;
-                } else {
+        init();
+
+        function init() {
+            $scope.isLoading = true;
+            service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(
+                function (reply) {
+                    // Clean the reply so we have the pure data object
+                    var cleanReply = resourceUtil.cleanResponse(reply);
+                    // Check number of properties in the object, if 0, there is no definition present
+                    if (Object.keys(cleanReply).length > 0) {
+                        $scope.currentDefinition = cleanReply;
+                        $scope.updatedDefinition = $scope.currentDefinition;
+                        $scope.displayDefinition = angular.copy($scope.currentDefinition);
+                        $timeout(function () {
+                            $scope.isLoading = false;
+                        }, 100);
+                    } else {
+                        $scope.noDefinition = true;
+                        $scope.isLoading = false;
+                    }
+                }, function (error) {
                     $scope.noDefinition = true;
-                }
-            }, function (error) {
-                $scope.noDefinition = true;
-            });
+                    $scope.isLoading = false;
+                });
+
+        }
 
         function doFetch(uri) {
             $scope.isLoading = true;
@@ -328,6 +340,8 @@
             $timeout(function() {
                 try {
                     $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.displayDefinition = angular.copy($scope.updatedDefinition);
+                    $scope.noDefinition = false;
                     $scope.definitionLoaded = true;
                     $scope.isLoading = false;
                 } catch (err) {

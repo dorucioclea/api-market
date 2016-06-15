@@ -391,7 +391,8 @@ module.exports = function (grunt) {
             },
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              // 'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
               'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
@@ -1149,7 +1150,12 @@ module.exports = function (grunt) {
       dist: {
         options: {
           mode: 'zip',
-          archive: 'release.zip'
+          archive: function() {
+            var date = new Date();
+            var dateString = date.getFullYear() + ("0"+(date.getMonth()+1)).slice(-2) + ("0" + date.getDate()).slice(-2)
+                + "-" + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2);
+            return global.task + '-' + dateString + '.zip'
+          }
         },
         expand: true,
         cwd: '<%=config.dist%>',
@@ -1199,6 +1205,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('pub', [
     'clean:dist',
+    'set_global:task:pub',
     'wiredep',
     'ngconstant:dev',
     'replace:pub',
@@ -1218,6 +1225,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('mkt-int', [
     'clean:dist',
+    'set_global:task:mkt-int',
     'wiredep',
     'ngconstant:devInt',
     'replace:mkt',
@@ -1237,6 +1245,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('mkt-ext', [
     'clean:dist',
+    'set_global:task:mkt-ext',
     'wiredep',
     'ngconstant:devExt',
     'replace:mkt',
@@ -1256,6 +1265,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('acc-pub', [
     'clean:dist',
+    'set_global:task:acc-pub',
     'wiredep',
     'ngconstant:acc',
     'replace:pub',
@@ -1275,6 +1285,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('acc-mkt-int', [
     'clean:dist',
+    'set_global:task:acc-mkt-int',
     'wiredep',
     'ngconstant:accInt',
     'replace:mkt',
@@ -1294,6 +1305,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('acc-mkt-ext', [
     'clean:dist',
+    'set_global:task:acc-mkt-ext',
     'wiredep',
     'ngconstant:accExt',
     'replace:mkt',
@@ -1313,6 +1325,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('t1tProdPub', [
     'clean:dist',
+    'set_global:task:t1tProdPub',
     'wiredep',
     'ngconstant:t1tprod',
     'less:dist',
@@ -1330,6 +1343,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('t1tProdMkt', [
     'clean:dist',
+    'set_global:task:t1tProdMkt',
     'wiredep',
     'ngconstant:t1tprod',
     'less:dist',
@@ -1347,6 +1361,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiDevPub', [
     'clean:dist',
+    'set_global:task:digiDevPub',
     'wiredep',
     'ngconstant:digiDevPub',
     'replace:pub',
@@ -1366,6 +1381,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiDevMkt', [
     'clean:dist',
+    'set_global:task:digiDevMkt',
     'wiredep',
     'ngconstant:digiDevMkt',
     'replace:mkt',
@@ -1385,6 +1401,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiDevMkt-int', [
     'clean:dist',
+    'set_global:task:digiDevMkt-int',
     'wiredep',
     'ngconstant:digiDevMktInt',
     'replace:mkt',
@@ -1404,6 +1421,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiDevMkt-ext', [
     'clean:dist',
+    'set_global:task:digiDevMkt-ext',
     'wiredep',
     'ngconstant:digiDevMktExt',
     'replace:mkt',
@@ -1423,6 +1441,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiAccPub', [
     'clean:dist',
+    'set_global:task:digiAccPub',
     'wiredep',
     'ngconstant:digiAccPub',
     'replace:pub',
@@ -1442,6 +1461,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiAccMkt', [
     'clean:dist',
+    'set_global:task:digiAccMkt',
     'wiredep',
     'ngconstant:digiAccMkt',
     'replace:mkt',
@@ -1461,6 +1481,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiAccMkt-int', [
     'clean:dist',
+    'set_global:task:digiAccMkt-int',
     'wiredep',
     'ngconstant:digiAccMktInt',
     'replace:mkt',
@@ -1480,6 +1501,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiAccMkt-ext', [
     'clean:dist',
+    'set_global:task:digiAccMkt-ext',
     'wiredep',
     'ngconstant:digiAccMktExt',
     'replace:mkt',
@@ -1499,6 +1521,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiProdPub', [
     'clean:dist',
+    'set_global:task:digiProdPub',
     'wiredep',
     'ngconstant:digiProdPub',
     'replace:pub',
@@ -1518,6 +1541,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiProdMkt', [
     'clean:dist',
+    'set_global:task:digiProdMkt',
     'wiredep',
     'ngconstant:digiProdMkt',
     'replace:mkt',
@@ -1537,6 +1561,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiProdMkt-int', [
     'clean:dist',
+    'set_global:task:digiProdMkt-int',
     'wiredep',
     'ngconstant:digiProdMktInt',
     'replace:mkt',
@@ -1556,6 +1581,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('digiProdMkt-ext', [
     'clean:dist',
+    'set_global:task:digiProdMkt-ext',
     'wiredep',
     'ngconstant:digiProdMktExt',
     'replace:mkt',
@@ -1575,6 +1601,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('testBuildPub', [
     'clean:dist',
+    'set_global:task:testBuildPub',
     'wiredep',
     'ngconstant:dev',
     'replace:pub',
@@ -1596,6 +1623,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('testBuildMkt', [
     'clean:dist',
+    'set_global:task:testBuildMkt',
     'wiredep',
     'ngconstant:dev',
     'replace:mkt',
@@ -1623,4 +1651,8 @@ module.exports = function (grunt) {
     'connect:test',
     'karma'
   ]);
+
+  grunt.registerTask('set_global', 'Set a global variable.', function(name, val) {
+    global[name] = val;
+  });
 };

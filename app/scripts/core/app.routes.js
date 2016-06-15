@@ -3,9 +3,11 @@
 
     angular.module('app.routes', ['ui.router'])
 
-    // UI-Router Routing Config
-        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
+    // UI-Router states
 
+        // UI-Router Routing Config
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
+            
             // UI-Router Conditional Redirects
             $urlRouterProvider.otherwise('/');
             if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
@@ -69,6 +71,12 @@
                         }
                     },
                     controller: 'HeadCtrl'
+                })
+
+                // UX Improvements testing state
+                .state('root.ux', {
+                    url: '/ux',
+                    templateUrl: 'views/ux.html'
                 })
 
                 // MARKETPLACE CONSUMER DASHBOARD =================================================

@@ -858,8 +858,7 @@
                         CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
                         '", "clientAppRedirect": "' + $sessionStorage.apimredurl + '", "token": "' +
                         CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-                    //TODO redirect to correct page!
-
+                    
                     return $http({
                         method: 'POST',
                         skipAuthorization: true,

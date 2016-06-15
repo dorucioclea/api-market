@@ -5,19 +5,19 @@
     <!-- site logo -->
       <span class="text site-logo">Categories</span>
   </div>
-
-
-
   <!-- Site nav (vertical) -->
 
   <nav class="site-nav clearfix" role="navigation">
     <!-- categories -->
-    <ul class="list-unstyled clearfix col-sm-offset-1 mt30 mb30">
-      <li ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
-        <a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>
+    <ul class="list-unstyled clearfix col-sm-offset-1 mb30">
+      <li class="category" ng-repeat="category in availableCategories" ng-click="toggleCategories(category)">
+        <p class="clickable"><a ng-class="{ 'text-primary': isCategorySelected(category), 'text-muted': !isCategorySelected(category) }">
+          <span class="fa fa-lg fa-tag"></span><span class="ml10">{{category}}</span>
+        </a></p>
+        <!--<a ng-class="isCategorySelected(category)" class="btn-tag btn-w170" href="javascript:;" md-ink-ripple>{{category}}</a>-->
       </li>
-      <li class="btn btn-xs" ng-click="clearSelectedCategories()" ng-hide="currentCategories.length == 0">
-        <h5 class="text-primary">Reset</h5>
+      <li class="btn mt10" ng-click="clearSelectedCategories()" ng-hide="currentCategories.length == 0">
+        <span class="text-primary">Reset</span>
       </li>
     </ul> <!-- #end navigation -->
   </nav>
@@ -39,59 +39,59 @@
 	<div class="page-wrap">
     <div class="row">
       <!-- dashboard header -->
-      <div class="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs">
-        <div class="dash-head clearfix mb20">
+      <div class="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs" style="padding-left: 0; padding-right: 0;">
+        <div class="dash-head clearfix">
           <div class="group left col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <button href class="mt5 btn btn-primary" ng-click="toggleNav()">
+            <span href class="mt5 btn btn-dashboard transparent-bg" ng-click="toggleNav()">
               <i class="ion ion-eye" ng-hide="navFull"></i>
               <i class="ion ion-eye-disabled" ng-show="navFull"></i>
               <span class="text">{{navFull? 'Hide' : 'Show' }} categories</span>
-            </button>
+            </span>
           </div>
           <div class="col-lg-9 col-md-9 col-sm-9 hidden-xs right">
-            <div class="mt5 mb5 ml10 mr10 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
-              <label class="btn btn-primary fa fa-th-large" ng-model="displayMode" uib-btn-radio="'Grid'" ui-sref=".grid"></label>
-              <label class="btn btn-primary fa fa-bars" ng-model="displayMode" uib-btn-radio="'List'" ui-sref=".list"></label>
+            <div class="mt5 mb5 pull-right btn-group" ng-init="displayMode=getInitialDisplayMode()">
+              <label class="btn btn-dashboard fa fa-bars" ng-model="displayMode" uib-btn-radio="'List'" ui-sref=".list"></label>
+              <label class="btn btn-dashboard fa fa-th-large" ng-model="displayMode" uib-btn-radio="'Grid'" ui-sref=".grid"></label>
             </div>
-            <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
-              <ul class="list-unstyled right-elems">
-                <li uib-dropdown>
-                  <a href uib-dropdown-toggle>
-                    <span class="text-primary mt10">Sort by:</span>
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      {{currentSorting}}
-                      <span class="caret"></span>
-                    </button>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li ng-click="currentSorting = 'Popular'"><a href="javascript:;">Popular</a></li>
-                    <li ng-click="currentSorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>
-                    <li ng-click="currentSorting = 'Newest'"><a href="javascript:;">Newest</a></li>
-                    <li class="divider"></li>
-                    <li ng-click="currentSorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">
-              <ul class="list-unstyled right-elems">
-                <li uib-dropdown>
-                  <a href uib-dropdown-toggle>
-                    <span class="text-primary mt10">Pricing:</span>
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      {{currentPricing}}
-                      <span class="caret"></span>
-                    </button>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li ng-click="currentPricing = 'All'"><a href="javascript:;">All</a></li>
-                    <li ng-click="currentPricing = 'Free'"><a href="javascript:;">Free</a></li>
-                    <li ng-click="currentPricing = 'Freemium'"><a href="javascript:;">Freemium</a></li>
-                    <li ng-click="currentPricing = 'Paid'"><a href="javascript:;">Paid</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+            <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
+              <!--<ul class="list-unstyled right-elems">-->
+                <!--<li dropdown>-->
+                  <!--<a href dropdown-toggle>-->
+                    <!--<span class="text-primary mt10">Sort by:</span>-->
+                    <!--<button class="btn btn-primary dropdown-toggle" type="button" id="sortingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                      <!--{{currentSorting}}-->
+                      <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                  <!--</a>-->
+                  <!--<ul class="dropdown-menu">-->
+                    <!--<li ng-click="currentSorting = 'Popular'"><a href="javascript:;">Popular</a></li>-->
+                    <!--<li ng-click="currentSorting = 'Relevant'"><a href="javascript:;">Relevant</a></li>-->
+                    <!--<li ng-click="currentSorting = 'Newest'"><a href="javascript:;">Newest</a></li>-->
+                    <!--<li class="divider"></li>-->
+                    <!--<li ng-click="currentSorting = 'My APIs'"><a href="javascript:;">My APIs</a></li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="mt5 mb5 ml10 mr10 hidden-sm pull-right">-->
+              <!--<ul class="list-unstyled right-elems">-->
+                <!--<li dropdown>-->
+                  <!--<a href dropdown-toggle>-->
+                    <!--<span class="text-primary mt10">Pricing:</span>-->
+                    <!--<button class="btn btn-primary dropdown-toggle" type="button" id="pricingMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                      <!--{{currentPricing}}-->
+                      <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                  <!--</a>-->
+                  <!--<ul class="dropdown-menu">-->
+                    <!--<li ng-click="currentPricing = 'All'"><a href="javascript:;">All</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Free'"><a href="javascript:;">Free</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Freemium'"><a href="javascript:;">Freemium</a></li>-->
+                    <!--<li ng-click="currentPricing = 'Paid'"><a href="javascript:;">Paid</a></li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
           </div>
         </div>
       </div>

@@ -83,7 +83,7 @@
     }
 
     /// ==== Service Swagger Documentation Controller
-    function documentationCtrl ($scope, $stateParams, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
+    function documentationCtrl ($scope, $stateParams, $timeout, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                                 docTester, docDownloader, svcTab, ApplicationVersion, ServiceVersionDefinition,
                                 oAuthService, toastService, TOAST_TYPES) {
         $scope.addHeader = addHeader;
@@ -106,6 +106,7 @@
         init();
 
         function init() {
+            $scope.isLoading = true;
             svcTab.updateTab('Documentation');
 
             // Initially all requested scopes will be selected
@@ -136,6 +137,9 @@
                 {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
                 function (definitionSpec) {
                     $scope.currentDefinitionSpec = definitionSpec;
+                    $timeout(function () {
+                        $scope.isLoading = false;
+                    }, 100);
                 });
         }
 

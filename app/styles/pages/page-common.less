@@ -45,6 +45,23 @@
 .follow-icon {
   font-weight: bolder;
   font-size: @font-size-h3 - 2;
+  color: @tink-gray-lighter;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+
+  &.not-following {
+    color: @tink-gray-lighter;
+    &:hover {
+      color: @brand-info;
+    }
+  }
+
+  &.following {
+    color: @brand-primary;
+    &:hover {
+      color: @brand-info;
+    }
+  }
 }
 
 .no-entities-arrow {
