@@ -796,9 +796,18 @@
                     case 'logout':
                     case 'root.apis.grid':
                     case 'root.apis.list':
+                    case 'root.api':
+                    case 'root.api.announcements':
+                    case 'root.api.documentation':
+                    case 'root.api.plans':
+                    case 'root.api.scopes':
+                    case 'root.api.support':
+                    case 'root.api.terms':
                     case 'root.search':
+                        console.log('no login required');
                         return false;
                     default:
+                        console.log('login required');
                         return true;
                 }
             }

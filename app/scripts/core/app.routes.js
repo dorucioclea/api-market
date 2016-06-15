@@ -63,11 +63,13 @@
                             }
                         },
                         notificationService: 'notificationService',
-                        notifications: function (notificationService) {
-                            return notificationService.getNotificationsForUser();
+                        notifications: function (notificationService, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return notificationService.getNotificationsForUser();
+                            else return [];
                         },
-                        pendingNotifications: function (notificationService) {
-                            return notificationService.getPendingNotificationsForUser();
+                        pendingNotifications: function (notificationService, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return notificationService.getPendingNotificationsForUser();
+                            else return [];
                         }
                     },
                     controller: 'HeadCtrl'
@@ -226,8 +228,7 @@
                         PublishedCategories: 'PublishedCategories',
                         categories: function (PublishedCategories) {
                             return PublishedCategories.query().$promise;
-                        },
-                        SearchLatestPublishedSvcsInCategories: 'SearchLatestPublishedSvcsInCategories'
+                        }
                     },
                     controller: 'DashboardCtrl'
                 })
