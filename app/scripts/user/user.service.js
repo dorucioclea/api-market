@@ -9,12 +9,25 @@
         this.getInfo = getInfo;
         this.update = update;
 
+        var currentUserInfo = undefined;
+
         function getInfo() {
-            return CurrentUserInfo.get().$promise;
+            // return CurrentUserInfo.get().$promise;
+            if (!currentUserInfo) {
+                return CurrentUserInfo.get().$promise.then(function (data) {
+                    currentUserInfo = data;
+                    return currentUserInfo;
+                })
+            } else {
+                return currentUserInfo;
+            }
         }
 
         function update(newUserInfo) {
-            return CurrentUserInfo.update({}, newUserInfo).$promise;
+            return CurrentUserInfo.update({}, newUserInfo).$promise.then(function (data) {
+                currentUserInfo = data;
+                return currentUserInfo;
+            });
         }
     }
 

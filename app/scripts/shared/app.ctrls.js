@@ -273,6 +273,7 @@
                 }
 
                 function toLogin() {
+                    console.log('login button redirect');
                     loginHelper.redirectToLogin();
                 }
 

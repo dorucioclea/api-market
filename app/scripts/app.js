@@ -38,6 +38,7 @@
             'app.api',
             'app.apiEngine',
             'app.core.components',
+            'app.core.login',
             'app.core.routes',
             'app.ctrl.auth.oauth',
             'app.ctrl.login',
@@ -74,14 +75,33 @@
         })
 
         .run(function($state, $rootScope, loginHelper) {
-
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+                console.log('state change!');
+                console.log(event);
+                console.log(fromState);
+                console.log(toState);
+                // if (!loginHelper.checkJWTInUrl()) {
+                //     if (!loginHelper.checkLoggedIn()) {
+                //         if (loginHelper.checkLoginRequiredForState(toState)) {
+                //             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                //         }
+                //     }
+                // }
                 if (loginHelper.checkLoginRequiredForState(toState)) {
                     console.log('login required!');
                     if (!loginHelper.checkLoggedIn()) {
-                        event.preventDefault();
-                        loginHelper.redirectToLogin();
+                        console.log('redirect to login');
+                        if (!loginHelper.checkJWTInUrl()) {
+                            console.log('stateChangeStart redirect');
+                            loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                        } else {
+                            console.log('jwt found');
+                        }
+                    } else {
+                        console.log('logged in');
                     }
+                } else {
+                    if (!loginHelper.checkLoggedIn()) loginHelper.checkJWTInUrl();
                 }
             });
 
@@ -91,7 +111,10 @@
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
-                            if (!loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
+                            if (!loginHelper.checkJWTInUrl()) {
+                                console.log('stateChangeError redirect');
+                                loginHelper.redirectToLogin();
+                            }
                             break;
                         default:
                             $state.get('error').error = error;
@@ -140,6 +163,7 @@
                             // Token is expired, user needs to relogin
                             console.log('Token expired, redirect to login');
                             delete $sessionStorage.jwt;
+                            console.log('tokenGetter redirect');
                             loginHelper.redirectToLogin();
                         } else {
                             // Token is still valid, check if we need to refresh

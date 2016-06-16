@@ -172,7 +172,6 @@
                 updateOAuthInfo(contract);
             }
             docTester.setApiKey(contract.apikey);
-            $scope.updateSwaggerApiKeyHeader();
         }
 
         function updateOAuthInfo(contract) {

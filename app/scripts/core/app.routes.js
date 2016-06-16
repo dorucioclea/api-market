@@ -9,19 +9,31 @@
         .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             // UI-Router Conditional Redirects
-            $urlRouterProvider.otherwise('/');
-            if (CONFIG.APP.PUBLISHER_MODE) $urlRouterProvider.when('/', '/my-organizations');
-            else $urlRouterProvider.when('/', '/apis/grid');
-            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
-                '/org/{orgId}/api/{svcId}/{versionId}/documentation');
-            $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
-            $urlRouterProvider.when('/org/{orgId}/', '/org/{orgId}/plans');
-            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}',
-                '/org/{orgId}/application/{appId}/{versionId}/overview');
-            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}',
-                '/org/{orgId}/service/{svcId}/{versionId}/overview');
-            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}',
-                '/org/{orgId}/plan/{planId}/{versionId}/policies');
+            $urlRouterProvider.otherwise(function($injector){
+                var $state = $injector.get("$state");
+                if (CONFIG.APP.PUBLISHER_MODE) $state.go('root.myOrganizations');
+                else $state.go('root.apis.list');
+            });
+            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.api.documentation');
+            });
+            $urlRouterProvider.when('/org/{orgId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.organization.plans')
+            });
+            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.application.overview')
+            });
+            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.service.overview')
+            });
+            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.plan.policies')
+            });
 
 
             // UI-Router States
@@ -58,8 +70,12 @@
                         currentUserInfo: function (currentUser, loginHelper) {
                             if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
                             else {
-                                if (loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
-                                else return {};
+                                if (loginHelper.checkJWTInUrl()) {
+                                    console.log('currentUserInfo redirect');
+                                    loginHelper.redirectToLogin();
+                                }
+                                else 
+                                    return {};
                             }
                         },
                         notificationService: 'notificationService',
