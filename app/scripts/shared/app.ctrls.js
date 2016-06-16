@@ -192,6 +192,7 @@
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
+                $scope.toLogin = toLogin;
                 $scope.toMarketDash = toMarketDash;
 
                 checkIsEmailPresent();
@@ -269,6 +270,10 @@
 
                 function toAccessDenied(){
                     $state.go('accessdenied');
+                }
+
+                function toLogin() {
+                    loginHelper.redirectToLogin();
                 }
 
                 function toMarketDash() {
