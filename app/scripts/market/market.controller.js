@@ -210,7 +210,7 @@
     }
 
     /// ==== Dashboard Controller
-    function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService, apiService, SearchLatestPublishedSvcsInCategories) {
+    function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService, apiService) {
 
         headerModel.setIsButtonVisible(false, true, true);
         $scope.currentSorting = 'Popular';
@@ -259,9 +259,7 @@
                 });
             } else {
                 // Get APIs for selected categories
-                var selection = {};
-                selection.categories = $scope.currentCategories;
-                SearchLatestPublishedSvcsInCategories.query(selection, function (data) {
+                apiService.getMarketplaceApisInCategories($scope.currentCategories).then(function (data) {
                     $scope.availableAPIs = data;
                 });
             }

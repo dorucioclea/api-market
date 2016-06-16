@@ -15,7 +15,7 @@
             });
         })
         .factory('MktSearchLatestPublishedSvcsInCategories', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest/categories', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions/latest/categories', {}, {
                 query: {
                     method: 'POST', isArray: true
                 }

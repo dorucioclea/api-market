@@ -8,8 +8,9 @@
     function apiService(MktSearchLatestServiceVersions, MktPublishedCategories, MktServicePolicies, MktServicePlans,
                         MktServiceSupportTickets, MktServiceAnnouncementsAll, MktServiceAvailability,
                         MktServiceVersionPolicy, MktServiceVersionContracts, MktServiceEndpoint, MktServiceVersion,
-                        MktServiceVersionDefinition) {
+                        MktServiceVersionDefinition, MktSearchLatestPublishedSvcsInCategories) {
         this.getMarketplaceApis = getMarketplaceApis;
+        this.getMarketplaceApisInCategories = getMarketplaceApisInCategories;
         this.getPublishedCategories = getPublishedCategories;
         this.getServiceAnnouncements = getServiceAnnouncements;
         this.getServiceAvailability = getServiceAvailability;
@@ -29,6 +30,10 @@
             return MktSearchLatestServiceVersions.query({},
                 {filters: [{name: "status", value: "Published", operator: 'eq'}]}
             ).$promise;
+        }
+        
+        function getMarketplaceApisInCategories(categoriesArray) {
+            return MktSearchLatestPublishedSvcsInCategories.query({ categories: categoriesArray }).$promise;
         }
 
         function getPublishedCategories() {
