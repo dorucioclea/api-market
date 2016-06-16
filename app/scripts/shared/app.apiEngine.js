@@ -75,7 +75,7 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
         })
         .factory('OrgIncomingNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/:notificationId');
         })
         .factory('OrgOutgoingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing');
