@@ -51,7 +51,7 @@
                 };
                 setHeader();
 
-                $scope.navFull = true;
+                $scope.navFull = false;
                 $scope.toggleNav = function() {
                     $scope.navFull = $scope.navFull ? false : true;
                     $rs.navOffCanvas = $rs.navOffCanvas ? false : true;

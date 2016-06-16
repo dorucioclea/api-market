@@ -12,7 +12,7 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $uibModal, svcData, svcModel, svcTab,
+    function apiDocCtrl($scope, $uibModal, svcData, svcModel, svcTab, loginHelper,
                         headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
@@ -22,6 +22,7 @@
         $scope.retired = $scope.serviceVersion.status === 'Retired';
         $scope.hasOAuth = svcData.provisionKey !== null && svcData.provisionKey.length > 0;
         $scope.displayTab = svcTab;
+        $scope.loggedIn = loginHelper.checkLoggedIn();
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.support = support;

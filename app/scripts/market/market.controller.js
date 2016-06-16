@@ -210,8 +210,7 @@
     }
 
     /// ==== Dashboard Controller
-    function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService,
-                            SearchLatestServiceVersions, SearchLatestPublishedSvcsInCategories) {
+    function dashboardCtrl ($scope, $state, svcData, categories, headerModel, toastService, apiService, SearchLatestPublishedSvcsInCategories) {
 
         headerModel.setIsButtonVisible(false, true, true);
         $scope.currentSorting = 'Popular';
@@ -255,12 +254,9 @@
 
         function refreshServiceList() {
             if ($scope.currentCategories.length === 0) {
-                SearchLatestServiceVersions.query({},
-                    {filters: [{name: "status", value: "Published", operator: 'eq'}]}
-                    , function (data) {
-                        $scope.availableAPIs = data.beans;
-                    });
-
+                apiService.getMarketplaceApis().then(function (data) {
+                    $scope.availableAPIs = data.beans;
+                });
             } else {
                 // Get APIs for selected categories
                 var selection = {};

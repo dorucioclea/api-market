@@ -14,6 +14,13 @@
                 }
             });
         })
+        .factory('MktSearchLatestPublishedSvcsInCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/search/services/versions/latest/categories', {}, {
+                query: {
+                    method: 'POST', isArray: true
+                }
+            });
+        })
         .factory('MktPublishedCategories', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
         })
@@ -48,6 +55,7 @@
         .factory('MktServiceVersionDefinition', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition');
         })
+
             
 
         /// ========== ACTIONS ==========================================================================
