@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app.routes', ['ui.router'])
+    angular.module('app.core.routes', ['ui.router'])
 
     // UI-Router states
 
