@@ -2,7 +2,7 @@
 // =============================
 .dash.nav-wrap {
   margin-top: @site-head-height;
-  background: @site-nav-bg;
+  background: darken(@brand-primary, 15%);
   z-index: @zindex-navbar-fixed;
   .transition(.25s ease-in);
   box-shadow: 2px 0 10px rgba(0,0,0,.1);
@@ -43,10 +43,10 @@
     .transition(.25s ease-in);
     padding-left: 15px;
     z-index: @zindex-navbar;
-    background: #fff;
+    background: darken(@brand-primary, 15%);
     //box-shadow: 0 2px 8px rgba(0,0,0,.25);
     .site-logo {
-      color: @brand-primary;
+      color: #fff;
       font-weight: bolder;
       .vertical-center();
       font-size: @font-size-h3 - 2;
@@ -63,21 +63,23 @@
     }
   }
   .nav-foot {
-    background: darken(@site-nav-bg, 6%);
+    background: darken(@brand-primary, 15%);
+    color: #fff;
     position: fixed;
     bottom: 0;
     width: @site-nav-width;
-    opacity: .95;
+    //opacity: .95;
     font-size: @font-size-small;
     text-align: center;
     display:table;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 0;
+    //box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
     padding: 6px;
     visibility: hidden;
     text-transform: uppercase;
     white-space: nowrap;
     p { .vertical-center(); margin-bottom: 0;}
-    p > span {color: @m-blue-gray}
+    p > span {color: white}
   }
 
 
@@ -86,6 +88,12 @@
 
   .site-nav { margin-top: @site-head-height;}
   .site-nav {
+    a {
+      color: white;
+      &:hover {
+        color: #ccc;
+      }
+    }
     .profile {
       padding: 10px 0px 10px 7px;
       box-shadow: 0 1px 2px rgba(0,0,0,.05);

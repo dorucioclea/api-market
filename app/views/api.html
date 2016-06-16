@@ -5,10 +5,9 @@
       </uib-alert>
     </div>
   <div class="page-wrap">
-
-    <div class="row">
-      <div class="panel">
-        <div class="panel-body">
+    <div class="row api-row breadcrumbs">
+      <div class="panel" style="border: 0;">
+        <div class="panel-body" style="padding-top: 10px; padding-bottom: 10px">
           <ol class="breadcrumb breadcrumb-small mb0">
             <li><a ui-sref="root.apis.list">Marketplace</a></li>
             <li class="active"><a ui-sref="root.api.documentation({orgId: serviceVersion.service.organization.id, svcId: serviceVersion.service.id})">{{serviceVersion.service.name}}</a></li>
@@ -17,7 +16,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row api-row">
       <div class="panel">
         <div class="panel-body">
           <!-- Main API info panel -->
@@ -32,7 +31,8 @@
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="!loggedIn">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <p class="small text-muted text-light" ng-if="!loggedIn">Log in if you want to make use of this service.</p>
             </div>
             <div class="col-sm-12 text-primary">
               <span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row api-row">
       <div class="col-sm-12 bg-primary">
         <div class="btn-group btn-radio">
           <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Documentation'" ui-sref=".documentation">Documentation</label>
