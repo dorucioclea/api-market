@@ -1,7 +1,7 @@
 ;(function() {
     'use strict';
 
-    angular.module('app.api', [])
+    angular.module('app.api')
 
     /// ==== Service Doc Main Controller
         .controller('ApiDocCtrl', apiDocCtrl)
@@ -34,7 +34,7 @@
             $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
         $scope.followAction = followAction;
 
-        
+
         function hasTerms() {
             return $scope.serviceVersion.service.terms !== null &&
                 $scope.serviceVersion.service.terms.length > 0;
@@ -84,7 +84,7 @@
 
     /// ==== Service Swagger Documentation Controller
     function documentationCtrl ($scope, $stateParams, $timeout, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
-                                docTester, docDownloader, svcTab, ApplicationVersion, ServiceVersionDefinition,
+                                docTester, docDownloader, svcTab, ApplicationVersion, apiService,
                                 oAuthService, toastService, TOAST_TYPES) {
         $scope.addHeader = addHeader;
         $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
@@ -133,9 +133,8 @@
                 $scope.selectedContract = undefined;
             }
 
-            ServiceVersionDefinition.get(
-                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: $stateParams.versionId},
-                function (definitionSpec) {
+            apiService.getServiceVersionDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId)
+                .then(function (definitionSpec) {
                     $scope.currentDefinitionSpec = definitionSpec;
                     $timeout(function () {
                         $scope.isLoading = false;

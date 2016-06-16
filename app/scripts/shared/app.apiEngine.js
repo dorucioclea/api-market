@@ -7,15 +7,46 @@
         
         /// ########### SPECIAL MARKETPLACE ENDPOINTS: NO JWT REQUIRED ########################
 
-        .factory('MarketplaceSearchLatestServiceVersions', function ($resource, CONFIG) {
+        .factory('MktSearchLatestServiceVersions', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/search/services/versions/latest', {}, {
                 query: {
                     method: 'POST'
                 }
             });
         })
-        .factory('MarketplacePublishedCategories', function ($resource, CONFIG) {
+        .factory('MktPublishedCategories', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
+        })
+        .factory('MktServiceSupportTickets', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/support/:supportId');
+        })
+        .factory('MktServiceAnnouncementsAll', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/announcement/all');
+        })
+        .factory('MktServiceAvailability', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability');
+        })
+        .factory('MktServicePolicies', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plugins');
+        })
+        .factory('MktServicePlans', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans');
+        })
+        .factory('MktServiceVersionPolicy', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL +
+                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+        })
+        .factory('MktServiceVersionContracts', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts');
+        })
+        .factory('MktServiceEndpoint', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
+        })
+        .factory('MktServiceVersion', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId');
+        })
+        .factory('MktServiceVersionDefinition', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition');
         })
             
 
