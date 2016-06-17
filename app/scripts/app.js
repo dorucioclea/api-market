@@ -76,10 +76,6 @@
 
         .run(function($state, $rootScope, loginHelper) {
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
-                console.log('state change!');
-                console.log(event);
-                console.log(fromState);
-                console.log(toState);
                 if (!loginHelper.checkLoggedIn()) {
                     if (!loginHelper.checkJWTInUrl()) {
                         if (loginHelper.checkLoginRequiredForState(toState)) {
@@ -90,22 +86,6 @@
                         loginHelper.extractJWTFromUrl();
                     }
                 }
-                // if (loginHelper.checkLoginRequiredForState(toState)) {
-                //     console.log('login required!');
-                //     if (!loginHelper.checkLoggedIn()) {
-                //         console.log('redirect to login');
-                //         if (!loginHelper.checkJWTInUrl()) {
-                //             console.log('stateChangeStart redirect');
-                //             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
-                //         } else {
-                //             console.log('jwt found');
-                //         }
-                //     } else {
-                //         console.log('logged in');
-                //     }
-                // } else {
-                //     if (!loginHelper.checkLoggedIn()) loginHelper.checkJWTInUrl();
-                // }
             });
 
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {

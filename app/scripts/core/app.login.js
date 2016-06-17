@@ -57,14 +57,7 @@
                 console.log('jwt found');
                 $sessionStorage.jwt = jwt;
                 delete $sessionStorage.loginInProgress;
-                // if ($sessionStorage.redirect) {
-                //     var redirect = $sessionStorage.redirect;
-                // }
-                delete $sessionStorage.redirect;
-                // if (redirect)
-                // window.location.href = 'http://localhost:9000/';
-                // else
-                window.location.href = window.location.origin;
+                $location.search('jwt', null);
                 console.log('logged in');
                 deferred.resolve("Logged In");
             } else {
@@ -109,14 +102,12 @@
                 if (CONFIG.SECURITY.WSO2_LOGIN_FIX) {
                     $sessionStorage.loginInProgress = true;
                 }
-                if (!$sessionStorage.redirect) {
-                    if (redirectUrl) $sessionStorage.redirect = redirectUrl;
-                    else $sessionStorage.redirect = window.location.href;
-                }
+                var redirect = window.location.href;
+                if (redirectUrl) redirect = redirectUrl;
                 var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
                 var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                     CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                    '", "clientAppRedirect": "' + $sessionStorage.redirect + '", "token": "' +
+                    '", "clientAppRedirect": "' + redirect + '", "token": "' +
                     CONFIG.SECURITY.CLIENT_TOKEN + '"}';
 
                 return $http({
