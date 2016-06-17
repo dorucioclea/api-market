@@ -46,7 +46,6 @@
             'app.ctrl.modals.lifecycle',
             'app.ctrl.modals.support',
             'app.ctrl.plan',
-            'app.ctrl.user',
             'app.administration',
             'app.applications',
             'app.contracts',
