@@ -80,29 +80,32 @@
                 console.log(event);
                 console.log(fromState);
                 console.log(toState);
-                // if (!loginHelper.checkJWTInUrl()) {
-                //     if (!loginHelper.checkLoggedIn()) {
-                //         if (loginHelper.checkLoginRequiredForState(toState)) {
-                //             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
-                //         }
-                //     }
-                // }
-                if (loginHelper.checkLoginRequiredForState(toState)) {
-                    console.log('login required!');
-                    if (!loginHelper.checkLoggedIn()) {
-                        console.log('redirect to login');
-                        if (!loginHelper.checkJWTInUrl()) {
-                            console.log('stateChangeStart redirect');
+                if (!loginHelper.checkLoggedIn()) {
+                    if (!loginHelper.checkJWTInUrl()) {
+                        if (loginHelper.checkLoginRequiredForState(toState)) {
+                            event.preventDefault();
                             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
-                        } else {
-                            console.log('jwt found');
                         }
                     } else {
-                        console.log('logged in');
+                        loginHelper.extractJWTFromUrl();
                     }
-                } else {
-                    if (!loginHelper.checkLoggedIn()) loginHelper.checkJWTInUrl();
                 }
+                // if (loginHelper.checkLoginRequiredForState(toState)) {
+                //     console.log('login required!');
+                //     if (!loginHelper.checkLoggedIn()) {
+                //         console.log('redirect to login');
+                //         if (!loginHelper.checkJWTInUrl()) {
+                //             console.log('stateChangeStart redirect');
+                //             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                //         } else {
+                //             console.log('jwt found');
+                //         }
+                //     } else {
+                //         console.log('logged in');
+                //     }
+                // } else {
+                //     if (!loginHelper.checkLoggedIn()) loginHelper.checkJWTInUrl();
+                // }
             });
 
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {

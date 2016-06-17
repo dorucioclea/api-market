@@ -5,15 +5,26 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($http, $sessionStorage, $state, $location, CONFIG) {
+    function loginHelper($q, $http, $sessionStorage, $state, $location, CONFIG) {
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
+        this.checkJWTInSession = checkJWTInSession;
         this.checkJWTInUrl = checkJWTInUrl;
+        this.extractJWTFromUrl = extractJWTFromUrl;
         this.logout = logout;
         this.redirectToLogin = redirectToLogin;
 
         function checkLoggedIn() {
+            return checkJWTInSession();
+        }
+
+        function checkJWTInSession() {
             return !!$sessionStorage.jwt;
+        }
+
+        function checkJWTInUrl() {
+            var jwt = $location.search().jwt;
+            return (jwt && jwt.length > 0);
         }
 
         function checkLoginRequiredForState(currentState) {
@@ -38,23 +49,28 @@
             }
         }
 
-        function checkJWTInUrl() {
+        function extractJWTFromUrl() {
+            var deferred = $q.defer();
+
             var jwt = $location.search().jwt;
             if (jwt && jwt.length > 0) {
                 console.log('jwt found');
-                console.log($sessionStorage);
                 $sessionStorage.jwt = jwt;
                 delete $sessionStorage.loginInProgress;
-                if ($sessionStorage.redirect) {
-                    var redirect = angular.copy($sessionStorage.redirect);
-                }
+                // if ($sessionStorage.redirect) {
+                //     var redirect = $sessionStorage.redirect;
+                // }
                 delete $sessionStorage.redirect;
-                if (redirect) window.location.href = redirect;
-                console.log($sessionStorage);
-                return true;
+                // if (redirect)
+                // window.location.href = 'http://localhost:9000/';
+                // else
+                window.location.href = window.location.origin;
+                console.log('logged in');
+                deferred.resolve("Logged In");
             } else {
-                return false;
+                // return false;
             }
+            return deferred.promise;
         }
 
         function logout() {

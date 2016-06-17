@@ -68,13 +68,13 @@
                     resolve: {
                         currentUser: 'currentUser',
                         currentUserInfo: function (currentUser, loginHelper) {
-                            if (loginHelper.checkLoggedIn()) return currentUser.getInfo();
+                            if (loginHelper.checkJWTInSession()) return currentUser.getInfo();
                             else {
                                 if (loginHelper.checkJWTInUrl()) {
-                                    console.log('currentUserInfo redirect');
-                                    loginHelper.redirectToLogin();
+                                    console.log('JWT in URL');
+                                    return loginHelper.extractJWTFromUrl();
                                 }
-                                else 
+                                else
                                     return {};
                             }
                         },

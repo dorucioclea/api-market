@@ -176,8 +176,6 @@
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
                 $scope.loggedIn = loginHelper.checkLoggedIn();
-                $scope.showExplore = headerModel.showExplore;
-                $scope.showDash = headerModel.showDash;
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
                 currentUserModel.setCurrentUserInfo(currentUserInfo);
