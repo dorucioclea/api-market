@@ -41,6 +41,8 @@
                 //Make currentUserModel available to all child controllers
                 $scope.User = currentUserModel;
 
+                $scope.toasts = toastService.toasts;
+
                 $scope.togglePublisher = function () {
                     $scope.publisherMode = !$scope.publisherMode;
                     setHeader();
@@ -52,7 +54,6 @@
                 setHeader();
 
                 $scope.navFull = false;
-                $scope.fixedHeader = true;
 
                 $scope.toggleNav = function() {
                     $scope.navFull = $scope.navFull ? false : true;
