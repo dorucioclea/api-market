@@ -77,8 +77,14 @@
 
 </ul>
 
+<ul class="list-unstyled right-elems" ng-if="!loggedIn" >
+    <li class="pr20">
+        <button ng-click="toLogin()" class="btn btn-tag-primary btn-header"><i class="ion ion-log-in"></i>Login</button>
+    </li>
+</ul>
 
-<ul class="list-unstyled right-elems">
+
+<ul class="list-unstyled right-elems" ng-if="loggedIn">
 
     <li>
         <span ui-sref="root.myOrganizations" class="btn btn-header ml10 mr15">My Orgs</span>

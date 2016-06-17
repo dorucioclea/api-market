@@ -38,7 +38,7 @@
         }
         
         function updateServiceVersion(orgId, svcId, versionId, updateObject) {
-            return ServiceVersion.update({ orgId: orgId, svcId: svcId, versionId: versionId }, updateObject).$promise
+            return ServiceVersion.updFate({ orgId: orgId, svcId: svcId, versionId: versionId }, updateObject).$promise
         }
 
         function updateTerms(orgId, svcId, termsObject) {

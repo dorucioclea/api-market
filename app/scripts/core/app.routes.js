@@ -1,26 +1,39 @@
 (function () {
     'use strict';
 
-    angular.module('app.routes', ['ui.router'])
+    angular.module('app.core.routes', ['ui.router'])
 
     // UI-Router states
 
-        // UI-Router Routing Config
-        .config(function ($stateProvider, $urlRouterProvider) {
+    // UI-Router Routing Config
+        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
 
             // UI-Router Conditional Redirects
-            $urlRouterProvider.otherwise('/');
-            $urlRouterProvider.when('/', '/my-organizations');
-            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}',
-                '/org/{orgId}/api/{svcId}/{versionId}/documentation');
-            $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
-            $urlRouterProvider.when('/org/{orgId}/', '/org/{orgId}/plans');
-            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}',
-                '/org/{orgId}/application/{appId}/{versionId}/overview');
-            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}',
-                '/org/{orgId}/service/{svcId}/{versionId}/overview');
-            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}',
-                '/org/{orgId}/plan/{planId}/{versionId}/policies');
+            $urlRouterProvider.otherwise(function($injector){
+                var $state = $injector.get("$state");
+                if (CONFIG.APP.PUBLISHER_MODE) $state.go('root.myOrganizations');
+                else $state.go('root.apis.list');
+            });
+            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.api.documentation');
+            });
+            $urlRouterProvider.when('/org/{orgId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.organization.plans')
+            });
+            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.application.overview')
+            });
+            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.service.overview')
+            });
+            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', function($injector){
+                var $state = $injector.get("$state");
+                $state.go('root.plan.policies')
+            });
 
 
             // UI-Router States
@@ -53,16 +66,26 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        CurrentUserInfo: 'CurrentUserInfo',
-                        currentUser: function (CurrentUserInfo) {
-                            return CurrentUserInfo.get().$promise;
+                        currentUser: 'currentUser',
+                        currentUserInfo: function (currentUser, loginHelper) {
+                            if (loginHelper.checkJWTInSession()) return currentUser.getInfo();
+                            else {
+                                if (loginHelper.checkJWTInUrl()) {
+                                    console.log('JWT in URL');
+                                    return loginHelper.extractJWTFromUrl();
+                                }
+                                else
+                                    return {};
+                            }
                         },
                         notificationService: 'notificationService',
-                        notifications: function (notificationService) {
-                            return notificationService.getNotificationsForUser();
+                        notifications: function (notificationService, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return notificationService.getNotificationsForUser();
+                            else return [];
                         },
-                        pendingNotifications: function (notificationService) {
-                            return notificationService.getPendingNotificationsForUser();
+                        pendingNotifications: function (notificationService, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return notificationService.getPendingNotificationsForUser();
+                            else return [];
                         }
                     },
                     controller: 'HeadCtrl'
@@ -212,17 +235,13 @@
                     url: '/apis',
                     templateUrl: '/views/dashboard.html',
                     resolve: {
-                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
-                        svcData: function (SearchLatestServiceVersions) {
-                            return SearchLatestServiceVersions.query({},
-                                {filters: [{name: "status", value: "Published", operator: 'eq'}]}
-                            ).$promise;
+                        apiService: 'apiService',
+                        svcData: function (apiService) {
+                            return apiService.getMarketplaceApis();
                         },
-                        PublishedCategories: 'PublishedCategories',
-                        categories: function (PublishedCategories) {
-                            return PublishedCategories.query().$promise;
-                        },
-                        SearchLatestPublishedSvcsInCategories: 'SearchLatestPublishedSvcsInCategories'
+                        categories: function (apiService) {
+                            return apiService.getPublishedCategories();
+                        }
                     },
                     controller: 'DashboardCtrl'
                 })
@@ -243,12 +262,9 @@
                     url: '/search?query',
                     templateUrl: '/views/search.html',
                     resolve: {
-                        SearchLatestServiceVersions: 'SearchLatestServiceVersions',
-                        svcData: function (SearchLatestServiceVersions, $stateParams) {
-                            return SearchLatestServiceVersions.query({},
-                                {filters: [{name: 'name', value: '%' + $stateParams.query + '%', operator: 'like'},
-                                    {name: 'status', value: 'Published', operator: 'eq'}]}
-                            ).$promise;
+                        apiService: 'apiService',
+                        svcData: function (apiService, $stateParams) {
+                            apiService.searchMarketplaceApis($stateParams.query);
                         }
                     },
                     controller: 'ApiSearchCtrl'
@@ -259,9 +275,9 @@
                     url: '/org/:orgId/api/:svcId/:versionId',
                     templateUrl: 'views/api.html',
                     resolve: {
-                        service: 'service',
-                        svcData: function (service, organizationId, serviceId, versionId) {
-                            return service.getVersion(organizationId, serviceId, versionId);
+                        apiService: 'apiService',
+                        svcData: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersion(organizationId, serviceId, versionId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
@@ -272,9 +288,8 @@
                         versionId: function ($stateParams) {
                             return $stateParams.versionId;
                         },
-                        ServiceSupportTickets: 'ServiceSupportTickets',
-                        support: function (ServiceSupportTickets, organizationId, serviceId) {
-                            return ServiceSupportTickets.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        support: function (apiService, organizationId, serviceId) {
+                            return apiService.getServiceSupportTickets(organizationId, serviceId);
                         }
                     },
                     controller: 'ApiDocCtrl'
@@ -284,9 +299,9 @@
                     url: '/announcements',
                     templateUrl: 'views/partials/api/announcements.html',
                     resolve: {
-                        ServiceAnnouncementsAll: 'ServiceAnnouncementsAll',
-                        announcements: function (ServiceAnnouncementsAll, organizationId, serviceId) {
-                            return ServiceAnnouncementsAll.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        apiService: 'apiService',
+                        announcements: function (apiService, organizationId, serviceId) {
+                            return apiService.getServiceAnnouncements(organizationId,serviceId);
                         }
                     },
                     controller: 'AnnouncementCtrl'
@@ -296,59 +311,47 @@
                     url: '/documentation',
                     templateUrl: 'views/partials/api/documentation.html',
                     resolve: {
-                        ServiceEndpoint: 'ServiceEndpoint',
-                        endpoint: function (ServiceEndpoint, organizationId, serviceId, versionId) {
-                            return ServiceEndpoint.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        apiService: 'apiService',
+                        endpoint: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
                         },
-                        ServiceVersionContracts: 'ServiceVersionContracts',
-                        svcContracts: function (ServiceVersionContracts, organizationId, serviceId, versionId) {
-                            return ServiceVersionContracts.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        svcContracts: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionContracts(organizationId, serviceId, versionId);
                         },
-                        ServiceVersionPolicy: 'ServiceVersionPolicy',
-                        oAuthPolicy: function ($q, ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise
-                                .then(function (result) {
-                                    var oAuthPolicy = {};
-                                    var promises = [];
+                        svcPolicies: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
+                        },
+                        oAuthPolicy: function ($q, apiService, svcPolicies, organizationId, serviceId, versionId) {
+                            var oAuthPolicy = {};
+                            var promises = [];
 
-                                    angular.forEach(result, function (policy) {
-                                        if (policy.policyDefinitionId === 'OAuth2') {
-                                            promises.push(ServiceVersionPolicy.get(
-                                                {orgId: organizationId,
-                                                    svcId: serviceId,
-                                                    versionId: versionId,
-                                                    policyId: policy.id}).$promise);
-                                        }
-                                    });
+                            angular.forEach(svcPolicies, function (policy) {
+                                if (policy.policyDefinitionId === 'OAuth2') {
+                                    promises.push(apiService.getServiceVersionPolicy(organizationId, serviceId, versionId, policy.id));
+                                }
+                            });
 
-                                    return $q.all(promises).then(function (results) {
-                                        angular.forEach(results, function (details) {
-                                            oAuthPolicy = details;
-                                        });
-                                        return oAuthPolicy;
-                                    });
-
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    oAuthPolicy = details;
                                 });
+                                return oAuthPolicy;
+                            });
                         },
-                        jwtEnabled: function ($q, ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise
-                                .then(function (result) {
-                                    var jwt = false;
-                                    angular.forEach(result, function (policy) {
-                                        if (policy.policyDefinitionId === 'JWT') {
-                                            jwt = true;
-                                        }
-                                    });
-                                    return jwt;
-                                });
+                        jwtEnabled: function (svcPolicies) {
+                            var jwt = false;
+                            angular.forEach(svcPolicies, function (policy) {
+                                if (policy.policyDefinitionId === 'JWT') {
+                                    jwt = true;
+                                }
+                            });
+                            return jwt;
                         },
+                        loginHelper: 'loginHelper',
                         CurrentUserApps: 'CurrentUserApps',
-                        userApps: function (CurrentUserApps) {
-                            return CurrentUserApps.query().$promise;
+                        userApps: function (CurrentUserApps, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return CurrentUserApps.query().$promise;
+                            else return [];
                         }
                     },
                     controller: 'DocumentationCtrl'
@@ -358,15 +361,12 @@
                     url: '/plans',
                     templateUrl: 'views/partials/api/plans.html',
                     resolve: {
-                        ServiceVersionPolicy: 'ServiceVersionPolicy',
-                        svcPolicies: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        apiService: 'apiService',
+                        svcPolicies: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
                         },
-                        ServicePlans: 'ServicePlans',
-                        planData: function (ServicePlans, organizationId, serviceId, versionId) {
-                            return ServicePlans.query(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        planData: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServicePlans(organizationId, serviceId, versionId);
                         }
                     },
                     controller: 'SvcPlanCtrl'
@@ -376,18 +376,13 @@
                     url: '/scopes',
                     templateUrl: 'views/partials/api/scopes.html',
                     resolve: {
-                        ServiceMkts: 'ServiceMkts',
-                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
-                            return ServiceMkts.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        apiService: 'apiService',
+                        serviceMarketplaces: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceAvailability(organizationId, serviceId, versionId);
                         },
-                        ServicePolicies: 'ServicePolicies',
-                        servicePolicies: function(ServicePolicies, organizationId, serviceId, versionId){
-                            return ServicePolicies.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}
-                            ).$promise;
+                        servicePolicies: function(apiService, organizationId, serviceId, versionId){
+                            return apiService.getServicePolicies(organizationId, serviceId, versionId);
                         }
-
                     },
                     controller: 'SvcScopeCtrl'
                 })

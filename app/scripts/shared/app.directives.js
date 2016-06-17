@@ -495,8 +495,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $uibModal, ServiceTicketComments, CurrentUserInfo,
-                              toastService, TOAST_TYPES) {
+                    function ($scope, $modal, ServiceTicketComments, toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
                         this.isServiceOwner = isServiceOwner;

@@ -51,7 +51,7 @@
                 };
                 setHeader();
 
-                $scope.navFull = true;
+                $scope.navFull = false;
                 $scope.toggleNav = function() {
                     $scope.navFull = $scope.navFull ? false : true;
                     $rs.navOffCanvas = $rs.navOffCanvas ? false : true;
@@ -172,14 +172,13 @@
 
         .controller('HeadCtrl',
             function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUser, notifications, pendingNotifications,
+                     currentUserInfo, notifications, pendingNotifications,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
-                     toastService, jwtHelper, EVENTS) {
-                $scope.showExplore = headerModel.showExplore;
-                $scope.showDash = headerModel.showDash;
+                     toastService, jwtHelper, loginHelper, EVENTS) {
+                $scope.loggedIn = loginHelper.checkLoggedIn();
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
-                currentUserModel.setCurrentUserInfo(currentUser);
+                currentUserModel.setCurrentUserInfo(currentUserInfo);
                 $scope.notifications = notifications;
                 $scope.pendingNotifications = pendingNotifications;
                 $scope.toasts = toastService.toasts;
@@ -191,6 +190,7 @@
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
+                $scope.toLogin = toLogin;
                 $scope.toMarketDash = toMarketDash;
 
                 checkIsEmailPresent();
@@ -205,7 +205,7 @@
                 });
 
                 function checkIsEmailPresent() {
-                    if (!$scope.User.currentUser.email) {
+                    if ($scope.loggedIn && !$scope.User.currentUser.email) {
                         console.log('no email!');
 
                         $uibModal.open({
@@ -270,6 +270,11 @@
                     $state.go('accessdenied');
                 }
 
+                function toLogin() {
+                    console.log('login button redirect');
+                    loginHelper.redirectToLogin();
+                }
+
                 function toMarketDash() {
                     if ($scope.orgScreenModel.organization === undefined) {
                         $state.go('root.myOrganizations');
@@ -286,7 +291,7 @@
 
             })
 
-        .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, CurrentUserInfo) {
+        .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, currentUser) {
             $scope.updateEmail = updateEmail;
             $scope.username = currentInfo.fullName;
 
@@ -301,7 +306,7 @@
                     pic: currentInfo.base64pic
                 };
 
-                CurrentUserInfo.update({}, updateObject, function (reply) {
+                currentUser.update(updateObject).then(function () {
                     currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
                         $uibModalInstance.close('Updated');

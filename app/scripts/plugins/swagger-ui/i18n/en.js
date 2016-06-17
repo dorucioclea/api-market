@@ -52,6 +52,7 @@ angular
 				explorerCode: 'Response code',
 				explorerHeaders: 'Response headers',
 				explorerLoading: 'Loading...',
+				explorerLogInToTryIt: 'Log in now to try this operation!',
 				explorerTryIt: 'Try it out!',
 				errorNoParserFound: 'No parser found for Swagger specification of type {{type}} and version {{version}}',
 				errorParseFailed: 'Failed to parse Swagger specification: {{message}}',

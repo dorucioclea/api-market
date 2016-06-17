@@ -517,7 +517,7 @@
         .controller('EditImgCtrl',
             function ($scope, $uibModal, $state, $stateParams, flowFactory, alertService,
                       imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
-                      Application, CurrentUserInfo, Service) {
+                      Application, currentUser, Service) {
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({
@@ -602,9 +602,8 @@
                                 });
                             break;
                         case 'User':
-                            CurrentUserInfo.update({},
-                                updateObject,
-                                function (reply) {
+                            currentUser.update(updateObject).then(
+                                function () {
                                     handleResult(true, 'Profile pictured saved!');
                                 }, function (error) {
                                     handleResult(false, 'Could not update Profile Picture.', error);

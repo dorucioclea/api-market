@@ -57,7 +57,9 @@ angular
                 // Custom headers to be appended to requests
                 customHeaders: '=',
                 // Indicates if the JWT should be sent along with the request
-                jwtEnabled: '='
+                jwtEnabled: '=',
+				// Indicates if the current user is logged in
+				loggedIn: '='
 			},
 			link: function(scope) {
 				// check parameters

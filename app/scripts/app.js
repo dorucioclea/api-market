@@ -37,6 +37,9 @@
             'app.filters',
             'app.api',
             'app.apiEngine',
+            'app.core.components',
+            'app.core.login',
+            'app.core.routes',
             'app.ctrl.auth.oauth',
             'app.ctrl.login',
             'app.ctrl.modals',
@@ -51,7 +54,6 @@
             'app.members',
             'app.notifications',
             'app.organizations',
-            'app.routes',
             'app.service',
             'app.swagger',
             'app.user'
@@ -73,13 +75,29 @@
         })
 
         .run(function($state, $rootScope, loginHelper) {
+            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+                if (!loginHelper.checkLoggedIn()) {
+                    if (!loginHelper.checkJWTInUrl()) {
+                        if (loginHelper.checkLoginRequiredForState(toState)) {
+                            event.preventDefault();
+                            loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                        }
+                    } else {
+                        loginHelper.extractJWTFromUrl();
+                    }
+                }
+            });
+
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 event.preventDefault();
                 if (angular.isObject(error)) {
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
-                            if (!loginHelper.checkJWTInUrl()) loginHelper.redirectToLogin();
+                            if (!loginHelper.checkJWTInUrl()) {
+                                console.log('stateChangeError redirect');
+                                loginHelper.redirectToLogin();
+                            }
                             break;
                         default:
                             $state.get('error').error = error;
@@ -128,6 +146,7 @@
                             // Token is expired, user needs to relogin
                             console.log('Token expired, redirect to login');
                             delete $sessionStorage.jwt;
+                            console.log('tokenGetter redirect');
                             loginHelper.redirectToLogin();
                         } else {
                             // Token is still valid, check if we need to refresh
