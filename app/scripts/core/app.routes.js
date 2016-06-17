@@ -523,7 +523,7 @@
                 })
                 // Admin Users View
                 .state('root.administration.users', {
-                    url: '/users',
+                    url: '/admins',
                     templateUrl: 'views/partials/administration/users.html',
                     resolve: {
                         Admins: 'Admins',
@@ -560,6 +560,11 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
+                })
+                .state('root.administration.oauth', {
+                    url: '/oauth',
+                    templateUrl: 'views/partials/administration/revoke.html',
+                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
