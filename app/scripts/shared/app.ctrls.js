@@ -52,6 +52,8 @@
                 setHeader();
 
                 $scope.navFull = false;
+                $scope.fixedHeader = true;
+
                 $scope.toggleNav = function() {
                     $scope.navFull = $scope.navFull ? false : true;
                     $rs.navOffCanvas = $rs.navOffCanvas ? false : true;
@@ -60,16 +62,6 @@
                         $rs.$broadcast('c3.resize');
                     }, 260);	// adjust this time according to nav transition
                 };
-
-                // ======= Site Settings
-                $scope.toggleSettingsBox = function() {
-                    $scope.isSettingsOpen = $scope.isSettingsOpen ? false : true;
-                };
-
-                $scope.themeActive = 'theme-zero';	// first theme
-
-                $scope.fixedHeader = true;
-                $scope.navHorizontal = false;	// this will access by other directive, so in rootScope.
 
                 // === saving states
                 var SETTINGS_STATES = '_setting-states';
@@ -82,26 +74,15 @@
                     }
                 };
 
+
                 // initialize the states
                 var sQuery = statesQuery.get() || {
-                        navHorizontal: $scope.navHorizontal,
-                        fixedHeader: $scope.fixedHeader,
-                        //navFull: $scope.navFull,
-                        themeActive: $scope.themeActive
+                        navFull: $scope.navFull
                     };
                 // console.log(savedStates);
                 if (sQuery) {
-                    $scope.navHorizontal = sQuery.navHorizontal;
-                    $scope.fixedHeader = sQuery.fixedHeader;
-                    //$scope.navFull = sQuery.navFull;
-                    $scope.themeActive = sQuery.themeActive;
+                    $scope.navFull = sQuery.navFull;
                 }
-
-                // putting the states
-                $scope.onNavHorizontal = function() {
-                    sQuery.navHorizontal = $scope.navHorizontal;
-                    statesQuery.put(sQuery);
-                };
 
                 $scope.onNavFull = function() {
                     sQuery.navFull = $scope.navFull;
@@ -111,21 +92,6 @@
                         $rs.$broadcast('c3.resize');
                     }, 260);
 
-                };
-
-                $scope.onFixedHeader = function() {
-                    sQuery.fixedHeader = $scope.fixedHeader;
-                    statesQuery.put(sQuery);
-                };
-
-                $scope.onThemeActive = function() {
-                    sQuery.themeActive = $scope.themeActive;
-                    statesQuery.put(sQuery);
-                };
-
-                $scope.onThemeChange = function(theme) {
-                    $scope.themeActive = theme;
-                    $scope.onThemeActive();
                 };
 
                 $scope.modalNewVersion = function() {
