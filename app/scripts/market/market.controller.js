@@ -219,7 +219,6 @@
         $scope.currentCategories = [];
         $scope.doSearch = doSearch;
         $scope.availableCategories = categories;
-        $scope.svcStats = [];
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.getInitialDisplayMode = getInitialDisplayMode;
@@ -227,10 +226,19 @@
         $scope.isCategorySelected = isCategorySelected;
         $scope.clearSelectedCategories = clearSelectedCategories;
 
-        init();
+        populate(svcData.beans);
 
-        function init() {
-            $scope.availableAPIs = svcData.beans;
+        function populate(apis) {
+            $scope.availableAPIs = apis;
+            checkMetricsPresent();
+        }
+
+        function checkMetricsPresent() {
+            $scope.availableAPIs.forEach(function (api) {
+                if (!api.marketInfo || !api.service.followers || !api.marketInfo.developers || !api.marketInfo.uptime) {
+                    api.noMetrics = true;
+                }
+            })
         }
 
         function doSearch(query) {
@@ -240,7 +248,7 @@
             //     })
             // } else {
                 apiService.searchMarketplaceApis(query).then(function (results) {
-                    $scope.availableAPIs = results.beans;
+                    populate(results.beans);
                 });
             // }
         }
@@ -268,12 +276,12 @@
         function refreshServiceList() {
             if ($scope.currentCategories.length === 0) {
                 apiService.getMarketplaceApis().then(function (data) {
-                    $scope.availableAPIs = data.beans;
+                    populate(data.beans);
                 });
             } else {
                 // Get APIs for selected categories
                 apiService.getMarketplaceApisInCategories($scope.currentCategories).then(function (data) {
-                    $scope.availableAPIs = data;
+                    populate(data);
                 });
             }
         }
