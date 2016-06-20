@@ -117,6 +117,7 @@
         <div class="panel panel-default dropdown-menu dropdown-menu-right ps-container" custom-scrollbar="">
             <div class="panel-heading">
                 You have {{notifications.length}} new {{ notifications.length > 1 ? 'notifications' : 'notification'}}
+                <a class="clickable clear-all xsmall" ng-click="clearAllNotifications()">clear all</a>
             </div>
             <div class="panel-body">
                 <ul class="list-unstyled">

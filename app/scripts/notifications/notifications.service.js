@@ -10,6 +10,7 @@
                                  OrgIncomingNotifications, OrgOutgoingNotifications,
                                  NOTIFICATIONS) {
         this.clear = clear;
+        this.clearAll = clearAll;
         this.getIncomingForOrg = getIncomingForOrg;
         this.getNotificationsForUser = getNotificationsForUser;
         this.getOrgsWithPendingRequest = getOrgsWithPendingRequest;
@@ -18,6 +19,10 @@
         
         function clear(notification) {
             return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+        }
+
+        function clearAll() {
+            return UserIncomingNotifications.delete({}).$promise;
         }
 
         function getIncomingForOrg(orgId) {

@@ -151,6 +151,7 @@
                 $scope.toasts = toastService.toasts;
                 $scope.toastService = toastService;
                 $scope.clearNotification = clearNotification;
+                $scope.clearAllNotifications = clearAllNotifications;
                 $scope.doLogOut = doLogOut;
                 $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Marketplace';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
@@ -195,6 +196,13 @@
                     notificationService.clear(notification).then(function () {
                         toastService.info('<b>Notification cleared!</b>');
                     })
+                }
+
+                function clearAllNotifications() {
+                    $scope.notifications = [];
+                    notificationService.clearAll().then(function () {
+                        toastService.info('<b>Notifications cleared!</b>');
+                    });
                 }
 
                 function doLogOut() {
