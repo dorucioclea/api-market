@@ -102,7 +102,7 @@
         </div><!-- end API URL panel -->
 
         <!-- Existing Contracts panel -->
-        <div class="panel panel-default mb15">
+        <div class="panel panel-default mb15" ng-if="loggedIn">
             <div class="panel-heading text-center">
                 API Key for Testing
             </div>
@@ -129,7 +129,7 @@
         </div><!-- end Existing Contracts panel -->
 
         <!-- Custom Headers panel -->
-        <div class="panel panel-default mb15">
+        <div class="panel panel-default mb15" ng-if="loggedIn">
             <div class="panel-heading text-center">
                 Custom Headers
             </div>
@@ -206,7 +206,7 @@
         </div><!-- end Enabled OAuth Types panel -->
 
         <!-- Authorization panel -->
-        <div class="panel panel-default" ng-if="hasOAuth">
+        <div class="panel panel-default" ng-if="hasOAuth && loggedIn">
             <div class="panel-heading text-center">
                 Additional Authorization Required
             </div>

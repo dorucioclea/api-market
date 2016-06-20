@@ -50,6 +50,7 @@ angular
 				explorerUrl: 'Request URL',
 				explorerBody: 'Response body',
 				explorerCode: 'Response code',
+				explorerCreateContractToTryIt: 'Create a contract with this service to try it!',
 				explorerHeaders: 'Response headers',
 				explorerLoading: 'Loading...',
 				explorerLogInToTryIt: 'Log in now to try this operation!',

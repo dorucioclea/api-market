@@ -7,7 +7,7 @@
 
     function apiService(MktSearchLatestServiceVersions, MktPublishedCategories, MktServicePolicies, MktServicePlans,
                         MktServiceSupportTickets, MktServiceAnnouncementsAll, MktServiceAvailability,
-                        MktServiceVersionPolicy, MktServiceVersionContracts, MktServiceEndpoint, MktServiceVersion,
+                        MktServiceVersionPolicy, ServiceVersionContracts, MktServiceEndpoint, MktServiceVersion,
                         MktServiceVersionDefinition, MktSearchLatestPublishedSvcsInCategories) {
         this.getMarketplaceApis = getMarketplaceApis;
         this.getMarketplaceApisInCategories = getMarketplaceApisInCategories;
@@ -64,7 +64,7 @@
         }
         
         function getServiceVersionContracts(orgId, svcId, versionId) {
-            return MktServiceVersionContracts.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            return ServiceVersionContracts.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
         
         function getServiceVersionDefinition(orgId, svcId, versionId) {
@@ -84,7 +84,7 @@
         }
 
         function getServiceVersionPolicy(orgId, svcId, versionId, policyId) {
-            return MktServicePolicies.get({orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId}).$promise;
+            return MktServiceVersionPolicy.get({orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId}).$promise;
         }
         
         function getServiceSupportTickets(orgId, svcId) {

@@ -43,9 +43,6 @@
             return $resource(CONFIG.AUTH.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
         })
-        .factory('MktServiceVersionContracts', function ($resource, CONFIG) {
-            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts');
-        })
         .factory('MktServiceEndpoint', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
         })

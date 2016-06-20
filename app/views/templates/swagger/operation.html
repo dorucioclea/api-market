@@ -62,7 +62,8 @@
     		</table>
     	</div>
     	<div ng-if="apiExplorer">
-    		<button class="btn btn-default" ng-click="op.explorerResult=false;op.hideExplorerResult=false" type="submit" ng-disabled="op.loading" ng-bind="op.loading?'explorerLoading':'explorerTryIt'|swaggerTranslate" ng-if="loggedIn"></button>
+    		<button class="btn btn-default" ng-click="op.explorerResult=false;op.hideExplorerResult=false" type="submit" ng-disabled="op.loading" ng-bind="op.loading?'explorerLoading':'explorerTryIt'|swaggerTranslate" ng-if="loggedIn && apikey.length > 0"></button>
+    		<button class="btn btn-default" type="submit" disabled ng-bind="'explorerCreateContractToTryIt'|swaggerTranslate" ng-if="loggedIn && !apikey"></button>
     		<button class="btn btn-default" type="submit" disabled ng-bind="'explorerLogInToTryIt'|swaggerTranslate" ng-if="!loggedIn"></button>
         	<a class="hide-try-it" ng-if="op.explorerResult&&!op.hideExplorerResult" ng-click="op.hideExplorerResult=true" href="javascript:;" swagger-translate="responseHide"></a>
     	</div>
