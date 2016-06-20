@@ -1,7 +1,7 @@
 ;(function() {
     'use strict';
 
-    angular.module('app.administration', [])
+    angular.module('app.administration')
         .controller('AdministrationCtrl', administrationCtrl)
         .controller('AddAdminCtrl', addAdminCtrl)
         .controller('AdminExpirationCtrl', adminExpirationCtrl)

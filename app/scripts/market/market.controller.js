@@ -1,7 +1,7 @@
 ;(function() {
     'use strict';
 
-    angular.module('app.market', [])
+    angular.module('app.market')
 
     /// ==== MarketDash Controller
         .controller('MarketDashCtrl', marketDashCtrl)
