@@ -264,7 +264,7 @@
                     resolve: {
                         apiService: 'apiService',
                         svcData: function (apiService, $stateParams) {
-                            apiService.searchMarketplaceApis($stateParams.query);
+                            return apiService.searchMarketplaceApis($stateParams.query);
                         }
                     },
                     controller: 'ApiSearchCtrl'
@@ -315,8 +315,13 @@
                         endpoint: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
                         },
-                        svcContracts: function (apiService, organizationId, serviceId, versionId) {
-                            return apiService.getServiceVersionContracts(organizationId, serviceId, versionId);
+                        loginHelper: 'loginHelper',
+                        svcContracts: function (apiService, loginHelper, organizationId, serviceId, versionId) {
+                            if (loginHelper.checkLoggedIn()) {
+                                return apiService.getServiceVersionContracts(organizationId, serviceId, versionId);
+                            } else {
+                                return [];
+                            }
                         },
                         svcPolicies: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
@@ -347,7 +352,6 @@
                             });
                             return jwt;
                         },
-                        loginHelper: 'loginHelper',
                         CurrentUserApps: 'CurrentUserApps',
                         userApps: function (CurrentUserApps, loginHelper) {
                             if (loginHelper.checkLoggedIn()) return CurrentUserApps.query().$promise;

@@ -90,8 +90,12 @@
   .site-nav {
     a {
       color: white;
+      &.category-inactive {
+        color: @brand-info;
+      }
+
       &:hover {
-        color: #ccc;
+        color: #ddd;
       }
     }
     .profile {

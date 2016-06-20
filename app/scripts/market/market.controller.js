@@ -217,6 +217,7 @@
         $scope.currentPricing = 'All';
         $scope.availableAPIs = [];
         $scope.currentCategories = [];
+        $scope.doSearch = doSearch;
         $scope.availableCategories = categories;
         $scope.svcStats = [];
         $scope.toasts = toastService.toasts;
@@ -230,6 +231,18 @@
 
         function init() {
             $scope.availableAPIs = svcData.beans;
+        }
+
+        function doSearch(query) {
+            // if ($scope.currentCategories.length > 0) {
+            //     apiService.searchMarketplaceApisInCategories($scope.currentCategories, query).then(function (results) {
+            //         $scope.availableAPIs = results.beans;
+            //     })
+            // } else {
+                apiService.searchMarketplaceApis(query).then(function (results) {
+                    $scope.availableAPIs = results.beans;
+                });
+            // }
         }
 
         function getInitialDisplayMode() {
