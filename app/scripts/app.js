@@ -161,6 +161,7 @@
                                     // This makes it so that this request doesn't send the JWT
                                     skipAuthorization: true,
                                     method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
                                     data: {
                                         originalJWT: $sessionStorage.jwt
                                     }
