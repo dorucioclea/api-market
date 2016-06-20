@@ -23,7 +23,9 @@
         function search(searchString) {
             var search = {};
             searchString = searchString||'*';
-            search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'}];
+            search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'},
+                // Currently we only allow searching for public organizations
+                { name: 'organizationPrivate', value: false, operator: 'bool_eq' }];
             search.orderBy = {ascending: true, name: 'name'};
             // TODO enable paging
             // search.paging = {page: 1, pageSize: 100};
