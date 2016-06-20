@@ -264,7 +264,7 @@
                     resolve: {
                         apiService: 'apiService',
                         svcData: function (apiService, $stateParams) {
-                            apiService.searchMarketplaceApis($stateParams.query);
+                            return apiService.searchMarketplaceApis($stateParams.query);
                         }
                     },
                     controller: 'ApiSearchCtrl'
