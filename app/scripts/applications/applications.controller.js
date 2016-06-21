@@ -5,7 +5,6 @@
         .controller('ApplicationCtrl', appCtrl)
         .controller('ActivityCtrl', activityCtrl)
         .controller('ApisCtrl', apisCtrl)
-        .controller('ContractsCtrl', contractsCtrl)
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl);
 
@@ -15,7 +14,6 @@
         $scope.apikey = undefined;
         $scope.applicationVersion = appData;
         $scope.contracts = contractData;
-        console.log($scope.contracts);
         $scope.versions = appVersions;
         $scope.displayTab = appScreenModel;
         $scope.toasts = toastService.toasts;
@@ -133,58 +131,18 @@
 
     }
     
-    function apisCtrl($scope, $uibModal, appScreenModel, docDownloader, TOAST_TYPES) {
+    function apisCtrl($scope, $state, appScreenModel, docDownloader, docTester, ApplicationContract) {
 
         $scope.docDownloader = docDownloader;
-        appScreenModel.updateTab('APIs');
-        $scope.toggle = toggle;
-        $scope.copyKey = copyKey;
-        $scope.howToInvoke = howToInvoke;
-
-        angular.forEach($scope.contracts, function (contract) {
-            contract.apiExpanded = true;
-        });
-
-        function copyKey(key) {
-            var type = TOAST_TYPES.INFO;
-            var msg = '<b>API Key copied to clipboard!</b><br>' + key;
-            $scope.toastService.createToast(type, msg, true);
-        }
-
-        function howToInvoke(contract) {
-            $uibModal.open({
-                templateUrl: 'views/modals/serviceHowToInvoke.html',
-                size: 'lg',
-                controller: 'HowToInvokeCtrl as ctrl',
-                resolve: {
-                    contract: contract,
-                    endpoint: function (ServiceEndpoint) {
-                        return ServiceEndpoint.get(
-                            {orgId: contract.serviceOrganizationId,
-                                svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
-                    }
-                },
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-        }
-
-        function toggle(contract) {
-            contract.apiExpanded = !contract.apiExpanded;
-        }
-
-    }
-    
-    function contractsCtrl($scope, $state, appScreenModel, docTester, ApplicationContract) {
-
         $scope.toApiDoc = toApiDoc;
         $scope.breakContract = breakContract;
-
+        
         init();
-
+        
+        
         function init() {
             docTester.reset();
-            appScreenModel.updateTab('Contracts');
+            appScreenModel.updateTab('APIs');
         }
 
         function toApiDoc(contract) {
@@ -203,6 +161,7 @@
                     $state.forceReload();
                 });
         }
+
     }
 
     function appMetricsCtrl($scope, $stateParams, $parse, appScreenModel, appService) {
