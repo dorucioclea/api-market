@@ -5,11 +5,11 @@
             <div class="col-sm-12">
                 <h4>Application Identifiers</h4>
             </div>
-            <div class="col-sm-6">
-                <table class="mt5 table table-bordered table-striped table-condensed">
+            <div class="col-sm-8">
+                <table class="mt5 table table-striped table-condensed">
                     <tbody>
                     <tr>
-                        <td>
+                        <td style="width: 210px;">
                             <span class="text-bold">Organization ID</span>
                         </td>
                         <td>
@@ -17,7 +17,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="width: 210px;">
                             <span class="text-bold">Application ID</span>
                         </td>
                         <td>
@@ -25,7 +25,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="width: 210px;">
                             <span class="text-bold">Version ID</span>
                         </td>
                         <td>
@@ -36,14 +36,31 @@
                 </table>
             </div>
         </div>
+        <div class="mt30 row">
+            <div class="col-sm-12">
+                <h4>API Key</h4>
+            </div>
+            <div class="col-sm-8">
+                <table class="mt5 table table-striped table-condensed">
+                    <tr>
+                        <td style="width: 210px;">
+                            <span class="text-bold">API Key</span>
+                        </td>
+                        <td>
+                            {{apikey}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="mt30 row" ng-if="applicationVersion.oAuthClientId !== null && applicationVersion.oAuthClientId.length > 0">
             <div class="col-sm-12">
                 <h4>OAuth Credentials</h4>
             </div>
-            <div class="col-sm-10">
-                <table class="mt5 table table-bordered table-striped table-condensed">
+            <div class="col-sm-8">
+                <table class="mt5 table table-striped table-condensed">
                     <tr>
-                        <td>
+                        <td style="width: 210px;">
                             <span class="text-bold">Client ID</span>
                         </td>
                         <td>
@@ -51,7 +68,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="width: 210px;">
                             <span class="text-bold">Client Secret</span>
                         </td>
                         <td>

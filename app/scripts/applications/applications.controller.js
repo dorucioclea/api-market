@@ -9,19 +9,15 @@
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl);
 
-    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions,
+    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
                      contractService, toastService, selectedApp) {
-        headerModel.setIsButtonVisible(true, true, false);
-        orgScreenModel.updateOrganization(orgData);
+        $scope.apikey = undefined;
         $scope.applicationVersion = appData;
-        appScreenModel.updateApplication(appData);
+        $scope.contracts = contractData;
+        console.log($scope.contracts);
         $scope.versions = appVersions;
         $scope.displayTab = appScreenModel;
-        $scope.isReady = $scope.applicationVersion.status === 'Ready';
-        $scope.isRegistered =
-            $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
-        $scope.isRetired = $scope.applicationVersion.status === 'Retired';
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.selectVersion = selectVersion;
@@ -34,6 +30,20 @@
         $scope.showOAuthConfig = showOAuthConfig;
         $scope.canConfigureOAuth = canConfigureOAuth;
         $scope.newContract = newContract;
+        
+        init();
+        
+        function init() {
+            headerModel.setIsButtonVisible(true, true, false);
+            orgScreenModel.updateOrganization(orgData);
+            appScreenModel.updateApplication(appData);
+            $scope.isReady = $scope.applicationVersion.status === 'Ready';
+            $scope.isRegistered =
+                $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+            $scope.isRetired = $scope.applicationVersion.status === 'Retired';
+            
+            if ($scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
+        }
 
         function selectVersion(version) {
             $state.go($state.$current.name,
@@ -123,9 +133,8 @@
 
     }
     
-    function apisCtrl($scope, $uibModal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
+    function apisCtrl($scope, $uibModal, appScreenModel, docDownloader, TOAST_TYPES) {
 
-        $scope.contracts = contractData;
         $scope.docDownloader = docDownloader;
         appScreenModel.updateTab('APIs');
         $scope.toggle = toggle;
@@ -166,9 +175,8 @@
 
     }
     
-    function contractsCtrl($scope, $state, contractData, appScreenModel, docTester, ApplicationContract) {
+    function contractsCtrl($scope, $state, appScreenModel, docTester, ApplicationContract) {
 
-        $scope.contracts = contractData;
         $scope.toApiDoc = toApiDoc;
         $scope.breakContract = breakContract;
 

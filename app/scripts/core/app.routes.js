@@ -717,6 +717,14 @@
                         },
                         versionId: function ($stateParams) {
                             return $stateParams.versionId;
+                        },
+                        ApplicationContract: 'ApplicationContract',
+                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
+                            return ApplicationContract.query({
+                                orgId: organizationId,
+                                appId: applicationId,
+                                versionId: versionId
+                            }).$promise;
                         }
                     },
                     controller: 'ApplicationCtrl'
@@ -731,32 +739,12 @@
                 .state('root.application.contracts', {
                     url: '/contracts',
                     templateUrl: 'views/partials/application/contracts.html',
-                    resolve: {
-                        ApplicationContract: 'ApplicationContract',
-                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-                            return ApplicationContract.query({
-                                orgId: organizationId,
-                                appId: applicationId,
-                                versionId: versionId
-                            }).$promise;
-                        }
-                    },
                     controller: 'ContractsCtrl'
                 })
                 // APIs Tab
                 .state('root.application.apis', {
                     url: '/apis',
                     templateUrl: 'views/partials/application/apis.html',
-                    resolve: {
-                        ApplicationContract: 'ApplicationContract',
-                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-                            return ApplicationContract.query({
-                                orgId: organizationId,
-                                appId: applicationId,
-                                versionId: versionId
-                            }).$promise;
-                        }
-                    },
                     controller: 'ApisCtrl'
                 })
                 // Activity Tab
