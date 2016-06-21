@@ -88,7 +88,6 @@
                         window.location.href = string;
                     }
                     delete $sessionStorage.jwt;
-                    delete $sessionStorage.redirect;
                     delete $sessionStorage.loginInProgress;
                 });
             })
