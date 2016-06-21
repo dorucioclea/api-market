@@ -101,8 +101,6 @@
 .btn-behance { .button-social-variant(#fff; @social-behance; @social-behance) }
 .btn-rss { .button-social-variant(#fff; @social-rss; @social-rss) }
 .btn-youtube { .button-social-variant(#fff; @social-youtube; @social-youtube) }
-.btn-header { .button-social-variant(#fff; @brand-primary; @brand-primary) }
-
 
 
 // button width
@@ -194,4 +192,56 @@
 // Danger and error appear as red
 .btn-danger {
   .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+}
+
+
+// Custom buttons
+// --------------------------------------------------
+
+.btn {
+	&.btn-header {
+		.button-transparent-variant(#ccc, #fff);
+	}
+
+	&.btn-logo {
+		.button-transparent-variant(#fff, #fff);
+	}
+
+	&.btn-dashboard {
+		box-shadow: 0 0 0 0;
+		color: #ccc;
+		background-color: #aaa;
+		border-color: transparent;
+
+		&.transparent-bg {
+			background: transparent;
+
+			&:hover,
+			&:focus,
+			&.focus,
+			&:active,
+			&.active,
+			.open > .dropdown-toggle& {
+				color: #999;
+				background-color: transparent;
+				border-color: transparent;
+			}
+		}
+
+		&:hover,
+		&:focus,
+		&.focus,
+		&:active,
+		&.active,
+		.open > .dropdown-toggle& {
+			color: #fff;
+			background-color: #ccc;
+			border-color: transparent;
+		}
+		&:active,
+		&.active,
+		.open > .dropdown-toggle& {
+			background: #999;
+		}
+	}
 }

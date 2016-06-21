@@ -1,13 +1,18 @@
-<div class="page page-api page-ui-notifications">
-    <div class="toast toast-bottomRight">
-      <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-        <div ng-bind-html="toast.msg"></div>
-      </alert>
+<div class="page page-api">
+  <div class="api-row breadcrumbs" style="background: #eee">
+    <div class="api-content-container">
+      <div class="panel" style="border: 0; background: #eee">
+        <ol class="breadcrumb breadcrumb-small mb0" style="background: #eee">
+          <li><a ui-sref="root.apis.list">Marketplace</a></li>
+          <li class="active"><a ui-sref="root.api.documentation({orgId: serviceVersion.service.organization.id, svcId: serviceVersion.service.id})">{{serviceVersion.service.name}} ({{serviceVersion.version}})</a></li>
+        </ol>
+      </div>
     </div>
-  <div class="page-wrap">
+  </div>
 
-    <div class="row">
-      <div class="panel panel-primary ">
+  <div class="api-row mt5">
+    <div class="api-content-container">
+      <div class="panel">
         <div class="panel-body">
           <!-- Main API info panel -->
           <div class="col-sm-1">
@@ -16,18 +21,19 @@
           <div class="pl30 col-sm-11">
             <div class="col-sm-9">
               <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href ng-click="followAction()">&nbsp;&nbsp;
-                  <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
+                <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
             </div>
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="!loggedIn">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <a class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
             </div>
             <div class="col-sm-12 text-primary">
-              <span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}
-              <a ng-attr-href="{{serviceVersion.onlinedoc}}" class="ml10" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>
-              <i class="ml10 fa fa-tag" ng-hide="serviceVersion.service.categories.length == 0"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}
-              <span class="ml10 text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}
+              <span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>
+              <a ng-attr-href="{{serviceVersion.onlinedoc}}" ng-class="{ 'ml15': showDeveloper }" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>
+              <span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 }" ng-hide="serviceVersion.service.categories.length == 0"><i class="fa fa-tag"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}</span>
+              <span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 || serviceVersion.service.categories.length != 0 }" class="text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}
             </div>
             <div class="col-sm-12">
               <hr>
@@ -40,25 +46,40 @@
 
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-sm-12 bg-primary">
-        <div class="btn-group btn-radio">
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Documentation'" ui-sref=".documentation">Documentation</label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" ui-sref=".plans">Plans & Policies</label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
-          <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API README</label>
-        </div>
-      </div>
-      <div>
-        <div class="panel panel-primary">
-          <div class="panel-body">
-            <div class="mt30" ui-view></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <div class="tabs tabs-style-line">
+    <nav>
+      <ul>
+        <li ui-sref-active="tab-current"><a ui-sref=".documentation"><span>Documentation</span></a></li>
+        <li ui-sref-active="tab-current"><a ui-sref=".plans"><span>Plans & Policies</span></a></li>
+        <li ui-sref-active="tab-current"><a ui-sref=".announcements"><span>Announcements</span></a></li>
+        <li ui-sref-active="tab-current"><a ui-sref=".support"><span>Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></span></a></li>
+        <li ui-sref-active="tab-current"><a ui-sref=".terms"><span>API README</span></a></li>
+      </ul>
+    </nav>
+  </div><!-- /tabs -->
+
+
+  <div class="api-row">
+    <div class="api-content-container">
+      <!--<div class="col-sm-12 ">-->
+      <!--<div class="btn-group btn-radio">-->
+      <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Documentation'" ui-sref=".documentation">Documentation</label>-->
+      <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Plans'" ui-sref=".plans">Plans & Policies</label>-->
+      <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Announcements'" ui-sref=".announcements">Announcements</label>-->
+      <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Support'" ui-sref=".support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>-->
+      <!--<label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Terms'" ui-sref=".terms" ng-if="hasTerms()">API README</label>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div>-->
+      <div class="panel">
+        <div class="panel-body">
+          <div class="mt30" ui-view></div>
+        </div>
+      </div>
+      <!--</div>-->
+    </div>
+  </div>
+
 </div>

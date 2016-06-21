@@ -5,7 +5,7 @@
 
         /// ==== User Controller
         .controller('UserCtrl',
-        function ($scope, headerModel, userScreenModel, toastService, CurrentUserInfo) {
+        function ($scope, headerModel, userScreenModel, toastService, currentUser) {
 
             init();
 
@@ -64,7 +64,7 @@
                     toastService.error("Maximum character limit of 1,000,000 for Bio exceeded");
                 }
                 else{
-                    CurrentUserInfo.update({}, updateObject, function (reply) {
+                    currentUser.update(updateObject).then(function () {
                         $scope.User.updateCurrentUserInfo($scope.User);
                         toastService.createToast('info', 'Profile updated!', true);
                     }, function (error) {

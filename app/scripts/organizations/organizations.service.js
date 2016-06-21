@@ -5,10 +5,11 @@
         .service('orgService', orgService);
     
     
-    function orgService(Organization) {
+    function orgService(Organization, SearchOrgs) {
         
         this.name = nameIt;
         this.orgInfo = orgInfo;
+        this.search = search;
 
 
         function nameIt(org) {
@@ -17,6 +18,18 @@
         
         function orgInfo(orgId) {
             return Organization.get({ id: orgId }).$promise;
+        }
+
+        function search(searchString) {
+            var search = {};
+            searchString = searchString||'*';
+            search.filters = [{name: 'name', value: '%' + searchString + '%', operator: 'like'},
+                // Currently we only allow searching for public organizations
+                { name: 'organizationPrivate', value: false, operator: 'bool_eq' }];
+            search.orderBy = {ascending: true, name: 'name'};
+            // TODO enable paging
+            // search.paging = {page: 1, pageSize: 100};
+            return SearchOrgs.save(search).$promise;
         }
     }
     

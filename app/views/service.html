@@ -7,9 +7,9 @@
 
         <!-- Entity Buttons -->
         <div class="toast toast-bottomRight">
-            <alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+            <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
                 <div ng-bind-html="toast.msg">Test Toast</div>
-            </alert>
+            </uib-alert>
         </div>
         <div class="text-center">
             <button class="btn btn-line-primary btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('svcAdmin')" ng-if="!isPublished" ng-click="confirmPublishSvc()">Publish</button>
@@ -30,29 +30,29 @@
     </overview-header>
 
     <overview-tabs>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Overview'" id="overview" ui-sref=".overview">Overview</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Implementation'" id="implementation" ui-sref=".implementation">
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Overview'" id="overview" ui-sref=".overview">Overview</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Implementation'" id="implementation" ui-sref=".implementation">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">1</span>&nbsp;&nbsp;</span>Implementation
         </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Definition'" id="definition" ui-sref=".definition"
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Definition'" id="definition" ui-sref=".definition"
                ng-disabled="!tabStatus.hasImplementation">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">2</span>&nbsp;&nbsp;</span>Definition
         </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Plans'" id="plans" ui-sref=".plans"
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Plans'" id="plans" ui-sref=".plans"
                ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">3</span>&nbsp;&nbsp;</span>Plans
         </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Scopes'" id="scopes" ui-sref=".scopes"
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Scopes'" id="scopes" ui-sref=".scopes"
                ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition && tabStatus.hasPlan)">
             <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">4</span>&nbsp;&nbsp;</span>Availability
         </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Terms'" id="terms" ui-sref=".terms">Readme</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Metrics'" id="metrics" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Terms'" id="terms" ui-sref=".terms">Readme</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Metrics'" id="metrics" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
+        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
         <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
     </overview-tabs>
 </overview>

@@ -4,6 +4,56 @@
     angular.module('app.apiEngine', ['ngResource'])
 
         /// ########### ENDPOINT FACTORIES #####################
+        
+        /// ########### SPECIAL MARKETPLACE ENDPOINTS: NO JWT REQUIRED ########################
+
+        .factory('MktSearchLatestServiceVersions', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions/latest', {}, {
+                query: {
+                    method: 'POST'
+                }
+            });
+        })
+        .factory('MktSearchLatestPublishedSvcsInCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions/latest/categories', {}, {
+                query: {
+                    method: 'POST', isArray: true
+                }
+            });
+        })
+        .factory('MktPublishedCategories', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
+        })
+        .factory('MktServiceSupportTickets', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/support/:supportId');
+        })
+        .factory('MktServiceAnnouncementsAll', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/announcement/all');
+        })
+        .factory('MktServiceAvailability', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability');
+        })
+        .factory('MktServicePolicies', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plugins');
+        })
+        .factory('MktServicePlans', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans');
+        })
+        .factory('MktServiceVersionPolicy', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL +
+                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+        })
+        .factory('MktServiceEndpoint', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
+        })
+        .factory('MktServiceVersion', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId');
+        })
+        .factory('MktServiceVersionDefinition', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition');
+        })
+
+            
 
         /// ========== ACTIONS ==========================================================================
         .factory('Action', function ($resource, CONFIG) {
@@ -75,7 +125,7 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing');
         })
         .factory('OrgIncomingNotifications', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/:notificationId');
         })
         .factory('OrgOutgoingNotifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing');
@@ -230,13 +280,13 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/endpoint');
         })
         .factory('ServicePlans', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans/');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plans');
         })
         .factory('ServiceMkts', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability/');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/availability');
         })
         .factory('ServicePolicies', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plugins/');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/plugins');
         })
         .factory('ServiceMetricsResponse', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
@@ -251,7 +301,7 @@
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
         })
         .factory('ServiceMarketInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
         })
         .factory('ServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/support/:supportId', {},
@@ -362,20 +412,20 @@
             return $resource(CONFIG.BASE.URL + '/search/service/categories/all');
         })
         .factory('PublishedCategories', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/service/categories/published');
+            return $resource(CONFIG.AUTH.URL + '/search/service/categories/published');
         })
         .factory('SearchOrgs', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/organizations');
         })
         .factory('SearchSvcs', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services', {}, {
                 query: {
                     method: 'POST'
                 }
             });
         })
         .factory('SearchPublishedSvcsInCategories', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services/versions', {}, {
+            return $resource(CONFIG.AUTH.URL + '/search/services/versions', {}, {
                 query: {
                     method: 'POST', isArray: true
                 }
@@ -389,7 +439,7 @@
             });
         })
         .factory('SearchSvcsWithStatus', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/search/services/:status');
+            return $resource(CONFIG.AUTH.URL + '/search/services/:status');
         })
         .factory('SearchLatestServiceVersions', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/search/services/versions/latest', {}, {

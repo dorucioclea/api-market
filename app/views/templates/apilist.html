@@ -1,14 +1,14 @@
-<div class="panel panel-lined mb20 table-responsive">
-    <table class="table table-bordered text-center">
+<div class="panel panel-lined table-responsive">
+    <table class="table text-center">
         <tr ng-repeat="api in apis" class="api-list">
-            <td>
+            <td id="api-logo-column">
                 <div class="media media-middle">
                     <a ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><base64-logo logo-class="entity-logo-list" logo="{{api.service.base64logo}}"></base64-logo></a>
                 </div>
             </td>
-            <td class="text-left">
+            <td id="api-info-column" class="text-left">
                 <div>
-                    <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">{{api.service.name}}</a>
+                    <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><h4 class="text-uppercase text-light">{{api.service.name}}</h4></a>
                     <span ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0"><span class="text-default text-light"> by </span>
                     <a class="text-primary" ui-sref="root.api({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
                         {{api.service.organization.friendlyName}}
@@ -18,17 +18,17 @@
                     {{api.service.description}}
                 </div>
             </td>
-            <td>
+            <td id="api-version-column">
                 <div class="text-bold text-uppercase">{{api.version}}</div>
             </td>
-            <td>
+            <td id="api-metrics-column">
                 <div class="col-xs-4"><b>{{api.marketInfo.developers}}</b><br>developers</div>
                 <div class="col-xs-4"><b>{{api.service.followers.length}}</b><br>followers<br></div>
                 <div class="col-xs-4"><b>{{api.marketInfo.uptime}}%</b><br>uptime</div>
             </td>
-            <td>
+            <td id="api-follow-column">
                 <div><a href ng-click="followAction(api)">
-                    <i class="text-primary follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing(api), 'fa-star': userIsFollowing(api)}"></i></a>
+                    <i class="follow-icon fa fa-star" ng-class="{'not-following': !userIsFollowing(api), 'following': userIsFollowing(api)}"></i></a>
                 </div>
             </td>
         </tr>

@@ -15,14 +15,14 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($modal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime){
+    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
         this.updateExpirationTimes = updateExpirationTimes;
         
         function addAdmin(username){
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationAddAdmin.html',
                 size: 'lg',
                 controller: 'AddAdminCtrl as ctrl',
@@ -41,7 +41,7 @@
         }
         
         function removeAdmin(admin){
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/organizationRemoveAdmin.html',
                 size: 'lg',
                 controller: 'RemoveAdminCtrl as ctrl',

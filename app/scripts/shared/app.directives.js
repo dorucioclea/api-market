@@ -172,7 +172,6 @@
                 type: '@',
                 activities: '='
             },
-            bindToController: true,
             templateUrl: '/views/templates/activity.html'
         };
     })
@@ -216,7 +215,6 @@
                 save: '=',
                 editPermission: '@'
             },
-            bindToController: true,
             transclude: true,
             templateUrl: '/views/templates/overview/overview-header.html'
         };
@@ -275,8 +273,6 @@
 
                 $scope.pluginName = $scope.$parent.pluginName;
             },
-            controllerAs: 'ctrl',
-            bindToController: true,
             templateUrl: 'views/templates/policyList.html'
         };
     })
@@ -425,11 +421,11 @@
                     publisherMode: '='
                 },
                 controller:
-                    function ($scope, $modal) {
+                    function ($scope, $uibModal) {
                         $scope.modalNewTicketOpen = modalNewTicketOpen;
 
                         function modalNewTicketOpen() {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: 'views/modals/ticketCreate.html',
                                 size: 'lg',
                                 controller: 'CreateSupportTicketCtrl',
@@ -454,7 +450,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $modal, Users, ServiceTicketComments) {
+                    function ($scope, $uibModal, Users, ServiceTicketComments) {
                         $scope.openTicket = openTicket;
                         $scope.user = {};
                         $scope.comments = [];
@@ -470,7 +466,7 @@
                         );
 
                         function openTicket() {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: 'views/modals/ticketView.html',
                                 size: 'lg',
                                 controller: 'ViewSupportTicketCtrl',
@@ -499,8 +495,7 @@
                     serviceVersion: '='
                 },
                 controller:
-                    function ($scope, $modal, ServiceTicketComments, CurrentUserInfo,
-                              toastService, TOAST_TYPES) {
+                    function ($scope, $modal, ServiceTicketComments, toastService, TOAST_TYPES) {
                         this.deleteComment = deleteComment;
                         this.isOwnComment = isOwnComment;
                         this.isServiceOwner = isServiceOwner;
@@ -573,7 +568,7 @@
                     };
                 },
                 controller:
-                    function ($scope, $modal, Users) {
+                    function ($scope, $uibModal, Users) {
                         $scope.user = {};
                         $scope.editMode = false;
                         $scope.editComment = editComment;

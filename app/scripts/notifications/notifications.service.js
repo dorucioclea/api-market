@@ -10,6 +10,7 @@
                                  OrgIncomingNotifications, OrgOutgoingNotifications,
                                  NOTIFICATIONS) {
         this.clear = clear;
+        this.clearAll = clearAll;
         this.getIncomingForOrg = getIncomingForOrg;
         this.getNotificationsForUser = getNotificationsForUser;
         this.getOrgsWithPendingRequest = getOrgsWithPendingRequest;
@@ -17,7 +18,18 @@
         this.getOutgoingForOrg = getOutgoingForOrg;
         
         function clear(notification) {
-            return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+            switch (notification.type) {
+                case NOTIFICATIONS.CONTRACT_ACCEPTED.toUpperCase():
+                case NOTIFICATIONS.CONTRACT_REJECTED.toUpperCase():
+                    return OrgIncomingNotifications.delete({ orgId: notification.applicationOrgId, notificationId: notification.id }).$promise;
+                case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
+                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
+                    return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+            }
+        }
+
+        function clearAll() {
+            return UserIncomingNotifications.delete({}).$promise;
         }
 
         function getIncomingForOrg(orgId) {

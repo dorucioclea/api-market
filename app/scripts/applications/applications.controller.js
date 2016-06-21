@@ -9,7 +9,7 @@
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl);
 
-    function appCtrl($scope, $modal, $state, $stateParams, appData, appVersions,
+    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
                      contractService, toastService, selectedApp) {
         headerModel.setIsButtonVisible(true, true, false);
@@ -67,7 +67,7 @@
                 version: appVersion.version
             };
             selectedApp.updateApplication(appObject);
-            $state.go('root.apis.grid');
+            $state.go('root.apis.list');
         }
 
         function confirmDeleteApp(appVersion) {
@@ -91,7 +91,7 @@
         }
 
         function showInfoModal() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
                 controller: 'HelpCtrl as ctrl',
@@ -123,7 +123,7 @@
 
     }
     
-    function apisCtrl($scope, $modal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
+    function apisCtrl($scope, $uibModal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
 
         $scope.contracts = contractData;
         $scope.docDownloader = docDownloader;
@@ -143,7 +143,7 @@
         }
 
         function howToInvoke(contract) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceHowToInvoke.html',
                 size: 'lg',
                 controller: 'HowToInvokeCtrl as ctrl',

@@ -17,7 +17,7 @@
         .controller('ServiceMetricsController', serviceMetricsCtrl);
 
 
-    function serviceCtrl($scope, $state, $stateParams, $modal, orgData, orgScreenModel, support,
+    function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
                          svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
                          toastService, ALERT_TYPES, TOAST_TYPES, service) {
 
@@ -79,7 +79,7 @@
         }
 
         function confirmDeleteSvc() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceDelete.html',
                 size: 'lg',
                 controller: 'DeleteServiceCtrl as ctrl',
@@ -106,7 +106,7 @@
         }
 
         function confirmDeprecateSvc() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceDeprecate.html',
                 size: 'lg',
                 controller: 'DeprecateServiceCtrl as ctrl',
@@ -124,7 +124,7 @@
             if (checkNeedsReadMe()) {
                 toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
             } else {
-                $modal.open({
+                $uibModal.open({
                     templateUrl: 'views/modals/servicePublish.html',
                     size: 'lg',
                     controller: 'PublishServiceCtrl as ctrl',
@@ -140,7 +140,7 @@
         }
 
         function confirmRetireSvc() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/serviceRetire.html',
                 size: 'lg',
                 controller: 'RetireServiceCtrl as ctrl',
@@ -183,7 +183,7 @@
         }
 
         function showInfoModal() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/helpView.html',
                 size: 'lg',
                 controller: 'HelpCtrl as ctrl',
@@ -278,7 +278,7 @@
 
     }
 
-    function serviceDefinitionCtrl($scope, $state, $stateParams, endpoint, resourceUtil, toastService, TOAST_TYPES,
+    function serviceDefinitionCtrl($scope, $state, $stateParams, $timeout, resourceUtil, toastService, TOAST_TYPES,
                                    SwaggerDocFetch, svcScreenModel, service) {
 
         svcScreenModel.updateTab('Definition');
@@ -287,59 +287,72 @@
         $scope.noDefinition = false;
         $scope.doFetch = doFetch;
         $scope.loadDefinition = loadDefinition;
-        $scope.loadPreview = loadPreview;
         $scope.reset = reset;
         $scope.saveDefinition = saveDefinition;
         $scope.selectMethod = selectMethod;
         $scope.isSubmitting = false;
 
-        service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(
-            function (reply) {
-                // Clean the reply so we have the pure data object
-                var cleanReply = resourceUtil.cleanResponse(reply);
-                // Check number of properties in the object, if 0, there is no definition present
-                if (Object.keys(cleanReply).length > 0) {
-                    $scope.currentDefinition = cleanReply;
-                    $scope.updatedDefinition = $scope.currentDefinition;
-                    $scope.loadSwaggerUi($scope.currentDefinition,
-                        'original-swagger-ui-container', endpoint, true);
-                } else {
+        init();
+
+        function init() {
+            $scope.isLoading = true;
+            service.getDefinition($stateParams.orgId, $stateParams.svcId, $stateParams.versionId).then(
+                function (reply) {
+                    // Clean the reply so we have the pure data object
+                    var cleanReply = resourceUtil.cleanResponse(reply);
+                    // Check number of properties in the object, if 0, there is no definition present
+                    if (Object.keys(cleanReply).length > 0) {
+                        $scope.currentDefinition = cleanReply;
+                        $scope.updatedDefinition = $scope.currentDefinition;
+                        $scope.displayDefinition = angular.copy($scope.currentDefinition);
+                        $timeout(function () {
+                            $scope.isLoading = false;
+                        }, 100);
+                    } else {
+                        $scope.noDefinition = true;
+                        $scope.isLoading = false;
+                    }
+                }, function (error) {
                     $scope.noDefinition = true;
-                }
-            }, function (error) {
-                $scope.noDefinition = true;
-            });
+                    $scope.isLoading = false;
+                });
+
+        }
 
         function doFetch(uri) {
-            $scope.isSubmitting = true;
+            $scope.isLoading = true;
             var swaggerDocObj = {
                 swaggerURI: uri
             };
             SwaggerDocFetch.save({}, swaggerDocObj, function (reply) {
-                $scope.isSubmitting = false;
+                $scope.isLoading = false;
                 $scope.result = 'success';
                 loadDefinition(angular.fromJson(reply.swaggerDoc));
             }, function (error) {
-                $scope.isSubmitting = false;
+                $scope.isLoading = false;
                 $scope.result = 'error';
+                toastService.warning('<b>Could not retrieve a Swagger JSON.</b><br><span class="small">Please double-check the URL.</span>')
             });
         }
 
         function loadDefinition($fileContent) {
-            try {
-                $scope.updatedDefinition = angular.fromJson($fileContent);
-                $scope.loadPreview($scope.updatedDefinition);
-            } catch (err) {
-                toastService.warning("<b>Error parsing Swagger JSON!</b>" +
-                    "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
-                    "<br>Please double-check your JSON syntax.</span>" +
-                    "<br><span class='small'><b>" + err + '</b></span>');
-            }
-        }
+            $scope.isLoading = true;
+            $timeout(function() {
+                try {
+                    $scope.updatedDefinition = angular.fromJson($fileContent);
+                    $scope.displayDefinition = angular.copy($scope.updatedDefinition);
+                    $scope.noDefinition = false;
+                    $scope.definitionLoaded = true;
+                    $scope.isLoading = false;
+                } catch (err) {
+                    $scope.isLoading = false;
+                    toastService.warning("<b>Error parsing Swagger JSON!</b>" +
+                        "<br><span class='small'>Encountered an error while parsing the Swagger definition." +
+                        "<br>Please double-check your JSON syntax.</span>" +
+                        "<br><span class='small'><b>" + err + '</b></span>');
+                }
+            }, 500);
 
-        function loadPreview(spec) {
-            $scope.definitionLoaded = true;
-            $scope.loadSwaggerUi(spec, 'swagger-ui-container', endpoint, true);
         }
 
         function reset() {
@@ -517,7 +530,6 @@
 
     function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces, service,
                               toastService, TOAST_TYPES, svcData) {
-        $scope.mkts = marketplaces.availableMarketplaces;
         var serviceMkts = serviceMarketplaces.availableMarketplaces;
         $scope.visibilities = ['Show', 'Hide'];
         svcScreenModel.updateTab('Scopes');
@@ -533,7 +545,12 @@
 
         /*set the current state of the service version*/
         function init(){
-            if(Object.keys(serviceMkts).length > 0){
+            $scope.mkts = [];
+            angular.forEach(marketplaces.availableMarketplaces, function (mkt) {
+                $scope.mkts.push(mkt);
+            });
+
+            if(Object.keys(serviceMkts).length > 0) {
                 angular.forEach(serviceMkts, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt){
                         if(mkt.code === svmkt.code) {
@@ -625,7 +642,7 @@
         };
     }
 
-    function servicePoliciesCtrl($scope, $modal, $stateParams, policyData, policyConfiguration,
+    function servicePoliciesCtrl($scope, $uibModal, $stateParams, policyData, policyConfiguration,
                                  svcScreenModel, service) {
 
         $scope.policies = policyData;
@@ -646,7 +663,7 @@
         $scope.modalAnim = 'default';
 
         $scope.modalAddPolicy = function () {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: '/views/modals/policyAdd.html',
                 size: 'lg',
                 controller: 'AddPolicyCtrl as ctrl',
@@ -694,7 +711,7 @@
 
     }
 
-    function serviceAnnouncementsCtrl($scope, $modal, svcScreenModel, announcements) {
+    function serviceAnnouncementsCtrl($scope, $uibModal, svcScreenModel, announcements) {
 
         svcScreenModel.updateTab('Announcements');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
@@ -702,7 +719,7 @@
         $scope.announcements = announcements;
 
         function modalNewAnnouncement() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementCreate.html',
                 size: 'lg',
                 controller: 'NewAnnouncementCtrl as ctrl',
@@ -717,7 +734,7 @@
         }
 
         function modalViewAnnouncement(announcement) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementView.html',
                 size: 'lg',
                 controller: 'ViewAnnouncementCtrl as ctrl',
@@ -733,14 +750,14 @@
 
     }
 
-    function serviceSupportCtrl($scope, $modal, svcScreenModel) {
+    function serviceSupportCtrl($scope, $uibModal, svcScreenModel) {
 
         svcScreenModel.updateTab('Support');
         $scope.modalNewAnnouncement = modalNewAnnouncement;
         $scope.modalViewAnnouncement = modalViewAnnouncement;
 
         function modalNewAnnouncement() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementCreate.html',
                 size: 'lg',
                 controller: 'NewAnnouncementCtrl as ctrl',
@@ -755,7 +772,7 @@
         }
 
         function modalViewAnnouncement(announcement) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'views/modals/announcementView.html',
                 size: 'lg',
                 controller: 'ViewAnnouncementCtrl as ctrl',

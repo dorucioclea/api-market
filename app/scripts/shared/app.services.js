@@ -179,7 +179,7 @@
 
         // APPLICATION MANAGER
         .service('applicationManager',
-            function ($modal, $q, oAuthService, toastService,
+            function ($uibModal, $q, oAuthService, toastService,
                       ApplicationContract, ApplicationVersion, ServiceVersion) {
                 this.delete = deleteApp;
                 this.publish = publish;
@@ -187,7 +187,7 @@
                 this.oAuthConfig = oAuthConfig;
 
                 function deleteApp(organizationId, appId, appName) {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/applicationDelete.html',
                         size: 'lg',
                         controller: 'DeleteApplicationCtrl as ctrl',
@@ -239,7 +239,7 @@
                                                     toastService.warning('<b>No OAuth callback defined!</b><br>' +
                                                         'The application cannot be registered without an OAuth callback URL');
                                                 } else {
-                                                    $modal.open({
+                                                    $uibModal.open({
                                                         templateUrl: 'views/modals/applicationPublish.html',
                                                         size: 'lg',
                                                         controller: 'PublishApplicationCtrl as ctrl',
@@ -265,7 +265,7 @@
 
                 function retire(organizationId, appId, versionId) {
                     return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/applicationRetire.html',
                             size: 'lg',
                             controller: 'RetireApplicationCtrl as ctrl',
@@ -286,7 +286,7 @@
 
                 function oAuthConfig(organizationId, appId, versionId) {
                     return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'views/modals/oauthConfigEdit.html',
                             size: 'lg',
                             controller: 'OAuthConfigCtrl as ctrl',
@@ -773,98 +773,6 @@
             function fetchWithServiceVersion(svcVersion) {
                 fetch(svcVersion.service.organization.id, svcVersion.service.id, svcVersion.version);
             }
-        })
-
-        // LOGIN HELPER SERVICE
-        .service('loginHelper', function ($http, $sessionStorage, $state, CONFIG) {
-            this.checkLoggedIn = checkLoggedIn;
-            this.checkJWTInUrl = checkJWTInUrl;
-            this.logout = logout;
-            this.redirectToLogin = redirectToLogin;
-
-            function checkLoggedIn() {
-                return !!$sessionStorage.jwt;
-            }
-
-            function checkJWTInUrl() {
-                var jwt = getParameterByName(CONFIG.BASE.JWT_HEADER_NAME);
-                if (jwt.length > 0) {
-                    $sessionStorage.jwt = jwt;
-                    delete $sessionStorage.loginInProgress;
-                    window.location.href = $sessionStorage.apimredurl;
-                    delete $sessionStorage.apimredurl;
-                }
-
-                return jwt.length > 0;
-            }
-
-            function logout() {
-                currentUser.getInfo().then(function (info) {
-                    var logOutObject = {
-                        idpUrl: CONFIG.SECURITY.IDP_URL,
-                        spName: CONFIG.SECURITY.SP_NAME,
-                        username: info.username
-                    };
-                    LogOutRedirect.save({}, logOutObject, function (reply) {
-                        console.log(reply);
-                        var string = '';
-                        angular.forEach(reply, function (value) {
-                            if (typeof value === 'string') {
-                                string += value;
-                            }
-                        });
-                        console.log(string);
-                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                            $state.go('logout');
-                        } else {
-                            window.location.href = string;
-                        }
-                        delete $sessionStorage.jwt;
-                        delete $sessionStorage.apimredurl;
-                        delete $sessionStorage.loginInProgress;
-                    });
-                })
-
-            }
-
-            function redirectToLogin() {
-                if (!$sessionStorage.loginInProgress) {
-                    $sessionStorage.loginInProgress = true;
-                    if (!$sessionStorage.apimredurl) $sessionStorage.apimredurl = window.location.origin;
-                    var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
-                    var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                        CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                        '", "clientAppRedirect": "' + $sessionStorage.apimredurl + '", "token": "' +
-                        CONFIG.SECURITY.CLIENT_TOKEN + '"}';
-                    //TODO redirect to correct page!
-
-                    return $http({
-                        method: 'POST',
-                        skipAuthorization: true,
-                        url: url,
-                        data: data,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        responseType: 'text'
-                    }).then(function (result) {
-                        console.log("redirect result: "+JSON.stringify(result));
-                        window.location.href = result.data;
-                    }, function (error) {
-                        $state.go('accessdenied');
-                        console.log('Request failed with error code: ', error.status);
-                        console.log(error);
-                    });
-                }
-            }
-
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-                    results = regex.exec(location.search);
-                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-            }
-
         })
 
         // USER SCREEN MODEL

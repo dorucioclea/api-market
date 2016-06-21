@@ -1,7 +1,7 @@
 ;(function() {
     'use strict';
 
-    angular.module('app.administration', [])
+    angular.module('app.administration')
         .controller('AdministrationCtrl', administrationCtrl)
         .controller('AddAdminCtrl', addAdminCtrl)
         .controller('AdminExpirationCtrl', adminExpirationCtrl)
@@ -68,7 +68,7 @@
         }
     }
 
-    function addAdminCtrl($scope, $modal, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {
+    function addAdminCtrl($scope, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {
         $scope.addAdmin = addAdmin;
         $scope.username = username;
         $scope.modalClose = modalClose;
@@ -117,7 +117,7 @@
         }
 
         function modalClose() {
-            $scope.$close();	// this method is associated with $modal scope which is this.
+            $scope.$close();	// this method is associated with $uibModal scope which is this.
         }
 
         function selectMethod(method) {
@@ -125,7 +125,7 @@
         }
     }
 
-    function removeAdminCtrl($scope, $modal, $state, admin, toastService, TOAST_TYPES, AdminUser) {
+    function removeAdminCtrl($scope, $state, admin, toastService, TOAST_TYPES, AdminUser) {
         $scope.doRemove = doRemove;
         $scope.admin = admin;
         $scope.modalClose = modalClose;
@@ -142,7 +142,7 @@
         }
 
         function modalClose() {
-            $scope.$close();	// this method is associated with $modal scope which is this.
+            $scope.$close();	// this method is associated with $uibModal scope which is this.
         }
     }
 })();

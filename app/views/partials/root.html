@@ -1,5 +1,5 @@
-<header class="site-head"
-        id="site-head" ng-class="{'fixedHeader': fixedHeader}"
+<header class="site-head fixedHeader"
+        id="site-head"
         ng-include=" 'views/header.html' ">
   <!-- linked header (static) view -->
 </header>
@@ -8,9 +8,15 @@
 <!-- main-container -->
 <div class="main-container clearfix" ng-class="{'nav-horizontal': navHorizontal}">
 
+  <!-- toasts -->
+  <div class="toast toast-bottomRight">
+    <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+      <div ng-bind-html="toast.msg"></div>
+    </uib-alert>
+  </div>
+
   <!-- content-here -->
-  <div ng-class="{'fixedHeader': fixedHeader}"
-       class="content-container"
+  <div class="content-container fixedHeader"
        id="content"
        ui-view>
   </div>

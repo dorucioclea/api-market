@@ -5,8 +5,8 @@
 <!-- Application Create panel -->
 <div class="modal-body" ng-hide="hasOrgContext">
     <p class="mt30">We cannot find an organization context for the contract you wish to {{service.autoAcceptContracts ? 'create' : 'request' }}. Please select the organization that contains the application you want to create a contract with.</p>
-    <div class="btn-group dropdown" dropdown>
-        <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
+    <div class="btn-group dropdown" uib-dropdown>
+        <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" uib-dropdown-toggle>
             Select your organization<span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left">
@@ -18,8 +18,8 @@
 <div class="modal-body" ng-show="hasOrgContext">
     <div id="appForm" name="appForm" class="form form-inline">
         <span>For application </span>
-        <div class="btn-group dropdown" dropdown>
-            <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+        <div class="btn-group dropdown" uib-dropdown>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
                 {{selectedAppVersion.name}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-left">
@@ -27,8 +27,8 @@
             </ul>
         </div>
         <span>, version </span>
-        <div class="btn-group dropdown" dropdown>
-            <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle>
+        <div class="btn-group dropdown" uib-dropdown>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
                 {{selectedAppVersion.version}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-left">
@@ -64,8 +64,8 @@
 
 <div class="modal-body" ng-show="hasOrgContext">
     <p class="text-bold text-primary">Please select the plan you want to use for this contract</p>
-    <div class="btn-group dropdown" dropdown>
-        <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" dropdown-toggle>
+    <div class="btn-group dropdown" uib-dropdown>
+        <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" uib-dropdown-toggle>
             {{selectedPlan.plan.name}}<span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left">

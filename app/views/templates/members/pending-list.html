@@ -15,12 +15,13 @@
             </div>
             <div class="col-sm-12">
                 <div class="actions">
-                    <div class="btn-group" dropdown>
-                        <button id="split-button" type="button" class="btn btn-sm btn-default" ng-click="grantMembership(request, 'Developer')">Add as Developer</button>
-                        <button type="button" class="btn btn-sm btn-default" dropdown-toggle>
+                    <div class="btn-group" uib-dropdown>
+                        <button id="split-button" type="button" class="btn btn-sm btn-default" disabled>Choose a role</button>
+                        <button type="button" class="btn btn-sm btn-default" uib-dropdown-toggle>
                             <span class="caret" style="margin-left: 0 !important;"></span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-left" dropdown-menu role="menu" aria-labelledby="split-button">
+                        <ul class="dropdown-menu dropdown-menu-left" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                            <li role="menuitem"><a ng-click="grantMembership(request, 'Developer')">Add as Developer</a></li>
                             <li role="menuitem"><a ng-click="grantMembership(request, 'Owner')">Add as Owner</a></li>
                             <li role="menuitem"><a ng-click="grantMembership(request, 'Watcher')">Add as Watcher</a></li>
                         </ul>

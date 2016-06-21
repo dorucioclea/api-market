@@ -5,7 +5,7 @@
 
 /// ==== CreateSupportTicket Controller
         .controller('CreateSupportTicketCtrl',
-            function ($scope, $modal, $state, serviceVersion, ServiceSupportTickets,
+            function ($scope, $uibModal, $state, serviceVersion, ServiceSupportTickets,
                       currentUserModel, toastService, TOAST_TYPES) {
 
                 $scope.newTicket = {
@@ -32,14 +32,14 @@
                     );
                 }
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                 }
 
             })
 
         /// ==== ViewSupportTicket Controller
         .controller('ViewSupportTicketCtrl',
-            function ($scope, $modal, $state, currentUser, ticket, user, publisherMode, serviceVersion,
+            function ($scope, $uibModal, $state, currentUser, ticket, user, publisherMode, serviceVersion,
                       ServiceTicketComments, ServiceSupportTickets, toastService, TOAST_TYPES) {
 
                 $scope.modalClose = modalClose;
@@ -154,7 +154,7 @@
                 }
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $modal scope which is this.
+                    $scope.$close();	// this method is associated with $uibModal scope which is this.
                     $state.forceReload();
                 }
 
