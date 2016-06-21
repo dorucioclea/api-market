@@ -110,7 +110,7 @@
 
         function newContract(appVersion) {
             selectedApp.updateApplication(appVersion);
-            $state.go('root.apis.list');
+            $state.go('root.apis.grid');
         }
 
         function toApiDoc(contract) {

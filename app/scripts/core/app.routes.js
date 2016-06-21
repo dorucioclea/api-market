@@ -12,7 +12,7 @@
             $urlRouterProvider.otherwise(function($injector){
                 var $state = $injector.get("$state");
                 if (CONFIG.APP.PUBLISHER_MODE) $state.go('root.myOrganizations');
-                else $state.go('root.apis.list');
+                else $state.go('root.apis.grid');
             });
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', function($injector){
                 var $state = $injector.get("$state");
