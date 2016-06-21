@@ -301,7 +301,7 @@
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
         })
         .factory('ServiceMarketInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
         })
         .factory('ServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/support/:supportId', {},
