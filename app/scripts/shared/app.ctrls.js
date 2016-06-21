@@ -212,17 +212,7 @@
                         username: $scope.User.currentUser.username
                     };
                     LogOutRedirect.save({}, logOutObject, function (reply) {
-                        var string = '';
-                        angular.forEach(reply, function (value) {
-                            if (typeof value === 'string') {
-                                string += value;
-                            }
-                        });
-                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                            $state.go('logout');
-                        } else {
-                            window.location.href = string;
-                        }
+                        $state.go('logout');
                         delete $sessionStorage.jwt;
                     });
                 }
@@ -284,6 +274,24 @@
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');
                 });
+            }
+        })
+
+        .controller('LogoutCtrl', function($scope, $state, $timeout) {
+            $scope.secondsRemaining = 5;
+
+            countDownSecond();
+
+            function countDownSecond() {
+                $timeout(function () {
+                    $scope.secondsRemaining--;
+                    if ($scope.secondsRemaining > 0) {
+                        countDownSecond();
+                    } else {
+                        if ($scope.publisherMode) $state.go('root.myOrganizations');
+                        else $state.go('root.apis.grid');
+                    }
+                }, 1000);
             }
         });
 

@@ -59,7 +59,8 @@
                 // LOGOUT PAGE ====================================================================
                 .state('logout', {
                     url: '/logout',
-                    templateUrl: '/views/logout.html'
+                    templateUrl: '/views/logout.html',
+                    controller: 'LogoutCtrl'
                 })
 
                 // ROOT STATE =====================================================================
