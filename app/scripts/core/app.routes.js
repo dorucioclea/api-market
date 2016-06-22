@@ -276,6 +276,9 @@
                         },
                         support: function (apiService, organizationId, serviceId) {
                             return apiService.getServiceSupportTickets(organizationId, serviceId);
+                        },
+                        endpoint: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
                         }
                     },
                     controller: 'ApiDocCtrl'
@@ -298,9 +301,6 @@
                     templateUrl: 'views/partials/api/documentation.html',
                     resolve: {
                         apiService: 'apiService',
-                        endpoint: function (apiService, organizationId, serviceId, versionId) {
-                            return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
-                        },
                         loginHelper: 'loginHelper',
                         svcContracts: function (apiService, loginHelper, organizationId, serviceId, versionId) {
                             if (loginHelper.checkLoggedIn()) {

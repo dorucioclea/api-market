@@ -12,11 +12,12 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $uibModal, svcData, svcModel, svcTab, loginHelper,
+    function apiDocCtrl($scope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper,
                         headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
+        $scope.endpoint = endpoint;
         $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
         $scope.published = $scope.serviceVersion.status === 'Published';
         $scope.retired = $scope.serviceVersion.status === 'Retired';
@@ -84,12 +85,11 @@
     }
 
     /// ==== Service Swagger Documentation Controller
-    function documentationCtrl ($scope, $stateParams, $timeout, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
+    function documentationCtrl ($scope, $stateParams, $timeout, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                                 docTester, docDownloader, svcTab, ApplicationVersion, apiService,
                                 oAuthService, toastService, TOAST_TYPES) {
         $scope.addHeader = addHeader;
         $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
-        $scope.endpoint = endpoint;
         $scope.docDownloader = docDownloader;
         $scope.docTester = docTester;
         $scope.copy = copy;
