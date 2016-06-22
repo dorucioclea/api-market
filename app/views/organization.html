@@ -43,7 +43,7 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label text-primary">Description</label>
-              <div click-to-edit value="org.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
+              <div id="desc" click-to-edit value="org.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
               <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{org.description}}</div>
             </div>
           </div>
