@@ -48,17 +48,24 @@
     </div>
   </div>
 
-  <div class="tabs tabs-style-line">
-    <nav>
-      <ul>
-        <li ui-sref-active="tab-current"><a ui-sref=".documentation"><span>Documentation</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".plans"><span>Plans & Policies</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".announcements"><span>Announcements</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".support"><span>Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".terms"><span>API README</span></a></li>
-      </ul>
-    </nav>
-  </div><!-- /tabs -->
+  <div id="navtabs" class="api-row">
+    <div class="api-content-container navtab-container">
+      <input id="docs" type="radio" name="tabs" ui-sref-active="active" ui-sref=".documentation">
+      <label for="docs">Documentation</label>
+
+      <input id="plans" type="radio" name="tabs" ui-sref-active="active" ui-sref=".plans">
+      <label for="plans">Plans & Policies</label>
+
+      <input id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements">
+      <label for="announcements">Announcements</label>
+
+      <input id="support" type="radio" name="tabs" ui-sref-active="active" ui-sref=".support">
+      <label for="support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
+
+      <input id="readme" type="radio" name="tabs" ui-sref-active="active" ui-sref=".terms">
+      <label for="readme">API README</label>
+    </div>
+  </div>
 
 
   <div class="api-row">
