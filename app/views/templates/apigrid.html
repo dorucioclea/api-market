@@ -1,7 +1,6 @@
 <div ng-repeat="api in apis"
-     class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12 clickable"
-     ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
-    <div class="panel panel-default panel-hovered api-panel mt15 text-center">
+     class="api-grid col-centered col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="panel panel-default panel-hovered api-panel mt15 text-center clickable" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
         <div id="api-name" class="panel-heading">
             <a><h4 class="text-nowrap text-ellipsis">{{api.service.name}}</h4></a>
         </div>
