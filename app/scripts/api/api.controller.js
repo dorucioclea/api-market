@@ -12,12 +12,13 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper,
+    function apiDocCtrl($scope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper, oAuthPolicy,
                         headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
         $scope.endpoint = endpoint;
+        $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
         $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
         $scope.published = $scope.serviceVersion.status === 'Published';
         $scope.retired = $scope.serviceVersion.status === 'Retired';

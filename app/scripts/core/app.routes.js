@@ -279,6 +279,26 @@
                         },
                         endpoint: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
+                        },
+                        svcPolicies: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
+                        },
+                        oAuthPolicy: function ($q, apiService, svcPolicies, organizationId, serviceId, versionId) {
+                            var oAuthPolicy = {};
+                            var promises = [];
+
+                            angular.forEach(svcPolicies, function (policy) {
+                                if (policy.policyDefinitionId === 'OAuth2') {
+                                    promises.push(apiService.getServiceVersionPolicy(organizationId, serviceId, versionId, policy.id));
+                                }
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    oAuthPolicy = details;
+                                });
+                                return oAuthPolicy;
+                            });
                         }
                     },
                     controller: 'ApiDocCtrl'

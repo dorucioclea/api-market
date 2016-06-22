@@ -79,7 +79,7 @@
             <!--</div>-->
         <!--</div>&lt;!&ndash; end API URL panel &ndash;&gt;-->
     <!--</div>-->
-    <div class="col-md-9">
+    <div ng-class="{'col-md-9': loggedIn, 'col-md-12': !loggedIn}">
         <div class="panel panel-default mb15">
             <div class="panel-heading">
                 Swagger specification
@@ -240,49 +240,49 @@
         </div><!-- end Custom Headers panel -->
 
         <!-- Enabled OAuth Types panel -->
-        <div class="panel panel-default mb15" ng-if="hasOAuth">
-            <div class="panel-heading text-center">
-                Enabled OAuth2 Profiles
-            </div>
-            <div class="panel-body text-center">
-                <table class="table">
-                    <tbody>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Authorization Code</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Client Credentials</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Implicit Grant</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Password Grant</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div><!-- end Enabled OAuth Types panel -->
+        <!--<div class="panel panel-default mb15" ng-if="hasOAuth">-->
+            <!--<div class="panel-heading text-center">-->
+                <!--Enabled OAuth2 Profiles-->
+            <!--</div>-->
+            <!--<div class="panel-body text-center">-->
+                <!--<table class="table">-->
+                    <!--<tbody>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Authorization Code</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Client Credentials</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Implicit Grant</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Password Grant</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; end Enabled OAuth Types panel &ndash;&gt;-->
 
         <!-- Authorization panel -->
         <div class="panel panel-default" ng-if="hasOAuth && loggedIn">
