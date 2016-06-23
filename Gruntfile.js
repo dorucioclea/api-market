@@ -317,7 +317,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://localhost:8080/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://localhost:8080/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-local',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -355,7 +355,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://devapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -371,7 +371,7 @@ module.exports = function (grunt) {
           'CONFIG': {
             'APP': {
               'ORG_FRIENDLY_NAME_ENABLED': true,
-              'PUBLISHER_MODE': true,
+              'PUBLISHER_MODE': false,
               'USE_DIGIPOLIS_CONSENT_PAGE': false,
               'SHOW_API_DEVELOPER_NAME_IN_STORE': true
             },
@@ -394,7 +394,7 @@ module.exports = function (grunt) {
               // 'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://devapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -432,7 +432,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://devapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -470,7 +470,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'http://devapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://devapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-DEV',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -508,7 +508,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
-              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://accapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -546,7 +546,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
-              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://accapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -584,7 +584,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
               'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
-              'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'http://accapi.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -622,7 +622,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
               'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api.t1t.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'APIEngine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
@@ -660,7 +660,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-o.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -698,7 +698,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f72',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-o.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -736,7 +736,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-o.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -774,7 +774,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
+              'SP_URL': 'https://api-engine-o.antwerpen.be/api-gateway-auth/v1/login/idp/callback/astad',
               'SP_NAME': 'apiengine-astad',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -809,7 +809,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -844,7 +844,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f72',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -879,7 +879,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -917,7 +917,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://identityserver-a.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-a.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
+              'SP_URL': 'https://api-engine-a.antwerpen.be/api-gateway-auth/v1/login/idp/callback/astad',
               'SP_NAME': 'apiengine-astad',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -952,7 +952,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-p.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -987,7 +987,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f72',
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-p.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -1022,7 +1022,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-p.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
@@ -1060,7 +1060,7 @@ module.exports = function (grunt) {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://identityserver.antwerpen.be/samlsso',
-              'SP_URL': 'https://api-engine-p.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_URL': 'https://api-engine-p.antwerpen.be/api-gateway-auth/v1/login/idp/callback',
               'SP_NAME': 'apiengine',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
