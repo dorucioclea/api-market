@@ -92,30 +92,22 @@
                         orgData: function (Organization, organizationId) {
                             return Organization.get({id: organizationId}).$promise;
                         },
-                        CurrentUserApps: 'CurrentUserApps',
+                        currentUser: 'currentUser',
                         ApplicationVersion: 'ApplicationVersion',
                         ApplicationContract: 'ApplicationContract',
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
                         },
-                        appData: function ($q, organizationId, CurrentUserApps) {
+                        appData: function ($q, organizationId, currentUser) {
                             var appData = [];
-                            var promises = [];
-
-                            promises.push(CurrentUserApps.query().$promise);
-
-                            return $q.all(promises)
-                                .then(function (results) {
-                                    angular.forEach(results, function (value) {
-                                        angular.forEach(value, function (app) {
-                                            if (app.organizationId === organizationId) {
-                                                appData.push(app);
-                                            }
-                                        });
-
-                                    });
-                                    return appData;
+                            return currentUser.getUserApps().then(function (results) {
+                                angular.forEach(results, function (app) {
+                                    if (app.organizationId === organizationId) {
+                                        appData.push(app);
+                                    }
                                 });
+                                return appData;
+                            });
                         },
                         appVersions: function ($q, appData, ApplicationVersion) {
                             var appVersions = {};
@@ -358,9 +350,9 @@
                             });
                             return jwt;
                         },
-                        CurrentUserApps: 'CurrentUserApps',
-                        userApps: function (CurrentUserApps, loginHelper) {
-                            if (loginHelper.checkLoggedIn()) return CurrentUserApps.query().$promise;
+                        currentUser: 'currentUser',
+                        userApps: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getUserApps();
                             else return [];
                         }
                     },
@@ -577,13 +569,12 @@
                     url: '/organizations',
                     templateUrl: 'views/organizations.html',
                     resolve: {
-                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
-                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
-                        appOrgData: function (CurrentUserAppOrgs) {
-                            return CurrentUserAppOrgs.query().$promise;
+                        currentUser: 'currentUser',
+                        appOrgData: function (currentUser) {
+                            return currentUser.getUserAppOrgs();
                         },
-                        svcOrgData: function (CurrentUserSvcOrgs) {
-                            return CurrentUserSvcOrgs.query().$promise;
+                        svcOrgData: function (currentUser) {
+                            return currentUser.getUserSvcOrgs();
                         },
                         orgService: 'orgService',
                         orgs: function (orgService) {
@@ -602,13 +593,12 @@
                     url: '/my-organizations',
                     templateUrl: 'views/my-organizations.html',
                     resolve: {
-                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
-                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
-                        appOrgData: function (CurrentUserAppOrgs) {
-                            return CurrentUserAppOrgs.query().$promise;
+                        currentUser: 'currentUser',
+                        appOrgData: function (currentUser) {
+                            return currentUser.getUserAppOrgs();
                         },
-                        svcOrgData: function (CurrentUserSvcOrgs) {
-                            return CurrentUserSvcOrgs.query().$promise;
+                        svcOrgData: function (currentUser) {
+                            return currentUser.getUserSvcOrgs();
                         }
                     },
                     controller: 'MyOrganizationsCtrl'
