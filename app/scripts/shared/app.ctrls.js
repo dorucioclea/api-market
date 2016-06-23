@@ -162,9 +162,12 @@
 
                 checkIsEmailPresent();
 
-                currentUser.checkStatus().then(function (status) {
-                    $scope.status = status;
-                });
+                if ($scope.loggedIn) {
+                    currentUser.checkStatus().then(function (status) {
+                        $scope.status = status;
+                        console.log($scope.status);
+                    });
+                }
 
                 $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
                     notificationService.getNotificationsForUser().then(function (notifs) {
