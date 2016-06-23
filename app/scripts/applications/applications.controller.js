@@ -6,7 +6,9 @@
         .controller('ActivityCtrl', activityCtrl)
         .controller('ApisCtrl', apisCtrl)
         .controller('AppMetricsCtrl', appMetricsCtrl)
-        .controller('OverviewCtrl', overviewCtrl);
+        .controller('OverviewCtrl', overviewCtrl)
+        .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl);
+
 
     function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
@@ -28,8 +30,23 @@
         $scope.showOAuthConfig = showOAuthConfig;
         $scope.canConfigureOAuth = canConfigureOAuth;
         $scope.newContract = newContract;
+        $scope.confirmDeleteVersion = confirmDeleteVersion;
         
         init();
+        
+        function confirmDeleteVersion() {
+            applicationManager.deleteVersion($scope.applicationVersion.application.organization.id,
+                $scope.applicationVersion.application.id, $scope.applicationVersion.application.name,
+                $scope.applicationVersion.version).then(function () {
+                toastService.success('<b>Application Version deleted.</b>');
+
+                // Redirect? If other versions, redirect to highest, else redirect to dashboard
+                $state.go('root.market-dash', { orgId: $scope.applicationVersion.application.organization.id });
+
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not delete application version!');
+            })
+        }
         
         function init() {
             headerModel.setIsButtonVisible(true, true, false);
@@ -130,16 +147,16 @@
         appScreenModel.updateTab('Activity');
 
     }
-    
+
     function apisCtrl($scope, $state, appScreenModel, docDownloader, docTester, ApplicationContract) {
 
         $scope.docDownloader = docDownloader;
         $scope.toApiDoc = toApiDoc;
         $scope.breakContract = breakContract;
-        
+
         init();
-        
-        
+
+
         function init() {
             docTester.reset();
             appScreenModel.updateTab('APIs');
@@ -304,6 +321,23 @@
 
         appScreenModel.updateTab('Overview');
 
+    }
+
+
+    function deleteApplicationVersionCtrl($scope, $uibModalInstance, applicationName, applicationVersion) {
+
+        $scope.applicationName = applicationName;
+        $scope.applicationVersion = applicationVersion;
+        $scope.modalClose = modalClose;
+        $scope.doDelete = doDelete;
+
+        function modalClose() {
+            $uibModalInstance.dismiss("cancel");
+        }
+
+        function doDelete() {
+            $uibModalInstance.close("OK");
+        }
     }
 
 
