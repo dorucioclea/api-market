@@ -8,14 +8,14 @@
             </td>
             <td id="api-info-column" class="text-left">
                 <div>
-                    <a class="text-primary" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><h4 class="text-uppercase text-light">{{api.service.name}}</h4></a>
+                    <a class="text-primary" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"><span class="text-uppercase size-h4 text-light">{{api.service.name}}</span></a>
                     <span ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0"><span class="text-default text-light"> by </span>
-                    <a class="text-primary" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
+                    <a class="text-primary text-ultralight" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})">
                         {{api.service.organization.friendlyName}}
                     </a></span>
                 </div>
                 <div class="description">
-                    {{api.service.description}}
+                    <span>{{api.service.description}}</span>
                 </div>
             </td>
             <td id="api-version-column">
