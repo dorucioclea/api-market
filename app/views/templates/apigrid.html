@@ -14,7 +14,7 @@
                 <div class="info">
                     <a class="text-nowrap text-ellipsis" ui-sref="root.api.documentation({orgId: api.service.organization.id, svcId: api.service.id, versionId: api.version})"
                        ng-if="useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0">
-                        <p class="mt0 text-primary text-uppercase">{{api.service.organization.friendlyName}}</p>
+                        <p class="mt0 text-primary text-uppercase text-nowrap text-ellipsis">{{api.service.organization.friendlyName}}</p>
                     </a>
                     <span ng-if="!(useFriendlyNames && api.service.organization.friendlyName && api.service.organization.friendlyName.length > 0)">&nbsp;</span>
                 </div>
