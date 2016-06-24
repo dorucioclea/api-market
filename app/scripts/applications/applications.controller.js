@@ -357,7 +357,6 @@
             applicationManager.reissueOAuth(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
                 if (reply) {
                     // TODO avoid use of $parent here
-                    console.log(reply);
                     $scope.$parent.applicationVersion.oAuthClientId = reply.newClientId;
                     $scope.$parent.applicationVersion.oauthClientSecret = reply.newClientSecret;
                     toastService.success('Reissued OAuth credentials for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
