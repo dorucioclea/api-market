@@ -1169,6 +1169,10 @@ module.exports = function (grunt) {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
+    if (target === 'mkt') {
+      return grunt.task.run(['connect:livereload', 'ngconstant:devInt', 'less:dist', 'watch']);
+    }
+
     grunt.task.run([
       'connect:livereload',
       'ngconstant:dev',
