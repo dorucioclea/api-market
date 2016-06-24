@@ -8,6 +8,7 @@
     function applicationManager($uibModal, $q, oAuthService, toastService,
                                 ApplicationContract, ApplicationVersion, ServiceVersion) {
         this.delete = deleteApp;
+        this.deleteVersion = deleteVersion;
         this.publish = publish;
         this.retire = retire;
         this.oAuthConfig = oAuthConfig;
@@ -34,6 +35,28 @@
             return modalInstance.result.then(function(result) {
                 return result;
             });
+        }
+
+        function deleteVersion(organizationId, appId, appName, appVersion) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/applicationVersionDelete.html',
+                size: 'lg',
+                controller: 'DeleteApplicationVersionCtrl as ctrl',
+                resolve: {
+                    applicationName: function () {
+                        return appName;
+                    },
+                    applicationVersion: function () {
+                        return appVersion
+                    }
+                },
+                backdrop : 'static'
+            });
+            modalInstance.result.then(function() {
+                deferred.resolve(ApplicationVersion.delete({ orgId: organizationId, appId: appId, versionId: appVersion}).$promise);
+            });
+            return deferred.promise;
         }
 
         function publish(organizationId, appId, versionId) {
