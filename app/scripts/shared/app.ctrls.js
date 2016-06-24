@@ -165,7 +165,7 @@
                 if ($scope.loggedIn) {
                     currentUser.checkStatus().then(function (status) {
                         $scope.status = status;
-                        console.log($scope.status);
+                        // console.log($scope.status);
                     });
                 }
 
