@@ -27,6 +27,10 @@
                     applyFilter();
                 });
 
+                $scope.$watch('members', function () {
+                    applyFilter();
+                });
+
                 function applyFilter() {
                     $scope.filteredMembers = filterFilter($scope.members, $scope.filter);
                 }
@@ -86,8 +90,8 @@
                         memberService.grantMembership($scope.orgId, request, roleId).then(function () {
                             $scope.pendingRequests.splice($scope.pendingRequests.indexOf(request), 1);
                             applyFilter();
-                            toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + roleId + '</b>.');
                             $rootScope.$broadcast(EVENTS.MEMBER_LIST_UPDATED);
+                            toastService.success('<b>' + request.userDetails.fullName + '</b> is now a member of the organization with role <b>' + roleId + '</b>.');
                         }, function (error) {
                             toastService.createErrorToast(error, 'Could not grant membership');
                         })

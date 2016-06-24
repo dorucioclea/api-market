@@ -1,16 +1,16 @@
 <ul class="list-unstyled left-elems">
 
     <li class="hidden-xs" ng-if="!publisherMode">
-        <a ui-sref="root.apis.grid" class="logo"><img class="logo"></a>
+        <a id="mkt-logo" ui-sref="root.apis.grid" class="logo"><img class="logo"></a>
     </li>
     <li ng-if="!publisherMode">
-        <a class="btn btn-logo" ui-sref="root.apis.grid"><h4>{{title}}</h4></a>
+        <a id="mkt-title" class="btn btn-logo" ui-sref="root.apis.grid"><h4>{{title}}</h4></a>
     </li>
     <li class="hidden-xs" ng-if="publisherMode">
-        <a ui-sref="root.myOrganizations" class="logo"><img class="logo"></a>
+        <a id="pub-logo" ui-sref="root.myOrganizations" class="logo"><img class="logo"></a>
     </li>
     <li ng-if="publisherMode">
-        <a class="btn btn-logo" ui-sref="root.myOrganizations"><h4>{{title}}</h4></a>
+        <a id="pub-title"  class="btn btn-logo" ui-sref="root.myOrganizations"><h4>{{title}}</h4></a>
     </li>
 
     <!-- Search box -->
@@ -87,11 +87,11 @@
 <ul class="list-unstyled right-elems" ng-if="loggedIn">
 
     <li>
-        <span ui-sref="root.myOrganizations" class="btn btn-header ml10 mr15">My Orgs</span>
+        <span id="my-orgs" ui-sref="root.myOrganizations" class="btn btn-header ml10 mr15">My Orgs</span>
     </li>
 
     <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="pendingNotifications.length > 0">
-        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+        <a id="pending-toggle" href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-inbox fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="pendingNotifications.length > 0">{{pendingNotifications.length}}</span>
         </a>
@@ -110,7 +110,7 @@
     </li>
 
     <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="notifications.length > 0">
-        <a href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+        <a id="notif-toggle" href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell-o fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="notifications.length > 0">{{notifications.length}}</span>
         </a>
@@ -130,7 +130,7 @@
     </li>
     <!-- profile drop -->
     <li class="profile-drop dropdown" uib-dropdown>
-        <a class="text-default" href uib-dropdown-toggle>
+        <a id="profile-toggle" class="text-default" href uib-dropdown-toggle>
             <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
             <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
             <span></span>
@@ -139,8 +139,8 @@
         <ul class="dropdown-menu dropdown-menu-right">
             <li><a id="user-profile" ui-sref="root.user.profile"><span class="ion ion-person">&nbsp;&nbsp;</span>{{currentUserModel.currentUser.fullName}}</a></li>
             <li class="divider"></li>
-            <li><a id="orgs" ui-sref="root.organizations"><span class="ion ion-search">&nbsp;&nbsp;</span>Find Organizations</a></li>
-            <li><a id="my-orgs" ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>
+            <li><a id="orgs" ui-sref="root.organizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>Join Public Orgs</a></li>
+            <!--<li><a id="my-orgs" ui-sref="root.myOrganizations"><span class="ion ion-ios-people">&nbsp;&nbsp;</span>My Organizations</a></li>-->
             <li class="divider"></li>
             <li ng-if="currentUserModel.currentUser.admin"><a id="admin-page" ui-sref="root.administration.users"><span class="ion ion-gear-a">&nbsp;&nbsp;</span>Administration</a></li>
             <li class="divider" ng-if="currentUserModel.currentUser.admin"></li>

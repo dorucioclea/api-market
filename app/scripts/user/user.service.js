@@ -5,14 +5,66 @@
         .service('currentUser', currentUser)
         .service('currentUserModel', currentUserModel);
 
-    function currentUser(CurrentUserInfo) {
+    function currentUser($q, CurrentUserInfo, CurrentUserApps, ApplicationContract, ApplicationVersion,
+                         CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs) {
+        this.checkStatus = checkStatus;
         this.getInfo = getInfo;
+        this.getUserAppOrgs = getUserAppOrgs;
+        this.getUserApps = getUserApps;
+        this.getUserSvcOrgs = getUserSvcOrgs;
+        this.getUserServices = getUserServices;
         this.update = update;
 
         var currentUserInfo = undefined;
 
+        function checkStatus() {
+            var status = { hasOrg: false, hasApp: false, hasContract: false };
+            var deferred = $q.defer();
+
+            getUserAppOrgs().then(function (orgs) {
+                if (orgs.length > 0) {
+                    status.hasOrg = true;
+                    getUserApps().then(function (apps) {
+                        if (apps.length > 0) {
+                            status.hasApp = true;
+                            checkAppsForContracts(apps).then(function (hasAppContract) {
+                                status.hasContract = hasAppContract;
+                                deferred.resolve(status);
+                            })
+                        } else {
+                            deferred.resolve(status);
+                        }
+                    })
+                } else {
+                    deferred.resolve(status);
+                }
+            });
+            return deferred.promise;
+        }
+
+        function checkAppsForContracts(userApps) {
+            var promises = [];
+            var contractPromises = [];
+            angular.forEach(userApps, function (app) {
+                promises.push(ApplicationVersion.query({orgId: app.organizationId, appId: app.id}).$promise);
+            });
+            return $q.all(promises).then(function (results) {
+                angular.forEach(results, function (versions) {
+                    angular.forEach(versions, function (version) {
+                        contractPromises.push(ApplicationContract.query({orgId: version.organizationId, appId: version.id, versionId: version.version}).$promise);
+                    });
+                });
+                return $q.all(contractPromises).then(function (versionContracts) {
+                    var hasContract = false;
+                    angular.forEach(versionContracts, function (contracts) {
+                        if (contracts.length > 0) hasContract = true;
+                    });
+                    return hasContract;
+                });
+            });
+        }
+
         function getInfo() {
-            // return CurrentUserInfo.get().$promise;
             if (!currentUserInfo) {
                 return CurrentUserInfo.get().$promise.then(function (data) {
                     currentUserInfo = data;
@@ -21,6 +73,22 @@
             } else {
                 return currentUserInfo;
             }
+        }
+
+        function getUserAppOrgs() {
+            return CurrentUserAppOrgs.query().$promise;
+        }
+
+        function getUserApps() {
+            return CurrentUserApps.query().$promise;
+        }
+
+        function getUserSvcOrgs() {
+            return CurrentUserSvcOrgs.query().$promise;
+        }
+
+        function getUserServices() {
+            return CurrentUserServices.query().$promise;
         }
 
         function update(newUserInfo) {
@@ -34,7 +102,7 @@
     function currentUserModel(orgScreenModel, CurrentUserInfo) {
         var permissionTree = [];
         this.currentUser = {};
-        
+
         this.isAuthorizedFor = isAuthorizedFor;
         this.isAuthorizedForAny = isAuthorizedForAny;
         this.isAuthorizedForIn = isAuthorizedForIn;

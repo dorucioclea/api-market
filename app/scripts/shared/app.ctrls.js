@@ -139,7 +139,7 @@
 
         .controller('HeadCtrl',
             function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUserInfo, notifications, pendingNotifications,
+                     currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
                 $scope.loggedIn = loginHelper.checkLoggedIn();
@@ -161,6 +161,13 @@
                 $scope.toMarketDash = toMarketDash;
 
                 checkIsEmailPresent();
+
+                if ($scope.loggedIn) {
+                    currentUser.checkStatus().then(function (status) {
+                        $scope.status = status;
+                        // console.log($scope.status);
+                    });
+                }
 
                 $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
                     notificationService.getNotificationsForUser().then(function (notifs) {

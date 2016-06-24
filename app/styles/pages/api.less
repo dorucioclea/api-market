@@ -9,12 +9,12 @@
   }
 
 
-    .breadcrumbs {
-      //padding-left: 12.5%;
-      //padding-right: 12.5%;
-      //background: #ddd;
-      box-shadow: 0 2px 5px rgba(0, 0,  0, .3);
-    }
+  .breadcrumbs {
+    //padding-left: 12.5%;
+    //padding-right: 12.5%;
+    //background: #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0,  0, .3);
+  }
 
   .img-ticket-user {
     width: 20px;
@@ -27,234 +27,60 @@
     }
   }
 
-  /*****************************/
-  /* Triangle and line */
-  /*****************************/
+  #navtabs {
+    //min-width: 320px;
+    //max-width: 800px;
+    padding: 50px 0 0 0;
+    margin: auto auto;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
 
-  .tabs-style-linetriangle {
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-  }
+    .navtab-container {
 
-  .tabs-style-linetriangle nav a {
-    overflow: visible;
-    //border-bottom: 1px solid rgba(0,0,0,0.2);
-    -webkit-transition: color 0.2s;
-    transition: color 0.2s;
-  }
+      padding: 0 20px;
 
-  .tabs-style-linetriangle nav a span {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 1em;
-  }
+      input {
+        display: none;
+      }
 
-  .tabs-style-linetriangle nav li.tab-current a {
-    border-bottom: 1px solid @brand-primary;
-  }
+      label {
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        font-weight: 600;
+        text-align: center;
+        color: #bbb;
+        border: 1px solid transparent;
+      }
 
-  .tabs-style-linetriangle nav li.tab-current a:after,
-  .tabs-style-linetriangle nav li.tab-current a:before {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border: solid transparent;
-    content: '';
-    pointer-events: none;
-  }
+      label:hover {
+        color: #888;
+        cursor: pointer;
+      }
 
-  .tabs-style-linetriangle nav li.tab-current a:after {
-    margin-left: -10px;
-    border-width: 10px;
-    border-top-color: #e7ecea;
-  }
+      input.active + label {
+        color: #555;
+        border: 1px solid #ddd;
+        border-top: 2px solid @brand-primary;
+        border-bottom: 1px solid #fff;
+      }
 
-  .tabs-style-linetriangle nav li.tab-current a:before {
-    margin-left: -11px;
-    border-width: 11px;
-    border-top-color: rgba(0,0,0,0.2);
-  }
+      @media screen and (max-width: 650px) {
+        label {
+          font-size: 0;
+        }
+        label:before {
+          margin: 0;
+          font-size: 18px;
+        }
+      }
 
-  @media screen and (max-width: 58em) {
-    .tabs-style-linetriangle nav {
-      font-size: 0.6em;
+      @media screen and (max-width: 400px) {
+        label {
+          padding: 15px;
+        }
+      }
     }
-  }
 
-
-  /*****************************/
-  /* Line */
-  /*****************************/
-
-  .tabs-style-line {
-    box-shadow: inset 0 -2px #d1d3d2;
-  }
-
-  .tabs-style-line nav ul {
-    padding: 0 2em;
-    max-width: none;
-    box-shadow: inset 0 -2px #d1d3d2;
-  }
-
-  .tabs-style-line nav a {
-    padding: 0.7em 0.4em;
-    box-shadow: inset 0 -2px #d1d3d2;
-    color: #74777b;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    font-size: 0.8em;
-    line-height: 1;
-    -webkit-transition: color 0.3s, box-shadow 0.3s;
-    transition: color 0.3s, box-shadow 0.3s;
-  }
-
-  .tabs-style-line nav a:hover,
-  .tabs-style-line nav a:focus {
-    box-shadow: inset 0 -2px #74777b;
-  }
-
-  .tabs-style-line nav li.tab-current a {
-    box-shadow: inset 0 -2px @brand-primary;
-    color: @brand-primary;
-  }
-
-  @media screen and (max-width: 58em) {
-    .tabs-style-line nav ul {
-      display: block;
-      box-shadow: none;
-    }
-    .tabs-style-line nav ul li {
-      display: block;
-      -webkit-flex: none;
-      flex: none;
-    }
-  }
-
-  /* Default tab style */
-  .tabs {
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto;
-    width: 100%;
-    font-weight: 300;
-    font-size: 1.25em;
-  }
-
-  /* Nav */
-  .tabs nav {
-    text-align: center;
-  }
-
-  .tabs nav ul {
-    position: relative;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: flex;
-    margin: 0 auto;
-    padding: 0;
-    max-width: 1200px;
-    list-style: none;
-    -ms-box-orient: horizontal;
-    -ms-box-pack: center;
-    -webkit-flex-flow: row wrap;
-    -moz-flex-flow: row wrap;
-    -ms-flex-flow: row wrap;
-    flex-flow: row wrap;
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    -ms-justify-content: center;
-    justify-content: center;
-  }
-
-  .tabs nav ul li {
-    position: relative;
-    z-index: 1;
-    display: block;
-    margin: 0;
-    text-align: center;
-    -webkit-flex: 1;
-    -moz-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-  }
-
-  .tabs nav a {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: 2.5;
-  }
-
-  .tabs nav a span {
-    vertical-align: middle;
-    font-size: 0.75em;
-  }
-
-  .tabs nav li.tab-current a {
-    color: #74777b;
-  }
-
-  .tabs nav a:focus {
-    outline: none;
-  }
-
-  /* Content */
-  .content-wrap {
-    position: relative;
-  }
-
-  .content-wrap section {
-    display: none;
-    margin: 0 auto;
-    padding: 1em;
-    max-width: 1200px;
-    text-align: center;
-  }
-
-  .content-wrap section.content-current {
-    display: block;
-  }
-
-  .content-wrap section p {
-    margin: 0;
-    padding: 0.75em 0;
-    color: rgba(40,44,42,0.05);
-    font-weight: 900;
-    font-size: 4em;
-    line-height: 1;
-  }
-
-  /* Fallback */
-  .no-js .content-wrap section {
-    display: block;
-    padding-bottom: 2em;
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-  }
-
-  .no-flexbox nav ul {
-    display: block;
-  }
-
-  .no-flexbox nav ul li {
-    min-width: 15%;
-    display: inline-block;
-  }
-
-  @media screen and (max-width: 58em) {
-    .tabs nav a.icon span {
-      display: none;
-    }
-    .tabs nav a:before {
-      margin-right: 0;
-    }
   }
 }

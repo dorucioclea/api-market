@@ -89,7 +89,7 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService) {
+    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService, _) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
@@ -131,25 +131,17 @@
         }
 
         function processResults(orgs) {
-            var processedOrgs = [];
-            orgs.forEach(function (org) {
-                // check if member
-                for (var i = 0; i < $scope.memberOrgs.length; i++) {
-                    if ($scope.memberOrgs[i].id === org.id ) {
-                        org.isMember = true;
+            var processedOrgs = _.differenceWith(orgs, $scope.memberOrgs, function (a, b) {
+                return a.id === b.id;
+            });
+            processedOrgs.forEach(function (org) {
+                // check for pending membership
+                for (var j = 0; j < $scope.pendingOrgs.length; j++){
+                    if ($scope.pendingOrgs[j].id === org.id) {
+                        org.requestPending = true;
                         break;
                     }
                 }
-                // if not member, check for pending membership
-                if (!org.isMember) {
-                    for (var j = 0; j < $scope.pendingOrgs.length; j++){
-                        if ($scope.pendingOrgs[j].id === org.id) {
-                            org.requestPending = true;
-                            break;
-                        }
-                    }
-                }
-                processedOrgs.push(org);
             });
             return processedOrgs;
         }

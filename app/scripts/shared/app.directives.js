@@ -354,12 +354,12 @@
             return {
                 restrict: 'E',
                 scope: {
-                    apis: '=',
-                    stats: '='
+                    apis: '='
                 },
-                controller: function ($scope, currentUserModel, followerService) {
+                controller: function ($scope, currentUserModel, followerService, CONFIG) {
                     $scope.followAction = followAction;
                     $scope.userIsFollowing = userIsFollowing;
+                    $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
 
                     function followAction(api) {
                         if (userIsFollowing(api)) {
@@ -384,8 +384,7 @@
             return {
                 restrict: 'E',
                 scope: {
-                    apis: '=',
-                    stats: '='
+                    apis: '='
                 },
                 controller: function ($scope, currentUserModel, followerService, CONFIG) {
                         $scope.followAction = followAction;

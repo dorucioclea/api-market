@@ -155,13 +155,23 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion) {
+    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract) {
+        this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
+        this.getAppVersionContracts = getAppVersionContracts;
         this.getAppMetrics = getAppMetrics;
         this.updateAppDesc = updateAppDescription;
+        
+        function getAppVersions(orgId, appId) {
+            return ApplicationVersion.query({ orgId: orgId, appId: appId }).$promise
+        }
 
         function getAppVersionDetails(orgId, appId, versionId) {
             return ApplicationVersion.get({ orgId: orgId, appId: appId, versionId: versionId }).$promise;
+        }
+        
+        function getAppVersionContracts(orgId, appId, versionId) {
+            return ApplicationContract.query({ orgId: orgId, appId: appId, versionId: versionId }).$promise
         }
 
         function getAppMetrics(orgId, appId, versionId, fromDt, toDt, interval) {

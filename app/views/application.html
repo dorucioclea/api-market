@@ -1,35 +1,35 @@
 <overview entity-version="applicationVersion" type="app">
-  <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}" has-logo="true" base64logo="{{applicationVersion.application.base64logo}}"
-                   entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('appEdit')">
+    <overview-header name="{{applicationVersion.application.name}}" icon="cogs" description="{{applicationVersion.application.description}}" has-logo="true" base64logo="{{applicationVersion.application.base64logo}}"
+                     entity-version="applicationVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
+                     edit-permission="User.isAuthorizedFor('appEdit')">
 
-    <!-- Entity Buttons -->
-    <div class="toast toast-bottomRight">
-      <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-        <div ng-bind-html="toast.msg">Test Toast</div>
-      </uib-alert>
-    </div>
-    <div class="text-center">
-      <button class="btn btn-line-primary btn-sm" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersion)">New Contract</button>
-      <button class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
-      <button class="btn btn-line-success btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('appAdmin')" ng-if="!isRegistered" ng-click="confirmPublishApp(applicationVersion)">Register</button>
-      <button class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-if="isRegistered && !isRetired" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
-      <button class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteVersion(applicationVersion)">Delete {{applicationVersion.version}}</button>
-      <button class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete App</button>
-      <div class="mt10" ng-show="!User.isAuthorizedFor('appAdmin')">
-        <p class="text-muted xsmall">
-          You do not have the necessary permissions to register, retire or delete applications.
-        </p>
-      </div>
-    </div>
+        <!-- Entity Buttons -->
+        <div class="toast toast-bottomRight">
+            <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
+                <div ng-bind-html="toast.msg">Test Toast</div>
+            </uib-alert>
+        </div>
+        <div class="text-center">
+            <button id="new-contract" class="btn btn-line-primary btn-sm" ng-if="!isRegistered && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersion)">New Contract</button>
+            <button id="oauth" class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
+            <button id="publish" class="btn btn-line-success btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('appAdmin')" ng-if="!isRegistered" ng-click="confirmPublishApp(applicationVersion)">Register</button>
+            <button id="retire" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-if="isRegistered && !isRetired" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
+            <button id="delete-version" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteVersion(applicationVersion)">Delete {{applicationVersion.version}}</button>
+            <button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete</button>
+            <div class="mt10" ng-show="!User.isAuthorizedFor('appAdmin')">
+                <p class="text-muted xsmall">
+                    You do not have the necessary permissions to register, retire or delete applications.
+                </p>
+            </div>
+        </div>
 
-  </overview-header>
+    </overview-header>
 
-  <overview-tabs>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Overview'" ui-sref=".overview">Overview</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'APIs'" ui-sref=".apis">APIs</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" ui-sref=".activity">Activity</label>
-    <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isRegistered">Metrics</label>
-    <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
-  </overview-tabs>
+    <overview-tabs>
+        <label id="overview" class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Overview'" ui-sref=".overview">Overview</label>
+        <label id="apis" class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'APIs'" ui-sref=".apis">APIs</label>
+        <label id="activity" class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" ui-sref=".activity">Activity</label>
+        <label id="metrics" class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Metrics'" ui-sref=".metrics" ng-if="isRegistered">Metrics</label>
+        <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
+    </overview-tabs>
 </overview>

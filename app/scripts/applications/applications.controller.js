@@ -148,18 +148,27 @@
 
     }
 
-    function apisCtrl($scope, $state, appScreenModel, docDownloader, docTester, ApplicationContract) {
+    
+    function apisCtrl($scope, $state, appScreenModel, docDownloader, docTester, service, toastService, ApplicationContract) {
 
         $scope.docDownloader = docDownloader;
         $scope.toApiDoc = toApiDoc;
         $scope.breakContract = breakContract;
-
+        $scope.copyEndpoint = copyEndpoint;
         init();
 
 
         function init() {
             docTester.reset();
             appScreenModel.updateTab('APIs');
+
+            $scope.contracts.forEach(function (contract) {
+                if (!contract.serviceEndpoint) {
+                    service.getEndpoint(contract.serviceOrganizationId, contract.serviceId, contract.serviceVersion).then(function (endpoint) {
+                        contract.serviceEndpoint = endpoint.managedEndpoint;
+                    })
+                }
+            })
         }
 
         function toApiDoc(contract) {
@@ -177,6 +186,11 @@
                 function (reply) {
                     $state.forceReload();
                 });
+        }
+
+        function copyEndpoint(serviceName) {
+            var msg = 'Basepath for <b>' + serviceName + '</b> copied to clipboard!';
+            toastService.info(msg);
         }
 
     }

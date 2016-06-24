@@ -17,7 +17,7 @@
     <hr>
 </div>
 <!-- The organization's list of members -->
-<div class="apiman-members" data-field="members">
+<div class="members">
 
     <div class="col-sm-12" ng-hide="members.length > 0">
         <div class="row">
@@ -43,6 +43,5 @@
             <h4>Pending membership requests <span class="badge badge-primary">{{pendingRequests.length}}</span></h4>
         </div>
         <apim-pending-member-list pending-requests="pendingRequests" org-id="{{orgId}}"></apim-pending-member-list>
-        <apim-pending-member-list></apim-pending-member-list>
     </div>
 </div><!-- end ngRepeat: member in filteredMembers -->

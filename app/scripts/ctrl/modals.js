@@ -225,7 +225,7 @@
         .controller('PlanSelectCtrl',
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
-                      CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
+                      currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
                       serviceVersion, svcPolicies) {
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
@@ -261,7 +261,7 @@
                     if (orgScreenModel.organization === undefined) {
                         // No org context, get user's AppOrgs
                         $scope.hasOrgContext = false;
-                        CurrentUserAppOrgs.query({}, function (reply) {
+                        currentUser.getUserAppOrgs().then(function (reply) {
                             $scope.appOrgs = reply;
                         });
                     } else {

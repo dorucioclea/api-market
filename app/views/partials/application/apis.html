@@ -5,11 +5,11 @@
         <hr>
     </div>
 
-    <div class="col-sm-10 col-sm-offset-1">
+    <div class="col-sm-12 col-sm-offset-1">
 
     </div>
 
-    <div class="col-sm-10 col-sm-offset-1 mt10 table-responsive" style="overflow: visible;" ng-hide="contracts.length === 0">
+    <div class="col-sm-12 mt10 table-responsive" style="overflow: visible;" ng-hide="contracts.length === 0">
         <table class="table table-condensed table-hover">
             <thead>
             <tr>
@@ -22,7 +22,12 @@
             </thead>
             <tbody>
             <tr ng-repeat="contract in contracts">
-                <td><a class="clickable" ng-click="toApiDoc(contract)">{{contract.serviceName}}</a></td>
+                <td>
+                    <a class="clickable mt10" ng-click="toApiDoc(contract)">{{contract.serviceName}}</a>
+                    <p class="small text-light">
+                        {{contract.serviceEndpoint}} <a id="copy-basepath" clipboard text="contract.serviceEndpoint" ng-click="copyEndpoint(contract.serviceName)" class="fa fa-copy clickable" uib-tooltip="Click to copy service basepath to clipboard."></a>
+                    </p>
+                </td>
                 <td>{{contract.serviceVersion}}</td>
                 <td>{{contract.planName}}</td>
                 <td>

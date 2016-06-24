@@ -60,6 +60,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-  <button class="btn btn-primary" ng-click="createApplication(ctrl.application)" ng-disabled="appForm.$invalid || !imageService.image.isValid">Create Application</button>
+  <button id="cancel" class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+  <button id="create-app" class="btn btn-primary" ng-click="createApplication(ctrl.application)" ng-disabled="appForm.$invalid || !imageService.image.isValid">Create Application</button>
 </div>

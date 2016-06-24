@@ -54,6 +54,7 @@
             'app.members',
             'app.notifications',
             'app.organizations',
+            'app.plugin.lodash',
             'app.service',
             'app.swagger',
             'app.user'

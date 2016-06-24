@@ -1,6 +1,85 @@
 <div class="row">
     <!-- Swagger API documentation panel -->
-    <div class="col-md-9">
+    <!--<div class="col-md-12">-->
+        <!--&lt;!&ndash; API URL panel &ndash;&gt;-->
+        <!--<div class="panel panel-default mb15">-->
+            <!--<div class="panel-heading text-center">-->
+                <!--API Information-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <!--<form class="form-horizontal">-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">API URL</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Organization ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Service ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Version ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" ng-if="hasOAuth">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">OAuth Provision Key</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; end API URL panel &ndash;&gt;-->
+    <!--</div>-->
+    <div ng-class="{'col-md-9': loggedIn, 'col-md-12': !loggedIn}">
         <div class="panel panel-default mb15">
             <div class="panel-heading">
                 Swagger specification
@@ -23,83 +102,83 @@
     <!-- Sidebar panels -->
     <div class="col-md-3">
 
-        <!-- API URL panel -->
-        <div class="panel panel-default mb15">
-            <div class="panel-heading text-center">
-                API Information
-            </div>
-            <div class="panel-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">API URL</label>
-                        </div>
-                        <div class="col-md-12">
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
-                                <div class="input-group-btn">
-                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Organization ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Service ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Version ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="hasOAuth">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">OAuth Provision Key</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div><!-- end API URL panel -->
+        <!--&lt;!&ndash; API URL panel &ndash;&gt;-->
+        <!--<div class="panel panel-default mb15">-->
+            <!--<div class="panel-heading text-center">-->
+                <!--API Information-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <!--<form class="form-horizontal">-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">API URL</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Organization ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Service ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">Version ID</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" ng-if="hasOAuth">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="control-label text-primary">OAuth Provision Key</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<div class="input-group">-->
+                                <!--<input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; end API URL panel &ndash;&gt;-->
 
         <!-- Existing Contracts panel -->
         <div class="panel panel-default mb15" ng-if="loggedIn">
@@ -161,49 +240,49 @@
         </div><!-- end Custom Headers panel -->
 
         <!-- Enabled OAuth Types panel -->
-        <div class="panel panel-default mb15" ng-if="hasOAuth">
-            <div class="panel-heading text-center">
-                Enabled OAuth2 Profiles
-            </div>
-            <div class="panel-body text-center">
-                <table class="table">
-                    <tbody>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Authorization Code</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Client Credentials</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Implicit Grant</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Password Grant</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div><!-- end Enabled OAuth Types panel -->
+        <!--<div class="panel panel-default mb15" ng-if="hasOAuth">-->
+            <!--<div class="panel-heading text-center">-->
+                <!--Enabled OAuth2 Profiles-->
+            <!--</div>-->
+            <!--<div class="panel-body text-center">-->
+                <!--<table class="table">-->
+                    <!--<tbody>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Authorization Code</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Client Credentials</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Implicit Grant</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">-->
+                        <!--<td>-->
+                            <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<span class="text-bold">Password Grant</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; end Enabled OAuth Types panel &ndash;&gt;-->
 
         <!-- Authorization panel -->
         <div class="panel panel-default" ng-if="hasOAuth && loggedIn">
