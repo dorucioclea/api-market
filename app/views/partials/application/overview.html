@@ -38,7 +38,7 @@
         </div>
         <div class="mt30 row" ng-if="apikey">
             <div class="col-sm-12">
-                <h4>API Key</h4>
+                <h4>API Key <a class="fa fa-refresh clickable" ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshApiKey(applicationVersion)"></a></h4>
             </div>
             <div class="col-sm-8">
                 <table class="mt5 table table-striped table-condensed">
@@ -55,7 +55,7 @@
         </div>
         <div class="mt30 row" ng-if="applicationVersion.oAuthClientId !== null && applicationVersion.oAuthClientId.length > 0">
             <div class="col-sm-12">
-                <h4>OAuth Credentials</h4>
+                <h4>OAuth Credentials <a class="fa fa-refresh clickable" ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshOAuth(applicationVersion)"></a></h4>
             </div>
             <div class="col-sm-8">
                 <table class="mt5 table table-striped table-condensed">

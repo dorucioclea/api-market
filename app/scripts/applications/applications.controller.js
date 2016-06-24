@@ -7,7 +7,8 @@
         .controller('ApisCtrl', apisCtrl)
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl)
-        .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl);
+        .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl)
+        .controller('ReissueConfirmCtrl', reissueConfirmCtrl);
 
 
     function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
@@ -43,7 +44,7 @@
                 $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
             $scope.isRetired = $scope.applicationVersion.status === 'Retired';
 
-            if ($scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
+            if (!$scope.apikey && $scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
             // if ($scope.versions.length === 1) {
                 $scope.lastVersion = 'This version cannot be deleted because it is the last remaining one.<br>If you want to remove the application completely, use the Delete App button.'
             // }
@@ -334,9 +335,37 @@
         $scope.responseHistogramX = {'id': 'displayDate'};
     }
 
-    function overviewCtrl($scope, appScreenModel) {
+    function overviewCtrl($scope, appScreenModel, applicationManager, toastService) {
 
         appScreenModel.updateTab('Overview');
+        $scope.refreshApiKey = refreshApiKey;
+        $scope.refreshOAuth = refreshOAuth;
+
+        function refreshApiKey(appVersion) {
+            applicationManager.reissueApiKey(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
+                    if (reply) {
+                        // TODO don't use $parent here
+                        $scope.$parent.apikey = reply.newKey;
+                        toastService.success('Reissued API key for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
+                    }
+            }, function (err) {
+                toastService.createErrorToast(err, 'Could not reissue API key.');
+            })
+        }
+
+        function refreshOAuth(appVersion) {
+            applicationManager.reissueOAuth(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
+                if (reply) {
+                    // TODO avoid use of $parent here
+                    console.log(reply);
+                    $scope.$parent.applicationVersion.oAuthClientId = reply.newClientId;
+                    $scope.$parent.applicationVersion.oauthClientSecret = reply.newClientSecret;
+                    toastService.success('Reissued OAuth credentials for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
+                }
+            }, function (err) {
+                toastService.createErrorToast(err, 'Could not reissue OAuth credentials.');
+            })
+        }
 
     }
 
@@ -353,6 +382,20 @@
         }
 
         function doDelete() {
+            $uibModalInstance.close("OK");
+        }
+    }
+    
+    function reissueConfirmCtrl($scope, $uibModalInstance) {
+
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+
+        function cancel() {
+            $uibModalInstance.dismiss("cancel");
+        }
+
+        function ok() {
             $uibModalInstance.close("OK");
         }
     }

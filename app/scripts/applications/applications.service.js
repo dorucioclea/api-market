@@ -5,12 +5,14 @@
         .service('applicationManager', applicationManager)
         .service('appService', appService);
 
-    function applicationManager($uibModal, $q, oAuthService, toastService,
+    function applicationManager($uibModal, $q, oAuthService, toastService, ApplicationApiKeyReissue, ApplicationOAuthReissue,
                                 ApplicationContract, ApplicationVersion, ServiceVersion) {
         this.delete = deleteApp;
         this.deleteVersion = deleteVersion;
         this.publish = publish;
         this.retire = retire;
+        this.reissueApiKey = reissueApiKey;
+        this.reissueOAuth = reissueOAuth;
         this.oAuthConfig = oAuthConfig;
 
         function deleteApp(organizationId, appId, appName) {
@@ -132,6 +134,52 @@
                     backdrop : 'static'
                 });
             }).$promise;
+        }
+        
+        function reissueApiKey(orgId, appId, versionId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueApiKey.html',
+                size: 'lg',
+                controller: 'ReissueConfirmCtrl',
+                backdrop: 'static'
+            });
+            
+            modalInstance.result.then(function () {
+                ApplicationApiKeyReissue.request({orgId: orgId, appId: appId, versionId: versionId}, {}).$promise.then(function (reply) {
+                    deferred.resolve(reply);
+                }, function (err) {
+                    deferred.reject(err);
+                })
+            }, function () {
+                // Canceled, do nothing
+                deferred.resolve();
+            });
+            
+            return deferred.promise;
+        }
+        
+        function reissueOAuth(orgId, appId, versionId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueOAuth.html',
+                size: 'lg',
+                controller: 'ReissueConfirmCtrl',
+                backdrop: 'static'
+            });
+
+            modalInstance.result.then(function () {
+                ApplicationOAuthReissue.request({orgId: orgId, appId: appId, versionId: versionId}, {}).$promise.then(function (reply) {
+                    deferred.resolve(reply);
+                }, function (err) {
+                    deferred.reject(err);
+                })
+            }, function () {
+                // Canceled, do nothing
+                deferred.resolve();
+            });
+
+            return deferred.promise;
         }
 
         function oAuthConfig(organizationId, appId, versionId) {

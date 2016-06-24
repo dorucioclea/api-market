@@ -214,6 +214,20 @@
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
         })
+        .factory('ApplicationApiKeyReissue', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/key-auth/reissue', {}, {
+                request: {
+                    method: 'POST'
+                }
+            });
+        })
+        .factory('ApplicationOAuthReissue', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/oauth2/reissue', {}, {
+                request: {
+                    method: 'POST'
+                }
+            });
+        })
         .factory('Service', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId',
                 {orgId: '@organizationId', svcId: '@id'},
