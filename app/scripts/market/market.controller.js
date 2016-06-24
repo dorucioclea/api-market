@@ -64,6 +64,17 @@
                 }).pendingContracts.push(contract);
             });
 
+            if (selectedApp.appVersion) {
+                var currentApp = _.find($scope.applications, function (a) {
+                    return a.id === selectedApp.appVersion.id});
+                currentApp.selectedVersionIndex = _.indexOf(currentApp.versions, _.find(currentApp.versions, function (v) {
+                    return v.version === selectedApp.appVersion.version;
+                }));
+                if (currentApp.versions[currentApp.selectedVersionIndex].contracts.length > 0) {
+                    currentApp.contractsExpanded = true;
+                }
+            }
+
             selectedApp.reset();
             docTester.reset();
         }
@@ -150,12 +161,17 @@
             applicationManager.oAuthConfig(appVersion.organizationId, appVersion.id, appVersion.version);
         }
 
-        function breakContract(contract) {
+        function breakContract(application, contract) {
             ApplicationContract.delete(
                 {orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion,
                     contractId: contract.contractId},
-                function (reply) {
-                    $state.forceReload();
+                function () {
+                    var contracts = application.versions[application.selectedVersionIndex].contracts;
+                    contracts.splice(contracts.indexOf(contract), 1);
+                    if (contracts.length === 0) {
+                        application.contractsExpanded = false;
+                        application.versions[application.selectedVersionIndex].status = 'Created';
+                    }
                 });
         }
 
