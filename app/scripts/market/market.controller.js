@@ -11,19 +11,14 @@
     
 
     function marketDashCtrl ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
-                             appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
+                             appData, headerModel, pendingContracts,
                              selectedApp, applicationManager, docTester, toastService, service,
-                             ApplicationContract) {
+                             ApplicationContract, _) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.updateOrganization(orgData);
-        selectedApp.reset();
-        docTester.reset();
         $scope.$state = $state;
         $scope.orgScreenModel = orgScreenModel;
         $scope.applications = appData;
-        $scope.applicationVersions = appVersions;
-        $scope.applicationVersionDetails = appVersionDetails;
-        $scope.applicationContracts = appContracts;
         $scope.orgId = $stateParams.orgId;
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -46,23 +41,31 @@
         $scope.modalNewApplication = modalNewApplication;
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
+        $scope.selectVersion = selectVersion;
 
 
         init();
 
 
         function init() {
-            pendingContracts.forEach(function (contract) {
-                $scope.pendingContracts = [];
-                if ($scope.applicationVersions[contract.appId] && $scope.applicationVersions[contract.appId].version === contract.appVersion) {
-                    if (!$scope.pendingContracts[contract.appId]) $scope.pendingContracts[contract.appId] = [];
-                    contract.planDetails = angular.fromJson(contract.body);
-                    service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
-                        contract.svcDetails = svcVersion;
-                    });
-                    $scope.pendingContracts[contract.appId].push(contract);
-                }
+            angular.forEach($scope.applications, function (app) {
+                app.selectedVersionIndex = 0;
             });
+
+            pendingContracts.forEach(function (contract) {
+                contract.planDetails = angular.fromJson(contract.body);
+                service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
+                    contract.svcDetails = svcVersion;
+                });
+                _.find(_.find($scope.applications, function (o) {
+                    return o.id === contract.appId
+                }).versions, function (v) {
+                    return v.version === contract.appVersion;
+                }).pendingContracts.push(contract);
+            });
+
+            selectedApp.reset();
+            docTester.reset();
         }
 
         function toggle(app) {
@@ -79,7 +82,7 @@
             angular.forEach($scope.applications, function (application) {
                 // Check if this application has at least one contract
                 // Without this check, we would show an empty row
-                if ($scope.applicationContracts.hasOwnProperty(application.id)) {
+                if (application.versions[application.selectedVersionIndex].contracts.length > 0 ) {
                     application.contractsExpanded = true;
                 }
             });
@@ -91,8 +94,8 @@
 
         function canConfigureOAuth(appVersion) {
             return $scope.isNotRetired(appVersion) &&
-                appVersionDetails[appVersion.id].oAuthClientId !== null &&
-                appVersionDetails[appVersion.id].oAuthClientId.length > 0;
+                appVersion.details.oAuthClientId !== null &&
+                appVersion.details.oAuthClientId.length > 0;
         }
 
         function canPublish(appVersion) {
@@ -176,6 +179,14 @@
         function copyProvisionKey(provKey) {
             var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
             toastService.info(msg);
+        }
+
+        function selectVersion(application, version) {
+            application.selectedVersionIndex = _.indexOf(application.versions, version);
+            // Make sure the contracts tab is collapsed when switching to a version without contracts
+            if (application.versions[application.selectedVersionIndex].contracts.length === 0) {
+                application.contractsExpanded = false;
+            }
         }
 
     }

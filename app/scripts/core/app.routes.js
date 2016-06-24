@@ -109,63 +109,42 @@
                                 return appData;
                             });
                         },
-                        appVersions: function ($q, appData, ApplicationVersion) {
-                            var appVersions = {};
+                        appService: 'appService',
+                        appVersions: function ($q, appData, appService) {
                             var promises = [];
 
                             angular.forEach(appData, function (app) {
-                                promises.push(ApplicationVersion.query(
-                                    {orgId: app.organizationId, appId: app.id}).$promise);
+                                promises.push(appService.getAppVersions(app.organizationId, app.id).then(function (appVersions) {
+                                    app.versions = appVersions;
+                                }));
                             });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    appVersions[value[0].id] = value[0];
-                                });
-                                return appVersions;
-                            });
+                            return $q.all(promises);
                         },
-                        appVersionDetails: function ($q, appVersions, ApplicationVersion) {
-                            var appVersionDetails = {};
+                        appVersionDetails: function ($q, appData, appVersions, appService) {
                             var promises = [];
-
-                            angular.forEach(appVersions, function (value) {
-                                promises.push(
-                                    ApplicationVersion.get({
-                                        orgId: value.organizationId,
-                                        appId: value.id,
-                                        versionId: value.version}).$promise);
+                            
+                            angular.forEach(appData, function (app) {
+                                angular.forEach(app.versions, function (appVersion) {
+                                    promises.push(
+                                        appService.getAppVersionDetails(appVersion.organizationId, appVersion.id, appVersion.version).then(function (versionDetails) {
+                                           appVersion.details = versionDetails; 
+                                        }));
+                                })
                             });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    appVersionDetails[value.application.id] = value;
-                                });
-                                return appVersionDetails;
-                            });
+                            
+                            return $q.all(promises);
                         },
-                        appContracts: function ($q, appVersions, ApplicationContract) {
-                            var appContracts = {};
+                        appContracts: function ($q, appData, appVersions, appService) {
                             var promises = [];
-
-                            angular.forEach(appVersions, function (value) {
-                                promises.push(ApplicationContract.query({
-                                    orgId: value.organizationId,
-                                    appId: value.id,
-                                    versionId: value.version
-                                }).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    // Check if at least one contract was found,
-                                    // so we can add by application Id of the first contract
-                                    if (angular.isDefined(value[0])) {
-                                        appContracts[value[0].appId] = value;
-                                    }
+                            angular.forEach(appData, function (app) {
+                                angular.forEach(app.versions, function (appVersion) {
+                                    promises.push(appService.getAppVersionContracts(appVersion.organizationId, appVersion.id, appVersion.version).then(function (versionContracts) {
+                                        appVersion.contracts = versionContracts;
+                                        appVersion.pendingContracts = [];
+                                    }))
                                 });
-                                return appContracts;
                             });
+                            return $q.all(promises);
                         },
                         contractService: 'contractService',
                         pendingContracts: function (organizationId, contractService) {
