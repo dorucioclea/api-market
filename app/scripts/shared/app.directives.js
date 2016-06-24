@@ -420,8 +420,9 @@
                     publisherMode: '='
                 },
                 controller:
-                    function ($scope, $uibModal) {
+                    function ($scope, $uibModal, loginHelper) {
                         $scope.modalNewTicketOpen = modalNewTicketOpen;
+                        $scope.loggedIn = loginHelper.checkLoggedIn();
 
                         function modalNewTicketOpen() {
                             $uibModal.open({
