@@ -33,6 +33,21 @@
         $scope.confirmDeleteVersion = confirmDeleteVersion;
         
         init();
+
+        function init() {
+            headerModel.setIsButtonVisible(true, true, false);
+            orgScreenModel.updateOrganization(orgData);
+            appScreenModel.updateApplication(appData);
+            $scope.isReady = $scope.applicationVersion.status === 'Ready';
+            $scope.isRegistered =
+                $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+            $scope.isRetired = $scope.applicationVersion.status === 'Retired';
+
+            if ($scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
+            // if ($scope.versions.length === 1) {
+                $scope.lastVersion = 'This version cannot be deleted because it is the last remaining one.<br>If you want to remove the application completely, use the Delete App button.'
+            // }
+        }
         
         function confirmDeleteVersion() {
             applicationManager.deleteVersion($scope.applicationVersion.application.organization.id,
@@ -46,18 +61,6 @@
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not delete application version!');
             })
-        }
-        
-        function init() {
-            headerModel.setIsButtonVisible(true, true, false);
-            orgScreenModel.updateOrganization(orgData);
-            appScreenModel.updateApplication(appData);
-            $scope.isReady = $scope.applicationVersion.status === 'Ready';
-            $scope.isRegistered =
-                $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
-            $scope.isRetired = $scope.applicationVersion.status === 'Retired';
-            
-            if ($scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
         }
 
         function selectVersion(version) {
