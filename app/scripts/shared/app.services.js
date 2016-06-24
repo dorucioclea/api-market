@@ -572,38 +572,43 @@
 
         // FOLLOWER SERVICE
         .service('followerService',
-            function ($state, currentUserModel, toastService, TOAST_TYPES,
+            function ($state, currentUserModel, toastService, loginHelper,
                       ServiceFollowerAdd, ServiceFollowerRemove) {
                 this.addFollower = addFollower;
                 this.removeFollower = removeFollower;
 
                 function addFollower(svcVersion) {
-                    ServiceFollowerAdd.save({orgId: svcVersion.service.organization.id,
-                            svcId: svcVersion.service.id,
-                            userId: currentUserModel.currentUser.username},
-                        {},
-                        function (reply) {
-                            $state.forceReload();
-                            toastService.createToast(TOAST_TYPES.SUCCESS,
-                                'You are now following <b>' + svcVersion.service.name + '</b>.', true);
-                        }, function (error) {
-                            toastService.createErrorToast(error, 'Could not follow this service');
-                        });
+                    if (loginHelper.checkLoggedIn()) {
+                        ServiceFollowerAdd.save({orgId: svcVersion.service.organization.id,
+                                svcId: svcVersion.service.id,
+                                userId: currentUserModel.currentUser.username},
+                            {},
+                            function () {
+                                $state.forceReload();
+                                toastService.success('You are now following <b>' + svcVersion.service.name + '</b>.');
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Could not follow this service');
+                            });
+                    } else {
+                        toastService.warning('<b>Please log in to follow this service!</b>');
+                    }
                 }
 
                 function removeFollower(svcVersion) {
-                    ServiceFollowerRemove.save({orgId: svcVersion.service.organization.id,
-                            svcId: svcVersion.service.id,
-                            userId: currentUserModel.currentUser.username},
-                        {},
-                        function (reply) {
-                            $state.forceReload();
-                            toastService.createToast(TOAST_TYPES.WARNING,
-                                'You are no longer following <b>' + svcVersion.service.name + '</b>.',
-                                true);
-                        }, function (error) {
-                            toastService.createErrorToast(error, 'Could not unfollow this service');
-                        });
+                    if (loginHelper.checkLoggedIn()) {
+                        ServiceFollowerRemove.save({orgId: svcVersion.service.organization.id,
+                                svcId: svcVersion.service.id,
+                                userId: currentUserModel.currentUser.username},
+                            {},
+                            function () {
+                                $state.forceReload();
+                                toastService.warning('You are no longer following <b>' + svcVersion.service.name + '</b>.');
+                            }, function (error) {
+                                toastService.createErrorToast(error, 'Could not unfollow this service');
+                            });
+                    } else {
+                        toastService.warning('<b>Please log in to unfollow this service!</b>');
+                    }
                 }
             })
 
