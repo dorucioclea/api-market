@@ -153,7 +153,7 @@
                 $scope.clearNotification = clearNotification;
                 $scope.clearAllNotifications = clearAllNotifications;
                 $scope.doLogOut = doLogOut;
-                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Marketplace';
+                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
