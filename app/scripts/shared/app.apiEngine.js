@@ -474,7 +474,7 @@
             return $resource(CONFIG.BASE.URL + '/system/whitelist/records');
         })
         .factory('StatusInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/system/status');
+            return $resource(CONFIG.BASE.URL + '/security/status');
         })
 
         /// ========== OAUTH ============================================================================
