@@ -138,7 +138,7 @@
         })
 
         .controller('HeadCtrl',
-            function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+            function($scope, $uibModal, $state, $localStorage, $sessionStorage, LogOutRedirect, CONFIG, docTester,
                      currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
@@ -175,9 +175,8 @@
                 if ($scope.loggedIn) {
                     currentUser.checkStatus().then(function (status) {
                         $scope.status = status;
-                        if (!$scope.status.hasOrg) controller.orgPopoverOpen = true;
-                        // if ($scope.status.hasOrg && !$scope.status.hasApp)
-                            controller.appPopoverOpen = true;
+                        if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
+                        if ($scope.status.hasOrg && !$scope.status.hasApp && !$localStorage.appPopupSeen) controller.appPopoverOpen = true;
                     });
                 }
 
@@ -284,6 +283,7 @@
 
                 function appNeededLater() {
                     controller.appPopoverOpen = false;
+                    $localStorage.appPopupSeen = true;
                 }
 
                 function appNeededOk() {
@@ -292,22 +292,26 @@
                             controller.multipleOrgs = orgs;
                         } else {
                             controller.appPopoverOpen = false;
-                            $state.go('root.market-dash', {orgId: orgs[0].id, mode: 'create'});
+                            $localStorage.appPopupSeen = true;
+                            $state.go('root.market-dash', { orgId: orgs[0].id, mode: 'create' });
                         }
                     });
                 }
 
                 function appNeededOkForOrg(org) {
                     controller.appPopoverOpen = false;
+                    $localStorage.appPopupSeen = true;
                     $state.go('root.market-dash', { orgId: org.id, mode: 'create' });
                 }
 
                 function orgNeededLater() {
                     controller.orgPopoverOpen = false;
+                    $localStorage.orgPopupSeen = true;
                 }
 
                 function orgNeededOk() {
                     controller.orgPopoverOpen = false;
+                    $localStorage.orgPopupSeen = true;
                     $state.go('root.myOrganizations', { mode: 'create' });
                 }
                 
