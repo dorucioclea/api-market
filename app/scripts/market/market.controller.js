@@ -77,6 +77,10 @@
 
             selectedApp.reset();
             docTester.reset();
+
+            if ($stateParams.mode && $stateParams.mode === 'create') {
+                modalNewApplication();
+            }
         }
 
         function toggle(app) {

@@ -86,6 +86,9 @@
                 // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
                     url: '/org/:orgId/applications',
+                    params: {
+                        mode: null
+                    },
                     templateUrl: '/views/market-dashboard.html',
                     resolve: {
                         Organization: 'Organization',
@@ -570,6 +573,9 @@
                 // MY ORGANIZATIONS OVERVIEW PAGE =================================================
                 .state('root.myOrganizations', {
                     url: '/my-organizations',
+                    params: {
+                        mode: null
+                    },
                     templateUrl: 'views/my-organizations.html',
                     resolve: {
                         currentUser: 'currentUser',

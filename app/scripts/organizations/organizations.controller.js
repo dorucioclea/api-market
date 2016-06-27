@@ -43,7 +43,7 @@
         }
     }
 
-    function myOrganizationsCtrl($scope, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $stateParams, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -62,6 +62,10 @@
             $scope.orgs.forEach(function (org) {
                 org.isMember = true;
             });
+
+            if ($stateParams.mode && $stateParams.mode === 'create') {
+                modalNewOrganization();
+            }
         }
 
         $scope.$watch('searchText', function (newVal) {

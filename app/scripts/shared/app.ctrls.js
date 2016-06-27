@@ -164,6 +164,7 @@
                 $scope.toMarketDash = toMarketDash;
                 controller.appNeededLater = appNeededLater;
                 controller.appNeededOk = appNeededOk;
+                controller.appNeededOkForOrg = appNeededOkForOrg;
                 controller.orgNeededLater = orgNeededLater;
                 controller.orgNeededOk = orgNeededOk;
 
@@ -175,7 +176,8 @@
                     currentUser.checkStatus().then(function (status) {
                         $scope.status = status;
                         if (!$scope.status.hasOrg) controller.orgPopoverOpen = true;
-                        if ($scope.status.hasOrg && !$scope.status.hasApp) controller.appPopoverOpen = true;
+                        // if ($scope.status.hasOrg && !$scope.status.hasApp)
+                            controller.appPopoverOpen = true;
                     });
                 }
 
@@ -281,13 +283,23 @@
                 }
 
                 function appNeededLater() {
-                    console.log('app later');
                     controller.appPopoverOpen = false;
                 }
 
                 function appNeededOk() {
-                    console.log('app ok');
+                    currentUser.getUserAppOrgs().then(function (orgs) {
+                        if (orgs.length > 1) {
+                            controller.multipleOrgs = orgs;
+                        } else {
+                            controller.appPopoverOpen = false;
+                            $state.go('root.market-dash', {orgId: orgs[0].id, mode: 'create'});
+                        }
+                    });
+                }
+
+                function appNeededOkForOrg(org) {
                     controller.appPopoverOpen = false;
+                    $state.go('root.market-dash', { orgId: org.id, mode: 'create' });
                 }
 
                 function orgNeededLater() {
@@ -296,8 +308,7 @@
 
                 function orgNeededOk() {
                     controller.orgPopoverOpen = false;
-                    console.log($scope.orgPopoverOpen);
-                    $state.go('root.myOrganizations');
+                    $state.go('root.myOrganizations', { mode: 'create' });
                 }
                 
                 $scope.$on(EVENTS.API_DETAILS_PAGE_OPENED, function () {
