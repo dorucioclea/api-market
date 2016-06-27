@@ -5,7 +5,8 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $sessionStorage, $state, $location, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, CONFIG) {
+        this.checkIsFirstVisit = checkIsFirstVisit;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
         this.checkJWTInSession = checkJWTInSession;
@@ -13,6 +14,10 @@
         this.extractJWTFromUrl = extractJWTFromUrl;
         this.logout = logout;
         this.redirectToLogin = redirectToLogin;
+        
+        function checkIsFirstVisit() {
+            return !!$localStorage.hasVisited;
+        }
 
         function checkLoggedIn() {
             return checkJWTInSession();

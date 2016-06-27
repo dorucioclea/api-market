@@ -161,6 +161,7 @@
                 $scope.toMarketDash = toMarketDash;
 
                 checkIsEmailPresent();
+                checkFirstVisit();
 
                 if ($scope.loggedIn) {
                     currentUser.checkStatus().then(function (status) {
@@ -186,6 +187,26 @@
                             templateUrl: 'views/modals/emailPrompt.html',
                             // size: 'lg',
                             controller: 'EmailPromptCtrl as ctrl',
+                            backdrop: 'static',
+                            keyboard: false,
+                            resolve: {
+                                currentInfo: function() {
+                                    return $scope.User.currentUser;
+                                }
+                            },
+                            windowClass: $scope.modalAnim	// Animation Class put here.
+                        });
+                    }
+                }
+
+                function checkFirstVisit() {
+                    if (!$scope.loggedIn && !$scope.publisherMode && !loginHelper.checkIsFirstVisit()) {
+                        console.log('first visit!');
+
+                        $uibModal.open({
+                            templateUrl: 'views/modals/firstVisit.html',
+                            size: 'lg',
+                            controller: 'FirstVisitCtrl',
                             backdrop: 'static',
                             keyboard: false,
                             resolve: {
@@ -281,6 +302,21 @@
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');
                 });
+            }
+        })
+        
+        .controller('FirstVisitCtrl', function ($scope, $uibModalInstance, $localStorage, loginHelper) {
+            $scope.login = login;
+            $scope.later = later;
+            
+            function login() {
+                $localStorage.hasVisited = true;
+                loginHelper.redirectToLogin();
+            }
+            
+            function later() {
+                $localStorage.hasVisited = true;
+                $uibModalInstance.dismiss('later');
             }
         })
 
