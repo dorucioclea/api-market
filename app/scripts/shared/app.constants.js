@@ -21,7 +21,8 @@
         
         .constant('EVENTS', {
             'MEMBER_LIST_UPDATED': 'member-list-updated',
-            'NOTIFICATIONS_UPDATED': 'notifications-updated'
+            'NOTIFICATIONS_UPDATED': 'notifications-updated',
+            'API_DETAILS_PAGE_OPENED': 'api-details-page-opened'
         })
 
         .constant('NOTIFICATIONS', {

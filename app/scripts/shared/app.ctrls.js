@@ -162,6 +162,8 @@
                 $scope.toAccessDenied = toAccessDenied;
                 $scope.toLogin = toLogin;
                 $scope.toMarketDash = toMarketDash;
+                controller.appNeededLater = appNeededLater;
+                controller.appNeededOk = appNeededOk;
                 controller.orgNeededLater = orgNeededLater;
                 controller.orgNeededOk = orgNeededOk;
 
@@ -173,6 +175,7 @@
                     currentUser.checkStatus().then(function (status) {
                         $scope.status = status;
                         if (!$scope.status.hasOrg) controller.orgPopoverOpen = true;
+                        if ($scope.status.hasOrg && !$scope.status.hasApp) controller.appPopoverOpen = true;
                     });
                 }
 
@@ -277,6 +280,16 @@
                     }
                 }
 
+                function appNeededLater() {
+                    console.log('app later');
+                    controller.appPopoverOpen = false;
+                }
+
+                function appNeededOk() {
+                    console.log('app ok');
+                    controller.appPopoverOpen = false;
+                }
+
                 function orgNeededLater() {
                     controller.orgPopoverOpen = false;
                 }
@@ -286,12 +299,10 @@
                     console.log($scope.orgPopoverOpen);
                     $state.go('root.myOrganizations');
                 }
-
-                $scope.$on('buttonToggle', function (event, data) {
-                    $scope.showExplore = headerModel.showExplore;
-                    $scope.showDash = headerModel.showDash;
-                    $scope.showSearch = headerModel.showSearch;
-                });
+                
+                $scope.$on(EVENTS.API_DETAILS_PAGE_OPENED, function () {
+                    $scope.onApiPage = true;
+                })
 
             })
 

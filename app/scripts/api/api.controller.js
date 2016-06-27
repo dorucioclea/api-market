@@ -12,8 +12,8 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper, oAuthPolicy,
-                        headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
+    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper, oAuthPolicy,
+                        headerModel, toastService, followerService, support, CONFIG, EVENTS) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
@@ -37,6 +37,7 @@
             $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
         $scope.followAction = followAction;
 
+        $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 
         function hasTerms() {
             return $scope.serviceVersion.service.terms !== null &&
@@ -60,8 +61,7 @@
                                 return data;
                             },
                             function (error) {
-                                console.log(error.data.message);
-                                toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
+                                toastService.warning(error.data.message);
                                 throw new Error('<b>Service does not exist anymore!</b><br><span class="small">This error occurs when the service was available when loading the page, but in meantime has been retired, or otherwise deleted from the publisher.</span>');
                             });
                     }
