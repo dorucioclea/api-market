@@ -142,6 +142,9 @@
                      currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
+                
+                var controller = this;
+
                 $scope.loggedIn = loginHelper.checkLoggedIn();
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
@@ -159,6 +162,9 @@
                 $scope.toAccessDenied = toAccessDenied;
                 $scope.toLogin = toLogin;
                 $scope.toMarketDash = toMarketDash;
+                controller.orgNeededLater = orgNeededLater;
+                controller.orgNeededOk = orgNeededOk;
+
 
                 checkIsEmailPresent();
                 checkFirstVisit();
@@ -166,7 +172,7 @@
                 if ($scope.loggedIn) {
                     currentUser.checkStatus().then(function (status) {
                         $scope.status = status;
-                        // console.log($scope.status);
+                        if (!$scope.status.hasOrg) controller.orgPopoverOpen = true;
                     });
                 }
 
@@ -269,6 +275,16 @@
                     } else {
                         $state.go('root.market-dash', {orgId: $scope.orgScreenModel.organization.id});
                     }
+                }
+
+                function orgNeededLater() {
+                    controller.orgPopoverOpen = false;
+                }
+
+                function orgNeededOk() {
+                    controller.orgPopoverOpen = false;
+                    console.log($scope.orgPopoverOpen);
+                    $state.go('root.myOrganizations');
                 }
 
                 $scope.$on('buttonToggle', function (event, data) {

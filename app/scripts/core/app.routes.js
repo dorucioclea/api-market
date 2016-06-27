@@ -74,7 +74,7 @@
                             else return [];
                         }
                     },
-                    controller: 'HeadCtrl'
+                    controller: 'HeadCtrl as ctrl'
                 })
 
                 // UX Improvements testing state
