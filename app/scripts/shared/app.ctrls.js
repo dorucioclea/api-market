@@ -232,7 +232,7 @@
                 }
 
                 function checkNeedsPopover() {
-                    if ($scope.loggedIn) {
+                    if ($scope.loggedIn && !$scope.publisherMode) {
                         currentUser.checkStatus().then(function (status) {
                             $scope.status = status;
                             if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
