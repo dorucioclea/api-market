@@ -1,8 +1,8 @@
 <div class="modal-body style-placeholders first-visit-modal">
   <div class="col-sm-12 header">
     <span class="pull-right clickable btn-close size-h1" ng-click="later()"><span class="fa fa-times"></span></span>
-    <h1 class="text-primary text-uppercase">Welkom!</h1>
-    <h4>Voor je APIs kan gebruiken moeten we een paar dingen in orde brengen...</h4>
+    <h1 class="text-primary text-uppercase">Welcome!</h1>
+    <h4>Before you can start using APIs, we need to take care of a few things...</h4>
   </div>
   <div class="panel">
     <div class="panel-body">
@@ -10,21 +10,21 @@
 
         <div class="media first-visit-block">
           <div class="media-left">
-            <div class="media-object first-visit-object">
-              <img src="images/stad-logo.svg" alt="" class="">
+            <div class="first-visit-object">
+              <img src="images/stad-logo.svg" alt="" class="img-circle">
             </div>
           </div>
           <div class="media-body">
-            <h4 class="media-heading title text-primary">Log in met je A-Profiel</h4>
+            <h4 class="media-heading title text-primary">Log in with your A-Profile</h4>
             Gallia est omnis divisa in partes tres, quarum unam incolunt Belgae, aliam Aquitani, tertiam iis qui, in ipsorum lenguam Celtae, nostri Galli appelantur.
           </div>
         </div>
 
         <div class="media first-visit-block">
           <div class="media-body">
-            <h4 class="media-heading title text-primary">Maak een Organisatie aan</h4>
-            Gallia est omnis divisa in partes tres, quarum unam incolunt Belgae, aliam Aquitani, tertiam iis qui, in ipsorum lenguam Celtae, nostri Galli appelantur.
-
+            <h4 class="media-heading title text-primary">Create an Organization</h4>
+            Think of an organization as a container for your applications. It allows you to easily group applications together,
+            and you can invite others to collaborate on those applications.
           </div>
           <div class="media-right">
             <div class="first-visit-object show-icon text-center">
@@ -43,8 +43,8 @@
 
           </div>
           <div class="media-body">
-            <h4 class="media-heading title text-primary">Maak een nieuwe Applicatie</h4>
-            Gallia est omnis divisa in partes tres, quarum unam incolunt Belgae, aliam Aquitani, tertiam iis qui, in ipsorum lenguam Celtae, nostri Galli appelantur.
+            <h4 class="media-heading title text-primary">Start working on a new Application</h4>
+            Applications are what it's really all about. They can have contracts with one or more of our APIs, and an API key will be generated to secure access to those APIs.
           </div>
         </div>
 
@@ -63,8 +63,8 @@
         <!--</form>-->
       </div>
       <div class="col-sm-12 buttons">
-        <button class="btn btn-primary btn-login btn-lg" ng-click="login()">Let's go!</button>
-        <button class="btn btn-later btn-lg" ng-click="later()">Later, ik wil eerst wat rondkijken</button>
+        <button id="lets-go" class="btn btn-primary btn-login btn-lg" ng-click="login()">Let's go!</button>
+        <button id="later" class="btn btn-later btn-lg" ng-click="later()">Later, I want to have a look around first</button>
       </div>
     </div>
   </div>
