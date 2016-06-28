@@ -144,11 +144,8 @@
                      toastService, jwtHelper, loginHelper, EVENTS) {
                 
                 var controller = this;
-
-                $scope.loggedIn = loginHelper.checkLoggedIn();
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
-                currentUserModel.setCurrentUserInfo(currentUserInfo);
                 $scope.notifications = notifications;
                 $scope.pendingNotifications = pendingNotifications;
                 $scope.toasts = toastService.toasts;
@@ -156,7 +153,6 @@
                 $scope.clearNotification = clearNotification;
                 $scope.clearAllNotifications = clearAllNotifications;
                 $scope.doLogOut = doLogOut;
-                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
@@ -169,25 +165,31 @@
                 controller.orgNeededOk = orgNeededOk;
 
 
-                checkIsEmailPresent();
-                checkFirstVisit();
+                init();
 
-                if ($scope.loggedIn) {
-                    currentUser.checkStatus().then(function (status) {
-                        $scope.status = status;
-                        if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
-                        if ($scope.status.hasOrg && !$scope.status.hasApp && !$localStorage.appPopupSeen) controller.appPopoverOpen = true;
-                    });
-                }
+                function init() {
+                    $scope.loggedIn = loginHelper.checkLoggedIn();
+                    currentUserModel.setCurrentUserInfo(currentUserInfo);
+                    $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
 
-                $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
-                    notificationService.getNotificationsForUser().then(function (notifs) {
-                        $scope.notifications = notifs;
-                        notificationService.getPendingNotificationsForUser().then(function (pending) {
-                            $scope.pendingNotifications = pending;
+                    checkIsEmailPresent();
+                    checkFirstVisit();
+                    checkNeedsPopover();
+
+                    $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
+                        notificationService.getNotificationsForUser().then(function (notifs) {
+                            $scope.notifications = notifs;
+                            notificationService.getPendingNotificationsForUser().then(function (pending) {
+                                $scope.pendingNotifications = pending;
+                            })
                         })
+                    });
+
+                    $scope.$on(EVENTS.API_DETAILS_PAGE_OPENED, function () {
+                        $scope.onApiPage = true;
+                        checkNeedsPopover();
                     })
-                });
+                }
 
                 function checkIsEmailPresent() {
                     if ($scope.loggedIn && !$scope.User.currentUser.email) {
@@ -225,6 +227,16 @@
                                 }
                             },
                             windowClass: $scope.modalAnim	// Animation Class put here.
+                        });
+                    }
+                }
+
+                function checkNeedsPopover() {
+                    if ($scope.loggedIn) {
+                        currentUser.checkStatus().then(function (status) {
+                            $scope.status = status;
+                            if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
+                            if ($scope.status.hasOrg && !$scope.status.hasApp && !$localStorage.appPopupSeen) controller.appPopoverOpen = true;
                         });
                     }
                 }
@@ -314,11 +326,6 @@
                     $localStorage.orgPopupSeen = true;
                     $state.go('root.myOrganizations', { mode: 'create' });
                 }
-                
-                $scope.$on(EVENTS.API_DETAILS_PAGE_OPENED, function () {
-                    $scope.onApiPage = true;
-                })
-
             })
 
         .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, currentUser) {
