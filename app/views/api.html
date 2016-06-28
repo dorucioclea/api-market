@@ -115,11 +115,11 @@
       <input id="plans" type="radio" name="tabs" ui-sref-active="active" ui-sref=".plans">
       <label for="plans">Plans & Policies</label>
 
-      <input id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements">
-      <label for="announcements">Announcements</label>
+      <input ng-if="showAnnouncements" id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements">
+      <label ng-if="showAnnouncements" for="announcements">Announcements</label>
 
-      <input id="support" type="radio" name="tabs" ui-sref-active="active" ui-sref=".support">
-      <label for="support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
+      <input ng-if="showSupport" id="support" type="radio" name="tabs" ui-sref-active="active" ui-sref=".support">
+      <label ng-if="showSupport" for="support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
 
       <input id="readme" type="radio" name="tabs" ui-sref-active="active" ui-sref=".terms">
       <label for="readme">API README</label>
