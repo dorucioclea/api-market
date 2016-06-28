@@ -425,24 +425,19 @@
                     url: '/services',
                     templateUrl: 'views/partials/organization/services.html',
                     resolve: {
-                        Service: 'Service',
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function ($q, Service, ServiceVersion, organizationId) {
-                            var deferred = $q.defer();
-
-                            Service.query({ orgId: organizationId }, function (services) {
+                        service: 'service',
+                        svcData: function ($q, service, organizationId) {
+                            return service.getServicesForOrg(organizationId).then(function (services) {
                                 var promises = [];
                                 angular.forEach(services, function (svc) {
-                                    promises.push(ServiceVersion.query(
-                                        { orgId: svc.organizationId, svcId: svc.id }, function (reply) {
-                                            svc.serviceVersionDetails = reply[0];
-                                        }).$promise);
+                                    promises.push(service.getServiceVersions(organizationId, svc.id).then(function (versions) {
+                                        svc.versions = versions;
+                                    }));
                                 });
-                                $q.all(promises).then(function () {
-                                    deferred.resolve(services);
+                                return $q.all(promises).then(function () {
+                                    return services;
                                 });
                             });
-                            return deferred.promise;
                         }
                     },
                     controller: 'ServicesCtrl'

@@ -258,7 +258,7 @@
 
         /// ==== DeprecateService Controller
         .controller('DeprecateServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService) {
 
                 $scope.serviceVersion = svcVersion;
@@ -266,19 +266,20 @@
                 $scope.doDeprecate = doDeprecate;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doDeprecate() {
-                    actionService.deprecateService($scope.serviceVersion, true);
-                    $scope.modalClose();
+                    actionService.deprecateService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Deprecated');
+                    });
                 }
 
             })        
         
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService) {
 
                 $scope.selectedSvcVersion = svcVersion;
@@ -286,19 +287,20 @@
                 $scope.doPublish = doPublish;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doPublish() {
-                    actionService.publishService($scope.selectedSvcVersion, true);
-                    $scope.modalClose();
+                    actionService.publishService($scope.selectedSvcVersion, false).then(function () {
+                        $uibModalInstance.close('Published');
+                    });
                 }
 
             })
 
         /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService, toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
@@ -307,17 +309,18 @@
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doDeprecate() {
-                    actionService.deprecateService($scope.serviceVersion, true);
-                    $scope.modalClose();
+                    actionService.deprecateService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Deprecated');
+                    });
                 }
 
                 function doRetire() {
-                    actionService.retireService($scope.serviceVersion, true).then(function () {
-                        $scope.modalClose();
+                    actionService.retireService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Retired');
                     }, function (err) {
                         if (err.status === 409) { // BE returns 409 Conflict in case of existing contracts
                             toastService.createToast(TOAST_TYPES.WARNING, '<b>This service has existing contracts!</b>', true);
