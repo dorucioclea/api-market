@@ -6,7 +6,7 @@
         .service('appService', appService);
 
     function applicationManager($uibModal, $q, oAuthService, toastService, ApplicationApiKeyReissue, ApplicationOAuthReissue,
-                                ApplicationContract, ApplicationVersion, ServiceVersion) {
+                                ApplicationContract, ApplicationVersion, ServiceVersion, appService) {
         this.delete = deleteApp;
         this.deleteVersion = deleteVersion;
         this.publish = publish;
@@ -51,6 +51,11 @@
                     },
                     applicationVersion: function () {
                         return appVersion
+                    },
+                    lastVersion: function () {
+                        return appService.getAppVersions(organizationId, appId).then(function (versions) {
+                            return versions.length === 1;
+                        })
                     }
                 },
                 backdrop : 'static'

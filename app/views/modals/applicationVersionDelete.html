@@ -4,8 +4,10 @@
 </div>
 <!-- Application Create panel -->
 <div class="modal-body">
-    <p>When an application version is deleted, <b>all</b> data associated with the application version will be removed. All contracts with the application version will be voided.</p>
-    
+    <p>When an application version is deleted, all data associated with the application version will be removed.<br>All contracts with the application version will be voided.</p>
+
+    <p ng-if="lastVersion">Since this is the only version that currently exists for this application, <strong>deleting this version will also delete the application</strong>!</p>
+
     <p>Please be aware that <span class="text-primary text-bold">this action is irreversible!</span></p>
 
 </div>

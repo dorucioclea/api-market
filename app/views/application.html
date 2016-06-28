@@ -14,8 +14,8 @@
             <button id="oauth" class="btn btn-line-info btn-sm" ng-if="canConfigureOAuth() && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersion)">OAuth2 Config</button>
             <button id="publish" class="btn btn-line-success btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('appAdmin')" ng-if="!isRegistered" ng-click="confirmPublishApp(applicationVersion)">Register</button>
             <button id="retire" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-if="isRegistered && !isRetired" ng-click="confirmRetireApp(applicationVersion)">Retire</button>
-            <button id="delete-version" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-if="versions.length > 1" ng-click="confirmDeleteVersion(applicationVersion)">Delete {{applicationVersion.version}}</button>
-            <button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete</button>
+            <button id="delete-version" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteVersion(applicationVersion)">Delete {{applicationVersion.version}}</button>
+            <!--<button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersion)">Delete</button>-->
             <div class="mt10" ng-show="!User.isAuthorizedFor('appAdmin')">
                 <p class="text-muted xsmall">
                     You do not have the necessary permissions to register, retire or delete applications.

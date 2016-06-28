@@ -56,7 +56,7 @@
                 $scope.applicationVersion.version).then(function () {
                 toastService.success('<b>Application Version deleted.</b>');
 
-                // Redirect? If other versions, redirect to highest, else redirect to dashboard
+                // TODO Redirect? If other versions, redirect to highest, else redirect to dashboard
                 $state.go('root.market-dash', { orgId: $scope.applicationVersion.application.organization.id });
 
             }, function (error) {
@@ -369,10 +369,11 @@
     }
 
 
-    function deleteApplicationVersionCtrl($scope, $uibModalInstance, applicationName, applicationVersion) {
+    function deleteApplicationVersionCtrl($scope, $uibModalInstance, applicationName, applicationVersion, lastVersion) {
 
         $scope.applicationName = applicationName;
         $scope.applicationVersion = applicationVersion;
+        $scope.lastVersion = lastVersion;
         $scope.modalClose = modalClose;
         $scope.doDelete = doDelete;
 
