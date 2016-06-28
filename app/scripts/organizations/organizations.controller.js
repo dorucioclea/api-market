@@ -235,16 +235,24 @@
         orgScreenModel.updateTab('Pending');
     }
 
-    function plansCtrl($scope, $uibModal, planData, planVersions, orgScreenModel, PlanVersion) {
+    function plansCtrl($scope, $uibModal, planData, orgScreenModel, PlanVersion, actionService, _) {
 
         $scope.plans = planData;
-        $scope.planVersions = planVersions;
         $scope.modalAnim = 'default';
         $scope.canLock = canLock;
         $scope.confirmLockPlan = confirmLockPlan;
         $scope.modalNewPlan = modalNewPlan;
+        $scope.selectVersion = selectVersion;
 
-        orgScreenModel.updateTab('Plans');
+        
+        init();
+        
+        function init() {
+            orgScreenModel.updateTab('Plans');
+            angular.forEach($scope.plans, function (plan) {
+                plan.selectedVersionIndex = 0;
+            })
+        }
 
         function modalNewPlan() {
             $uibModal.open({
@@ -265,20 +273,30 @@
         function confirmLockPlan(planVersion) {
             PlanVersion.get(
                 {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
-                function (reply) {
-                    $uibModal.open({
+                function (retrievedPlanVersion) {
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
                         resolve: {
                             planVersion: function () {
-                                return reply;
+                                return retrievedPlanVersion;
                             }
                         },
                         backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
+
+                    modalInstance.result.then(function () {
+                        actionService.lockPlan(retrievedPlanVersion, false).then(function () {
+                            planVersion.status = 'Locked';
+                        });
+                    })
                 });
+        }
+
+        function selectVersion(plan, version) {
+            plan.selectedVersionIndex = _.indexOf(plan.versions, version);
         }
 
     }

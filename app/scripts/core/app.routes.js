@@ -458,20 +458,16 @@
                         },
                         PlanVersion: 'PlanVersion',
                         planVersions: function ($q, planData, PlanVersion) {
-                            var planVersions = {};
                             var promises = [];
 
                             angular.forEach(planData, function (plan) {
                                 promises.push(PlanVersion.query(
-                                    {orgId: plan.organizationId, planId: plan.id}).$promise);
+                                    {orgId: plan.organizationId, planId: plan.id}).$promise.then(function (planVersions) {
+                                    plan.versions = planVersions;
+                                }));
                             });
 
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    planVersions[value[0].id] = value[0];
-                                });
-                                return planVersions;
-                            });
+                            return $q.all(promises);
                         }
                     },
                     controller: 'PlansCtrl'

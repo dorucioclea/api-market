@@ -163,20 +163,19 @@
 
         /// ==== LockPlan Controller
         .controller('LockPlanCtrl',
-            function ($scope, $uibModal,
-                      planVersion, actionService) {
+            function ($scope, $uibModalInstance,
+                      planVersion) {
 
                 $scope.planVersion = planVersion;
                 $scope.modalClose = modalClose;
                 $scope.doLock = doLock;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doLock() {
-                    actionService.lockPlan($scope.planVersion, true);
-                    $scope.modalClose();
+                    $uibModalInstance.close('ok');
                 }
 
             })
