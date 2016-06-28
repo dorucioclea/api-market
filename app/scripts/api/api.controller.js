@@ -38,6 +38,7 @@
         $scope.userIsFollowing =
             $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
         $scope.followAction = followAction;
+        $scope.copyPath = copyPath;
 
         $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 
@@ -84,6 +85,10 @@
             } else {
                 followerService.addFollower($scope.serviceVersion);
             }
+        }
+        
+        function copyPath() {
+            toastService.info('<b>Path copied!</b>');
         }
     }
 
