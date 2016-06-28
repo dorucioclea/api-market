@@ -209,11 +209,17 @@
     }
 
     function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract) {
+        this.getAppsForOrg = getAppsForOrg;
         this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
         this.getAppVersionContracts = getAppVersionContracts;
         this.getAppMetrics = getAppMetrics;
         this.updateAppDesc = updateAppDescription;
+        
+        
+        function getAppsForOrg(orgId) {
+            return Application.query({ orgId: orgId }).$promise;
+        }
         
         function getAppVersions(orgId, appId) {
             return ApplicationVersion.query({ orgId: orgId, appId: appId }).$promise

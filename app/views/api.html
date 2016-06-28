@@ -31,8 +31,8 @@
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="!status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
-              <p><a id="create-app" class="clickable small text-muted text-light" ng-if="!status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>
+              <button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <p><a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>
               <a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
             </div>
             <div class="col-sm-12 text-primary">

@@ -226,7 +226,7 @@
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
-                      serviceVersion, svcPolicies) {
+                      serviceVersion, svcPolicies, appService) {
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
@@ -262,7 +262,13 @@
                         // No org context, get user's AppOrgs
                         $scope.hasOrgContext = false;
                         currentUser.getUserAppOrgs().then(function (reply) {
-                            $scope.appOrgs = reply;
+                            var orgs = [];
+                            angular.forEach(reply, function (org) {
+                                appService.getAppsForOrg(org.id).then(function (apps) {
+                                    if (apps.length > 0) orgs.push(org);
+                                })
+                            });
+                            $scope.appOrgs = orgs;
                         });
                     } else {
                         $scope.hasOrgContext = true;
