@@ -49,7 +49,7 @@
                 };
 
                 var setHeader = function () {
-                    $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Marketplace');
+                    $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Store');
                 };
                 setHeader();
 
