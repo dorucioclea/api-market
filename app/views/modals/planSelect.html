@@ -35,7 +35,16 @@
                 <li ng-repeat="version in versions | orderBy:'createdOn'" ng-click="selectVersion(version)"><a>{{version.version}}</a></li>
             </ul>
         </div>
-        <span>in organization <b>{{orgScreenModel.organization.name}}</b>.</span>
+        <span>in organization
+            <div class="btn-group dropdown" uib-dropdown>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+                {{orgScreenModel.organization.name}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-left">
+                <li ng-repeat="org in appOrgs" ng-click="selectOrg(org)"><a>{{org.name}}</a></li>
+            </ul>
+        </div>
+            .</span>
     </div>
 </div>
 
