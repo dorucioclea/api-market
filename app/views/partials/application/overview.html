@@ -38,17 +38,17 @@
         </div>
         <div class="mt30 row" ng-if="apikey">
             <div class="col-sm-12">
-                <h4>API Key&nbsp;&nbsp;<a class="fa fa-refresh clickable size-h5" ng-class="{'fa-spin': hoverKey}"
+                <h4>API Key&nbsp;&nbsp;<a class="btn btn-primary btn-xs"
                                ng-mouseenter="hoverKey = true;" ng-mouseleave="hoverKey = false;"
                                uib-tooltip="Reissue API Key"
-                               ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshApiKey(applicationVersion)"></a>
+                               ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshApiKey(applicationVersion)"><span class="fa fa-refresh" ng-class="{'fa-spin': hoverKey}"></span> Reissue</a>
                 </h4>
             </div>
             <div class="col-sm-8">
                 <table class="mt5 table table-striped table-condensed">
                     <tr>
                         <td style="width: 210px;">
-                            <span class="text-bold">API Key</span>
+                            <span class="text-bold">Key</span>
                         </td>
                         <td>
                             {{apikey}}
@@ -59,11 +59,10 @@
         </div>
         <div class="mt30 row" ng-if="applicationVersion.oAuthClientId !== null && applicationVersion.oAuthClientId.length > 0">
             <div class="col-sm-12">
-                <h4>OAuth Credentials&nbsp;&nbsp;<a class="fa fa-refresh clickable size-h5"
-                                         ng-class="{'fa-spin': hoverOAuth}"
+                <h4>OAuth Credentials&nbsp;&nbsp;<a class="btn btn-primary btn-xs"
                                          ng-mouseenter="hoverOAuth = true" ng-mouseleave="hoverOAuth = false"
                                          uib-tooltip="Reissue OAuth Credentials"
-                                         ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshOAuth(applicationVersion)"></a>
+                                         ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshOAuth(applicationVersion)"><span class="fa fa-refresh" ng-class="{ 'fa-spin': hoverOAuth }"></span> Reissue</a>
                 </h4>
             </div>
             <div class="col-sm-8">
