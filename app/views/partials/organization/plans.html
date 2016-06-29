@@ -49,7 +49,8 @@
           <span><a href ui-sref="root.plan({orgId: plan.versions[plan.selectedVersionIndex].organizationId, planId: plan.id, versionId: plan.versions[plan.selectedVersionIndex].version})">{{plan.name }}</a></span>
         </div>
         <div class="col-sm-2 text-center">
-          <div class="btn-group dropdown" uib-dropdown>
+          <span ng-if="plan.versions.length === 1">{{plan.versions[plan.selectedVersionIndex].version}}</span>
+          <div class="btn-group dropdown" uib-dropdown ng-if="plan.versions.length > 1">
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
               {{plan.versions[plan.selectedVersionIndex].version}}<span class="caret"></span>
             </button>

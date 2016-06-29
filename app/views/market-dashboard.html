@@ -102,7 +102,8 @@
                                             <a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
                                         </td>
                                         <td>
-                                            <div class="btn-group dropdown" uib-dropdown>
+                                            <span ng-if="application.versions.length === 1">{{application.versions[application.selectedVersionIndex].version}}</span>
+                                            <div class="btn-group dropdown" uib-dropdown ng-if="application.versions.length > 1">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
                                                     {{application.versions[application.selectedVersionIndex].version}}<span class="caret"></span>
                                                 </button>

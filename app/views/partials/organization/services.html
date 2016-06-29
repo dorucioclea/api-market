@@ -51,7 +51,8 @@
           </span>
         </div>
         <div class="col-sm-2 text-center">
-          <div class="btn-group dropdown" uib-dropdown>
+          <span ng-if="service.versions.length === 1">{{service.versions[service.selectedVersionIndex].version}}</span>
+          <div class="btn-group dropdown" uib-dropdown ng-if="service.versions.length > 1">
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
               {{service.versions[service.selectedVersionIndex].version}}<span class="caret"></span>
             </button>
