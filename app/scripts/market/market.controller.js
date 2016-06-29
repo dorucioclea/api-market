@@ -142,9 +142,7 @@
         function confirmDeleteApp(appVersion) {
             applicationManager.deleteVersion(appVersion.organizationId, appVersion.id, appVersion.name, appVersion.version)
                 .then(function (result) {
-                    if (result === 'success') {
-                        $state.forceReload();
-                    }
+                    $state.forceReload();
                 });
         }
 
