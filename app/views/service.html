@@ -3,7 +3,7 @@
                      entity-version="serviceVersion" has-logo="true" base64logo="{{serviceVersion.service.base64logo}}"
                      description="{{serviceVersion.service.description}}" select-version="selectVersion(version)"
                      new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc"
-                     edit-permission="User.isAuthorizedFor('svcEdit')">
+                     edit-permission="User.isAuthorizedForIn('svcEdit', serviceVersion.service.organization.id)">
 
         <!-- Entity Buttons -->
         <div class="toast toast-bottomRight">

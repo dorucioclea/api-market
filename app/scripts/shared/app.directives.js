@@ -213,7 +213,7 @@
                 newVersion: '&',
                 endpoint: '@',
                 save: '=',
-                editPermission: '@'
+                editPermission: '='
             },
             transclude: true,
             templateUrl: '/views/templates/overview/overview-header.html'

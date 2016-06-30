@@ -128,7 +128,8 @@
         }
 
         function isAuthorizedForIn(permission, orgId) {
-            return permissionTree[orgId].indexOf(permission) !== -1;
+            if (permissionTree[orgId]) return permissionTree[orgId].indexOf(permission) !== -1;
+            else return false;
         }
     }
 

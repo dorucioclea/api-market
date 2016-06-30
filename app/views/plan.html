@@ -1,7 +1,7 @@
 ﻿<overview entity-version="planVersion" type="plan">
   <overview-header name="{{planVersion.plan.name}}" icon="bar-chart-o" description="{{planVersion.plan.description}}"
                    entity-version="planVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('planEdit')">
+                   edit-permission="User.isAuthorizedForIn('planEdit', planVersion.plan.organization.id)">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
