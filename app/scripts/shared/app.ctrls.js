@@ -138,7 +138,7 @@
         })
 
         .controller('HeadCtrl',
-            function($scope, $uibModal, $state, $localStorage, $sessionStorage, LogOutRedirect, CONFIG, docTester,
+            function($scope, $uibModal, $state, $localStorage, $sessionStorage, CONFIG, docTester,
                      currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
