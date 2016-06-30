@@ -255,15 +255,7 @@
                 }
 
                 function doLogOut() {
-                    var logOutObject = {
-                        idpUrl: CONFIG.SECURITY.IDP_URL,
-                        spName: CONFIG.SECURITY.SP_NAME,
-                        username: $scope.User.currentUser.username
-                    };
-                    LogOutRedirect.save({}, logOutObject, function (reply) {
-                        $state.go('logout');
-                        delete $sessionStorage.jwt;
-                    });
+                    loginHelper.logout();
                 }
 
                 function toggleFloatingSidebar() {

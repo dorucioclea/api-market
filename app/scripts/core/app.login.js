@@ -5,7 +5,7 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, currentUser, LogOutRedirect, CONFIG) {
         this.checkIsFirstVisit = checkIsFirstVisit;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
@@ -78,20 +78,8 @@
                     spName: CONFIG.SECURITY.SP_NAME,
                     username: info.username
                 };
-                LogOutRedirect.save({}, logOutObject, function (reply) {
-                    console.log(reply);
-                    var string = '';
-                    angular.forEach(reply, function (value) {
-                        if (typeof value === 'string') {
-                            string += value;
-                        }
-                    });
-                    console.log(string);
-                    if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                        $state.go('logout');
-                    } else {
-                        window.location.href = string;
-                    }
+                LogOutRedirect.save({}, logOutObject, function () {
+                    $state.go('logout');
                     delete $sessionStorage.jwt;
                     delete $sessionStorage.loginInProgress;
                 });
