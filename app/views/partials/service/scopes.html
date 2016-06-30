@@ -21,10 +21,10 @@
                     <div class="col-sm-6">
                         <div ng-show="mkt.code==='ext'" class="btn-group dropdown pull-right" uib-dropdown>
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
-                                Visibility: {{mkt.selectedVisibility || 'Show'}}<span class="caret"></span>
+                                Visibility: {{mkt.selectedVisibility ? 'Show' : 'Hide' }}<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li ng-repeat="visibility in visibilities" ng-click="mkt.selectedVisibility = visibility"><a>{{visibility}}</a></li>
+                                <li ng-repeat="visibility in visibilities" ng-click="mkt.selectedVisibility = visibility.val"><a>{{visibility.name}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -34,8 +34,8 @@
         </div>
 
         <div class="col-sm-12 mt20" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
-            <button ng-disabled="!isDirty" class="btn btn-default btn-sm" ng-click="reset()">Cancel</button>
-            <button ng-disabled="!isDirty" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
+            <button ng-disabled="!changed()" class="btn btn-default btn-sm" ng-click="reset()">Cancel</button>
+            <button ng-disabled="!changed()" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
         </div>
     </div>
 </div>

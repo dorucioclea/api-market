@@ -539,33 +539,34 @@
 
     }
 
-    function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, serviceMarketplaces, service,
-                              toastService, TOAST_TYPES, svcData) {
-        var serviceMkts = serviceMarketplaces.availableMarketplaces;
-        $scope.visibilities = ['Show', 'Hide'];
+    function serviceScopeCtrl($scope, $state, marketplaces, svcScreenModel, service,
+                              toastService, _) {
+        $scope.visibilities = [{ name: 'Show', val: true }, { name: 'Hide', val: false }];
         svcScreenModel.updateTab('Scopes');
         $scope.updatedService = {};
+        $scope.changed = changed;
 
         var selectedMarketplaces = [];
-
-        $scope.orgId = svcData.service.organization.id;
-        $scope.svcId = svcData.service.id;
-        $scope.versionId = svcData.version;
+        var origConfig = [];
 
         init();
+        origConfig = angular.copy($scope.serviceVersion.visibility);
 
         /*set the current state of the service version*/
         function init(){
+
             $scope.mkts = [];
             angular.forEach(marketplaces.availableMarketplaces, function (mkt) {
                 $scope.mkts.push(mkt);
             });
 
-            if(Object.keys(serviceMkts).length > 0) {
-                angular.forEach(serviceMkts, function(svmkt){
-                    angular.forEach($scope.mkts,function(mkt){
-                        if(mkt.code === svmkt.code) {
+            if($scope.serviceVersion.visibility && $scope.serviceVersion.visibility.length > 0) {
+                angular.forEach($scope.serviceVersion.visibility, function(svmkt){
+                    angular.forEach($scope.mkts,function(mkt) {
+                        mkt.selectedVisibility = true;
+                        if (mkt.code === svmkt.code) {
                             mkt.checked = true;
+                            mkt.selectedVisibility = svmkt.show;
                         }
                     });
                 });
@@ -575,6 +576,8 @@
                     if ( market.code === 'int') {
                         market.checked = true;
                     }
+                    // and set visibilities
+                    market.selectedVisibility = true;
                 })
             }
         }
@@ -582,10 +585,9 @@
         $scope.$watch('mkts', function (newValue) {
             selectedMarketplaces = [];
             angular.forEach(newValue,function(val){
-                if(val.checked===true)selectedMarketplaces.push(val);
+                if(val.checked) selectedMarketplaces.push(val);
             });
             setSelectedMarketplaces(selectedMarketplaces);
-            $scope.isDirty = selectedMarketplaces.length > 0;
         }, true);
 
         function setSelectedMarketplaces(selectedMkts){
@@ -594,62 +596,47 @@
                 angular.forEach(selectedMkts,function(sMkt){
                     var mktVisibility = {};
                     mktVisibility.code = sMkt.code;
-                    if(sMkt.selectedVisibility){
-                        mktVisibility.show = (sMkt.selectedVisibility =='Hide')?false:true;
-                    }else mktVisibility.show = true;//default true
+                    mktVisibility.show = sMkt.selectedVisibility;
                     mktVisibilities.push(mktVisibility);
                 });
                 $scope.updatedService.visibility = mktVisibilities;
-            }else $scope.updatedService.visibility= {};
+            } else $scope.updatedService.visibility = [];
         }
 
         $scope.reset = function () {
             init();
-            $scope.isDirty = false;
         };
 
-        function changed(){
-            //verify if updateservice is different from the new configuration
-            //serviceMkts
-            var newConfig = $scope.updatedService.visibility;
-            var originalConfig = [];
-            console.log("verify original: "+JSON.stringify(serviceMkts));
-            console.log("with new: "+JSON.stringify(newConfig));
-            for(var key in serviceMkts) {
-                originalConfig.push(serviceMkts[key]);
+        function changed() {
+            if (!$scope.updatedService.visibility || $scope.updatedService.visibility.length === 0) {
+                return false;
             }
-            console.log("verify original reformatted: "+JSON.stringify(originalConfig));
-            console.log("Compare: "+ arraysEqual(newConfig,originalConfig));
-            return ! arraysEqual(newConfig,originalConfig);
-        }
-
-        function arraysEqual(a, b) {
-            if (a === b) return true;
-            if (a == null || b == null) return false;
-            if (a.length != b.length) return false;
-            for (var i = 0; i < a.length; ++i) {
-                if(! _.isEqual(a[i], b[i])) return false;
+            else if (origConfig.length === $scope.updatedService.visibility.length) {
+                return _.differenceWith(origConfig, $scope.updatedService.visibility, function (a, b) {
+                        return (a.code === b.code) && (a.show === b.show);
+                    }).length > 0;
+            } else {
+                return true;
             }
-            return true;
         }
 
         $scope.saveService = function () {
             if($scope.updatedService && changed()){
-                console.log("updatedservice: "+ JSON.stringify($scope.updatedService));
-                service.updateServiceVersion($scope.orgId, $scope.svcId, $scope.versionId, $scope.updatedService).then(
+                service.updateServiceVersion($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id, $scope.serviceVersion.version, $scope.updatedService).then(
                     function (reply) {
-                        toastService.createToast(TOAST_TYPES.SUCCESS,
-                            'Availability for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
-                            true);
-                        $state.go('^.policies').then(function () {
+                        toastService.success('Availability for <b>' + $scope.serviceVersion.service.name + '</b> updated.');
+                        if (origConfig.length > 0) {
                             $state.forceReload();
-                        });
+                        } else {
+                            $state.go('^.policies').then(function () {
+                                $state.forceReload();
+                            });
+                        }
                     },
                     function (error) {
-                        toastService.createErrorToast(error, 'Could not update the enabled plans.');
+                        toastService.createErrorToast(error, 'Could not update the store availability.');
                     });
             }
-            $scope.isDirty = false;
         };
     }
 
