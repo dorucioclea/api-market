@@ -104,7 +104,7 @@
         }
 
         function canCreateContract(appVersion) {
-            return !!(appVersion.status === 'Created' || appVersion.status === 'Ready');
+            return !!(appVersion.status === 'Created' || appVersion.status === 'Ready' || appVersion.status === 'Registered');
         }
 
         function canConfigureOAuth(appVersion) {
