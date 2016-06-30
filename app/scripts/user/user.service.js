@@ -15,8 +15,6 @@
         this.getUserServices = getUserServices;
         this.update = update;
 
-        var currentUserInfo = undefined;
-
         function checkStatus() {
             var status = { hasOrg: false, hasApp: false, hasContract: false };
             var deferred = $q.defer();
@@ -65,14 +63,7 @@
         }
 
         function getInfo() {
-            if (!currentUserInfo) {
-                return CurrentUserInfo.get().$promise.then(function (data) {
-                    currentUserInfo = data;
-                    return currentUserInfo;
-                })
-            } else {
-                return currentUserInfo;
-            }
+            return CurrentUserInfo.get().$promise;
         }
 
         function getUserAppOrgs() {
@@ -92,10 +83,7 @@
         }
 
         function update(newUserInfo) {
-            return CurrentUserInfo.update({}, newUserInfo).$promise.then(function (data) {
-                currentUserInfo = data;
-                return currentUserInfo;
-            });
+            return CurrentUserInfo.update({}, newUserInfo).$promise;
         }
     }
 
@@ -106,19 +94,14 @@
         this.isAuthorizedFor = isAuthorizedFor;
         this.isAuthorizedForAny = isAuthorizedForAny;
         this.isAuthorizedForIn = isAuthorizedForIn;
-        this.updateCurrentUserInfo = updateCurrentUserInfo;
+        this.refreshCurrentUserInfo = refreshCurrentUserInfo;
 
-        function updateCurrentUserInfo(currentUserModel) {
+        function refreshCurrentUserInfo(currentUserModel) {
             return CurrentUserInfo.get({}, function (userInfo) {
                 currentUserModel.currentUser = userInfo;
                 createPermissionsTree(userInfo.permissions);
             }).$promise;
         }
-
-        this.setCurrentUserInfo = function (currentUserInfo) {
-            this.currentUser = currentUserInfo;
-            createPermissionsTree(currentUserInfo.permissions);
-        };
 
         function createPermissionsTree(permissions) {
             permissionTree = [];
@@ -131,7 +114,8 @@
         }
 
         function isAuthorizedFor(permission) {
-            return permissionTree[orgScreenModel.organization.id].indexOf(permission) !== -1;
+            if (permissionTree[orgScreenModel.organization.id]) return permissionTree[orgScreenModel.organization.id].indexOf(permission) !== -1;
+            else return false;
         }
 
         function isAuthorizedForAny(permissions) {

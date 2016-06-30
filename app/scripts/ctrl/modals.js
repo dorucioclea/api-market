@@ -745,7 +745,7 @@
                     };
                     OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
                         // We changed our own role, need to update the CurrentUserInfo
-                        currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
+                        currentUserModel.refreshCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
                             toastService.createToast('success', 'Ownership of <b>' + $scope.orgName +
                                 '</b> was successfully transferred to <b>' + user + '</b>', true);

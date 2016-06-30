@@ -169,7 +169,6 @@
 
                 function init() {
                     $scope.loggedIn = loginHelper.checkLoggedIn();
-                    currentUserModel.setCurrentUserInfo(currentUserInfo);
                     $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
 
                     checkIsEmailPresent();
@@ -344,7 +343,7 @@
                 };
 
                 currentUser.update(updateObject).then(function () {
-                    currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
+                    currentUserModel.refreshCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
                         $uibModalInstance.close('Updated');
                     });

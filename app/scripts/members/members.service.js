@@ -40,7 +40,7 @@
                     Member.query({orgId: org.id}, function (updatedList) {
                         if (member.userId === currentUser.username) {
                             // We changed our own role, need to update the CurrentUserInfo
-                            currentUserModel.updateCurrentUserInfo(currentUserModel);
+                            currentUserModel.refreshCurrentUserInfo(currentUserModel);
                         }
                         $state.forceReload();
                         var name = member.userName ? member.userName : member.userId;

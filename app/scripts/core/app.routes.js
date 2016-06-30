@@ -52,9 +52,9 @@
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        currentUser: 'currentUser',
-                        currentUserInfo: function (currentUser, loginHelper) {
-                            if (loginHelper.checkJWTInSession()) return currentUser.getInfo();
+                        currentUserModel: 'currentUserModel',
+                        currentUserInfo: function (currentUserModel, loginHelper) {
+                            if (loginHelper.checkJWTInSession()) return currentUserModel.refreshCurrentUserInfo(currentUserModel);
                             else {
                                 if (loginHelper.checkJWTInUrl()) {
                                     console.log('JWT in URL');

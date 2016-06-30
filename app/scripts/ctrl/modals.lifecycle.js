@@ -465,7 +465,7 @@
                     }
 
                     Organization.save($scope.organization, function (newOrg) {
-                        currentUserModel.updateCurrentUserInfo(currentUserModel);
+                        currentUserModel.refreshCurrentUserInfo(currentUserModel);
                         $scope.modalClose();
                         if (publisherMode) {
                             $state.go('root.organization', {orgId: newOrg.id});
