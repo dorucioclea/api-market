@@ -172,8 +172,11 @@
                     contracts.splice(contracts.indexOf(contract), 1);
                     if (contracts.length === 0) {
                         application.contractsExpanded = false;
-                        application.versions[application.selectedVersionIndex].status = 'Created';
+                        if (canPublish(application.versions[application.selectedVersionIndex])) {
+                            application.versions[application.selectedVersionIndex].status = 'Created';
+                        }
                     }
+                    toastService.success('<b>Contract was broken.</b>');
                 });
         }
 

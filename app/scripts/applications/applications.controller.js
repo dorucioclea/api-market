@@ -189,6 +189,7 @@
                     contractId: contract.contractId},
                 function (reply) {
                     $state.forceReload();
+                    toastService.success('<b>Contract was broken.</b>');
                 });
         }
 
