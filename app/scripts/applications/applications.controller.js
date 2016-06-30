@@ -339,8 +339,13 @@
     function overviewCtrl($scope, appScreenModel, applicationManager, toastService) {
 
         appScreenModel.updateTab('Overview');
+        $scope.copy = copy;
         $scope.refreshApiKey = refreshApiKey;
         $scope.refreshOAuth = refreshOAuth;
+
+        function copy() {
+            toastService.info('<b>Copied to clipboard!</b>');
+        }
 
         function refreshApiKey(appVersion) {
             applicationManager.reissueApiKey(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
