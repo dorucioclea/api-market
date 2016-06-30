@@ -228,11 +228,16 @@
       pre {
         background-color: #fcf6db;
         border: 1px solid #e5e0c6;
-        height: 200px;
+        max-height: 200px;
         overflow: auto;
         font-size: .9em;
         word-wrap: initial;
-        resize: both;
+
+        &.model-schema {
+          max-height: none;
+          height: 200px;
+          resize: both;
+        }
       }
 
       input,
