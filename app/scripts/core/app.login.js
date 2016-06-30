@@ -79,10 +79,16 @@
                     username: info.username
                 };
                 LogOutRedirect.save({}, logOutObject, function () {
+                    logoutRedirect();
+                }, function () {
+                    logoutRedirect();
+                });
+
+                function logoutRedirect() {
                     $state.go('logout');
                     delete $sessionStorage.jwt;
                     delete $sessionStorage.loginInProgress;
-                });
+                }
             })
 
         }
