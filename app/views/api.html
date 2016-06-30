@@ -44,63 +44,20 @@
             <div class="col-sm-12">
               <hr>
             </div>
+            <div class="col-sm-12 text-light mt20" ng-if="hasOAuth">
+              <div class="col-sm-4  text-left">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_authorization_code, 'fa-times-circle text-danger': !oAuthConfig.enable_authorization_code}"></span> Authorization Code
+              </div>
+              <div class="col-sm-4 text-center">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_client_credentials, 'fa-times-circle text-danger': !oAuthConfig.enable_client_credentials}"></span> Client Credentials
+              </div>
+              <div class="col-sm-4 text-right">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_implicit_grant, 'fa-times-circle text-danger': !oAuthConfig.enable_implicit_grant}"></span> Implicit Grant
+              </div>
+            </div>
           </div>
 
-          <div class="col-sm-12 text-light mt20" ng-if="hasOAuth">
-            <div class="col-sm-4 text-center">
-              <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_authorization_code, 'fa-times-circle text-danger': !oAuthConfig.enable_authorization_code}"></span> Authorization Code
-            </div>
-            <div class="col-sm-4 text-center">
-              <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_client_credentials, 'fa-times-circle text-danger': !oAuthConfig.enable_client_credentials}"></span> Client Credentials
-            </div>
-            <div class="col-sm-4 text-center">
-              <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_implicit_grant, 'fa-times-circle text-danger': !oAuthConfig.enable_implicit_grant}"></span> Implicit Grant
-            </div>
-            <!-- Enabled OAuth Types panel -->
-            <!--<div class="panel panel-default mb15" ng-if="hasOAuth">-->
-              <!--<div class="panel-heading text-center">-->
-                <!--Enabled OAuth2 Profiles-->
-              <!--</div>-->
-              <!--<div class="panel-body text-center">-->
-                <!--<table class="table">-->
-                  <!--<tbody>-->
-                  <!--<tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">-->
-                    <!--<td>-->
-                      <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<span class="text-bold">Authorization Code</span>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                  <!--<tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">-->
-                    <!--<td>-->
-                      <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<span class="text-bold">Client Credentials</span>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                  <!--<tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">-->
-                    <!--<td>-->
-                      <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<span class="text-bold">Implicit Grant</span>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                  <!--<tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">-->
-                    <!--<td>-->
-                      <!--<span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<span class="text-bold">Password Grant</span>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                  <!--</tbody>-->
-                <!--</table>-->
-              <!--</div>-->
-            <!--</div>&lt;!&ndash; end Enabled OAuth Types panel &ndash;&gt;-->
-          </div>
+
         </div><!-- end main info panel -->
 
       </div>
@@ -141,7 +98,7 @@
       <!--<div>-->
       <div class="panel">
         <div class="panel-body">
-          <div class="mt30" ui-view></div>
+          <div ui-view></div>
         </div>
       </div>
       <!--</div>-->

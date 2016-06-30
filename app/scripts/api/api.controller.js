@@ -110,6 +110,7 @@
         $scope.removeHeader = removeHeader;
         $scope.selectedScopes = [];
         $scope.selectContract = selectContract;
+        $scope.toggleOAuthPanel = toggleOAuthPanel;
 
 
         init();
@@ -122,6 +123,12 @@
             angular.forEach($scope.serviceVersion.oauthScopes, function (value, key) {
                 $scope.selectedScopes.push({scope: key, desc: value, checked: true});
             });
+
+            // But oAuth panel is closed
+            $scope.oAuthClosed = true;
+            $scope.oAuthPanelStyle = {
+                'border-bottom': '0'
+            };
 
             filterApplications(userApps, svcContracts);
 
@@ -247,6 +254,17 @@
 
         function removeHeader(header) {
             $scope.customHeaders.splice($scope.customHeaders.indexOf(header), 1);
+        }
+
+        function toggleOAuthPanel() {
+            $scope.oAuthClosed = !$scope.oAuthClosed;
+            if ($scope.oAuthClosed) {
+                $scope.oAuthPanelStyle = {
+                    'border-bottom': '0'
+                };
+            } else {
+                $scope.oAuthPanelStyle = {};
+            }
         }
     }
 
