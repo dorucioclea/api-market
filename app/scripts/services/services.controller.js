@@ -106,7 +106,7 @@
         }
 
         function confirmDeprecateSvc() {
-            $uibModal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceDeprecate.html',
                 size: 'lg',
                 controller: 'DeprecateServiceCtrl as ctrl',
@@ -118,13 +118,17 @@
                 backdrop: 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
+
+            modalInstance.result.then(function (status) {
+                $state.forceReload();
+            })
         }
 
         function confirmPublishSvc() {
             if (checkNeedsReadMe()) {
                 toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
             } else {
-                $uibModal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'views/modals/servicePublish.html',
                     size: 'lg',
                     controller: 'PublishServiceCtrl as ctrl',
@@ -136,11 +140,15 @@
                     backdrop: 'static',
                     windowClass: $scope.modalAnim	// Animation Class put here.
                 });
+
+                modalInstance.result.then(function (status) {
+                    $state.forceReload();
+                })
             }
         }
 
         function confirmRetireSvc() {
-            $uibModal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/serviceRetire.html',
                 size: 'lg',
                 controller: 'RetireServiceCtrl as ctrl',
@@ -152,6 +160,9 @@
                 backdrop: 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
+            modalInstance.result.then(function (status) {
+                $state.forceReload();
+            })
         }
 
         function checkNeedsReadMe() {
