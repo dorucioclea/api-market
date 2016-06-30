@@ -786,11 +786,16 @@
 
     }
 
-    function serviceOverviewCtrl($scope, svcContracts, svcScreenModel) {
+    function serviceOverviewCtrl($scope, svcContracts, svcScreenModel, toastService) {
 
         svcScreenModel.updateTab('Overview');
         $scope.contractCount = svcContracts.length;
         classifyContracts(svcContracts);
+        $scope.copy = copy;
+
+        function copy() {
+            toastService.info('<b>Copied to clipboard!</b>');
+        }
 
         function classifyContracts(contracts) {
             $scope.contractOrgIds = [];
