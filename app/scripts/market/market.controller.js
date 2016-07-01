@@ -197,7 +197,8 @@
             });
 
             modalInstance.result.then(function () {
-                $state.go('root.market-dash', { orgId: $stateParams.orgId, mode: undefined })
+                if ($stateParams.mode && $stateParams.mode === 'create') $state.go('root.market-dash', { orgId: $stateParams.orgId, mode: undefined });
+                else $state.forceReload();
             })
         }
 
