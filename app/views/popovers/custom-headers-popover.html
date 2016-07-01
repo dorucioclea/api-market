@@ -17,7 +17,7 @@
                         </div>
                     </div>
                 </form>
-                <p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="removeHeader(header)"><span class="fa fa-trash"></span></p>
+                <p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="$event.stopPropagation(); removeHeader(header)"><span class="fa fa-trash"></span></p>
             </auth-accordion-group>
         </div>
         <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>
