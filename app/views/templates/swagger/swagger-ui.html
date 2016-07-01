@@ -62,7 +62,7 @@
                                         <li><a href="javascript:;" ng-click="op.responseClass.display=1" ng-class="{active:op.responseClass.display==1}" swagger-translate="responseSchema"></a></li>
                                     </ul>
                                     <pre class="model" ng-if="op.responseClass.display==0" ng-bind-html="op.responseClass.schema.model"></pre>
-                                    <pre class="model-schema" ng-if="op.responseClass.display==1" ng-bind="op.responseClass.schema.json"></pre>
+                                    <pre class="model-schema response-schema" ng-if="op.responseClass.display==1" ng-bind="op.responseClass.schema.json"></pre>
                                 </div>
                                 <div ng-if="op.produces" class="content-type">
                                     <label for="responseContentType{{op.id}}" swagger-translate="responseContentType"></label>
