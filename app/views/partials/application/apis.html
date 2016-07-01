@@ -1,12 +1,8 @@
 <div class="row">
     <div class="col-sm-12">
         <h4>Contracted APIs</h4>
-        <p>Below is a list of all the APIs this Application is currently contracted to utilize. This provides a list of all Service that the Application can potentially invoke.</p>
+        <p ng-hide="contracts.length === 0">Below is a list of all the APIs this Application is currently contracted to utilize. This provides a list of all Services that the Application can potentially invoke.</p>
         <hr>
-    </div>
-
-    <div class="col-sm-12 col-sm-offset-1">
-
     </div>
 
     <div class="col-sm-12 mt10 table-responsive" style="overflow: visible;" ng-hide="contracts.length === 0">
@@ -40,7 +36,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-10 col-sm-offset-1 well" ng-show="contracts.length == 0">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-show="contracts.length === 0">
         This application doesn't appear to have any service contracts.  Try creating a new Contract to a Service - if you do it will get listed here!
     </div>
 </div>
