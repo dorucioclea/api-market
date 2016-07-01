@@ -88,10 +88,10 @@
                                     <tr>
                                         <th nowrap="nowrap" width="5%"></th>
                                         <th nowrap="nowrap" width="45%">Application</th>
-                                        <th nowrap="nowrap" width="10%">Version</th>
-                                        <th nowrap="nowrap" width="10%">Status</th>
-                                        <th nowrap="nowrap" width="10%"># Contracts</th>
-                                        <th nowrap="nowrap" width="20%">Actions</th>
+                                        <th nowrap="nowrap" width="1%">Version</th>
+                                        <th nowrap="nowrap" width="1%">Status</th>
+                                        <th nowrap="nowrap" width="1%"># Contracts</th>
+                                        <th nowrap="nowrap" width="25%">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -121,6 +121,7 @@
                                                 <button id="metrics" class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Application metrics" ng-if="canRetire(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appEdit')" ng-click="toMetrics(application.versions[application.selectedVersionIndex])"></button>
                                                 <button id="oauth" class="btn btn-info action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="OAuth 2.0 configuration" ng-if="canConfigureOAuth(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(application.versions[application.selectedVersionIndex])"></button>
                                                 <button id="delete-version" class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Delete {{application.versions[application.selectedVersionIndex].version}}" ng-if="User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(application.versions[application.selectedVersionIndex])"></button>
+                                                <button id="copy-api-key" clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-if="application.versions[application.selectedVersionIndex].contracts.length > 0" ng-click="copyKey(application.versions[application.selectedVersionIndex].contracts[0].apikey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy API key to clipboard" ng-show="!contract.provisionKey || contract.provisionKey.length == 0"></button>
                                                 <button id="pending" class="btn action-icon btn-github fa fa-exclamation-triangle" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Pending contract" ng-if="application.versions[application.selectedVersionIndex].pendingContracts.length > 0" ng-click="toggle(application)"></button>
                                             </div>
                                         </td>
@@ -146,8 +147,7 @@
                                                         <td>{{contract.planName}} - {{contract.planVersion}}</td>
                                                         <td class="text-right">
                                                             <!-- We hide the API key button when OAuth2 is enabled -->
-                                                            <button id="copy-api-key" clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy API key to clipboard" ng-show="!contract.provisionKey || contract.provisionKey.length == 0"></button>
-                                                            <button id="copy-prov-key" clipboard text="contract.provisionKey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-lock" ng-click="copyProvisionKey(contract.provisionKey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy OAuth Provision key" ng-show="canConfigureOAuth(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appEdit')"></button>
+                                                            <button id="copy-prov-key" clipboard text="contract.provisionKey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-lock" ng-click="copyProvisionKey(contract.provisionKey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy OAuth Provision key" ng-show="canConfigureOAuth(application.versions[application.selectedVersionIndex]) && contract.provisionKey && User.isAuthorizedFor('appEdit')"></button>
                                                             <button id="break-contract" class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Break contract" ng-if="canCreateContract(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appEdit')" ng-click="breakContract(application, contract)"></button>
                                                         </td>
                                                     </tr>
