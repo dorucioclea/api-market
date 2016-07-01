@@ -5,7 +5,7 @@
 
         /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
-            function ($scope, $uibModal, $state, flowFactory, alertService, imageService,
+            function ($scope, $uibModalInstance, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
 
                 $scope.currentOrg = orgScreenModel.organization;
@@ -48,21 +48,17 @@
                         newAppObject.base64logo = '';
                     }
                     Application.save({orgId: $scope.currentOrg.id}, newAppObject, function (app) {
-                        $scope.modalClose();
-                        $state.forceReload();
+                        $uibModalInstance.close(app);
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Application <b>' + app.name +  '</b> created!', true);
                     }, function (error) {
-                        if (error.status !== 409) {
-                            $scope.modalClose();
-                        }
                         toastService.createErrorToast(error, 'Could not create application.');
                     });
                 }
 
                 function modalClose() {
                     imageService.clear();
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
             })
 

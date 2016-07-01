@@ -187,7 +187,7 @@
         }
 
         function modalNewApplication() {
-            $uibModal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/applicationCreate.html',
                 size: 'lg',
                 controller: 'NewApplicationCtrl as ctrl',
@@ -196,6 +196,9 @@
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
 
+            modalInstance.result.then(function () {
+                $state.go('root.market-dash', { orgId: $stateParams.orgId, mode: undefined })
+            })
         }
 
         function copyKey(apikey) {
