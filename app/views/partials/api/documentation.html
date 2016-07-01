@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="margin-bottom: 50px">
     <div class="col-md-12 mb10" ng-if="hasOAuth && loggedIn">
         <div class="panel panel-default">
             <div class="clickable panel-heading text-center" ng-click="toggleOAuthPanel()" ng-style="oAuthPanelStyle">
@@ -68,36 +68,27 @@
     <div class="col-md-12">
         <div class="panel panel-default mb15">
             <div class="panel-heading row">
-                <div class="col-sm-6">
-                    <h2>Swagger specification</h2>
-                    <div>
-                        <span class="btn btn-xs btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-right" ng-if="contractApps.length === 0" style="margin-top: 25px">
-                        <p>No contracts exist for this service.</p>
-                        <p>Create one using the button above.</p>
-                    </div>
-                    <div class="text-center right" style="margin-top: 25px" ng-if="contractApps.length > 0">
-                        <p class="xsmall">Contract to be used for testing</p>
-                        <div class="btn-group dropdown" uib-dropdown>
-                            <button type="button" class="btn btn-line-info dropdown-toggle" uib-dropdown-toggle>
-                                <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
-                                <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)">
-                                    <a><span class="xsmall">{{contract.appOrganizationName}}</span><br><b>{{contract.appName}} - {{contract.appVersion}}</b></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-
+                API Documentation
+                <span class="btn btn-xs right btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download Swagger Spec</span>
             </div>
             <div class="panel-body">
+                <div class="right swagger-custom-header-popover-wrapper">
+                    <span id="custom-headers" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/custom-headers-popover.html'" popover-placement="bottom-right" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Custom Headers <span class="badge circle badge-primary">{{customHeaders.length}}</span></span>
+                </div>
+
+                <div class="right swagger-contract-select-popover-wrapper">
+                    <span id="contract-select" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/contract-select-popover.html'" popover-placement="bottom" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Change Contract</span>
+                </div>
+
+                <div>
+                    <div class="text-warning" ng-show="contractApps.length === 0">
+                        <p>No contracts exist for this service. You can create one using the button above.</p>
+                    </div>
+                    <div ng-show="contractApps.length > 0">
+                        <span class="text-light">Testing contract:</span> <span class="text-bold text-primary">{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}</span>
+                    </div>
+                </div>
+
                 <div swagger-ui input-type="json"
                      template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
                      api-explorer="true" apikey="docTester.apikey"
@@ -107,42 +98,8 @@
                 <div class="text-center" ng-if="isLoading">
                     <span class="fa fa-spinner fa-pulse fa-4x"></span>
                 </div>
+                </div>
             </div>
         </div>
-    </div><!-- end Swagger Documentation panel -->
-
-    <!--<div class="col-md-12">-->
-        <!--&lt;!&ndash; Custom Headers panel &ndash;&gt;-->
-        <!--<div class="panel panel-default mb15" ng-if="loggedIn">-->
-            <!--<div class="panel-heading text-center">-->
-                <!--Custom Headers-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-                <!--<div class="col-sm-12 text-center" ng-if="customHeaders.length === 0">-->
-                    <!--<button class="btn btn-default" ng-click="addHeader()">Add Custom Header</button>-->
-                <!--</div>-->
-                <!--<uib-accordion class="accordion-panel" ng-show="customHeaders.length > 0">-->
-                    <!--<div ng-repeat="header in customHeaders">-->
-                        <!--<auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">-->
-                            <!--<form role="form" class="form">-->
-                                <!--<div class="form-group">-->
-                                    <!--<div class="input-group mb5">-->
-                                        <!--<span class="input-group-addon fa fa-fw fa-header"></span>-->
-                                        <!--<input type="text" class="form-control" placeholder="Header Name" ng-model="header.name">-->
-                                    <!--</div>-->
-                                    <!--<div class="input-group">-->
-                                        <!--<span class="input-group-addon fa fa-fw fa-envelope-o"></span>-->
-                                        <!--<input type="text" class="form-control" placeholder="Header Value" ng-model="header.value">-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</form>-->
-                            <!--<p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="removeHeader(header)"><span class="fa fa-trash"></span></p>-->
-                        <!--</auth-accordion-group>-->
-                    <!--</div>-->
-                    <!--<p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>-->
-                <!--</uib-accordion>-->
-            <!--</div>-->
-        <!--</div>&lt;!&ndash; end Custom Headers panel &ndash;&gt;-->
-    <!--</div>-->
 
 </div>
