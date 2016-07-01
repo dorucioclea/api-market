@@ -72,15 +72,15 @@
                 <span class="btn btn-xs right btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download Swagger Spec</span>
             </div>
             <div class="panel-body">
-                <div class="right swagger-custom-header-popover-wrapper">
+                <div class="right swagger-custom-header-popover-wrapper" ng-if="loggedIn">
                     <span id="custom-headers" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/custom-headers-popover.html'" popover-placement="bottom-right" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Custom Headers <span class="badge circle badge-primary">{{customHeaders.length}}</span></span>
                 </div>
 
-                <div class="right swagger-contract-select-popover-wrapper">
+                <div class="right swagger-contract-select-popover-wrapper" ng-if="loggedIn">
                     <span id="contract-select" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/contract-select-popover.html'" popover-placement="bottom" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Change Contract</span>
                 </div>
 
-                <div>
+                <div ng-if="loggedIn">
                     <div class="text-warning" ng-show="contractApps.length === 0">
                         <p>No contracts exist for this service. You can create one using the button above.</p>
                     </div>
