@@ -86,22 +86,22 @@
                                 <table class="table table-condensed">
                                     <thead>
                                     <tr>
-                                        <th nowrap="nowrap" width="5%"></th>
-                                        <th nowrap="nowrap" width="45%">Application</th>
-                                        <th nowrap="nowrap" width="1%">Version</th>
-                                        <th nowrap="nowrap" width="1%">Status</th>
-                                        <th nowrap="nowrap" width="1%"># Contracts</th>
-                                        <th nowrap="nowrap" width="25%">Actions</th>
+                                        <th style="padding-left: 20px; padding-right: 10px;" nowrap="nowrap" width="5%"></th>
+                                        <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="45%">Application</th>
+                                        <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%">Version</th>
+                                        <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%">Status</th>
+                                        <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%"># Contracts</th>
+                                        <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="25%">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat-start="application in applications | filter:{name:searchText}">
-                                        <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="application.versions[application.selectedVersionIndex].contracts.length > 0 || pendingContracts[application.id]" ng-click="toggle(application)"></a></td>
+                                        <td style="padding-left: 20px; padding-right: 10px;"><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="application.versions[application.selectedVersionIndex].contracts.length > 0 || pendingContracts[application.id]" ng-click="toggle(application)"></a></td>
                                         <td>
                                             <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
                                             <a id="app-name" ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
                                         </td>
-                                        <td>
+                                        <td style="padding-left: 10px; padding-right: 10px;">
                                             <div class="btn-group dropdown" uib-dropdown >
                                                 <button id="version-dropdown" type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="application.versions.length === 1" uib-dropdown-toggle>
                                                     {{application.versions[application.selectedVersionIndex].version}}<span class="caret"></span>
@@ -111,9 +111,9 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><status-label id="status" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label></td>
-                                        <td>{{application.versions[application.selectedVersionIndex].contracts.length > 0 ? application.versions[application.selectedVersionIndex].contracts.length : 0}}</td>
-                                        <td>
+                                        <td style="padding-left: 10px; padding-right: 10px;"><status-label id="status" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label></td>
+                                        <td class="text-center" style="padding-left: 10px; padding-right: 10px;">{{application.versions[application.selectedVersionIndex].contracts.length > 0 ? application.versions[application.selectedVersionIndex].contracts.length : 0}}</td>
+                                        <td style="padding-left: 10px; padding-right: 10px;">
                                             <div class="btn-group-xs">
                                                 <button id="new-contract" class="btn btn-primary action-icon fa fa-plus" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="New contract" ng-if="canCreateContract(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appEdit')" ng-click="newContract(application.versions[application.selectedVersionIndex])"></button>
                                                 <button id="register" class="btn btn-success action-icon fa fa-check" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Register application" ng-if="canPublish(application.versions[application.selectedVersionIndex]) && User.isAuthorizedFor('appAdmin')" ng-click="confirmPublishApp(application.versions[application.selectedVersionIndex])"></button>
