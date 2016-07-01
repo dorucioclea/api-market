@@ -1048,6 +1048,121 @@ module.exports = function (grunt) {
             }
           }
         }
+      },
+      sandPub: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': true,
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false,
+              'DISABLE_ANNOUNCEMENTS': true,
+              'DISABLE_SUPPORT': true
+            },
+            'BASE': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_digisand-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'apienginesandbox',
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
+            },
+            KONG: {
+              HOST: 'api-gw-z.antwerpen.be'
+            }
+          }
+        }
+      },
+      sandMktInt: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false,
+              'USE_DIGIPOLIS_CONSENT_PAGE': false,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false,
+              'DISABLE_ANNOUNCEMENTS': true,
+              'DISABLE_SUPPORT': true
+            },
+            'BASE': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengineauth/v1'
+            },
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_digisand-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+              'SP_NAME': 'apienginesandbox',
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
+            },
+            KONG: {
+              HOST: 'api-gw-z.antwerpen.be'
+            }
+          }
+        }
+      },
+      sandMktExt: {
+        constants: {
+          'CONFIG': {
+            'APP': {
+              'ORG_FRIENDLY_NAME_ENABLED': true,
+              'PUBLISHER_MODE': false,
+              'USE_DIGIPOLIS_CONSENT_PAGE': true,
+              'SHOW_API_DEVELOPER_NAME_IN_STORE': false,
+              'DISABLE_ANNOUNCEMENTS': true,
+              'DISABLE_SUPPORT': true
+            },
+            'BASE': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengine/v1',
+              'JWT_HEADER_NAME': 'jwt'
+            },
+            'AUTH': {
+              'URL': 'https://api-gw-z.antwerpen.be/apiengineauth/v1'
+            },
+            //Remove for the moment
+            /*'CONSENT': {
+             'URL': 'https://api-oauth2-a.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
+             },*/
+            'STORAGE': {
+              'LOCAL_STORAGE': 'apim-',
+              'SESSION_STORAGE': 'apim_session_digisand-'
+            },
+            'SECURITY': {
+              'REDIRECT_URL': '/login/idp/redirect',
+              'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
+              'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
+              'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
+              'SP_NAME': 'apienginesandbox',
+              'CLIENT_TOKEN': 'jwt',
+              'WSO2_LOGIN_FIX': true
+            },
+            KONG: {
+              HOST: 'api-gw-z.antwerpen.be'
+            }
+          }
+        }
       }
     },
     // ===== //
@@ -1592,6 +1707,66 @@ module.exports = function (grunt) {
     'htmlmin',
     'compress',
     'replace:t1t' 
+  ]);
+
+  grunt.registerTask('sandPub', [
+    'clean:dist',
+    'set_global:task:sandPub',
+    'wiredep',
+    'ngconstant:sandPub',
+    'replace:pub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('sandMkt-int', [
+    'clean:dist',
+    'set_global:task:sandMkt-int',
+    'wiredep',
+    'ngconstant:sandMktInt',
+    'replace:mkt',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
+  ]);
+
+  grunt.registerTask('sandMkt-ext', [
+    'clean:dist',
+    'set_global:task:sandMkt-ext',
+    'wiredep',
+    'ngconstant:sandMktExt',
+    'replace:pub',
+    'less:dist',
+    'useminPrepare',
+    'copy:dist',
+    'concat',
+    'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'compress',
+    'replace:t1t'
   ]);
 
   grunt.registerTask('test', [
