@@ -94,7 +94,7 @@
                 {
                     sel : $('#new-contract'),
                     position: 's',
-                    content : 'Click this button to add a new contract to this application'
+                    content : 'This button will allow you to add a new contract to this application'
                 },
                 {
                     sel : $('#delete-version'),
