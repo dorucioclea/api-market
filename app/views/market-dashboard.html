@@ -99,12 +99,11 @@
                                         <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="application.versions[application.selectedVersionIndex].contracts.length > 0 || pendingContracts[application.id]" ng-click="toggle(application)"></a></td>
                                         <td>
                                             <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
-                                            <a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
+                                            <a id="app-name" ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
                                         </td>
                                         <td>
-                                            <span ng-if="application.versions.length === 1">{{application.versions[application.selectedVersionIndex].version}}</span>
-                                            <div class="btn-group dropdown" uib-dropdown ng-if="application.versions.length > 1">
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+                                            <div class="btn-group dropdown" uib-dropdown >
+                                                <button id="version-dropdown" type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="application.versions.length === 1" uib-dropdown-toggle>
                                                     {{application.versions[application.selectedVersionIndex].version}}<span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right">
@@ -112,7 +111,7 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><status-label status="{{application.versions[application.selectedVersionIndex].status}}"></status-label></td>
+                                        <td><status-label id="status" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label></td>
                                         <td>{{application.versions[application.selectedVersionIndex].contracts.length > 0 ? application.versions[application.selectedVersionIndex].contracts.length : 0}}</td>
                                         <td>
                                             <div class="btn-group-xs">

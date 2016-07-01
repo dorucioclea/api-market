@@ -57,6 +57,7 @@
             'app.plugin.lodash',
             'app.service',
             'app.swagger',
+            'app.tour',
             'app.user'
 
         ])

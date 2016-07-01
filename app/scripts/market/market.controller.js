@@ -13,7 +13,7 @@
     function marketDashCtrl ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
                              appData, headerModel, pendingContracts,
                              selectedApp, applicationManager, docTester, toastService, service,
-                             ApplicationContract, _) {
+                             ApplicationContract, $localStorage, $timeout, tourGuide, _) {
         headerModel.setIsButtonVisible(true, false);
         orgScreenModel.updateOrganization(orgData);
         $scope.$state = $state;
@@ -45,7 +45,7 @@
 
 
         init();
-
+        
 
         function init() {
             angular.forEach($scope.applications, function (app) {
@@ -80,6 +80,12 @@
 
             if ($stateParams.mode && $stateParams.mode === 'create') {
                 modalNewApplication();
+            }
+
+            if ($scope.applications.length > 0 && !$localStorage.mktDashTourSeen) {
+                $timeout(function () {
+                    tourGuide.startMktDashTour();
+                }, 500);
             }
         }
 
