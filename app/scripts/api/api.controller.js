@@ -95,7 +95,7 @@
     /// ==== Service Swagger Documentation Controller
     function documentationCtrl ($scope, $stateParams, $timeout, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                                 docTester, docDownloader, svcTab, ApplicationVersion, apiService,
-                                oAuthService, toastService, TOAST_TYPES) {
+                                oAuthService, toastService, TOAST_TYPES, _) {
         $scope.addHeader = addHeader;
         $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
         $scope.docDownloader = docDownloader;
@@ -134,7 +134,8 @@
 
             if ($scope.contractApps.length > 0) {
                 if (docTester.preferredContract) {
-                    if ($scope.contractApps.indexOf(docTester.preferredContract > -1)) {
+                    if (_.find($scope.contractApps,
+                            function (c) { return c.contractId === docTester.preferredContract.contractId; })) {
                         $scope.selectedContract = docTester.preferredContract;
                     } else {
                         $scope.selectedContract = $scope.contractApps[0];
