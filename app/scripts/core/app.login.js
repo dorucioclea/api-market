@@ -5,7 +5,7 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, currentUser, LogOutRedirect, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, resourceUtil, currentUser, LogOutRedirect, CONFIG) {
         this.checkIsFirstVisit = checkIsFirstVisit;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
@@ -78,8 +78,16 @@
                     spName: CONFIG.SECURITY.SP_NAME,
                     username: info.username
                 };
-                LogOutRedirect.save({}, logOutObject, function () {
-                    logoutRedirect();
+                LogOutRedirect.save({}, logOutObject, function (reply) {
+                    var cleanReply = resourceUtil.cleanResponse(reply);
+                    var string = '';
+                    angular.forEach(cleanReply, function (letter) {
+                        string += letter;
+                    });
+                    var request = new XMLHttpRequest();
+                    request.open('GET', string, true);
+                    request.onreadystatechange = function() {if (request.readyState==4) logoutRedirect();};
+                    request.send();
                 }, function () {
                     logoutRedirect();
                 });
