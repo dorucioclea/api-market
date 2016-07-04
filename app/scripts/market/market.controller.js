@@ -67,11 +67,13 @@
             if (selectedApp.appVersion) {
                 var currentApp = _.find($scope.applications, function (a) {
                     return a.id === selectedApp.appVersion.id});
-                currentApp.selectedVersionIndex = _.indexOf(currentApp.versions, _.find(currentApp.versions, function (v) {
-                    return v.version === selectedApp.appVersion.version;
-                }));
-                if (currentApp.versions[currentApp.selectedVersionIndex].contracts.length > 0) {
-                    currentApp.contractsExpanded = true;
+                if (currentApp) {
+                    currentApp.selectedVersionIndex = _.indexOf(currentApp.versions, _.find(currentApp.versions, function (v) {
+                        return v.version === selectedApp.appVersion.version;
+                    }));
+                    if (currentApp.versions[currentApp.selectedVersionIndex].contracts.length > 0) {
+                        currentApp.contractsExpanded = true;
+                    }
                 }
             }
 
