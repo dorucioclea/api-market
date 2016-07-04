@@ -153,7 +153,7 @@
                         } else {
                             // Token is still valid, check if we need to refresh
                             var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
-                            date.setMinutes(date.getMinutes() - 5);
+                            date.setMinutes(date.getMinutes() - 15);
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
                                 console.log('Refreshing token');
