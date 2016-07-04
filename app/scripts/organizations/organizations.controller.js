@@ -11,7 +11,8 @@
         .controller('OrgVisibilityModalCtrl', orgVisibilityModalCtrl)
         .controller('PendingCtrl', pendingMembersCtrl)
         .controller('PlansCtrl', plansCtrl)
-        .controller('ServicesCtrl', servicesCtrl);
+        .controller('ServicesCtrl', servicesCtrl)
+        .controller('OrgDeleteCtrl', orgDeleteCtrl);
 
 
     function applicationsCtrl($scope, $state, appData, orgScreenModel, ApplicationVersion) {
@@ -330,6 +331,20 @@
 
         function ok() {
             $uibModalInstance.close($scope.setPrivate);
+        }
+    }
+
+    function orgDeleteCtrl($scope, $uibModalInstance, org) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.org = org;
+
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+
+        function ok() {
+            $uibModalInstance.close();
         }
     }
 

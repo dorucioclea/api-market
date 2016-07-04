@@ -5,19 +5,47 @@
 
     /// ==== MarketDash Controller
         .controller('MarketDashCtrl', marketDashCtrl)
+        .controller('MarketAppsCtrl', marketAppsCtrl)
         .controller('MarketMembersCtrl', marketMembersCtrl)
         .controller('ApiSearchCtrl', apiSearchCtrl)
         .controller('DashboardCtrl', dashboardCtrl);
     
 
-    function marketDashCtrl ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
-                             appData, headerModel, pendingContracts,
+    function marketDashCtrl ($scope, $state, $stateParams, orgData, orgScreenModel, orgService, toastService) {
+        orgScreenModel.updateOrganization(orgData);
+        $scope.orgScreenModel = orgScreenModel;
+        $scope.orgId = $stateParams.orgId;
+        $scope.deleteOrg = deleteOrg;
+        $scope.updateOrgDescription = updateOrgDescription;
+        
+        function deleteOrg() {
+            orgService.delete($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>')
+                    $state.go('root.myOrganizations');
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not delete organization');
+            })
+        }
+
+        function updateOrgDescription(newValue) {
+            console.log(newValue);
+            orgService.updateDescription($stateParams.orgId, newValue).then(function () {
+                toastService.info('Description updated.');
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update the organization\'s description.');
+            });
+        }
+
+    }
+
+
+    function marketAppsCtrl ($scope, $uibModal, $state, $stateParams,
+                             appData, pendingContracts,
                              selectedApp, applicationManager, docTester, toastService, service,
                              ApplicationContract, $localStorage, $timeout, tourGuide, _) {
-        headerModel.setIsButtonVisible(true, false);
-        orgScreenModel.updateOrganization(orgData);
         $scope.$state = $state;
-        $scope.orgScreenModel = orgScreenModel;
         $scope.applications = appData;
         $scope.orgId = $stateParams.orgId;
         $scope.toasts = toastService.toasts;
@@ -45,7 +73,7 @@
 
 
         init();
-        
+
 
         function init() {
             angular.forEach($scope.applications, function (app) {

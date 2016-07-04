@@ -19,6 +19,7 @@
             $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
             $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/overview');
             $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', '/org/{orgId}/plan/{planId}/{versionId}/policies');
+            $urlRouterProvider.when('/org/{orgId}/dash', '/org/{orgId}/dash/applications');
 
 
             // UI-Router States
@@ -85,22 +86,26 @@
 
                 // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
-                    url: '/org/:orgId/applications',
-                    params: {
-                        mode: null
-                    },
+                    url: '/org/:orgId/dash',
                     templateUrl: '/views/market-dashboard.html',
                     resolve: {
                         Organization: 'Organization',
                         orgData: function (Organization, organizationId) {
                             return Organization.get({id: organizationId}).$promise;
                         },
-                        currentUser: 'currentUser',
-                        ApplicationVersion: 'ApplicationVersion',
-                        ApplicationContract: 'ApplicationContract',
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        },
+                        }
+                    },
+                    controller: 'MarketDashCtrl'
+                })
+                .state('root.market-dash.applications', {
+                    url: '/applications',
+                    params: {
+                        mode: null
+                    },
+                    templateUrl: '/views/partials/market/applications.html',
+                    resolve: {
                         appData: function ($q, organizationId, currentUser) {
                             var appData = [];
                             return currentUser.getUserApps().then(function (results) {
@@ -154,7 +159,7 @@
                             return contractService.outgoingPendingForOrg(organizationId);
                         }
                     },
-                    controller: 'MarketDashCtrl'
+                    controller: 'MarketAppsCtrl'
                 })
 
                 // MARKETPLACE MEMBER MANAGEMENT
