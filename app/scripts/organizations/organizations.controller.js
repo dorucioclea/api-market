@@ -362,10 +362,13 @@
             angular.forEach($scope.pendingContracts, function (pendingContract) {
                 for (var i = 0; i < $scope.services.length; i++) {
                     var svc = $scope.services[i];
-                    if (pendingContract.serviceOrg === svc.organizationId &&
-                        pendingContract.serviceId === svc.serviceVersionDetails.id &&
-                        pendingContract.serviceVersion === svc.serviceVersionDetails.version) {
+                    if (_.find(svc.versions, function (v) {
+                            return pendingContract.serviceOrg === v.organizationId &&
+                                    pendingContract.serviceId === v.id &&
+                                    pendingContract.serviceVersion === v.version;
+                    })) {
                         svc.hasPendingContracts = true;
+                        break;
                     }
                 }
             })
