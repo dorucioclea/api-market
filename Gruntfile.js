@@ -1711,7 +1711,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('sandPub', [
     'clean:dist',
-    'set_global:task:sandPub',
+    // 'set_global:task:sandPub',
     'wiredep',
     'ngconstant:sandPub',
     'replace:pub',
@@ -1731,7 +1731,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('sandMkt-int', [
     'clean:dist',
-    'set_global:task:sandMkt-int',
+    // 'set_global:task:sandMkt-int',
     'wiredep',
     'ngconstant:sandMktInt',
     'replace:mkt',
@@ -1751,7 +1751,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('sandMkt-ext', [
     'clean:dist',
-    'set_global:task:sandMkt-ext',
+    // 'set_global:task:sandMkt-ext',
     'wiredep',
     'ngconstant:sandMktExt',
     'replace:pub',
