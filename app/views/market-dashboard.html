@@ -16,7 +16,7 @@
             <div class="panel">
                 <div class="panel-body">
                     <!-- Main Org info panel -->
-                    <h3 class="text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</h3>
+                    <span class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
                     <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
                     <div class="col-sm-9" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
                     <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
