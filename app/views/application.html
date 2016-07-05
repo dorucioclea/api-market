@@ -6,7 +6,7 @@
                     <li><a ui-sref="root.apis.grid">API Store</a></li>
                     <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
                     <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
-                    <li class="active"><a ui-sref="root.application.overview({orgId: applicationVersion.application.organization.id, appId: applicationVersion.application.id})">{{applicationVersion.application.name}}</a></li>
+                    <li class="active"><a ui-sref="root.application.overview({orgId: applicationVersion.application.organization.id, appId: applicationVersion.application.id, versionId: applicationVersion.version})">{{applicationVersion.application.name}} ({{applicationVersion.version}})</a></li>
                 </ol>
             </div>
         </div>
