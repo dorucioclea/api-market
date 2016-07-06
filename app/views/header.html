@@ -96,7 +96,7 @@
               class="btn btn-header ml10 mr15">My Organizations</span>
     </li>
 
-    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="pendingNotifications.length > 0">
+    <li id="actions" class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="pendingNotifications.length > 0">
         <a id="pending-toggle" href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-inbox fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="pendingNotifications.length > 0">{{pendingNotifications.length}}</span>
@@ -115,7 +115,7 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
 
-    <li class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="notifications.length > 0">
+    <li id="notifications" class="notify-drop hidden-xs dropdown" uib-dropdown="" ng-if="notifications.length > 0">
         <a id="notif-toggle" href="" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell-o fa-lg"></i>
             <span class="badge badge-warning badge-sm circle" ng-if="notifications.length > 0">{{notifications.length}}</span>
@@ -135,7 +135,7 @@
             <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
     </li>
     <!-- profile drop -->
-    <li class="profile-drop dropdown" uib-dropdown>
+    <li id="user-menu" class="profile-drop dropdown" uib-dropdown>
         <a id="profile-toggle" class="text-default" href uib-dropdown-toggle>
             <img ng-src="data:image/png;base64,{{currentUserModel.currentUser.base64pic}}" ng-if="currentUserModel.currentUser.base64pic.length > 0">
             <img src="images/no-image-available.svg" ng-if="currentUserModel.currentUser.base64pic.length === 0 || currentUserModel.currentUser.base64pic === null">
