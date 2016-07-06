@@ -59,11 +59,9 @@
 
             var jwt = $location.search().jwt;
             if (jwt && jwt.length > 0) {
-                console.log('jwt found');
                 $sessionStorage.jwt = jwt;
                 delete $sessionStorage.loginInProgress;
                 $location.search('jwt', null);
-                console.log('logged in');
                 deferred.resolve("Logged In");
             } else {
                 // return false;
