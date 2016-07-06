@@ -45,7 +45,7 @@
                                 <li class="divider" ng-if="!isRetired && User.isAuthorizedForIn('appEdit', applicationVersion.application.organization.id)"></li>
                                 <li id="new-contract" ng-if="!isRetired && User.isAuthorizedForIn('appEdit', applicationVersion.application.organization.id)">
                                     <a ng-click="newContract(applicationVersion)" class="clickable">
-                                        New Contract
+                                        Add Contract
                                     </a>
                                 </li>
                                 <li class="divider" ng-if="canConfigureOAuth() && User.isAuthorizedForIn('appEdit', applicationVersion.application.organization.id)"></li>
