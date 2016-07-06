@@ -680,7 +680,7 @@ module.exports = function (grunt) {
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_NAME': 'apiengine-o',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
@@ -720,7 +720,7 @@ module.exports = function (grunt) {
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f72',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_NAME': 'apiengine-o',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
@@ -760,7 +760,7 @@ module.exports = function (grunt) {
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-o.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apiengine',
+              'SP_NAME': 'apiengine-o',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
