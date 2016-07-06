@@ -1139,7 +1139,7 @@ module.exports = function (grunt) {
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apienginesandbox',
+              'SP_NAME': 'apiengine-z',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
@@ -1176,7 +1176,7 @@ module.exports = function (grunt) {
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f71',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'apienginesandbox',
+              'SP_NAME': 'apiengine-z',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
@@ -1204,10 +1204,9 @@ module.exports = function (grunt) {
             'AUTH': {
               'URL': 'https://api-gw-z.antwerpen.be/apiengineauth/v1'
             },
-            //Remove for the moment
-            /*'CONSENT': {
+            'CONSENT': {
              'URL': 'https://api-oauth2-a.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
-             },*/
+             },
             'STORAGE': {
               'LOCAL_STORAGE': 'apim-',
               'SESSION_STORAGE': 'apim_session_digisand-'
@@ -1217,7 +1216,7 @@ module.exports = function (grunt) {
               'API_KEY': '229e2ea08ba94919c9d221cdf3be1f73',
               'IDP_URL': 'https://identityserver-o.antwerpen.be/samlsso',
               'SP_URL': 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback/astad',
-              'SP_NAME': 'apienginesandbox',
+              'SP_NAME': 'apiengine-astad',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': true
             },
