@@ -18,7 +18,7 @@
                     <!-- Main Org info panel -->
                     <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
                     <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
-                    <div class="col-sm-9" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
+                    <div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
                     <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
                         <!--<div class="col-sm-3 text-bold pull-right text-center">-->
                             <!--<h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>-->
