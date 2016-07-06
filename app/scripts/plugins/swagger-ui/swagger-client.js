@@ -48,7 +48,7 @@ angular
 		/**
 		 * Send API explorer request
 		 */
-		this.send = function(swagger, operation, values) {
+		this.send = function(swagger, operation, values, basePath) {
 			var deferred = $q.defer(),
 				query = {},
 				headers = {},
@@ -108,15 +108,17 @@ angular
             }
 
 			// build request
-			var baseUrl = [
-					swagger.schemes[0],
-					'://',
-					swagger.host,
-					swagger.basePath || ''
-				].join(''),
-				options = {
+
+			// Ignore Swagger doc basepath, use scope path instead
+			// var baseUrl = [
+			// 		swagger.schemes[0],
+			// 		'://',
+			// 		swagger.host,
+			// 		swagger.basePath || ''
+			// 	].join(''),
+			var	options = {
 					method: operation.httpMethod,
-					url: baseUrl + path,
+					url: basePath + path,
 					headers: headers,
 					data: body,
 					params: query
