@@ -84,7 +84,7 @@
                         string += letter;
                     });
                     logoutRedirect();
-                    $window.location.href = reply.data;
+                    $window.location.href = string;
                 }, function () {
                     logoutRedirect();
                 });
