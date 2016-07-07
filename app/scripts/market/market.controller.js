@@ -297,6 +297,7 @@
         $scope.toggleCategories = toggleCategories;
         $scope.isCategorySelected = isCategorySelected;
         $scope.clearSelectedCategories = clearSelectedCategories;
+        $scope.query = '';
 
         populate(svcData.beans);
 
