@@ -5,7 +5,7 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, resourceUtil, currentUser, LogOutRedirect, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, $window, resourceUtil, currentUser, LogOutRedirect, CONFIG) {
         this.checkIsFirstVisit = checkIsFirstVisit;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
@@ -74,7 +74,8 @@
                 var logOutObject = {
                     idpUrl: CONFIG.SECURITY.IDP_URL,
                     spName: CONFIG.SECURITY.SP_NAME,
-                    username: info.username
+                    username: info.username,
+                    relayState: $window.location.origin
                 };
                 LogOutRedirect.save({}, logOutObject, function (reply) {
                     var cleanReply = resourceUtil.cleanResponse(reply);
@@ -82,16 +83,14 @@
                     angular.forEach(cleanReply, function (letter) {
                         string += letter;
                     });
-                    var request = new XMLHttpRequest();
-                    request.open('GET', string, true);
-                    request.onreadystatechange = function() {if (request.readyState==4) logoutRedirect();};
-                    request.send();
+                    logoutRedirect();
+                    $window.location.href = reply.data;
                 }, function () {
                     logoutRedirect();
                 });
 
                 function logoutRedirect() {
-                    $state.go('logout');
+                    // $state.go('logout');
                     delete $sessionStorage.jwt;
                     delete $sessionStorage.loginInProgress;
                 }
