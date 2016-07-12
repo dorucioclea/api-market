@@ -103,7 +103,7 @@
     <h4>See the service README for instructions on how to proceed with your request.</h4>
 </div>
 
-<div class="modal-body terms-and-conditions" ng-show="termsAgreementMode">
+<div class="modal-body terms-and-conditions" ng-if="termsAgreementMode">
     <h4 class="text-primary">To {{service.autoAcceptContracts ? 'create' : 'request' }} a contract with this service you must agree to the Terms & Conditions below.</h4>
     <p class="text-muted text-light mb30"> Please read through the Terms and tick the checkbox to indicate your agreement.</p>
     <div class="terms" btf-markdown="terms" scroll-to-bottom prop="atBottom"></div>

@@ -313,7 +313,7 @@
             };
         })
 
-        .directive('scrollToBottom', function () {
+        .directive('scrollToBottom', function ($timeout) {
             return {
                 restrict: 'A',
                 scope: {
@@ -321,12 +321,15 @@
                 },
                 link: function (scope, element, attrs) {
                     var raw = element[0];
-                    element.bind('mouseover', function () {
-                       if (raw.scrollTop === 0 && raw.offsetHeight > raw.scrollHeight) {
-                           scope.prop = true;
-                           element.addClass('at-bottom')
-                       }
-                    });
+
+                    // Give the browser a little time to complete rendering
+                    $timeout(function () {
+                        if (raw.scrollTop === 0 && raw.offsetHeight > raw.scrollHeight) {
+                            scope.prop = true;
+                            element.addClass('at-bottom')
+                        }
+                    }, 50);
+
                     element.bind('scroll', function () {
                         if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) { //at the bottom
                             scope.prop = true;

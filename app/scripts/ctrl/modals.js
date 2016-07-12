@@ -244,7 +244,7 @@
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
                 var hasAppContext = false;
-
+                
                 init();
 
                 function init() {
