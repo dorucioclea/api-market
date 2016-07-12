@@ -6,7 +6,7 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service(Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy) {
+    function service(Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy, DefaultTerms) {
         this.getServicesForOrg = getServicesForOrg;
         this.getServiceVersions = getServiceVersions;
         this.getDefinition = getDefinition;
@@ -17,7 +17,12 @@
         this.updateDescription = updateDescription;
         this.updateServiceVersion = updateServiceVersion;
         this.updateTerms = updateTerms;
-        
+        this.getDefaultTerms = getDefaultTerms;
+
+
+        function getDefaultTerms() {
+            return DefaultTerms.get().$promise;
+        }
         
         function getServicesForOrg(orgId) {
             return Service.query({ orgId: orgId }).$promise;

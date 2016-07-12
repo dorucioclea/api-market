@@ -15,11 +15,12 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime){
+    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
         this.updateExpirationTimes = updateExpirationTimes;
+        this.setDefaultTerms = setDefaultTerms;
         
         function addAdmin(username){
             $uibModal.open({
@@ -38,6 +39,11 @@
         
         function getStatus() {
             return StatusInfo.get().$promise;    
+        }
+        
+        function setDefaultTerms() {
+            // TODO implementation
+            return $q.when('updated');
         }
         
         function removeAdmin(admin){
