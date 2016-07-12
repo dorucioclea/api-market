@@ -64,6 +64,19 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
+        /// ========== ADMIN =============================================================================
+        .factory('TermsAdmin', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/admin/defaults/terms', {}, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+        })
+
+        .factory('DefaultTerms', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/defaults/terms');
+        })
+
         /// ========== CONTRACTS ==========================================================================
         .factory('RequestContract', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
