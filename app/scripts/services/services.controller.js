@@ -79,26 +79,8 @@
         }
 
         function confirmDeleteSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDelete.html',
-                size: 'lg',
-                controller: 'DeleteServiceCtrl as ctrl',
-                resolve: {
-                    organizationId: function () {
-                        return $scope.serviceVersion.service.organization.id;
-                    },
-                    serviceId: function () {
-                        return $scope.serviceVersion.service.id;
-                    },
-                    serviceName: function () {
-                        return $scope.serviceVersion.service.name;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (result) {
+            service.deleteService($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.service.name).then(function (result) {
                 if (result === 'success') {
                     $state.go('root.organization.services', {orgId: $scope.serviceVersion.service.organization.id});
                 }
@@ -106,63 +88,28 @@
         }
 
         function confirmDeprecateSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDeprecate.html',
-                size: 'lg',
-                controller: 'DeprecateServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (status) {
+            service.deprecateServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
                 $state.forceReload();
-            })
+            });
         }
 
         function confirmPublishSvc() {
             if (checkNeedsReadMe()) {
                 toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
             } else {
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'views/modals/servicePublish.html',
-                    size: 'lg',
-                    controller: 'PublishServiceCtrl as ctrl',
-                    resolve: {
-                        svcVersion: function () {
-                            return $scope.serviceVersion;
-                        }
-                    },
-                    backdrop: 'static',
-                    windowClass: $scope.modalAnim	// Animation Class put here.
-                });
-
-                modalInstance.result.then(function (status) {
+                service.publishServiceVersion($scope.serviceVersion.service.organization.id,
+                    $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
                     $state.forceReload();
-                })
+                });
             }
         }
 
         function confirmRetireSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceRetire.html',
-                size: 'lg',
-                controller: 'RetireServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-            modalInstance.result.then(function (status) {
+            service.retireServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
                 $state.forceReload();
-            })
+            });
         }
 
         function checkNeedsReadMe() {

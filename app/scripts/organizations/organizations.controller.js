@@ -349,13 +349,14 @@
     }
 
     function servicesCtrl($scope, $state, $uibModal, svcData, _,
-                          orgScreenModel, ServiceVersion) {
+                          orgScreenModel, service) {
 
         $scope.services = svcData;
         $scope.canDeprecate = canDeprecate;
         $scope.canPublish = canPublish;
         $scope.canRetire = canRetire;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeleteSvcVersion = confirmDeleteSvcVersion;
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
@@ -414,26 +415,11 @@
         }
 
         function confirmDeleteSvc(svcVersion) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDelete.html',
-                size: 'lg',
-                controller: 'DeleteServiceCtrl as ctrl',
-                resolve: {
-                    organizationId: function () {
-                        return svcVersion.organizationId;
-                    },
-                    serviceId: function () {
-                        return svcVersion.id;
-                    },
-                    serviceName: function () {
-                        return svcVersion.name;
-                    }
-                },
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (result) {
+            service.deleteService(svcVersion.organizationId, svcVersion.id, svcVersion.name);
+        }
+        
+        function confirmDeleteSvcVersion(svcVersion) {
+            service.deleteServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.name).then(function (result) {
                 if ( result === 'success') {
                     $state.forceReload();
                 }
@@ -441,74 +427,21 @@
         }
 
         function confirmDeprecateSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/serviceDeprecate.html',
-                        size: 'lg',
-                        controller: 'DeprecateServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
-
-
+            service.deprecateServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function confirmPublishSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/servicePublish.html',
-                        size: 'lg',
-                        controller: 'PublishServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
+            service.publishServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function confirmRetireSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/serviceRetire.html',
-                        size: 'lg',
-                        controller: 'RetireServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
+            service.retireServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function toMetrics(svcVersion) {

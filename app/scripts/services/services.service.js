@@ -6,13 +6,18 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service(Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy, DefaultTerms) {
+    function service($uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy, DefaultTerms) {
+        this.deleteService = deleteService;
+        this.deleteServiceVersion = deleteServiceVersion;
+        this.deprecateServiceVersion = deprecateServiceVersion;
         this.getServicesForOrg = getServicesForOrg;
         this.getServiceVersions = getServiceVersions;
         this.getDefinition = getDefinition;
         this.getEndpoint = getEndpoint;
         this.getVersion = getVersion;
+        this.publishServiceVersion = publishServiceVersion;
         this.removePolicy = removePolicy;
+        this.retireServiceVersion = retireServiceVersion;
         this.updateDefinition = updateDefinition;
         this.updateDescription = updateDescription;
         this.updateServiceVersion = updateServiceVersion;
@@ -20,6 +25,64 @@
         this.getDefaultTerms = getDefaultTerms;
 
 
+        function deleteService(orgId, svcId, svcName) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/serviceDelete.html',
+                size: 'lg',
+                controller: 'DeleteServiceCtrl as ctrl',
+                resolve: {
+                    organizationId: function () {
+                        return orgId;
+                    },
+                    serviceId: function () {
+                        return svcId;
+                    },
+                    serviceName: function () {
+                        return svcName;
+                    }
+                },
+                backdrop : 'static'
+            });
+
+            return modalInstance.result;
+        }
+        
+        function deleteServiceVersion(orgId, svcId, versionId) {
+            return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise.then(function (reply) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/modals/serviceDelete.html',
+                    size: 'lg',
+                    controller: 'DeleteServiceVersionCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return reply;
+                        }
+                    },
+                    backdrop : 'static'
+                });
+
+                return modalInstance.result;
+            });
+        }
+        
+        function deprecateServiceVersion(orgId, svcId, versionId) {
+            return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise.then(function (reply) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/modals/serviceDeprecate.html',
+                    size: 'lg',
+                    controller: 'DeprecateServiceCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return reply;
+                        }
+                    },
+                    backdrop : 'static'
+                });
+
+                return modalInstance.result;
+            });
+        }
+        
         function getDefaultTerms() {
             return DefaultTerms.get().$promise;
         }
@@ -44,8 +107,44 @@
             return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise;
         }
 
+        function publishServiceVersion(orgId, svcId, versionId) {
+            return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise.then(function (reply) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/modals/servicePublish.html',
+                    size: 'lg',
+                    controller: 'PublishServiceCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return reply;
+                        }
+                    },
+                    backdrop: 'static'
+                });
+
+                return modalInstance.result;
+            });
+        }
+
         function removePolicy(orgId, svcId, versionId, policyId) {
             return ServiceVersionPolicy.delete({ orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId }).$promise;
+        }
+
+        function retireServiceVersion(orgId, svcId, versionId) {
+            return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise.then(function (reply) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/modals/serviceRetire.html',
+                    size: 'lg',
+                    controller: 'RetireServiceCtrl as ctrl',
+                    resolve: {
+                        svcVersion: function () {
+                            return reply;
+                        }
+                    },
+                    backdrop : 'static'
+                });
+
+                return modalInstance.result;
+            });
         }
 
         function updateDefinition(orgId, svcId, versionId, updatedDefininitionObject) {
