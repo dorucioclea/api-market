@@ -527,6 +527,17 @@
                         }
                     },
                     controller: 'AdminExpirationCtrl'
+                })                
+                .state('root.administration.terms', {
+                    url: '/terms',
+                    templateUrl: 'views/partials/administration/terms.html',
+                    resolve: {
+                        service: 'service',
+                        currentTerms: function (service) {
+                            return service.getDefaultTerms();
+                        }
+                    },
+                    controller: 'AdminTermsCtrl'
                 })
 
                 // Admin Status View

@@ -41,9 +41,8 @@
             return StatusInfo.get().$promise;    
         }
         
-        function setDefaultTerms() {
-            // TODO implementation
-            return $q.when('updated');
+        function setDefaultTerms(updatedTerms) {
+            return TermsAdmin.update({}, { terms: updatedTerms }).$promise;
         }
         
         function removeAdmin(admin){

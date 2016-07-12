@@ -5,6 +5,7 @@
         .controller('AdministrationCtrl', administrationCtrl)
         .controller('AddAdminCtrl', addAdminCtrl)
         .controller('AdminExpirationCtrl', adminExpirationCtrl)
+        .controller('AdminTermsCtrl', adminTermsCtrl)
         .controller('AdminStatusCtrl', adminStatusCtrl)
         .controller('AdminUsersCtrl', adminUsersCtrl)
         .controller('RemoveAdminCtrl', removeAdminCtrl);
@@ -38,6 +39,22 @@
                 $scope.toastService.createToast($scope.TOAST_TYPES.SUCCESS, "Expiration times updated!", true);
             }, function () {
                 $scope.toastService.createToast($scope.TOAST_TYPES.DANGER, "Could not update expiration times.", true);
+            });
+        }
+    }
+
+    function adminTermsCtrl($scope, currentTerms, adminHelper) {
+        $scope.adminTab.updateTab('Terms');
+        console.log(currentTerms);
+        $scope.terms = currentTerms.terms;
+        $scope.updateDefaultTerms = updateDefaultTerms;
+
+
+        function updateDefaultTerms() {
+            adminHelper.setDefaultTerms($scope.terms).then(function () {
+                $scope.toastService.success('<b>Default Terms & Conditions updated.');
+            }, function (err) {
+                $scope.toastService.createErrorToast(err, 'Could not update default Terms & Conditions');
             });
         }
     }
