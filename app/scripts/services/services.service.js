@@ -50,12 +50,17 @@
         function deleteServiceVersion(orgId, svcId, versionId) {
             return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise.then(function (reply) {
                 var modalInstance = $uibModal.open({
-                    templateUrl: 'views/modals/serviceDelete.html',
+                    templateUrl: 'views/modals/serviceVersionDelete.html',
                     size: 'lg',
                     controller: 'DeleteServiceVersionCtrl as ctrl',
                     resolve: {
                         svcVersion: function () {
                             return reply;
+                        },
+                        lastVersion: function () {
+                            return ServiceVersion.query({ orgId: orgId, svcId: svcId}).$promise.then(function (reply) {
+                                return reply.length === 1;
+                            })
                         }
                     },
                     backdrop : 'static'

@@ -348,6 +348,29 @@
                 }
             })
 
+        /// ==== DeleteServiceVersion Controller
+        .controller('DeleteServiceVersionCtrl',
+            function ($scope, $uibModalInstance, svcVersion, lastVersion, ServiceVersion) {
+
+                $scope.serviceVersion = svcVersion;
+                $scope.lastVersion = lastVersion;
+                $scope.modalClose = modalClose;
+                $scope.doDelete = doDelete;
+
+                function modalClose() {
+                    $uibModalInstance.dismiss('canceled');
+                }
+
+                function doDelete() {
+                    ServiceVersion.delete({ orgId: svcVersion.service.organization.id,
+                        svcId: svcVersion.service.id, versionId: svcVersion.version }).$promise.then(function () {
+                        $uibModalInstance.close("success");
+                    }, function (err) {
+                        $uibModalInstance.close(err);
+                    });
+                }
+            })
+
         /// ==== NewVersion Controller
         .controller('NewVersionCtrl',
             function ($scope, $state, $stateParams, appScreenModel, planScreenModel, svcScreenModel, toastService,

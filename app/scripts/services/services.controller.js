@@ -36,6 +36,7 @@
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeleteSvcVersion = confirmDeleteSvcVersion;
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
@@ -85,6 +86,16 @@
                     $state.go('root.organization.services', {orgId: $scope.serviceVersion.service.organization.id});
                 }
             });
+        }
+
+        function confirmDeleteSvcVersion() {
+            service.deleteServiceVersion($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function (result) {
+                if (result === 'success') {
+                    $state.go('root.organization.services', { orgId: $scope.serviceVersion.service.organization.id });
+                } else {
+                    toastService.createErrorToast(result, 'Could not delete service version!');
+                }
+            })
         }
 
         function confirmDeprecateSvc() {

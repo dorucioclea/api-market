@@ -15,7 +15,9 @@
             <button id="publish" class="btn btn-line-primary btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('svcAdmin')" ng-if="!isPublished && !isRetired" ng-click="confirmPublishSvc()">Publish</button>
             <button id="deprecate" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired && !isDeprecated" ng-click="confirmDeprecateSvc()">Deprecate</button>
             <button id="retire" class="btn btn-line-purple btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired" ng-click="confirmRetireSvc()">Retire</button>
-            <button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
+            <!--<button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>-->
+            <button id="delete-version" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvcVersion()">Delete {{serviceVersion.version}}</button>
+
             <div class="mt10" ng-show="!User.isAuthorizedFor('svcAdmin') && !isPublished">
                 <p class="text-muted xsmall">
                     You do not have the necessary permissions to publish services.

@@ -348,7 +348,7 @@
         }
     }
 
-    function servicesCtrl($scope, $state, $uibModal, svcData, _,
+    function servicesCtrl($scope, $state, $uibModal, svcData, _, toastService,
                           orgScreenModel, service) {
 
         $scope.services = svcData;
@@ -419,9 +419,11 @@
         }
         
         function confirmDeleteSvcVersion(svcVersion) {
-            service.deleteServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.name).then(function (result) {
+            service.deleteServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (result) {
                 if ( result === 'success') {
                     $state.forceReload();
+                } else {
+                    toastService.createErrorToast(result, 'Could not delete service version!');
                 }
             });
         }
