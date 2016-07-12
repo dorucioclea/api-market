@@ -318,6 +318,10 @@
                 restrict: 'A',
                 link: function (scope, element, attrs) {
                     var raw = element[0];
+                    if (raw.scrollHeight === 0) {
+                        scope.$parent.atBottom = true;
+                        element.addClass('at-bottom');
+                    }
                     element.bind('scroll', function () {
                         if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) { //at the bottom
                             scope.$parent.atBottom = true;
