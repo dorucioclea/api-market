@@ -238,6 +238,7 @@
                 $scope.selectVersion = selectVersion;
                 $scope.startCreateContract = startCreateContract;
                 $scope.modalClose = modalClose;
+                $scope.atBottom = false;
 
                 $scope.availablePlans = [];
                 $scope.policyConfig = [];
