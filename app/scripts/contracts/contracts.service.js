@@ -85,12 +85,13 @@
                 }).$promise;
         }
 
-        function requestContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion) {
+        function requestContract(svcOrgId, svcId, svcVersion, planId, appOrgId, appId, appVersion, termsAgreed) {
             var requestObj = {
                 applicationOrg: appOrgId,
                 applicationId: appId,
                 applicationVersion: appVersion,
-                planId: planId
+                planId: planId,
+                termsAgreed: termsAgreed
             };
             return RequestContract.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion}, requestObj, function () {
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);

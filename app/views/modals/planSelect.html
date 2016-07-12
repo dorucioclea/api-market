@@ -3,7 +3,7 @@
     <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 <!-- Application Create panel -->
-<div class="modal-body" ng-hide="hasOrgContext">
+<div class="modal-body" ng-hide="hasOrgContext || termsAgreementMode">
     <p class="mt30">We cannot find an organization context for the contract you wish to {{service.autoAcceptContracts ? 'create' : 'request' }}. Please select the organization that contains the application you want to create a contract with.</p>
     <div class="btn-group dropdown" uib-dropdown>
         <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" uib-dropdown-toggle>
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="modal-body" ng-show="hasOrgContext">
+<div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode">
     <div id="appForm" name="appForm" class="form form-inline">
         <span>For application </span>
         <div class="btn-group dropdown" uib-dropdown>
@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<div class="modal-body text-muted" ng-show="hasOrgContext">
+<div class="modal-body text-muted" ng-show="hasOrgContext && !termsAgreementMode">
     <p>
         The policies that will be applied on this contract are a combination of service-level policies
         and plan policies.
@@ -58,7 +58,7 @@
     </p>
 </div>
 
-<div class="modal-body" ng-show="hasOrgContext">
+<div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode">
     <p class="text-bold">Policies defined on this service:</p>
     <div class="well" ng-show="servicePolicies.length == 0">
         No policies have been defined for this service.
@@ -71,7 +71,7 @@
     </div>
 </div>
 
-<div class="modal-body" ng-show="hasOrgContext">
+<div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode">
     <p class="text-bold text-primary">Please select the plan you want to use for this contract</p>
     <div class="btn-group dropdown" uib-dropdown>
         <button type="button" class="btn btn-line-primary btn-lg dropdown-toggle" uib-dropdown-toggle>
@@ -83,7 +83,7 @@
     </div>
 </div>
 
-<div class="modal-body" ng-show="hasOrgContext">
+<div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode">
     <p class="text-bold">Policies included in this plan:</p>
     <div class="well" ng-show="selectedPlanPolicies.length == 0">
         No policies have been defined for this plan.
@@ -96,16 +96,38 @@
     </div>
 </div>
 
-<div class="modal-body" ng-show="hasOrgContext && !service.autoAcceptContracts">
+<div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode && !service.autoAcceptContracts">
     <h4>Please note that the owner of this service has chosen to review all contract requests for this service.
         <strong class="text-primary">Your contract will not automatically activate!</strong>
     </h4>
     <h4>See the service README for instructions on how to proceed with your request.</h4>
 </div>
 
+<div class="modal-body terms-and-conditions" ng-show="termsAgreementMode">
+    <h4 class="text-primary">To {{service.autoAcceptContracts ? 'create' : 'request' }} a contract with this service you must agree to the Terms & Conditions below.</h4>
+    <p class="text-muted text-light mb30"> Please read through the Terms and tick the checkbox to indicate your agreement.</p>
+    <div class="terms" btf-markdown ng-include="'terms.mkd'" scroll-to-bottom></div>
+    <a class="clickable small pull-right" print-div=".terms">Print Terms & Condtions</a>
+    <div class="terms-checkbox-wrapper">
+        <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle terms-checkbox">
+            <label>
+                <input type="checkbox" ng-model="termsAgreed" ng-disabled="!atBottom">
+                <span class="title">I agree to the specified Terms & Conditions.</span>
+            </label>
+        </div>
+        <span class="ml30 xsmall text-muted text-light" ng-class="{ 'prompt-hidden': atBottom }">You must read all of the Terms & Condtitions to activate the checkbox.</span>
+    </div>
+
+</div>
+
 <div class="modal-footer">
-    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-    <button class="btn btn-line-success" ng-click="startCreateContract()" ng-disabled="!hasOrgContext">{{service.autoAcceptContracts ? 'Confirm' : 'Request' }} Contract</button>
+    <button class="btn btn-default ml15" ng-click="modalClose()">
+        Cancel
+    </button>
+    <button class="btn btn-line-success" ng-click="startCreateContract()"
+            ng-disabled="!canCreateContract()">
+        {{ service.termsAgreementRequired && !termsAgreementMode ? 'Select Plan' : service.autoAcceptContracts ? 'Confirm Contract' : 'Request Contract' }}
+    </button>
 </div>
 
 
