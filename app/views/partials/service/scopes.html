@@ -14,13 +14,13 @@
                 <div class="row">
                     <div class="col-sm-6 ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
                         <label>
-                            <input type="checkbox" ng-model="mkt.checked" ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+                            <input type="checkbox" ng-model="mkt.checked" ng-disabled="!User.isAuthorizedFor('svcEdit')">
                             <span class="title">{{ mkt.name.charAt(0).toUpperCase() + mkt.name.slice(1) }}</span>
                         </label>
                     </div>
                     <div class="col-sm-6">
                         <div ng-show="mkt.code==='ext'" class="btn-group dropdown pull-right" uib-dropdown>
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="!User.isAuthorizedFor('svcEdit')">
                                 Visibility: {{mkt.selectedVisibility ? 'Show' : 'Hide' }}<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 mt20" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
+        <div class="col-sm-12 mt20" ng-if="User.isAuthorizedFor('svcEdit')">
             <button ng-disabled="!changed()" class="btn btn-default btn-sm" ng-click="reset()">Cancel</button>
             <button ng-disabled="!changed()" ng-click="saveService()" class="btn btn-primary btn-sm">Save</button>
         </div>
