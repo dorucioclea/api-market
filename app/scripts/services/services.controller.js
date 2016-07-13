@@ -377,6 +377,7 @@
         $scope.$watch('updatedService', function (newValue) {
             var dirty = false;
             if (newValue.autoAcceptContracts != $scope.version.autoAcceptContracts) dirty = true;
+            if (newValue.termsAgreementRequired != $scope.version.termsAgreementRequired) dirty = true;
             if (newValue.plans && $scope.version.plans &&
                 newValue.plans.length !== $scope.version.plans.length) {
                 dirty = true;
@@ -441,6 +442,7 @@
                 });
             });
             $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+            $scope.updatedService.termsAgreementRequired = $scope.version.termsAgreementRequired;
         }
 
         var getSelectedPlans = function () {
@@ -481,7 +483,7 @@
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Available Plans & Contract Management for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Settings for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                     if ($scope.tabStatus.hasPlan) {
                         $state.forceReload();

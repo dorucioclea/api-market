@@ -36,7 +36,7 @@
 
     <div class="col-sm-12 mt30">
         <h4>Contract Management</h4>
-        <p>
+        <p class="text-light small">
             Applications can create a link (Contract) with this Service using the plans selected above. By default,
             new contracts are activated automatically. If you would like to manually accept or reject each new contract,
             you can select manual mode below.
@@ -52,6 +52,23 @@
                 <label>
                     <input type="radio" ng-checked="!updatedService.autoAcceptContracts" ng-click="updatedService.autoAcceptContracts = false" name="contractManagement">
                     <span>I want to manually manage the contracts for this service.</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 mt30">
+        <h4>Terms & Conditions</h4>
+        <p class="text-light small">
+            If this option is checked, consumers of this service will be presented with Terms & Conditions they need to agree to while creating a new contract.
+            Services can specify their own Terms & Conditions; if none are present, the default Terms & Conditions (set by the Administrators) will be used.
+        </p>
+
+        <div class="col-sm-12">
+            <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+                <label>
+                    <input type="checkbox" ng-model="updatedService.termsAgreementRequired">
+                    <span class="title">Applications that want to create a Contract with this service will need to agree to the Terms & Conditions.</span>
                 </label>
             </div>
         </div>
