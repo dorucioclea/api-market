@@ -1,47 +1,20 @@
 <div class="page page-api">
-    <div class="api-row breadcrumbs" style="background: #eee">
-        <div class="api-content-container">
-            <div class="panel" style="border: 0; background: #eee">
-                <ol class="breadcrumb breadcrumb-small mb0" style="background: #eee">
-                    <li><a ui-sref="root.apis.grid">API Store</a></li>
-                    <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
-                    <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
-                </ol>
-            </div>
+    <api-page-breadcrumbs>
+        <li><a ui-sref="root.apis.grid">API Store</a></li>
+        <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
+        <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
+    </api-page-breadcrumbs>
+
+
+
+    <api-page-header has-logo="false">
+        <div>
+            <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
+            <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
+            <div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
+            <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
         </div>
-    </div>
-
-    <div class="api-row mt5">
-        <div class="api-content-container">
-            <div class="panel">
-                <div class="panel-body">
-                    <!-- Main Org info panel -->
-                    <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
-                    <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
-                    <div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
-                    <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
-                        <!--<div class="col-sm-3 text-bold pull-right text-center">-->
-                            <!--<h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>-->
-                            <!--<status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>-->
-                            <!--<button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>-->
-                            <!--<p><a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>-->
-                            <!--<a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-12 text-primary">-->
-                            <!--<span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>-->
-                            <!--<a ng-attr-href="{{serviceVersion.onlinedoc}}" ng-class="{ 'ml15': showDeveloper }" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>-->
-                            <!--<span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 }" ng-hide="serviceVersion.service.categories.length == 0"><i class="fa fa-tag"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}</span>-->
-                            <!--<span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 || serviceVersion.service.categories.length != 0 }" class="text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-12">-->
-                            <!--<hr>-->
-                        <!--</div>-->
-
-                </div><!-- end main info panel -->
-
-            </div>
-        </div>
-    </div>
+    </api-page-header>
 
     <div id="navtabs" class="api-row">
         <div class="api-content-container navtab-container">
