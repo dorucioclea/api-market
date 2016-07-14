@@ -20,8 +20,12 @@ angular
 
 			var curl = 'curl -X ' + config.method.toUpperCase();
 			angular.forEach(config.headers, function (value, key) {
-				curl += ' --header "' + key + ': ' + value + '"'
+				curl += ' --header \'' + key + ': ' + value + '\''
 			});
+			
+			if (config.data) {
+				curl += ' -d \'' + angular.toJson(angular.fromJson(config.data)) + '\'';
+			}
 
 			if (config.params) {
 				var parts = [];
@@ -32,7 +36,7 @@ angular
 					query = '?' + parts.join('&');
 				}
 			}
-			curl += ' "' + config.url + query + '"';
+			curl += ' \'' + config.url + query + '\'';
 
 			deferred.resolve({
 				url: config.url + query,
