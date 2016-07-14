@@ -16,26 +16,28 @@
         $scope.orgScreenModel = orgScreenModel;
         $scope.orgId = $stateParams.orgId;
         $scope.deleteOrg = deleteOrg;
-        $scope.updateOrgDescription = updateOrgDescription;
-        
+        $scope.editDetails = editDetails;
+
         function deleteOrg() {
             orgService.delete($stateParams.orgId).then(function (reply) {
                 if (reply != 'canceled') {
-                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>')
+                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>');
                     $state.go('root.myOrganizations');
                 }
             }, function (error) {
                 toastService.createErrorToast(error, 'Could not delete organization');
             })
         }
-
-        function updateOrgDescription(newValue) {
-            console.log(newValue);
-            orgService.updateDescription($stateParams.orgId, newValue).then(function () {
-                toastService.info('Description updated.');
+        
+        function editDetails() {
+            orgService.editDetails($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('Settings for <b>' + $scope.orgScreenModel.organization.name + '</b> have been updated.');
+                    $scope.orgScreenModel.getOrgDataForId($scope.orgScreenModel, $stateParams.orgId);
+                }
             }, function (error) {
-                toastService.createErrorToast(error, 'Could not update the organization\'s description.');
-            });
+                toastService.createErrorToast(error, 'Could not update organization details');
+            })
         }
 
     }

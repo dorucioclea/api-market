@@ -11,6 +11,7 @@
         this.name = nameIt;
         this.orgInfo = orgInfo;
         this.search = search;
+        this.editDetails = editDetails;
         this.updateDescription = updateDescription; 
 
 
@@ -29,6 +30,32 @@
             });
             modalInstance.result.then(function() {
                 deferred.resolve(Organization.delete({ id: orgId }).$promise);
+            }, function () {
+                deferred.resolve('canceled');
+            });
+            return deferred.promise;
+        }
+
+        function editDetails(orgId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/organizationEdit.html',
+                size: 'lg',
+                controller: 'OrgEditCtrl as ctrl',
+                resolve: {
+                    org: function () {
+                        return Organization.get({ id: orgId }).$promise;
+                    }
+                },
+                backdrop : 'static'
+            });
+            modalInstance.result.then(function(updatedOrg) {
+                var updateObj = {
+                    description: updatedOrg.description,
+                    friendlyName: updatedOrg.friendlyName,
+                    organizationPrivate: updatedOrg.organizationPrivate
+                };
+                deferred.resolve(Organization.update({ id: orgId }, updateObj).$promise);
             }, function () {
                 deferred.resolve('canceled');
             });

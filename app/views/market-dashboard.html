@@ -10,9 +10,26 @@
     <api-page-header has-logo="false">
         <div>
             <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
-            <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
-            <div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
-            <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
+            <span class="small text-muted ml10 mb5" ng-if="!orgScreenModel.organization.organizationPrivate"><span class="fa fa-globe"></span>&nbsp;Public Organization</span>
+            <span class="small text-muted ml10 mb5" ng-if="orgScreenModel.organization.organizationPrivate"><span class="fa fa-lock"></span>&nbsp;Private Organization</span>
+            <div class="right" ng-if="User.isAuthorizedForIn('orgAdmin', orgScreenModel.organization.id)">
+                <api-page-actions>
+                    <!--<div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>-->
+                    <li id="edit-details">
+                        <a ng-click="editDetails()" class="clickable">
+                            Edit Details
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li id="delete-org" class="text-danger">
+                        <a ng-click="deleteOrg()" class="clickable">
+                            <span class="text-danger">Delete Organization</span>
+                        </a>
+                    </li>
+                </api-page-actions>
+            </div>
+            <!--<div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>-->
+            <div>{{orgScreenModel.organization.description}}</div>
         </div>
     </api-page-header>
 
