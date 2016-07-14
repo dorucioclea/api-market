@@ -153,8 +153,8 @@
         }
     }
 
-    function organizationCtrl($scope, $uibModal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
-                              pendingMemberships, memberService, toastService, TOAST_TYPES, Organization, Member,
+    function organizationCtrl($scope, $state, $stateParams, screenSize, orgData, pendingContracts,
+                              pendingMemberships, memberService, orgService, toastService, Member,
                               orgScreenModel, CONFIG) {
 
         $scope.displayTab = orgScreenModel;
@@ -166,9 +166,8 @@
         $scope.xs = screenSize.on('xs', function(match) {
             $scope.xs = match;
         });
-        $scope.updateOrgDescription = updateOrgDescription;
-        $scope.updateOrgFriendlyName = updateOrgFriendlyName;
-        $scope.updateOrgVisibility = updateOrgVisibility;
+        $scope.deleteOrg = deleteOrg;
+        $scope.editDetails = editDetails;
         $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
         init();
 
@@ -179,55 +178,27 @@
             });
         }
 
-        function updateOrgDescription(newValue) {
-            Organization.update({ id: organizationId }, { description: newValue }, function (reply) {
-                toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+        function deleteOrg() {
+            orgService.delete($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>');
+                    $state.go('root.myOrganizations');
+                }
             }, function (error) {
-                toastService.createErrorToast(error, 'Could not update the organization\'s description.');
-            });
-        }
-
-        function updateOrgFriendlyName() {
-            var modalinstance = $uibModal.open({
-                templateUrl: 'views/modals/organizationEditFriendlyName.html',
-                controller: 'OrgFriendlyNameModalCtrl as ctrl',
-                resolve: {
-                    orgFriendlyName: function () {
-                        return $scope.org.friendlyName;
-                    }
-                },
-                backdrop : 'static'
-            });
-
-            modalinstance.result.then(function (updatedOrgFriendlyName) {
-                Organization.update({id: organizationId}, { friendlyName: updatedOrgFriendlyName }, function () {
-                    toastService.success('Organization friendly name now set to <b>' + updatedOrgFriendlyName + '</b>');
-                    $scope.org.friendlyName = updatedOrgFriendlyName;
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update the organization friendly name.');
-                });
+                toastService.createErrorToast(error, 'Could not delete organization');
             })
         }
 
-        function updateOrgVisibility() {
-            var modalinstance = $uibModal.open({
-                templateUrl: 'views/modals/organizationEditVisibility.html',
-                controller: 'OrgVisibilityModalCtrl as ctrl',
-                resolve: {
-                    currentlyPrivate: function () {
-                        return $scope.org.organizationPrivate;
-                    }
-                },
-                backdrop : 'static'
-            });
 
-            modalinstance.result.then(function (setOrgPrivate) {
-                Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function () {
-                    toastService.success(setOrgPrivate ? 'Organization now set to <b>Private</b>.' : 'Organization now set to <b>Public</b>.');
-                    $scope.org.organizationPrivate = setOrgPrivate;
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update the organization visibility.');
-                });
+        function editDetails() {
+            orgService.editDetails($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('Settings for <b>' + $scope.org.name + '</b> have been updated.');
+                    // todo avoid forced reload?
+                    $state.forceReload();
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update organization details');
             })
         }
     }
@@ -335,10 +306,11 @@
         }
     }
 
-    function orgDeleteCtrl($scope, $uibModalInstance, org) {
+    function orgDeleteCtrl($scope, $uibModalInstance, org, CONFIG) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.org = org;
+        $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
 
         function cancel() {
             $uibModalInstance.dismiss('canceled');
@@ -349,10 +321,11 @@
         }
     }
 
-    function orgEditCtrl($scope, $uibModalInstance, org) {
+    function orgEditCtrl($scope, $uibModalInstance, org, admin) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.org = org;
+        $scope.admin = admin;
 
         function cancel() {
             $uibModalInstance.dismiss('canceled');
