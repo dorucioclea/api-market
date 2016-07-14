@@ -18,12 +18,41 @@
             bindings: {
                 'hasLogo': '<'
             },
-            controller: function () {
-                console.log(this.hasLogo);
-            },
             transclude: {
                 'logoSlot': '?base64Logo',
                 'headerSlot': 'div'
+            }
+        })
+        .component('apiPageActions', {
+            templateUrl: 'views/ui/component-actions.html',
+            transclude: true
+        })
+        .component('apiPageVersionSelect', {
+            templateUrl: 'views/ui/component-version-select.html',
+            bindings: {
+                'currentVersion': '=',
+                'type': '=',
+                'versions': '='
+            },
+            controller: function ($state, $stateParams) {
+                this.selectVersion = selectVersion;
+
+                function selectVersion(version) {
+                    switch (this.type) {
+                        case 'app':
+                            $state.go($state.$current.name,
+                                {orgId: $stateParams.orgId, appId: $stateParams.appId, versionId: version.version});
+                            break;
+                        case 'svc':
+                            $state.go($state.$current.name,
+                                {orgId: $stateParams.orgId, svcId: $stateParams.svcId, versionId: version.version});
+                            break;
+                        case 'plan':
+                            $state.go($state.$current.name,
+                                {orgId: $stateParams.orgId, planId: $stateParams.planId, versionId: version.version});
+                            break;
+                    }
+                }
             }
         });
 
