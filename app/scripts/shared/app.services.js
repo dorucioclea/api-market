@@ -508,19 +508,7 @@
             };
         })
 
-        // PLAN SCREEN MODEL
-        .service('planScreenModel', function () {
-            this.selectedTab = 'Overview';
-            this.plan = {};
 
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-            this.updatePlan = function (plan) {
-                this.plan = plan;
-            };
-        })
 
         // SERVICE DOC MODEL
         .service('svcModel', function () {
