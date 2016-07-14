@@ -23,6 +23,7 @@
 
                 function init() {
                     alertService.resetAllAlerts();
+                    $scope.imageService.clear();
                 }
 
                 function readFile($file) {
@@ -49,6 +50,7 @@
                     }
                     Application.save({orgId: $scope.currentOrg.id}, newAppObject, function (app) {
                         $uibModalInstance.close(app);
+                        imageService.clear();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Application <b>' + app.name +  '</b> created!', true);
                     }, function (error) {
@@ -197,6 +199,7 @@
 
                 function init() {
                     alertService.resetAllAlerts();
+                    imageService.clear();
                     Categories.query({}, function (reply) {
                         $scope.currentCategories = reply;
                     });
@@ -234,6 +237,7 @@
 
                     Service.save({orgId: $stateParams.orgId}, newSvcObject, function (newSvc) {
                         $scope.modalClose();
+                        imageService.clear();
                         $state.go('root.service.overview',
                             {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: newSvcObject.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,

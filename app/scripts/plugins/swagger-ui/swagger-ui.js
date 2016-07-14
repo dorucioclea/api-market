@@ -50,6 +50,8 @@ angular
 				inputType: '@?',
 				// Allows rendering an external Swagger specification (string or object, optional)
 				input: '=?',
+				// Basepath to be used for all requests
+				basePath: '=',
 				// API key to use for requests
 				apikey: '=',
                 // Custom headers to be appended to requests
@@ -261,7 +263,7 @@ angular
             if ($scope.customHeaders && $scope.customHeaders.length > 0) operation.customHeaders = $scope.customHeaders;
             if ($scope.jwtEnabled) operation.jwt = encodeURIComponent($sessionStorage.jwt);
 			swaggerClient
-				.send(swagger, operation, $scope.form[operation.id])
+				.send(swagger, operation, $scope.form[operation.id], $scope.basePath)
 				.then(function(result) {
 					operation.loading = false;
 					operation.explorerResult = result;
