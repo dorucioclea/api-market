@@ -53,9 +53,8 @@
             </div>
 
             <div class="col-sm-9" style="padding-left: 0;">
-                <span id="desc" click-to-edit value="serviceVersion.service.description" save-function="updateDesc" ng-if="userHasEditPermission"></span>
-                <span ng-if="!userHasEditPermission">{{serviceVersion.service.description}}</span>
-
+                <p>{{serviceVersion.service.description}}</p>
+                <span ng-repeat="category in serviceVersion.service.categories"><span class="label label-primary">{{category}}</span><span>&nbsp;</span></span>
 
                 <div class="mt30 text-light text-muted">
                     <div>
