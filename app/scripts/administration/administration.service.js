@@ -19,6 +19,7 @@
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
+        this.revokeAllGrants = revokeAllGrants;
         this.updateExpirationTimes = updateExpirationTimes;
         this.setDefaultTerms = setDefaultTerms;
         
@@ -58,6 +59,12 @@
                 backdrop : 'static',
                 windowClass: 'default'	// Animation Class put here.
             });
+        }
+        
+        function revokeAllGrants() {
+            // TODO implement backend
+            // return $q.resolve('OK');
+            return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {

@@ -503,7 +503,7 @@
                 })
                 // Admin Users View
                 .state('root.administration.users', {
-                    url: '/users',
+                    url: '/admins',
                     templateUrl: 'views/partials/administration/users.html',
                     resolve: {
                         Admins: 'Admins',
@@ -551,6 +551,11 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
+                })
+                .state('root.administration.oauth', {
+                    url: '/oauth',
+                    templateUrl: 'views/partials/administration/revoke.html',
+                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
@@ -965,6 +970,11 @@
                     url: '/profile',
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
+                })
+                .state('root.user.connected-apps', {
+                    url: '/connected',
+                    templateUrl: 'views/partials/user/connected.html',
+                    controller: 'UserConnectedAppsCtrl'
                 });
         })
 

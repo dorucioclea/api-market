@@ -6,8 +6,10 @@
         .controller('AddAdminCtrl', addAdminCtrl)
         .controller('AdminExpirationCtrl', adminExpirationCtrl)
         .controller('AdminTermsCtrl', adminTermsCtrl)
+        .controller('AdminOAuthRevokeCtrl', adminOAuthRevokeCtrl)
         .controller('AdminStatusCtrl', adminStatusCtrl)
         .controller('AdminUsersCtrl', adminUsersCtrl)
+        .controller('ConfirmRevokeCtrl', confirmRevokeCtrl)
         .controller('RemoveAdminCtrl', removeAdminCtrl);
 
     function administrationCtrl($scope, adminTab, adminHelper, screenSize, toastService, TOAST_TYPES) {
@@ -56,6 +58,30 @@
             }, function (err) {
                 $scope.toastService.createErrorToast(err, 'Could not update default Terms & Conditions');
             });
+
+        }
+    }
+
+    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
+        $scope.adminTab.updateTab('OAuth');
+        $scope.confirmRevokeAllGrants = confirmRevokeAllGrants;
+        
+        function confirmRevokeAllGrants() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeOAuthConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+            
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.revokeAllGrants().then(function () {
+                    toastService.success('All OAuth grants have been revoked successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke OAuth grants.');
+                })
+            })
         }
     }
 
@@ -112,7 +138,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + privuser + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grand admin privileges.');});
+                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
 
                     break;
             }
@@ -123,7 +149,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + user.username + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grand admin privileges.');});
+                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
                 } else {
                     toastService.createToast(TOAST_TYPES.WARNING,
                         'Could not find member to add with email address <b>' + email + '</b>.', true);
@@ -139,6 +165,19 @@
 
         function selectMethod(method) {
             $scope.selectedMethod = method;
+        }
+    }
+    
+    function confirmRevokeCtrl($scope, $uibModalInstance) {
+        $scope.ok = ok;
+        $scope.cancel = cancel;
+        
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+        
+        function ok() {
+            $uibModalInstance.close('OK');
         }
     }
 
