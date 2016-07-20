@@ -54,8 +54,10 @@
             'app.members',
             'app.notifications',
             'app.organizations',
+            'app.plugin.lodash',
             'app.service',
             'app.swagger',
+            'app.tour',
             'app.user'
 
         ])
@@ -132,7 +134,7 @@
                         return null;
                     }
                     // Skip authentication for oauth requests
-                    if (config.url.indexOf('/oauth2/') > -1 ) {
+                    if (config.url.indexOf('/oauth2/') > -1 && config.url.indexOf('/oauth2/reissue') === -1) {
                         return null;
                     }
 
@@ -151,7 +153,7 @@
                         } else {
                             // Token is still valid, check if we need to refresh
                             var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
-                            date.setMinutes(date.getMinutes() - 5);
+                            date.setMinutes(date.getMinutes() - 15);
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
                                 console.log('Refreshing token');

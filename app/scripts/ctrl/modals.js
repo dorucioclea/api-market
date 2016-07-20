@@ -225,8 +225,8 @@
         .controller('PlanSelectCtrl',
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
-                      CurrentUserAppOrgs, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
-                      serviceVersion, svcPolicies) {
+                      currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
+                      serviceVersion, svcPolicies, appService) {
                 $scope.service = serviceVersion;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
@@ -261,8 +261,14 @@
                     if (orgScreenModel.organization === undefined) {
                         // No org context, get user's AppOrgs
                         $scope.hasOrgContext = false;
-                        CurrentUserAppOrgs.query({}, function (reply) {
-                            $scope.appOrgs = reply;
+                        currentUser.getUserAppOrgs().then(function (reply) {
+                            var orgs = [];
+                            angular.forEach(reply, function (org) {
+                                appService.getAppsForOrg(org.id).then(function (apps) {
+                                    if (apps.length > 0) orgs.push(org);
+                                })
+                            });
+                            $scope.appOrgs = orgs;
                         });
                     } else {
                         $scope.hasOrgContext = true;
@@ -739,7 +745,7 @@
                     };
                     OrganizationOwnershipTransfer.save({orgId: org.id}, transferObj, function (reply) {
                         // We changed our own role, need to update the CurrentUserInfo
-                        currentUserModel.updateCurrentUserInfo(currentUserModel).then(function (success) {
+                        currentUserModel.refreshCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
                             toastService.createToast('success', 'Ownership of <b>' + $scope.orgName +
                                 '</b> was successfully transferred to <b>' + user + '</b>', true);

@@ -12,11 +12,13 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $uibModal, svcData, svcModel, svcTab, loginHelper,
-                        headerModel, toastService,TOAST_TYPES, followerService, support, CONFIG) {
+    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper, oAuthPolicy,
+                        headerModel, toastService, followerService, support, CONFIG, EVENTS) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
+        $scope.endpoint = endpoint;
+        $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
         $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
         $scope.published = $scope.serviceVersion.status === 'Published';
         $scope.retired = $scope.serviceVersion.status === 'Retired';
@@ -28,13 +30,17 @@
         $scope.support = support;
         $scope.modalAnim = 'default';
         $scope.showDeveloper = CONFIG.APP.SHOW_API_DEVELOPER_NAME_IN_STORE;
+        $scope.showAnnouncements = !CONFIG.APP.DISABLE_ANNOUNCEMENTS;
+        $scope.showSupport = !CONFIG.APP.DISABLE_SUPPORT;
         $scope.modalSelectApplicationForContract = modalSelectApplicationForContract;
         $scope.modalClose = modalClose;
         $scope.hasTerms = hasTerms;
         $scope.userIsFollowing =
             $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
         $scope.followAction = followAction;
+        $scope.copyPath = copyPath;
 
+        $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 
         function hasTerms() {
             return $scope.serviceVersion.service.terms !== null &&
@@ -58,8 +64,7 @@
                                 return data;
                             },
                             function (error) {
-                                console.log(error.data.message);
-                                toastService.createToast(TOAST_TYPES.WARNING, error.data.message, true);
+                                toastService.warning(error.data.message);
                                 throw new Error('<b>Service does not exist anymore!</b><br><span class="small">This error occurs when the service was available when loading the page, but in meantime has been retired, or otherwise deleted from the publisher.</span>');
                             });
                     }
@@ -81,15 +86,18 @@
                 followerService.addFollower($scope.serviceVersion);
             }
         }
+        
+        function copyPath() {
+            toastService.info('<b>Path copied!</b>');
+        }
     }
 
     /// ==== Service Swagger Documentation Controller
-    function documentationCtrl ($scope, $stateParams, $timeout, endpoint, svcContracts, oAuthPolicy, jwtEnabled, userApps,
+    function documentationCtrl ($scope, $stateParams, $timeout, svcContracts, oAuthPolicy, jwtEnabled, userApps,
                                 docTester, docDownloader, svcTab, ApplicationVersion, apiService,
-                                oAuthService, toastService, TOAST_TYPES) {
+                                oAuthService, toastService, TOAST_TYPES, _) {
         $scope.addHeader = addHeader;
         $scope.oAuthConfig = angular.fromJson(oAuthPolicy.configuration);
-        $scope.endpoint = endpoint;
         $scope.docDownloader = docDownloader;
         $scope.docTester = docTester;
         $scope.copy = copy;
@@ -102,6 +110,7 @@
         $scope.removeHeader = removeHeader;
         $scope.selectedScopes = [];
         $scope.selectContract = selectContract;
+        $scope.toggleOAuthPanel = toggleOAuthPanel;
 
 
         init();
@@ -115,11 +124,18 @@
                 $scope.selectedScopes.push({scope: key, desc: value, checked: true});
             });
 
+            // But oAuth panel is closed
+            $scope.oAuthClosed = true;
+            $scope.oAuthPanelStyle = {
+                'border-bottom': '0'
+            };
+
             filterApplications(userApps, svcContracts);
 
             if ($scope.contractApps.length > 0) {
                 if (docTester.preferredContract) {
-                    if ($scope.contractApps.indexOf(docTester.preferredContract > -1)) {
+                    if (_.find($scope.contractApps,
+                            function (c) { return c.contractId === docTester.preferredContract.contractId; })) {
                         $scope.selectedContract = docTester.preferredContract;
                     } else {
                         $scope.selectedContract = $scope.contractApps[0];
@@ -239,6 +255,17 @@
 
         function removeHeader(header) {
             $scope.customHeaders.splice($scope.customHeaders.indexOf(header), 1);
+        }
+
+        function toggleOAuthPanel() {
+            $scope.oAuthClosed = !$scope.oAuthClosed;
+            if ($scope.oAuthClosed) {
+                $scope.oAuthPanelStyle = {
+                    'border-bottom': '0'
+                };
+            } else {
+                $scope.oAuthPanelStyle = {};
+            }
         }
     }
 

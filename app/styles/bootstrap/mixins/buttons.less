@@ -16,7 +16,7 @@
   .open > .dropdown-toggle& {
     color: @color;
     background-color: darken(@background, 10%);
-        border-color: darken(@border, 12%);
+    border-color: darken(@border, 12%);
   }
   &:active,
   &.active,
@@ -33,12 +33,53 @@
     &:active,
     &.active {
       background-color: @background;
-          border-color: @border;
+      border-color: @border;
     }
   }
 
   .badge {
     color: @background;
+    background-color: @color;
+  }
+}
+
+.button-inverted-variant(@color, @secondary) {
+  color: @color;
+  background-color: @secondary;
+  border-color: @secondary;
+  box-shadow: 0 0 0 0;
+
+  &:hover,
+  &:focus,
+  &.focus,
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    color: @secondary;
+    background-color: @color;
+    border-color: @color;
+  }
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background-color: darken(@secondary, 10%);
+      border-color: darken(@secondary, 12%);
+    }
+  }
+
+  .badge {
+    color: @secondary;
     background-color: @color;
   }
 }

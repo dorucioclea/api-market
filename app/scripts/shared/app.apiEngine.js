@@ -214,6 +214,20 @@
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/applications/:appId/versions/:versionId/apiregistry/json');
         })
+        .factory('ApplicationApiKeyReissue', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/key-auth/reissue', {}, {
+                request: {
+                    method: 'POST'
+                }
+            });
+        })
+        .factory('ApplicationOAuthReissue', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/oauth2/reissue', {}, {
+                request: {
+                    method: 'POST'
+                }
+            });
+        })
         .factory('Service', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId',
                 {orgId: '@organizationId', svcId: '@id'},
@@ -301,7 +315,7 @@
                 '/organizations/:orgId/services/:svcId/versions/:versionId/metrics/usage');
         })
         .factory('ServiceMarketInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
         })
         .factory('ServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/support/:supportId', {},
@@ -460,7 +474,7 @@
             return $resource(CONFIG.BASE.URL + '/system/whitelist/records');
         })
         .factory('StatusInfo', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/system/status');
+            return $resource(CONFIG.BASE.URL + '/security/status');
         })
 
         /// ========== OAUTH ============================================================================

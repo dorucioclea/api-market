@@ -5,7 +5,7 @@
 
         /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
-            function ($scope, $uibModal, $state, flowFactory, alertService, imageService,
+            function ($scope, $uibModalInstance, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
 
                 $scope.currentOrg = orgScreenModel.organization;
@@ -23,6 +23,7 @@
 
                 function init() {
                     alertService.resetAllAlerts();
+                    $scope.imageService.clear();
                 }
 
                 function readFile($file) {
@@ -48,21 +49,18 @@
                         newAppObject.base64logo = '';
                     }
                     Application.save({orgId: $scope.currentOrg.id}, newAppObject, function (app) {
-                        $scope.modalClose();
-                        $state.forceReload();
+                        $uibModalInstance.close(app);
+                        imageService.clear();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Application <b>' + app.name +  '</b> created!', true);
                     }, function (error) {
-                        if (error.status !== 409) {
-                            $scope.modalClose();
-                        }
                         toastService.createErrorToast(error, 'Could not create application.');
                     });
                 }
 
                 function modalClose() {
                     imageService.clear();
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
             })
 
@@ -163,20 +161,19 @@
 
         /// ==== LockPlan Controller
         .controller('LockPlanCtrl',
-            function ($scope, $uibModal,
-                      planVersion, actionService) {
+            function ($scope, $uibModalInstance,
+                      planVersion) {
 
                 $scope.planVersion = planVersion;
                 $scope.modalClose = modalClose;
                 $scope.doLock = doLock;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');	// this method is associated with $uibModal scope which is this.
                 }
 
                 function doLock() {
-                    actionService.lockPlan($scope.planVersion, true);
-                    $scope.modalClose();
+                    $uibModalInstance.close('ok');
                 }
 
             })
@@ -202,6 +199,7 @@
 
                 function init() {
                     alertService.resetAllAlerts();
+                    imageService.clear();
                     Categories.query({}, function (reply) {
                         $scope.currentCategories = reply;
                     });
@@ -239,6 +237,7 @@
 
                     Service.save({orgId: $stateParams.orgId}, newSvcObject, function (newSvc) {
                         $scope.modalClose();
+                        imageService.clear();
                         $state.go('root.service.overview',
                             {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: newSvcObject.initialVersion});
                         toastService.createToast(TOAST_TYPES.SUCCESS,
@@ -259,7 +258,7 @@
 
         /// ==== DeprecateService Controller
         .controller('DeprecateServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService) {
 
                 $scope.serviceVersion = svcVersion;
@@ -267,19 +266,20 @@
                 $scope.doDeprecate = doDeprecate;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doDeprecate() {
-                    actionService.deprecateService($scope.serviceVersion, true);
-                    $scope.modalClose();
+                    actionService.deprecateService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Deprecated');
+                    });
                 }
 
             })        
         
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService) {
 
                 $scope.selectedSvcVersion = svcVersion;
@@ -287,19 +287,20 @@
                 $scope.doPublish = doPublish;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doPublish() {
-                    actionService.publishService($scope.selectedSvcVersion, true);
-                    $scope.modalClose();
+                    actionService.publishService($scope.selectedSvcVersion, false).then(function () {
+                        $uibModalInstance.close('Published');
+                    });
                 }
 
             })
 
         /// ==== RetireService Controller
         .controller('RetireServiceCtrl',
-            function ($scope, $uibModal,
+            function ($scope, $uibModalInstance,
                       svcVersion, actionService, toastService, TOAST_TYPES) {
 
                 $scope.serviceVersion = svcVersion;
@@ -308,17 +309,18 @@
                 $scope.doRetire = doRetire;
 
                 function modalClose() {
-                    $scope.$close();	// this method is associated with $uibModal scope which is this.
+                    $uibModalInstance.dismiss('canceled');
                 }
 
                 function doDeprecate() {
-                    actionService.deprecateService($scope.serviceVersion, true);
-                    $scope.modalClose();
+                    actionService.deprecateService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Deprecated');
+                    });
                 }
 
                 function doRetire() {
-                    actionService.retireService($scope.serviceVersion, true).then(function () {
-                        $scope.modalClose();
+                    actionService.retireService($scope.serviceVersion, false).then(function () {
+                        $uibModalInstance.close('Retired');
                     }, function (err) {
                         if (err.status === 409) { // BE returns 409 Conflict in case of existing contracts
                             toastService.createToast(TOAST_TYPES.WARNING, '<b>This service has existing contracts!</b>', true);
@@ -463,7 +465,7 @@
                     }
 
                     Organization.save($scope.organization, function (newOrg) {
-                        currentUserModel.updateCurrentUserInfo(currentUserModel);
+                        currentUserModel.refreshCurrentUserInfo(currentUserModel);
                         $scope.modalClose();
                         if (publisherMode) {
                             $state.go('root.organization', {orgId: newOrg.id});

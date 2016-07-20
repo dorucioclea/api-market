@@ -45,7 +45,7 @@
                 }
 
                 function confirmLockPlan() {
-                    $uibModal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
@@ -57,6 +57,12 @@
                         backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
+
+                    modalInstance.result.then(function () {
+                        actionService.lockPlan($scope.planVersion, false).then(function () {
+                            $state.forceReload();
+                        });
+                    })
                 }
 
                 function showInfoModal() {

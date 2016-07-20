@@ -5,6 +5,8 @@
       ng-controller="AppCtrl">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="cache-control" content="no-cache, no-store">
+  <meta http-equiv="pragma" content="no-cache">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ACPaaS - API Market">
   <meta name="keywords"
@@ -24,6 +26,7 @@
   <link rel="stylesheet" href="../bower_components/textAngular/dist/textAngular.css" />
   <link rel="stylesheet" href="../bower_components/ladda/dist/ladda.min.css" />
   <link rel="stylesheet" href="../bower_components/angular-ui-switch/angular-ui-switch.css" />
+  <link rel="stylesheet" href="../bower_components/Trip.js/dist/trip.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -42,7 +45,7 @@
 </head>
 <body flow-prevent-drop>
 
-<div ui-view></div>
+<div class="root-wrapper" ui-view></div>
 
 <!-- build:js scripts/vendors.js -->
 <!-- bower:js -->
@@ -94,6 +97,8 @@
 <script src="../bower_components/angular-ui-switch/angular-ui-switch.js"></script>
 <script src="../bower_components/showdown/src/showdown.js"></script>
 <script src="../bower_components/angular-markdown-directive/markdown.js"></script>
+<script src="../bower_components/lodash/lodash.js"></script>
+<script src="../bower_components/Trip.js/dist/trip.js"></script>
 <!-- endbower -->
 <script src="../bower_components/highlight/src/highlight.js"></script>
 <!-- endbuild -->
@@ -170,11 +175,15 @@
 <script src="scripts/organizations/organizations.directive.js"></script>
 <script src="scripts/organizations/organizations.service.js"></script>
 
+<script src="scripts/plugins/lodash/lodash.module.js"></script>
+
 <script src="scripts/services/services.module.js"></script>
 <script src="scripts/services/services.controller.js"></script>
 <script src="scripts/services/services.service.js"></script>
 
 <script src="scripts/swagger/swagger.module.js"></script>
+
+<script src="scripts/tour/tour.module.js"></script>
 
 <script src="scripts/user/user.module.js"></script>
 <script src="scripts/user/user.service.js"></script>

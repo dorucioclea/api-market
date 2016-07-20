@@ -1,7 +1,7 @@
 {
   "name": "apim-market",
   "version": "0.7.1",
-  "description": "API Marketplace",
+  "description": "API Store",
   "appPath": "app",
   "moduleName": "apimMarketApp",
   "dependencies": {
@@ -33,7 +33,9 @@
     "angular-jwt": "0.0.9",
     "angular-ladda": "0.3.4",
     "angular-ui-switch": "angular-ui-switch2#0.1.0",
-    "angular-markdown-directive": "0.3.1"
+    "angular-markdown-directive": "0.3.1",
+    "lodash": "^4.13.1",
+    "Trip.js": "trip.js#^3.2.0"
   },
   "devDependencies": {
     "less": "2.5.1",

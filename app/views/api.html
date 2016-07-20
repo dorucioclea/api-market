@@ -3,7 +3,7 @@
     <div class="api-content-container">
       <div class="panel" style="border: 0; background: #eee">
         <ol class="breadcrumb breadcrumb-small mb0" style="background: #eee">
-          <li><a ui-sref="root.apis.list">Marketplace</a></li>
+          <li><a ui-sref="root.apis.grid">API Store</a></li>
           <li class="active"><a ui-sref="root.api.documentation({orgId: serviceVersion.service.organization.id, svcId: serviceVersion.service.id})">{{serviceVersion.service.name}} ({{serviceVersion.version}})</a></li>
         </ol>
       </div>
@@ -22,12 +22,18 @@
             <div class="col-sm-9">
               <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href ng-click="followAction()">&nbsp;&nbsp;
                 <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
+                <span class="text-light">{{endpoint.managedEndpoint}}</span>
+                <a clipboard text="endpoint.managedEndpoint" class="clickable fa fa-copy" ng-click="copyPath()" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></a>
+              <p class="mt30 mb30">
+                <span>{{serviceVersion.service.description}}</span>
+              </p>
             </div>
             <div class="col-sm-3 text-bold pull-right text-center">
               <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
               <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-              <button class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="!loggedIn">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
-              <a class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
+              <button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+              <p><a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>
+              <a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
             </div>
             <div class="col-sm-12 text-primary">
               <span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>
@@ -38,27 +44,44 @@
             <div class="col-sm-12">
               <hr>
             </div>
+            <div class="col-sm-12 text-light mt20" ng-if="hasOAuth">
+              <div class="col-sm-4  text-left">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_authorization_code, 'fa-times-circle text-danger': !oAuthConfig.enable_authorization_code}"></span> Authorization Code
+              </div>
+              <div class="col-sm-4 text-center">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_client_credentials, 'fa-times-circle text-danger': !oAuthConfig.enable_client_credentials}"></span> Client Credentials
+              </div>
+              <div class="col-sm-4 text-right">
+                <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_implicit_grant, 'fa-times-circle text-danger': !oAuthConfig.enable_implicit_grant}"></span> Implicit Grant
+              </div>
+            </div>
           </div>
-          <div class="col-sm-12">
-            <span>{{serviceVersion.service.description}}</span>
-          </div>
+
+
         </div><!-- end main info panel -->
 
       </div>
     </div>
   </div>
 
-  <div class="tabs tabs-style-line">
-    <nav>
-      <ul>
-        <li ui-sref-active="tab-current"><a ui-sref=".documentation"><span>Documentation</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".plans"><span>Plans & Policies</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".announcements"><span>Announcements</span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".support"><span>Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></span></a></li>
-        <li ui-sref-active="tab-current"><a ui-sref=".terms"><span>API README</span></a></li>
-      </ul>
-    </nav>
-  </div><!-- /tabs -->
+  <div id="navtabs" class="api-row">
+    <div class="api-content-container navtab-container">
+      <input id="docs" type="radio" name="tabs" ui-sref-active="active" ui-sref=".documentation">
+      <label for="docs">Documentation</label>
+
+      <input id="plans" type="radio" name="tabs" ui-sref-active="active" ui-sref=".plans">
+      <label for="plans">Plans & Policies</label>
+
+      <input ng-if="showAnnouncements" id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements">
+      <label ng-if="showAnnouncements" for="announcements">Announcements</label>
+
+      <input ng-if="showSupport" id="support" type="radio" name="tabs" ui-sref-active="active" ui-sref=".support">
+      <label ng-if="showSupport" for="support">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status:'OPEN'}).length}}</span></label>
+
+      <input id="readme" type="radio" name="tabs" ui-sref-active="active" ui-sref=".terms">
+      <label for="readme">API README</label>
+    </div>
+  </div>
 
 
   <div class="api-row">
@@ -75,7 +98,7 @@
       <!--<div>-->
       <div class="panel">
         <div class="panel-body">
-          <div class="mt30" ui-view></div>
+          <div ui-view></div>
         </div>
       </div>
       <!--</div>-->

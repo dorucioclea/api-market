@@ -5,25 +5,48 @@
 
     /// ==== MarketDash Controller
         .controller('MarketDashCtrl', marketDashCtrl)
+        .controller('MarketAppsCtrl', marketAppsCtrl)
         .controller('MarketMembersCtrl', marketMembersCtrl)
         .controller('ApiSearchCtrl', apiSearchCtrl)
         .controller('DashboardCtrl', dashboardCtrl);
     
 
-    function marketDashCtrl ($scope, $uibModal, $state, $stateParams, orgData, orgScreenModel,
-                             appData, appVersions, appVersionDetails, appContracts, headerModel, pendingContracts,
-                             selectedApp, applicationManager, docTester, toastService, service,
-                             ApplicationContract) {
-        headerModel.setIsButtonVisible(true, false);
+    function marketDashCtrl ($scope, $state, $stateParams, orgData, orgScreenModel, orgService, toastService) {
         orgScreenModel.updateOrganization(orgData);
-        selectedApp.reset();
-        docTester.reset();
-        $scope.$state = $state;
         $scope.orgScreenModel = orgScreenModel;
+        $scope.orgId = $stateParams.orgId;
+        $scope.deleteOrg = deleteOrg;
+        $scope.updateOrgDescription = updateOrgDescription;
+        
+        function deleteOrg() {
+            orgService.delete($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>')
+                    $state.go('root.myOrganizations');
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not delete organization');
+            })
+        }
+
+        function updateOrgDescription(newValue) {
+            console.log(newValue);
+            orgService.updateDescription($stateParams.orgId, newValue).then(function () {
+                toastService.info('Description updated.');
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update the organization\'s description.');
+            });
+        }
+
+    }
+
+
+    function marketAppsCtrl ($scope, $uibModal, $state, $stateParams,
+                             appData, pendingContracts,
+                             selectedApp, applicationManager, docTester, toastService, service,
+                             ApplicationContract, $localStorage, $timeout, tourGuide, _) {
+        $scope.$state = $state;
         $scope.applications = appData;
-        $scope.applicationVersions = appVersions;
-        $scope.applicationVersionDetails = appVersionDetails;
-        $scope.applicationContracts = appContracts;
         $scope.orgId = $stateParams.orgId;
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -46,23 +69,54 @@
         $scope.modalNewApplication = modalNewApplication;
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
+        $scope.selectVersion = selectVersion;
 
 
         init();
 
 
         function init() {
-            pendingContracts.forEach(function (contract) {
-                $scope.pendingContracts = [];
-                if ($scope.applicationVersions[contract.appId] && $scope.applicationVersions[contract.appId].version === contract.appVersion) {
-                    if (!$scope.pendingContracts[contract.appId]) $scope.pendingContracts[contract.appId] = [];
-                    contract.planDetails = angular.fromJson(contract.body);
-                    service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
-                        contract.svcDetails = svcVersion;
-                    });
-                    $scope.pendingContracts[contract.appId].push(contract);
-                }
+            angular.forEach($scope.applications, function (app) {
+                app.selectedVersionIndex = 0;
             });
+
+            pendingContracts.forEach(function (contract) {
+                contract.planDetails = angular.fromJson(contract.body);
+                service.getVersion(contract.serviceOrg, contract.serviceId, contract.serviceVersion).then(function (svcVersion) {
+                    contract.svcDetails = svcVersion;
+                });
+                _.find(_.find($scope.applications, function (o) {
+                    return o.id === contract.appId
+                }).versions, function (v) {
+                    return v.version === contract.appVersion;
+                }).pendingContracts.push(contract);
+            });
+
+            if (selectedApp.appVersion) {
+                var currentApp = _.find($scope.applications, function (a) {
+                    return a.id === selectedApp.appVersion.id});
+                if (currentApp) {
+                    currentApp.selectedVersionIndex = _.indexOf(currentApp.versions, _.find(currentApp.versions, function (v) {
+                        return v.version === selectedApp.appVersion.version;
+                    }));
+                    if (currentApp.versions[currentApp.selectedVersionIndex].contracts.length > 0) {
+                        currentApp.contractsExpanded = true;
+                    }
+                }
+            }
+
+            selectedApp.reset();
+            docTester.reset();
+
+            if ($stateParams.mode && $stateParams.mode === 'create') {
+                modalNewApplication();
+            }
+
+            if ($scope.applications.length > 0 && !$localStorage.mktDashTourSeen) {
+                $timeout(function () {
+                    tourGuide.startMktDashTour();
+                }, 500);
+            }
         }
 
         function toggle(app) {
@@ -79,20 +133,20 @@
             angular.forEach($scope.applications, function (application) {
                 // Check if this application has at least one contract
                 // Without this check, we would show an empty row
-                if ($scope.applicationContracts.hasOwnProperty(application.id)) {
+                if (application.versions[application.selectedVersionIndex].contracts.length > 0 ) {
                     application.contractsExpanded = true;
                 }
             });
         }
 
         function canCreateContract(appVersion) {
-            return !!(appVersion.status === 'Created' || appVersion.status === 'Ready');
+            return !!(appVersion.status === 'Created' || appVersion.status === 'Ready' || appVersion.status === 'Registered');
         }
 
         function canConfigureOAuth(appVersion) {
             return $scope.isNotRetired(appVersion) &&
-                appVersionDetails[appVersion.id].oAuthClientId !== null &&
-                appVersionDetails[appVersion.id].oAuthClientId.length > 0;
+                appVersion.details.oAuthClientId !== null && appVersion.contracts.length > 0 &&
+                appVersion.details.oAuthClientId.length > 0;
         }
 
         function canPublish(appVersion) {
@@ -110,7 +164,7 @@
 
         function newContract(appVersion) {
             selectedApp.updateApplication(appVersion);
-            $state.go('root.apis.list');
+            $state.go('root.apis.grid');
         }
 
         function toApiDoc(contract) {
@@ -122,11 +176,9 @@
         }
 
         function confirmDeleteApp(appVersion) {
-            applicationManager.delete(appVersion.organizationId, appVersion.id, appVersion.name)
+            applicationManager.deleteVersion(appVersion.organizationId, appVersion.id, appVersion.name, appVersion.version)
                 .then(function (result) {
-                    if (result === 'success') {
-                        $state.forceReload();
-                    }
+                    $state.forceReload();
                 });
         }
 
@@ -147,17 +199,25 @@
             applicationManager.oAuthConfig(appVersion.organizationId, appVersion.id, appVersion.version);
         }
 
-        function breakContract(contract) {
+        function breakContract(application, contract) {
             ApplicationContract.delete(
                 {orgId: contract.appOrganizationId, appId: contract.appId, versionId: contract.appVersion,
                     contractId: contract.contractId},
-                function (reply) {
-                    $state.forceReload();
+                function () {
+                    var contracts = application.versions[application.selectedVersionIndex].contracts;
+                    contracts.splice(contracts.indexOf(contract), 1);
+                    if (contracts.length === 0) {
+                        application.contractsExpanded = false;
+                        if (canPublish(application.versions[application.selectedVersionIndex])) {
+                            application.versions[application.selectedVersionIndex].status = 'Created';
+                        }
+                    }
+                    toastService.success('<b>Contract was broken.</b>');
                 });
         }
 
         function modalNewApplication() {
-            $uibModal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'views/modals/applicationCreate.html',
                 size: 'lg',
                 controller: 'NewApplicationCtrl as ctrl',
@@ -166,6 +226,10 @@
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
 
+            modalInstance.result.then(function () {
+                if ($stateParams.mode && $stateParams.mode === 'create') $state.go('root.market-dash', { orgId: $stateParams.orgId, mode: undefined });
+                else $state.forceReload();
+            })
         }
 
         function copyKey(apikey) {
@@ -176,6 +240,14 @@
         function copyProvisionKey(provKey) {
             var msg = '<b>Provision key copied to clipboard!</b><br>' + provKey;
             toastService.info(msg);
+        }
+
+        function selectVersion(application, version) {
+            application.selectedVersionIndex = _.indexOf(application.versions, version);
+            // Make sure the contracts tab is collapsed when switching to a version without contracts
+            if (application.versions[application.selectedVersionIndex].contracts.length === 0) {
+                application.contractsExpanded = false;
+            }
         }
 
     }
@@ -219,18 +291,27 @@
         $scope.currentCategories = [];
         $scope.doSearch = doSearch;
         $scope.availableCategories = categories;
-        $scope.svcStats = [];
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.getInitialDisplayMode = getInitialDisplayMode;
         $scope.toggleCategories = toggleCategories;
         $scope.isCategorySelected = isCategorySelected;
         $scope.clearSelectedCategories = clearSelectedCategories;
+        $scope.query = '';
 
-        init();
+        populate(svcData.beans);
 
-        function init() {
-            $scope.availableAPIs = svcData.beans;
+        function populate(apis) {
+            $scope.availableAPIs = apis;
+            checkMetricsPresent();
+        }
+
+        function checkMetricsPresent() {
+            $scope.availableAPIs.forEach(function (api) {
+                if (!api.marketInfo || !api.service.followers || !api.marketInfo.developers || !api.marketInfo.uptime) {
+                    api.noMetrics = true;
+                }
+            })
         }
 
         function doSearch(query) {
@@ -240,7 +321,7 @@
             //     })
             // } else {
                 apiService.searchMarketplaceApis(query).then(function (results) {
-                    $scope.availableAPIs = results.beans;
+                    populate(results.beans);
                 });
             // }
         }
@@ -268,12 +349,12 @@
         function refreshServiceList() {
             if ($scope.currentCategories.length === 0) {
                 apiService.getMarketplaceApis().then(function (data) {
-                    $scope.availableAPIs = data.beans;
+                    populate(data.beans);
                 });
             } else {
                 // Get APIs for selected categories
                 apiService.getMarketplaceApisInCategories($scope.currentCategories).then(function (data) {
-                    $scope.availableAPIs = data;
+                    populate(data);
                 });
             }
         }

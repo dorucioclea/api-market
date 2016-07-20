@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="padding-bottom: 200px;">
   <div class="panel panel-default">
     <div class="panel-body">
       <!-- Plans Tab Content -->
@@ -46,17 +46,25 @@
       <div class="col-sm-12" ng-repeat="plan in plans | filter:{name:searchText}">
 
         <div class="col-sm-3">
-          <span><a href ui-sref="root.plan({orgId: planVersions[plan.id].organizationId, planId: plan.id, versionId: planVersions[plan.id].version})">{{plan.name }}</a></span>
+          <span><a href ui-sref="root.plan({orgId: plan.versions[plan.selectedVersionIndex].organizationId, planId: plan.id, versionId: plan.versions[plan.selectedVersionIndex].version})">{{plan.name }}</a></span>
         </div>
         <div class="col-sm-2 text-center">
-          <span>{{planVersions[plan.id].version}}</span>
+          <span ng-if="plan.versions.length === 1">{{plan.versions[plan.selectedVersionIndex].version}}</span>
+          <div class="btn-group dropdown" uib-dropdown ng-if="plan.versions.length > 1">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+              {{plan.versions[plan.selectedVersionIndex].version}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li ng-repeat="version in plan.versions | orderBy:'createdOn'" ng-click="selectVersion(plan, version)"><a>{{version.version}}</a></li>
+            </ul>
+          </div>
         </div>
         <div class="col-sm-2 text-center">
-          <status-label status="{{planVersions[plan.id].status}}"></status-label>
+          <status-label status="{{plan.versions[plan.selectedVersionIndex].status}}"></status-label>
         </div>
         <div class="col-sm-2 col-sm-offset-3">
           <div class="btn-group-xs">
-            <button class="btn btn-success action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Lock {{plan.name}} - {{planVersions[plan.id].version}}" ng-if="canLock(planVersions[plan.id]) && User.isAuthorizedFor('planAdmin')" ng-click="confirmLockPlan(planVersions[plan.id])"></button>
+            <button class="btn btn-success action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Lock {{plan.name}} - {{plan.versions[plan.selectedVersionIndex].version}}" ng-if="canLock(plan.versions[plan.selectedVersionIndex]) && User.isAuthorizedFor('planAdmin')" ng-click="confirmLockPlan(plan.versions[plan.selectedVersionIndex])"></button>
           </div>
         </div>
         <div class="col-sm-12">

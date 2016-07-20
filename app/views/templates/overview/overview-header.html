@@ -15,7 +15,7 @@
         <div class="col-sm-4">
           <div class="pull-right">
             <div class="btn-group dropdown" uib-dropdown>
-              <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="versions.length === 1">
                 Version: {{entityVersion.version}}<span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
@@ -32,10 +32,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-5">
           <overview-status created-by="{{entityVersion.createdBy}}" created-on="{{entityVersion.createdOn}}" status="{{entityVersion.status}}"></overview-status>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-7">
           <div class="pull-right" ng-transclude>
           </div>
         </div>

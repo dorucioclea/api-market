@@ -1,169 +1,67 @@
-<div class="page page-ui-notifications">
-    <ol class="breadcrumb breadcrumb-small">
-        <li>Marketplace</li>
-        <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
-        <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
-    </ol>
-    <div class="toast toast-bottomRight">
-        <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-            <div ng-bind-html="toast.msg"></div>
-        </uib-alert>
-    </div>
-    <div class="row">
-
-        <div class="col-sm-10 col-sm-offset-1">
-            <div class="panel panel-primary">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-6 text-primary">
-                            <h4><i class="fa fa-cogs"></i>
-                                {{orgScreenModel.organization.name}} {{$state.is('root.market-dash.members') ? 'Members' : 'Applications'}} Overview
-                            </h4>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="pull-right">
-                                <button class="btn btn-line-default" ui-sref="root.market-dash.members" ng-class="{'hidden': $state.is('root.market-dash.members')}">Members</button>
-                                <button class="btn btn-line-default" ui-sref="root.market-dash" ng-class="{'hidden': $state.is('root.market-dash')}">Applications</button>
-                                <button class="btn btn-line-primary" ng-click="modalNewApplication()" ng-if="User.isAuthorizedFor('appEdit')">New Application</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="page page-api">
+    <div class="api-row breadcrumbs" style="background: #eee">
+        <div class="api-content-container">
+            <div class="panel" style="border: 0; background: #eee">
+                <ol class="breadcrumb breadcrumb-small mb0" style="background: #eee">
+                    <li><a ui-sref="root.apis.grid">API Store</a></li>
+                    <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
+                    <li class="active"><a ui-sref="root.market-dash({orgId: orgScreenModel.organization.id})">{{orgScreenModel.organization.name}}</a></li>
+                </ol>
             </div>
+        </div>
+    </div>
 
-            <div class="col-sm-12 mt10">
-                <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-body" ui-view>
+    <div class="api-row mt5">
+        <div class="api-content-container">
+            <div class="panel">
+                <div class="panel-body">
+                    <!-- Main Org info panel -->
+                    <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
+                    <div id="delete-org" class="right btn btn-line-danger" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="deleteOrg()">Delete Organization</div>
+                    <div class="col-sm-12" style="padding-left: 0;" id="desc" click-to-edit value="orgScreenModel.organization.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
+                    <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{orgScreenModel.organization.description}}</div>
+                        <!--<div class="col-sm-3 text-bold pull-right text-center">-->
+                            <!--<h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>-->
+                            <!--<status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>-->
+                            <!--<button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>-->
+                            <!--<p><a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>-->
+                            <!--<a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-12 text-primary">-->
+                            <!--<span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>-->
+                            <!--<a ng-attr-href="{{serviceVersion.onlinedoc}}" ng-class="{ 'ml15': showDeveloper }" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>-->
+                            <!--<span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 }" ng-hide="serviceVersion.service.categories.length == 0"><i class="fa fa-tag"></i>&nbsp;{{serviceVersion.service.categories.join(', ')}}</span>-->
+                            <!--<span ng-class="{ 'ml15': showDeveloper || serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0 || serviceVersion.service.categories.length != 0 }" class="text-light fa fa-clock-o"></span>&nbsp;Created:&nbsp;{{serviceVersion.createdOn | date }}-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-12">-->
+                            <!--<hr>-->
+                        <!--</div>-->
 
-                            <!-- Applications Tab Content -->
-                            <div class="col-sm-12">
-                                <form role="form" class="form-horizontal">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" ng-model="searchText" placeholder="Filter by application name...">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-default btn-sm fa fa-search"></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr>
-                            </div>
-                            <!-- The list of applications in the org -->
+                </div><!-- end main info panel -->
 
-                            <div class="col-sm-12" ng-if="!User.isAuthorizedFor('appEdit')" ng-hide="applications.length > 0">
-                                <div class="row">
-                                    <div class="col-sm-10 col-sm-offset-1 well">
-                                        No applications found. Probably because none have been created yet!
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12" ng-if="User.isAuthorizedFor('appEdit')" ng-hide="applications.length > 0">
-                                <div class="row">
-                                    <div class="col-sm-8 col-sm-offset-1 well">
-                                        It looks like no applications have been created yet! Now might be a good time to click the New App button up above...
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="no-entities-arrow"></div>
-                                    </div>
-                                </div>
-                            </div>
+            </div>
+        </div>
+    </div>
 
-                            <div class="col-sm-12" ng-show="applications.length > 0 && (applications | filter:{name:searchText}).length == 0">
-                                <div class="row">
-                                    <div class="col-sm-10 col-sm-offset-1 well">
-                                        No applications found matching your filter criteria - please try searching for something different.
-                                    </div>
-                                </div>
-                            </div>
+    <div id="navtabs" class="api-row">
+        <div class="api-content-container navtab-container">
+            <input id="apps" type="radio" name="tabs" ui-sref-active="active" ui-sref="root.market-dash.applications">
+            <label for="apps">Applications</label>
+
+            <input id="members" type="radio" name="tabs" ui-sref-active="active" ui-sref="root.market-dash.members">
+            <label for="members">Members</label>
+        </div>
+    </div>
 
 
-                            <div class="col-sm-12 mt10 table-responsive" ng-hide="applications.length === 0 || (applications | filter:{name:searchText}).length === 0" style="overflow: visible;">
-                                <p><a class="clickable" ng-click="expandAll()">Expand all</a> | <a class="clickable" ng-click="collapseAll()">Collapse all</a></p>
-                                <table class="table table-bordered table-condensed">
-                                    <thead>
-                                    <tr>
-                                        <th nowrap="nowrap" width="5%"></th>
-                                        <th nowrap="nowrap" width="45%">Application</th>
-                                        <th nowrap="nowrap" width="10%">Version</th>
-                                        <th nowrap="nowrap" width="10%">Status</th>
-                                        <th nowrap="nowrap" width="10%"># Contracts</th>
-                                        <th nowrap="nowrap" width="20%">Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat-start="application in applications | filter:{name:searchText}">
-                                        <td><a class="clickable fa fa-fw" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Contract details" ng-class="{'fa-chevron-down': application.contractsExpanded, 'fa-chevron-right': !application.contractsExpanded}" ng-show="applicationContracts.hasOwnProperty(application.id)||pendingContracts[application.id]" ng-click="toggle(application)"></a></td>
-                                        <td>
-                                            <base64-logo logo-class="mini-logo" logo="{{application.base64logo}}"></base64-logo>&nbsp;&nbsp;
-                                            <a ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: applicationVersions[application.id].version})">{{application.name}}</a>
-                                        </td>
-                                        <td>{{applicationVersions[application.id].version}}</td>
-                                        <td><status-label status="{{applicationVersions[application.id].status}}"></status-label></td>
-                                        <td>{{applicationContracts.hasOwnProperty(application.id) ? applicationContracts[application.id].length : 0}}</td>
-                                        <td>
-                                            <div class="btn-group-xs">
-                                                <button class="btn btn-primary action-icon fa fa-plus" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="New contract" ng-if="canCreateContract(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="newContract(applicationVersions[application.id])"></button>
-                                                <button class="btn btn-success action-icon fa fa-check" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Register application" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="confirmPublishApp(applicationVersions[application.id])"></button>
-                                                <button class="btn btn-warning action-icon fa fa-trash" tooltip-popup-delay="300"  tooltip-placement="top" uib-tooltip="Retire application" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appAdmin')" ng-click="confirmRetireApp(applicationVersions[application.id])"></button>
-                                                <button class="btn btn-info action-icon fa fa-pie-chart" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Application metrics" ng-if="canRetire(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="toMetrics(applicationVersions[application.id])"></button>
-                                                <button class="btn btn-info action-icon fa fa-lock" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="OAuth 2.0 configuration" ng-if="canConfigureOAuth(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="showOAuthConfig(applicationVersions[application.id])"></button>
-                                                <button class="btn btn-danger action-icon fa fa-times" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Delete application" ng-if="User.isAuthorizedFor('appAdmin')" ng-click="confirmDeleteApp(applicationVersions[application.id])"></button>
-                                                <button class="btn action-icon btn-github fa fa-exclamation-triangle" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Pending contract" ng-if="pendingContracts[application.id]" ng-click="toggle(application)"></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr ng-show="application.contractsExpanded" class="row-selected fadein" ng-repeat-end>
-                                        <td></td>
-                                        <td colspan="5">
-                                            <div ng-if="applicationContracts.hasOwnProperty(application.id)">
-                                                <h5>Active Contracts</h5>
-                                                <!--<apim-active-contracts contracts="applicationContracts[application.id]"></apim-active-contracts>-->
-                                                <table class="table table-condensed row-selected">
-                                                    <thead>
-                                                    <tr>
-                                                        <th nowrap="nowrap" width="5%">#</th>
-                                                        <th nowrap="nowrap" width="40%">To Service</th>
-                                                        <th nowrap="nowrap" width="40%">Using Plan</th>
-                                                        <th nowrap="nowrap" width="15%">Actions</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr ng-repeat="contract in applicationContracts[application.id]">
-                                                        <td>{{$index+1}}</td>
-                                                        <td><a href ng-click="toApiDoc(contract)">{{contract.serviceName}} - {{contract.serviceVersion}}</a></td>
-                                                        <td>{{contract.planName}} - {{contract.planVersion}}</td>
-                                                        <td class="text-right">
-                                                            <!-- We hide the API key button when OAuth2 is enabled -->
-                                                            <button clipboard text="contract.apikey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-key" ng-click="copyKey(contract.apikey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy API key to clipboard" ng-show="!contract.provisionKey || contract.provisionKey.length == 0"></button>
-                                                            <button clipboard text="contract.provisionKey" on-copied="toastService.timedClose()" class="btn btn-line-default btn-xs action-icon fa fa-lock" ng-click="copyProvisionKey(contract.provisionKey)" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy OAuth Provision key" ng-show="canConfigureOAuth(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')"></button>
-                                                            <button class="btn btn-warning btn-xs action-icon fa fa-ban" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Break contract" ng-if="canPublish(applicationVersions[application.id]) && User.isAuthorizedFor('appEdit')" ng-click="breakContract(contract)"></button>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div ng-if="pendingContracts[application.id]">
-                                                <h5 class="mt15">Pending Contracts</h5>
-                                                <apim-pending-contracts contracts="pendingContracts[application.id]"
-                                                                        user-can-break="{{User.isAuthorizedFor('appEdit')}}">
-                                                </apim-pending-contracts>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
-                                <div ng-bind-html="alert.msg"></div>
-                            </uib-alert>
-                        </div>
-                    </div>
+    <div class="api-row">
+        <div class="api-content-container">
+            <div class="panel">
+                <div class="panel-body">
+                    <div ui-view></div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

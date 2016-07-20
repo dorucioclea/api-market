@@ -215,7 +215,9 @@
 
 
 .page-dashboard {
+  background: #efefef;
   padding: 0;
+  
   // ==== dashboard header
   .dash-head {
     position: fixed;
@@ -483,7 +485,6 @@
     cursor: pointer;
     cursor: hand;
     top: -18px;
-    right: 132px;
     padding: 10px 10px;
     color: @tink-gray-lighter;
     background: #fff;
@@ -531,6 +532,16 @@
       border-bottom-right-radius: 5px;
       background-color: transparent;
       color: @text-muted;
+    }
+
+    &#api-no-metrics {
+      margin: 0 22px;
+      border-top-color: #e4e4e4;
+      padding: 15px 0 20px 0;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      background-color: transparent;
+      color: #ccc;
     }
   }
 

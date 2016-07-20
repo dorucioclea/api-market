@@ -5,12 +5,35 @@
         .service('orgService', orgService);
     
     
-    function orgService(Organization, SearchOrgs) {
-        
+    function orgService($q, $uibModal, Organization, SearchOrgs) {
+
+        this.delete = deleteOrg;
         this.name = nameIt;
         this.orgInfo = orgInfo;
         this.search = search;
+        this.updateDescription = updateDescription; 
 
+
+        function deleteOrg(orgId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/organizationDelete.html',
+                size: 'lg',
+                controller: 'OrgDeleteCtrl as ctrl',
+                resolve: {
+                    org: function () {
+                        return Organization.get({ id: orgId }).$promise;
+                    }
+                },
+                backdrop : 'static'
+            });
+            modalInstance.result.then(function() {
+                deferred.resolve(Organization.delete({ id: orgId }).$promise);
+            }, function () {
+                deferred.resolve('canceled');
+            });
+            return deferred.promise;
+        }
 
         function nameIt(org) {
             return org.name;
@@ -30,6 +53,10 @@
             // TODO enable paging
             // search.paging = {page: 1, pageSize: 100};
             return SearchOrgs.save(search).$promise;
+        }
+        
+        function updateDescription(orgId, newDesc) {
+            return Organization.update({ id: orgId }, { description: newDesc }).$promise;
         }
     }
     

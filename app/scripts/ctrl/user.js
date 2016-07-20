@@ -65,7 +65,7 @@
                 }
                 else{
                     currentUser.update(updateObject).then(function () {
-                        $scope.User.updateCurrentUserInfo($scope.User);
+                        $scope.User.refreshCurrentUserInfo($scope.User);
                         toastService.createToast('info', 'Profile updated!', true);
                     }, function (error) {
                         console.log(error);

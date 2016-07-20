@@ -5,7 +5,8 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $sessionStorage, $state, $location, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, $window, resourceUtil, currentUser, LogOutRedirect, CONFIG) {
+        this.checkIsFirstVisit = checkIsFirstVisit;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
         this.checkJWTInSession = checkJWTInSession;
@@ -13,6 +14,10 @@
         this.extractJWTFromUrl = extractJWTFromUrl;
         this.logout = logout;
         this.redirectToLogin = redirectToLogin;
+        
+        function checkIsFirstVisit() {
+            return !!$localStorage.hasVisited;
+        }
 
         function checkLoggedIn() {
             return checkJWTInSession();
@@ -54,11 +59,9 @@
 
             var jwt = $location.search().jwt;
             if (jwt && jwt.length > 0) {
-                console.log('jwt found');
                 $sessionStorage.jwt = jwt;
                 delete $sessionStorage.loginInProgress;
                 $location.search('jwt', null);
-                console.log('logged in');
                 deferred.resolve("Logged In");
             } else {
                 // return false;
@@ -71,26 +74,26 @@
                 var logOutObject = {
                     idpUrl: CONFIG.SECURITY.IDP_URL,
                     spName: CONFIG.SECURITY.SP_NAME,
-                    username: info.username
+                    username: info.username,
+                    relayState: $window.location.origin
                 };
                 LogOutRedirect.save({}, logOutObject, function (reply) {
-                    console.log(reply);
+                    var cleanReply = resourceUtil.cleanResponse(reply);
                     var string = '';
-                    angular.forEach(reply, function (value) {
-                        if (typeof value === 'string') {
-                            string += value;
-                        }
+                    angular.forEach(cleanReply, function (letter) {
+                        string += letter;
                     });
-                    console.log(string);
-                    if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                        $state.go('logout');
-                    } else {
-                        window.location.href = string;
-                    }
-                    delete $sessionStorage.jwt;
-                    delete $sessionStorage.redirect;
-                    delete $sessionStorage.loginInProgress;
+                    logoutRedirect();
+                    $window.location.href = string;
+                }, function () {
+                    logoutRedirect();
                 });
+
+                function logoutRedirect() {
+                    // $state.go('logout');
+                    delete $sessionStorage.jwt;
+                    delete $sessionStorage.loginInProgress;
+                }
             })
 
         }

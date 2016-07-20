@@ -11,7 +11,8 @@
         .controller('OrgVisibilityModalCtrl', orgVisibilityModalCtrl)
         .controller('PendingCtrl', pendingMembersCtrl)
         .controller('PlansCtrl', plansCtrl)
-        .controller('ServicesCtrl', servicesCtrl);
+        .controller('ServicesCtrl', servicesCtrl)
+        .controller('OrgDeleteCtrl', orgDeleteCtrl);
 
 
     function applicationsCtrl($scope, $state, appData, orgScreenModel, ApplicationVersion) {
@@ -43,7 +44,7 @@
         }
     }
 
-    function myOrganizationsCtrl($scope, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $stateParams, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -62,6 +63,10 @@
             $scope.orgs.forEach(function (org) {
                 org.isMember = true;
             });
+
+            if ($stateParams.mode && $stateParams.mode === 'create') {
+                modalNewOrganization();
+            }
         }
 
         $scope.$watch('searchText', function (newVal) {
@@ -89,7 +94,7 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService) {
+    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService, _) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
@@ -131,25 +136,17 @@
         }
 
         function processResults(orgs) {
-            var processedOrgs = [];
-            orgs.forEach(function (org) {
-                // check if member
-                for (var i = 0; i < $scope.memberOrgs.length; i++) {
-                    if ($scope.memberOrgs[i].id === org.id ) {
-                        org.isMember = true;
+            var processedOrgs = _.differenceWith(orgs, $scope.memberOrgs, function (a, b) {
+                return a.id === b.id;
+            });
+            processedOrgs.forEach(function (org) {
+                // check for pending membership
+                for (var j = 0; j < $scope.pendingOrgs.length; j++){
+                    if ($scope.pendingOrgs[j].id === org.id) {
+                        org.requestPending = true;
                         break;
                     }
                 }
-                // if not member, check for pending membership
-                if (!org.isMember) {
-                    for (var j = 0; j < $scope.pendingOrgs.length; j++){
-                        if ($scope.pendingOrgs[j].id === org.id) {
-                            org.requestPending = true;
-                            break;
-                        }
-                    }
-                }
-                processedOrgs.push(org);
             });
             return processedOrgs;
         }
@@ -239,16 +236,24 @@
         orgScreenModel.updateTab('Pending');
     }
 
-    function plansCtrl($scope, $uibModal, planData, planVersions, orgScreenModel, PlanVersion) {
+    function plansCtrl($scope, $uibModal, planData, orgScreenModel, PlanVersion, actionService, _) {
 
         $scope.plans = planData;
-        $scope.planVersions = planVersions;
         $scope.modalAnim = 'default';
         $scope.canLock = canLock;
         $scope.confirmLockPlan = confirmLockPlan;
         $scope.modalNewPlan = modalNewPlan;
+        $scope.selectVersion = selectVersion;
 
-        orgScreenModel.updateTab('Plans');
+        
+        init();
+        
+        function init() {
+            orgScreenModel.updateTab('Plans');
+            angular.forEach($scope.plans, function (plan) {
+                plan.selectedVersionIndex = 0;
+            })
+        }
 
         function modalNewPlan() {
             $uibModal.open({
@@ -269,20 +274,30 @@
         function confirmLockPlan(planVersion) {
             PlanVersion.get(
                 {orgId: planVersion.organizationId, planId: planVersion.id, versionId: planVersion.version},
-                function (reply) {
-                    $uibModal.open({
+                function (retrievedPlanVersion) {
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/planLock.html',
                         size: 'lg',
                         controller: 'LockPlanCtrl as ctrl',
                         resolve: {
                             planVersion: function () {
-                                return reply;
+                                return retrievedPlanVersion;
                             }
                         },
                         backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
+
+                    modalInstance.result.then(function () {
+                        actionService.lockPlan(retrievedPlanVersion, false).then(function () {
+                            planVersion.status = 'Locked';
+                        });
+                    })
                 });
+        }
+
+        function selectVersion(plan, version) {
+            plan.selectedVersionIndex = _.indexOf(plan.versions, version);
         }
 
     }
@@ -319,31 +334,56 @@
         }
     }
 
-    function servicesCtrl($scope, $state, $uibModal, svcData,
+    function orgDeleteCtrl($scope, $uibModalInstance, org) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.org = org;
+
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+
+        function ok() {
+            $uibModalInstance.close();
+        }
+    }
+
+    function servicesCtrl($scope, $state, $uibModal, svcData, _,
                           orgScreenModel, ServiceVersion) {
 
         $scope.services = svcData;
+        $scope.canDeprecate = canDeprecate;
         $scope.canPublish = canPublish;
         $scope.canRetire = canRetire;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
         $scope.toMetrics = toMetrics;
         $scope.modalNewService = modalNewService;
+        $scope.selectVersion = selectVersion;
 
-        orgScreenModel.updateTab('Services');
 
         init();
 
         function init() {
+            orgScreenModel.updateTab('Services');
+
+            angular.forEach($scope.services, function (service) {
+                service.selectedVersionIndex = 0;
+            });
+
             // Find services with pending contracts
             angular.forEach($scope.pendingContracts, function (pendingContract) {
                 for (var i = 0; i < $scope.services.length; i++) {
                     var svc = $scope.services[i];
-                    if (pendingContract.serviceOrg === svc.organizationId &&
-                        pendingContract.serviceId === svc.serviceVersionDetails.id &&
-                        pendingContract.serviceVersion === svc.serviceVersionDetails.version) {
+                    if (_.find(svc.versions, function (v) {
+                            return pendingContract.serviceOrg === v.organizationId &&
+                                    pendingContract.serviceId === v.id &&
+                                    pendingContract.serviceVersion === v.version;
+                    })) {
                         svc.hasPendingContracts = true;
+                        break;
                     }
                 }
             })
@@ -365,8 +405,12 @@
             return svcVersion.status === 'Ready';
         }
 
+        function canDeprecate(svcVersion) {
+            return svcVersion.status === 'Published'
+        }
+
         function canRetire(svcVersion) {
-            return svcVersion.status === 'Published';
+            return svcVersion.status === 'Published' || svcVersion.status === 'Deprecated';
         }
 
         function confirmDeleteSvc(svcVersion) {
@@ -396,11 +440,36 @@
             });
         }
 
+        function confirmDeprecateSvc(svcVersion) {
+            ServiceVersion.get(
+                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
+                function (reply) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'views/modals/serviceDeprecate.html',
+                        size: 'lg',
+                        controller: 'DeprecateServiceCtrl as ctrl',
+                        resolve: {
+                            svcVersion: function () {
+                                return reply;
+                            }
+                        },
+                        backdrop : 'static',
+                        windowClass: $scope.modalAnim	// Animation Class put here.
+                    });
+
+                    modalInstance.result.then(function (status) {
+                        svcVersion.status = status;
+                    })
+                });
+
+
+        }
+
         function confirmPublishSvc(svcVersion) {
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $uibModal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/servicePublish.html',
                         size: 'lg',
                         controller: 'PublishServiceCtrl as ctrl',
@@ -412,6 +481,10 @@
                         backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
+
+                    modalInstance.result.then(function (status) {
+                        svcVersion.status = status;
+                    })
                 });
         }
 
@@ -419,7 +492,7 @@
             ServiceVersion.get(
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
                 function (reply) {
-                    $uibModal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: 'views/modals/serviceRetire.html',
                         size: 'lg',
                         controller: 'RetireServiceCtrl as ctrl',
@@ -431,12 +504,20 @@
                         backdrop : 'static',
                         windowClass: $scope.modalAnim	// Animation Class put here.
                     });
+
+                    modalInstance.result.then(function (status) {
+                        svcVersion.status = status;
+                    })
                 });
         }
 
         function toMetrics(svcVersion) {
             $state.go('root.service.metrics',
                 {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version});
+        }
+
+        function selectVersion(service, version) {
+            service.selectedVersionIndex = _.indexOf(service.versions, version);
         }
 
     }

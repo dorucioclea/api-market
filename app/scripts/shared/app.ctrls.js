@@ -49,7 +49,7 @@
                 };
 
                 var setHeader = function () {
-                    $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Marketplace');
+                    $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Store');
                 };
                 setHeader();
 
@@ -138,14 +138,14 @@
         })
 
         .controller('HeadCtrl',
-            function($scope, $uibModal, $state, $sessionStorage, LogOutRedirect, CONFIG, docTester,
-                     currentUserInfo, notifications, pendingNotifications,
+            function($scope, $uibModal, $state, $localStorage, $sessionStorage, CONFIG, docTester,
+                     currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
                      toastService, jwtHelper, loginHelper, EVENTS) {
-                $scope.loggedIn = loginHelper.checkLoggedIn();
+                
+                var controller = this;
                 $scope.currentUserModel = currentUserModel;
                 $scope.orgScreenModel = orgScreenModel;
-                currentUserModel.setCurrentUserInfo(currentUserInfo);
                 $scope.notifications = notifications;
                 $scope.pendingNotifications = pendingNotifications;
                 $scope.toasts = toastService.toasts;
@@ -153,23 +153,42 @@
                 $scope.clearNotification = clearNotification;
                 $scope.clearAllNotifications = clearAllNotifications;
                 $scope.doLogOut = doLogOut;
-                $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Marketplace';
                 $scope.toggleFloatingSidebar = toggleFloatingSidebar;
                 $scope.toApis = toApis;
                 $scope.toAccessDenied = toAccessDenied;
                 $scope.toLogin = toLogin;
                 $scope.toMarketDash = toMarketDash;
+                controller.appNeededLater = appNeededLater;
+                controller.appNeededOk = appNeededOk;
+                controller.appNeededOkForOrg = appNeededOkForOrg;
+                controller.orgNeededLater = orgNeededLater;
+                controller.orgNeededOk = orgNeededOk;
 
-                checkIsEmailPresent();
 
-                $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
-                    notificationService.getNotificationsForUser().then(function (notifs) {
-                        $scope.notifications = notifs;
-                        notificationService.getPendingNotificationsForUser().then(function (pending) {
-                            $scope.pendingNotifications = pending;
+                init();
+
+                function init() {
+                    $scope.loggedIn = loginHelper.checkLoggedIn();
+                    $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
+
+                    checkIsEmailPresent();
+                    checkFirstVisit();
+                    checkNeedsPopover();
+
+                    $scope.$on(EVENTS.NOTIFICATIONS_UPDATED, function () {
+                        notificationService.getNotificationsForUser().then(function (notifs) {
+                            $scope.notifications = notifs;
+                            notificationService.getPendingNotificationsForUser().then(function (pending) {
+                                $scope.pendingNotifications = pending;
+                            })
                         })
+                    });
+
+                    $scope.$on(EVENTS.API_DETAILS_PAGE_OPENED, function () {
+                        $scope.onApiPage = true;
+                        checkNeedsPopover();
                     })
-                });
+                }
 
                 function checkIsEmailPresent() {
                     if ($scope.loggedIn && !$scope.User.currentUser.email) {
@@ -191,6 +210,36 @@
                     }
                 }
 
+                function checkFirstVisit() {
+                    if (!$scope.loggedIn && !$scope.publisherMode && !loginHelper.checkIsFirstVisit()) {
+                        console.log('first visit!');
+
+                        $uibModal.open({
+                            templateUrl: 'views/modals/firstVisit.html',
+                            size: 'lg',
+                            controller: 'FirstVisitCtrl',
+                            backdrop: 'static',
+                            keyboard: false,
+                            resolve: {
+                                currentInfo: function() {
+                                    return $scope.User.currentUser;
+                                }
+                            },
+                            windowClass: $scope.modalAnim	// Animation Class put here.
+                        });
+                    }
+                }
+
+                function checkNeedsPopover() {
+                    if ($scope.loggedIn && !$scope.publisherMode) {
+                        currentUser.checkStatus().then(function (status) {
+                            $scope.status = status;
+                            if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
+                            if ($scope.status.hasOrg && !$scope.status.hasApp && !$localStorage.appPopupSeen) controller.appPopoverOpen = true;
+                        });
+                    }
+                }
+
                 function clearNotification(notification) {
                     $scope.notifications.splice($scope.notifications.indexOf(notification), 1);
                     notificationService.clear(notification).then(function () {
@@ -206,25 +255,7 @@
                 }
 
                 function doLogOut() {
-                    var logOutObject = {
-                        idpUrl: CONFIG.SECURITY.IDP_URL,
-                        spName: CONFIG.SECURITY.SP_NAME,
-                        username: $scope.User.currentUser.username
-                    };
-                    LogOutRedirect.save({}, logOutObject, function (reply) {
-                        var string = '';
-                        angular.forEach(reply, function (value) {
-                            if (typeof value === 'string') {
-                                string += value;
-                            }
-                        });
-                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                            $state.go('logout');
-                        } else {
-                            window.location.href = string;
-                        }
-                        delete $sessionStorage.jwt;
-                    });
+                    loginHelper.logout();
                 }
 
                 function toggleFloatingSidebar() {
@@ -233,7 +264,7 @@
 
                 function toApis() {
                     docTester.reset();
-                    $state.go('root.apis.list');
+                    $state.go('root.apis.grid');
                 }
 
                 function toAccessDenied(){
@@ -253,12 +284,39 @@
                     }
                 }
 
-                $scope.$on('buttonToggle', function (event, data) {
-                    $scope.showExplore = headerModel.showExplore;
-                    $scope.showDash = headerModel.showDash;
-                    $scope.showSearch = headerModel.showSearch;
-                });
+                function appNeededLater() {
+                    controller.appPopoverOpen = false;
+                    $localStorage.appPopupSeen = true;
+                }
 
+                function appNeededOk() {
+                    currentUser.getUserAppOrgs().then(function (orgs) {
+                        if (orgs.length > 1) {
+                            controller.multipleOrgs = orgs;
+                        } else {
+                            controller.appPopoverOpen = false;
+                            $localStorage.appPopupSeen = true;
+                            $state.go('root.market-dash', { orgId: orgs[0].id, mode: 'create' });
+                        }
+                    });
+                }
+
+                function appNeededOkForOrg(org) {
+                    controller.appPopoverOpen = false;
+                    $localStorage.appPopupSeen = true;
+                    $state.go('root.market-dash', { orgId: org.id, mode: 'create' });
+                }
+
+                function orgNeededLater() {
+                    controller.orgPopoverOpen = false;
+                    $localStorage.orgPopupSeen = true;
+                }
+
+                function orgNeededOk() {
+                    controller.orgPopoverOpen = false;
+                    $localStorage.orgPopupSeen = true;
+                    $state.go('root.myOrganizations', { mode: 'create' });
+                }
             })
 
         .controller('EmailPromptCtrl', function($scope, $uibModalInstance, currentInfo, currentUserModel, toastService, currentUser) {
@@ -277,13 +335,46 @@
                 };
 
                 currentUser.update(updateObject).then(function () {
-                    currentUserModel.updateCurrentUserInfo(currentUserModel).then(function () {
+                    currentUserModel.refreshCurrentUserInfo(currentUserModel).then(function () {
                         toastService.createToast('success', 'Email address updated!', true);
                         $uibModalInstance.close('Updated');
                     });
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update your email address. Please try again later.');
                 });
+            }
+        })
+        
+        .controller('FirstVisitCtrl', function ($scope, $uibModalInstance, $localStorage, loginHelper) {
+            $scope.login = login;
+            $scope.later = later;
+            
+            function login() {
+                $localStorage.hasVisited = true;
+                loginHelper.redirectToLogin();
+            }
+            
+            function later() {
+                $localStorage.hasVisited = true;
+                $uibModalInstance.dismiss('later');
+            }
+        })
+
+        .controller('LogoutCtrl', function($scope, $state, $timeout) {
+            $scope.secondsRemaining = 5;
+
+            countDownSecond();
+
+            function countDownSecond() {
+                $timeout(function () {
+                    $scope.secondsRemaining--;
+                    if ($scope.secondsRemaining > 0) {
+                        countDownSecond();
+                    } else {
+                        if ($scope.publisherMode) $state.go('root.myOrganizations');
+                        else $state.go('root.apis.grid');
+                    }
+                }, 1000);
             }
         });
 

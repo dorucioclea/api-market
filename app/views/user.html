@@ -13,21 +13,21 @@
     <!-- navigation -->
     <ul class="list-unstyled clearfix nav-list mb15">
       <li ng-class="{'active': isActive('Profile')}">
-        <a md-ink-ripple ui-sref="root.user.profile">
+        <a id="profile" md-ink-ripple ui-sref="root.user.profile">
           <i class="ion ion-person"></i>
           <span class="text">Profile Settings</span>
         </a>
       </li>
 
       <li ng-class="{'active': isActive('Email')}">
-        <a md-ink-ripple ui-sref="root.user.email">
+        <a id="email" md-ink-ripple ui-sref="root.user.email">
           <i class="ion ion-email"></i>
           <span class="text">Email Settings</span>
         </a>
       </li>
 
       <li ng-class="{'active': isActive('Notifications')}">
-        <a md-ink-ripple ui-sref="root.user.notifications">
+        <a id="notif" md-ink-ripple ui-sref="root.user.notifications">
           <i class="ion ion-checkmark-circled"></i>
           <span class="text">Notifications</span>
         </a>

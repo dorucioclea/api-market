@@ -12,28 +12,14 @@
             $urlRouterProvider.otherwise(function($injector){
                 var $state = $injector.get("$state");
                 if (CONFIG.APP.PUBLISHER_MODE) $state.go('root.myOrganizations');
-                else $state.go('root.apis.list');
+                else $state.go('root.apis.grid');
             });
-            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', function($injector){
-                var $state = $injector.get("$state");
-                $state.go('root.api.documentation');
-            });
-            $urlRouterProvider.when('/org/{orgId}', function($injector){
-                var $state = $injector.get("$state");
-                $state.go('root.organization.plans')
-            });
-            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', function($injector){
-                var $state = $injector.get("$state");
-                $state.go('root.application.overview')
-            });
-            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', function($injector){
-                var $state = $injector.get("$state");
-                $state.go('root.service.overview')
-            });
-            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', function($injector){
-                var $state = $injector.get("$state");
-                $state.go('root.plan.policies')
-            });
+            $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
+            $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
+            $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
+            $urlRouterProvider.when('/org/{orgId}/service/{svcId}/{versionId}', '/org/{orgId}/service/{svcId}/{versionId}/overview');
+            $urlRouterProvider.when('/org/{orgId}/plan/{planId}/{versionId}', '/org/{orgId}/plan/{planId}/{versionId}/policies');
+            $urlRouterProvider.when('/org/{orgId}/dash', '/org/{orgId}/dash/applications');
 
 
             // UI-Router States
@@ -59,16 +45,17 @@
                 // LOGOUT PAGE ====================================================================
                 .state('logout', {
                     url: '/logout',
-                    templateUrl: '/views/logout.html'
+                    templateUrl: '/views/logout.html',
+                    controller: 'LogoutCtrl'
                 })
 
                 // ROOT STATE =====================================================================
                 .state('root', {
                     templateUrl: '/views/partials/root.html',
                     resolve: {
-                        currentUser: 'currentUser',
-                        currentUserInfo: function (currentUser, loginHelper) {
-                            if (loginHelper.checkJWTInSession()) return currentUser.getInfo();
+                        currentUserModel: 'currentUserModel',
+                        currentUserInfo: function (currentUserModel, loginHelper) {
+                            if (loginHelper.checkJWTInSession()) return currentUserModel.refreshCurrentUserInfo(currentUserModel);
                             else {
                                 if (loginHelper.checkJWTInUrl()) {
                                     console.log('JWT in URL');
@@ -88,7 +75,7 @@
                             else return [];
                         }
                     },
-                    controller: 'HeadCtrl'
+                    controller: 'HeadCtrl as ctrl'
                 })
 
                 // UX Improvements testing state
@@ -99,102 +86,80 @@
 
                 // MARKETPLACE CONSUMER DASHBOARD =================================================
                 .state('root.market-dash', {
-                    url: '/org/:orgId/applications',
+                    url: '/org/:orgId/dash',
                     templateUrl: '/views/market-dashboard.html',
                     resolve: {
                         Organization: 'Organization',
                         orgData: function (Organization, organizationId) {
                             return Organization.get({id: organizationId}).$promise;
                         },
-                        CurrentUserApps: 'CurrentUserApps',
-                        ApplicationVersion: 'ApplicationVersion',
-                        ApplicationContract: 'ApplicationContract',
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;
-                        },
-                        appData: function ($q, organizationId, CurrentUserApps) {
+                        }
+                    },
+                    controller: 'MarketDashCtrl'
+                })
+                .state('root.market-dash.applications', {
+                    url: '/applications',
+                    params: {
+                        mode: null
+                    },
+                    templateUrl: '/views/partials/market/applications.html',
+                    resolve: {
+                        appData: function ($q, organizationId, currentUser) {
                             var appData = [];
-                            var promises = [];
-
-                            promises.push(CurrentUserApps.query().$promise);
-
-                            return $q.all(promises)
-                                .then(function (results) {
-                                    angular.forEach(results, function (value) {
-                                        angular.forEach(value, function (app) {
-                                            if (app.organizationId === organizationId) {
-                                                appData.push(app);
-                                            }
-                                        });
-
-                                    });
-                                    return appData;
+                            return currentUser.getUserApps().then(function (results) {
+                                angular.forEach(results, function (app) {
+                                    if (app.organizationId === organizationId) {
+                                        appData.push(app);
+                                    }
                                 });
+                                return appData;
+                            });
                         },
-                        appVersions: function ($q, appData, ApplicationVersion) {
-                            var appVersions = {};
+                        appService: 'appService',
+                        appVersions: function ($q, appData, appService) {
                             var promises = [];
 
                             angular.forEach(appData, function (app) {
-                                promises.push(ApplicationVersion.query(
-                                    {orgId: app.organizationId, appId: app.id}).$promise);
+                                promises.push(appService.getAppVersions(app.organizationId, app.id).then(function (appVersions) {
+                                    app.versions = appVersions;
+                                }));
                             });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    appVersions[value[0].id] = value[0];
-                                });
-                                return appVersions;
-                            });
+                            return $q.all(promises);
                         },
-                        appVersionDetails: function ($q, appVersions, ApplicationVersion) {
-                            var appVersionDetails = {};
+                        appVersionDetails: function ($q, appData, appVersions, appService) {
                             var promises = [];
-
-                            angular.forEach(appVersions, function (value) {
-                                promises.push(
-                                    ApplicationVersion.get({
-                                        orgId: value.organizationId,
-                                        appId: value.id,
-                                        versionId: value.version}).$promise);
+                            
+                            angular.forEach(appData, function (app) {
+                                angular.forEach(app.versions, function (appVersion) {
+                                    promises.push(
+                                        appService.getAppVersionDetails(appVersion.organizationId, appVersion.id, appVersion.version).then(function (versionDetails) {
+                                           appVersion.details = versionDetails; 
+                                        }));
+                                })
                             });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    appVersionDetails[value.application.id] = value;
-                                });
-                                return appVersionDetails;
-                            });
+                            
+                            return $q.all(promises);
                         },
-                        appContracts: function ($q, appVersions, ApplicationContract) {
-                            var appContracts = {};
+                        appContracts: function ($q, appData, appVersions, appService) {
                             var promises = [];
-
-                            angular.forEach(appVersions, function (value) {
-                                promises.push(ApplicationContract.query({
-                                    orgId: value.organizationId,
-                                    appId: value.id,
-                                    versionId: value.version
-                                }).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    // Check if at least one contract was found,
-                                    // so we can add by application Id of the first contract
-                                    if (angular.isDefined(value[0])) {
-                                        appContracts[value[0].appId] = value;
-                                    }
+                            angular.forEach(appData, function (app) {
+                                angular.forEach(app.versions, function (appVersion) {
+                                    promises.push(appService.getAppVersionContracts(appVersion.organizationId, appVersion.id, appVersion.version).then(function (versionContracts) {
+                                        appVersion.contracts = versionContracts;
+                                        appVersion.pendingContracts = [];
+                                    }))
                                 });
-                                return appContracts;
                             });
+                            return $q.all(promises);
                         },
                         contractService: 'contractService',
                         pendingContracts: function (organizationId, contractService) {
                             return contractService.outgoingPendingForOrg(organizationId);
                         }
                     },
-                    controller: 'MarketDashCtrl'
+                    controller: 'MarketAppsCtrl'
                 })
 
                 // MARKETPLACE MEMBER MANAGEMENT
@@ -290,6 +255,29 @@
                         },
                         support: function (apiService, organizationId, serviceId) {
                             return apiService.getServiceSupportTickets(organizationId, serviceId);
+                        },
+                        endpoint: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
+                        },
+                        svcPolicies: function (apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
+                        },
+                        oAuthPolicy: function ($q, apiService, svcPolicies, organizationId, serviceId, versionId) {
+                            var oAuthPolicy = {};
+                            var promises = [];
+
+                            angular.forEach(svcPolicies, function (policy) {
+                                if (policy.policyDefinitionId === 'OAuth2') {
+                                    promises.push(apiService.getServiceVersionPolicy(organizationId, serviceId, versionId, policy.id));
+                                }
+                            });
+
+                            return $q.all(promises).then(function (results) {
+                                angular.forEach(results, function (details) {
+                                    oAuthPolicy = details;
+                                });
+                                return oAuthPolicy;
+                            });
                         }
                     },
                     controller: 'ApiDocCtrl'
@@ -312,9 +300,6 @@
                     templateUrl: 'views/partials/api/documentation.html',
                     resolve: {
                         apiService: 'apiService',
-                        endpoint: function (apiService, organizationId, serviceId, versionId) {
-                            return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
-                        },
                         loginHelper: 'loginHelper',
                         svcContracts: function (apiService, loginHelper, organizationId, serviceId, versionId) {
                             if (loginHelper.checkLoggedIn()) {
@@ -352,9 +337,9 @@
                             });
                             return jwt;
                         },
-                        CurrentUserApps: 'CurrentUserApps',
-                        userApps: function (CurrentUserApps, loginHelper) {
-                            if (loginHelper.checkLoggedIn()) return CurrentUserApps.query().$promise;
+                        currentUser: 'currentUser',
+                        userApps: function (currentUser, loginHelper) {
+                            if (loginHelper.checkLoggedIn()) return currentUser.getUserApps();
                             else return [];
                         }
                     },
@@ -445,24 +430,19 @@
                     url: '/services',
                     templateUrl: 'views/partials/organization/services.html',
                     resolve: {
-                        Service: 'Service',
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function ($q, Service, ServiceVersion, organizationId) {
-                            var deferred = $q.defer();
-
-                            Service.query({ orgId: organizationId }, function (services) {
+                        service: 'service',
+                        svcData: function ($q, service, organizationId) {
+                            return service.getServicesForOrg(organizationId).then(function (services) {
                                 var promises = [];
                                 angular.forEach(services, function (svc) {
-                                    promises.push(ServiceVersion.query(
-                                        { orgId: svc.organizationId, svcId: svc.id }, function (reply) {
-                                            svc.serviceVersionDetails = reply[0];
-                                        }).$promise);
+                                    promises.push(service.getServiceVersions(organizationId, svc.id).then(function (versions) {
+                                        svc.versions = versions;
+                                    }));
                                 });
-                                $q.all(promises).then(function () {
-                                    deferred.resolve(services);
+                                return $q.all(promises).then(function () {
+                                    return services;
                                 });
                             });
-                            return deferred.promise;
                         }
                     },
                     controller: 'ServicesCtrl'
@@ -478,20 +458,16 @@
                         },
                         PlanVersion: 'PlanVersion',
                         planVersions: function ($q, planData, PlanVersion) {
-                            var planVersions = {};
                             var promises = [];
 
                             angular.forEach(planData, function (plan) {
                                 promises.push(PlanVersion.query(
-                                    {orgId: plan.organizationId, planId: plan.id}).$promise);
+                                    {orgId: plan.organizationId, planId: plan.id}).$promise.then(function (planVersions) {
+                                    plan.versions = planVersions;
+                                }));
                             });
 
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    planVersions[value[0].id] = value[0];
-                                });
-                                return planVersions;
-                            });
+                            return $q.all(promises);
                         }
                     },
                     controller: 'PlansCtrl'
@@ -571,13 +547,12 @@
                     url: '/organizations',
                     templateUrl: 'views/organizations.html',
                     resolve: {
-                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
-                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
-                        appOrgData: function (CurrentUserAppOrgs) {
-                            return CurrentUserAppOrgs.query().$promise;
+                        currentUser: 'currentUser',
+                        appOrgData: function (currentUser) {
+                            return currentUser.getUserAppOrgs();
                         },
-                        svcOrgData: function (CurrentUserSvcOrgs) {
-                            return CurrentUserSvcOrgs.query().$promise;
+                        svcOrgData: function (currentUser) {
+                            return currentUser.getUserSvcOrgs();
                         },
                         orgService: 'orgService',
                         orgs: function (orgService) {
@@ -594,15 +569,17 @@
                 // MY ORGANIZATIONS OVERVIEW PAGE =================================================
                 .state('root.myOrganizations', {
                     url: '/my-organizations',
+                    params: {
+                        mode: null
+                    },
                     templateUrl: 'views/my-organizations.html',
                     resolve: {
-                        CurrentUserAppOrgs: 'CurrentUserAppOrgs',
-                        CurrentUserSvcOrgs: 'CurrentUserSvcOrgs',
-                        appOrgData: function (CurrentUserAppOrgs) {
-                            return CurrentUserAppOrgs.query().$promise;
+                        currentUser: 'currentUser',
+                        appOrgData: function (currentUser) {
+                            return currentUser.getUserAppOrgs();
                         },
-                        svcOrgData: function (CurrentUserSvcOrgs) {
-                            return CurrentUserSvcOrgs.query().$promise;
+                        svcOrgData: function (currentUser) {
+                            return currentUser.getUserSvcOrgs();
                         }
                     },
                     controller: 'MyOrganizationsCtrl'
@@ -716,6 +693,14 @@
                         },
                         versionId: function ($stateParams) {
                             return $stateParams.versionId;
+                        },
+                        ApplicationContract: 'ApplicationContract',
+                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
+                            return ApplicationContract.query({
+                                orgId: organizationId,
+                                appId: applicationId,
+                                versionId: versionId
+                            }).$promise;
                         }
                     },
                     controller: 'ApplicationCtrl'
@@ -730,32 +715,12 @@
                 .state('root.application.contracts', {
                     url: '/contracts',
                     templateUrl: 'views/partials/application/contracts.html',
-                    resolve: {
-                        ApplicationContract: 'ApplicationContract',
-                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-                            return ApplicationContract.query({
-                                orgId: organizationId,
-                                appId: applicationId,
-                                versionId: versionId
-                            }).$promise;
-                        }
-                    },
                     controller: 'ContractsCtrl'
                 })
                 // APIs Tab
                 .state('root.application.apis', {
                     url: '/apis',
                     templateUrl: 'views/partials/application/apis.html',
-                    resolve: {
-                        ApplicationContract: 'ApplicationContract',
-                        contractData: function (ApplicationContract, organizationId, applicationId, versionId) {
-                            return ApplicationContract.query({
-                                orgId: organizationId,
-                                appId: applicationId,
-                                versionId: versionId
-                            }).$promise;
-                        }
-                    },
                     controller: 'ApisCtrl'
                 })
                 // Activity Tab
@@ -876,11 +841,6 @@
                         AvailableMkts: 'AvailableMkts',
                         marketplaces: function (AvailableMkts) {
                             return AvailableMkts.get().$promise;
-                        },
-                        ServiceMkts: 'ServiceMkts',
-                        serviceMarketplaces: function (ServiceMkts, organizationId, serviceId, versionId) {
-                            return ServiceMkts.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
                         }
                     },
                     controller: 'ServiceScopeCtrl'

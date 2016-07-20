@@ -5,11 +5,14 @@
         .service('applicationManager', applicationManager)
         .service('appService', appService);
 
-    function applicationManager($uibModal, $q, oAuthService, toastService,
-                                ApplicationContract, ApplicationVersion, ServiceVersion) {
+    function applicationManager($uibModal, $q, oAuthService, toastService, ApplicationApiKeyReissue, ApplicationOAuthReissue,
+                                ApplicationContract, ApplicationVersion, ServiceVersion, appService) {
         this.delete = deleteApp;
+        this.deleteVersion = deleteVersion;
         this.publish = publish;
         this.retire = retire;
+        this.reissueApiKey = reissueApiKey;
+        this.reissueOAuth = reissueOAuth;
         this.oAuthConfig = oAuthConfig;
 
         function deleteApp(organizationId, appId, appName) {
@@ -34,6 +37,33 @@
             return modalInstance.result.then(function(result) {
                 return result;
             });
+        }
+
+        function deleteVersion(organizationId, appId, appName, appVersion) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/applicationVersionDelete.html',
+                size: 'lg',
+                controller: 'DeleteApplicationVersionCtrl as ctrl',
+                resolve: {
+                    applicationName: function () {
+                        return appName;
+                    },
+                    applicationVersion: function () {
+                        return appVersion
+                    },
+                    lastVersion: function () {
+                        return appService.getAppVersions(organizationId, appId).then(function (versions) {
+                            return versions.length === 1;
+                        })
+                    }
+                },
+                backdrop : 'static'
+            });
+            modalInstance.result.then(function() {
+                deferred.resolve(ApplicationVersion.delete({ orgId: organizationId, appId: appId, versionId: appVersion}).$promise);
+            });
+            return deferred.promise;
         }
 
         function publish(organizationId, appId, versionId) {
@@ -110,6 +140,52 @@
                 });
             }).$promise;
         }
+        
+        function reissueApiKey(orgId, appId, versionId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueApiKey.html',
+                size: 'lg',
+                controller: 'ReissueConfirmCtrl',
+                backdrop: 'static'
+            });
+            
+            modalInstance.result.then(function () {
+                ApplicationApiKeyReissue.request({orgId: orgId, appId: appId, versionId: versionId}, {}).$promise.then(function (reply) {
+                    deferred.resolve(reply);
+                }, function (err) {
+                    deferred.reject(err);
+                })
+            }, function () {
+                // Canceled, do nothing
+                deferred.resolve();
+            });
+            
+            return deferred.promise;
+        }
+        
+        function reissueOAuth(orgId, appId, versionId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueOAuth.html',
+                size: 'lg',
+                controller: 'ReissueConfirmCtrl',
+                backdrop: 'static'
+            });
+
+            modalInstance.result.then(function () {
+                ApplicationOAuthReissue.request({orgId: orgId, appId: appId, versionId: versionId}, {}).$promise.then(function (reply) {
+                    deferred.resolve(reply);
+                }, function (err) {
+                    deferred.reject(err);
+                })
+            }, function () {
+                // Canceled, do nothing
+                deferred.resolve();
+            });
+
+            return deferred.promise;
+        }
 
         function oAuthConfig(organizationId, appId, versionId) {
             return ApplicationVersion.get({orgId: organizationId, appId: appId, versionId: versionId}, function (appVersion) {
@@ -132,13 +208,29 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion) {
+    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract) {
+        this.getAppsForOrg = getAppsForOrg;
+        this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
+        this.getAppVersionContracts = getAppVersionContracts;
         this.getAppMetrics = getAppMetrics;
         this.updateAppDesc = updateAppDescription;
+        
+        
+        function getAppsForOrg(orgId) {
+            return Application.query({ orgId: orgId }).$promise;
+        }
+        
+        function getAppVersions(orgId, appId) {
+            return ApplicationVersion.query({ orgId: orgId, appId: appId }).$promise
+        }
 
         function getAppVersionDetails(orgId, appId, versionId) {
             return ApplicationVersion.get({ orgId: orgId, appId: appId, versionId: versionId }).$promise;
+        }
+        
+        function getAppVersionContracts(orgId, appId, versionId) {
+            return ApplicationContract.query({ orgId: orgId, appId: appId, versionId: versionId }).$promise
         }
 
         function getAppMetrics(orgId, appId, versionId, fromDt, toDt, interval) {

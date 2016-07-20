@@ -5,23 +5,20 @@
         .controller('ApplicationCtrl', appCtrl)
         .controller('ActivityCtrl', activityCtrl)
         .controller('ApisCtrl', apisCtrl)
-        .controller('ContractsCtrl', contractsCtrl)
         .controller('AppMetricsCtrl', appMetricsCtrl)
-        .controller('OverviewCtrl', overviewCtrl);
+        .controller('OverviewCtrl', overviewCtrl)
+        .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl)
+        .controller('ReissueConfirmCtrl', reissueConfirmCtrl);
 
-    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions,
+
+    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
                      contractService, toastService, selectedApp) {
-        headerModel.setIsButtonVisible(true, true, false);
-        orgScreenModel.updateOrganization(orgData);
+        $scope.apikey = undefined;
         $scope.applicationVersion = appData;
-        appScreenModel.updateApplication(appData);
+        $scope.contracts = contractData;
         $scope.versions = appVersions;
         $scope.displayTab = appScreenModel;
-        $scope.isReady = $scope.applicationVersion.status === 'Ready';
-        $scope.isRegistered =
-            $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
-        $scope.isRetired = $scope.applicationVersion.status === 'Retired';
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.selectVersion = selectVersion;
@@ -34,6 +31,38 @@
         $scope.showOAuthConfig = showOAuthConfig;
         $scope.canConfigureOAuth = canConfigureOAuth;
         $scope.newContract = newContract;
+        $scope.confirmDeleteVersion = confirmDeleteVersion;
+        
+        init();
+
+        function init() {
+            headerModel.setIsButtonVisible(true, true, false);
+            orgScreenModel.updateOrganization(orgData);
+            appScreenModel.updateApplication(appData);
+            $scope.isReady = $scope.applicationVersion.status === 'Ready';
+            $scope.isRegistered =
+                $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+            $scope.isRetired = $scope.applicationVersion.status === 'Retired';
+
+            if (!$scope.apikey && $scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
+            // if ($scope.versions.length === 1) {
+                $scope.lastVersion = 'This version cannot be deleted because it is the last remaining one.<br>If you want to remove the application completely, use the Delete App button.'
+            // }
+        }
+        
+        function confirmDeleteVersion() {
+            applicationManager.deleteVersion($scope.applicationVersion.application.organization.id,
+                $scope.applicationVersion.application.id, $scope.applicationVersion.application.name,
+                $scope.applicationVersion.version).then(function () {
+                toastService.success('<b>Application Version deleted.</b>');
+
+                // TODO Redirect? If other versions, redirect to highest, else redirect to dashboard
+                $state.go('root.market-dash', { orgId: $scope.applicationVersion.application.organization.id });
+
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not delete application version!');
+            })
+        }
 
         function selectVersion(version) {
             $state.go($state.$current.name,
@@ -67,7 +96,7 @@
                 version: appVersion.version
             };
             selectedApp.updateApplication(appObject);
-            $state.go('root.apis.list');
+            $state.go('root.apis.grid');
         }
 
         function confirmDeleteApp(appVersion) {
@@ -122,61 +151,28 @@
         appScreenModel.updateTab('Activity');
 
     }
-    
-    function apisCtrl($scope, $uibModal, contractData, appScreenModel, docDownloader, TOAST_TYPES) {
 
-        $scope.contracts = contractData;
+    
+    function apisCtrl($scope, $state, appScreenModel, docDownloader, docTester, service, toastService, ApplicationContract) {
+
         $scope.docDownloader = docDownloader;
-        appScreenModel.updateTab('APIs');
-        $scope.toggle = toggle;
-        $scope.copyKey = copyKey;
-        $scope.howToInvoke = howToInvoke;
-
-        angular.forEach($scope.contracts, function (contract) {
-            contract.apiExpanded = true;
-        });
-
-        function copyKey(key) {
-            var type = TOAST_TYPES.INFO;
-            var msg = '<b>API Key copied to clipboard!</b><br>' + key;
-            $scope.toastService.createToast(type, msg, true);
-        }
-
-        function howToInvoke(contract) {
-            $uibModal.open({
-                templateUrl: 'views/modals/serviceHowToInvoke.html',
-                size: 'lg',
-                controller: 'HowToInvokeCtrl as ctrl',
-                resolve: {
-                    contract: contract,
-                    endpoint: function (ServiceEndpoint) {
-                        return ServiceEndpoint.get(
-                            {orgId: contract.serviceOrganizationId,
-                                svcId: contract.serviceId, versionId: contract.serviceVersion}).$promise;
-                    }
-                },
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-        }
-
-        function toggle(contract) {
-            contract.apiExpanded = !contract.apiExpanded;
-        }
-
-    }
-    
-    function contractsCtrl($scope, $state, contractData, appScreenModel, docTester, ApplicationContract) {
-
-        $scope.contracts = contractData;
         $scope.toApiDoc = toApiDoc;
         $scope.breakContract = breakContract;
-
+        $scope.copyEndpoint = copyEndpoint;
         init();
+
 
         function init() {
             docTester.reset();
-            appScreenModel.updateTab('Contracts');
+            appScreenModel.updateTab('APIs');
+
+            $scope.contracts.forEach(function (contract) {
+                if (!contract.serviceEndpoint) {
+                    service.getEndpoint(contract.serviceOrganizationId, contract.serviceId, contract.serviceVersion).then(function (endpoint) {
+                        contract.serviceEndpoint = endpoint.managedEndpoint;
+                    })
+                }
+            })
         }
 
         function toApiDoc(contract) {
@@ -193,8 +189,15 @@
                     contractId: contract.contractId},
                 function (reply) {
                     $state.forceReload();
+                    toastService.success('<b>Contract was broken.</b>');
                 });
         }
+
+        function copyEndpoint(serviceName) {
+            var msg = 'Basepath for <b>' + serviceName + '</b> copied to clipboard!';
+            toastService.info(msg);
+        }
+
     }
 
     function appMetricsCtrl($scope, $stateParams, $parse, appScreenModel, appService) {
@@ -333,10 +336,74 @@
         $scope.responseHistogramX = {'id': 'displayDate'};
     }
 
-    function overviewCtrl($scope, appScreenModel) {
+    function overviewCtrl($scope, appScreenModel, applicationManager, toastService) {
 
         appScreenModel.updateTab('Overview');
+        $scope.copy = copy;
+        $scope.refreshApiKey = refreshApiKey;
+        $scope.refreshOAuth = refreshOAuth;
 
+        function copy() {
+            toastService.info('<b>Copied to clipboard!</b>');
+        }
+
+        function refreshApiKey(appVersion) {
+            applicationManager.reissueApiKey(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
+                    if (reply) {
+                        // TODO don't use $parent here
+                        $scope.$parent.apikey = reply.newKey;
+                        toastService.success('Reissued API key for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
+                    }
+            }, function (err) {
+                toastService.createErrorToast(err, 'Could not reissue API key.');
+            })
+        }
+
+        function refreshOAuth(appVersion) {
+            applicationManager.reissueOAuth(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
+                if (reply) {
+                    // TODO avoid use of $parent here
+                    $scope.$parent.applicationVersion.oAuthClientId = reply.newClientId;
+                    $scope.$parent.applicationVersion.oauthClientSecret = reply.newClientSecret;
+                    toastService.success('Reissued OAuth credentials for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
+                }
+            }, function (err) {
+                toastService.createErrorToast(err, 'Could not reissue OAuth credentials.');
+            })
+        }
+
+    }
+
+
+    function deleteApplicationVersionCtrl($scope, $uibModalInstance, applicationName, applicationVersion, lastVersion) {
+
+        $scope.applicationName = applicationName;
+        $scope.applicationVersion = applicationVersion;
+        $scope.lastVersion = lastVersion;
+        $scope.modalClose = modalClose;
+        $scope.doDelete = doDelete;
+
+        function modalClose() {
+            $uibModalInstance.dismiss("cancel");
+        }
+
+        function doDelete() {
+            $uibModalInstance.close("OK");
+        }
+    }
+    
+    function reissueConfirmCtrl($scope, $uibModalInstance) {
+
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+
+        function cancel() {
+            $uibModalInstance.dismiss("cancel");
+        }
+
+        function ok() {
+            $uibModalInstance.close("OK");
+        }
     }
 
 

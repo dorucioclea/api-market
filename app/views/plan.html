@@ -1,7 +1,7 @@
 ﻿<overview entity-version="planVersion" type="plan">
   <overview-header name="{{planVersion.plan.name}}" icon="bar-chart-o" description="{{planVersion.plan.description}}"
                    entity-version="planVersion" versions="versions" select-version="selectVersion(version)" new-version="modalNewVersion()" save="updateDesc"
-                   edit-permission="User.isAuthorizedFor('planEdit')">
+                   edit-permission="User.isAuthorizedForIn('planEdit', planVersion.plan.organization.id)">
 
     <!-- Entity Buttons -->
     <div class="toast toast-bottomRight">
@@ -10,7 +10,7 @@
       </uib-alert>
     </div>
     <div class="text-center">
-      <button class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked" ng-click="confirmLockPlan()" ng-disabled="!User.isAuthorizedFor('planAdmin')">Lock Plan</button>
+      <button id="lock" class="btn btn-line-primary btn-sm" placeholder="Locking..." data-icon="fa-cog" ng-if="!locked" ng-click="confirmLockPlan()" ng-disabled="!User.isAuthorizedFor('planAdmin')">Lock Plan</button>
       <div class="mt10" ng-show="!User.isAuthorizedFor('planAdmin') && !locked">
         <p class="text-muted xsmall">
           You do not have the necessary permissions to lock plans.
@@ -23,6 +23,6 @@
   <overview-tabs>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
     <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
-    <a href ng-click="showInfoModal()" class="ml30 ion ion-help-circled icon"></a>
+    <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
   </overview-tabs>
 </overview>

@@ -6,18 +6,33 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service(Service, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy) {
+    function service(Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy) {
+        this.getServicesForOrg = getServicesForOrg;
+        this.getServiceVersions = getServiceVersions;
         this.getDefinition = getDefinition;
+        this.getEndpoint = getEndpoint;
         this.getVersion = getVersion;
         this.removePolicy = removePolicy;
         this.updateDefinition = updateDefinition;
         this.updateDescription = updateDescription;
         this.updateServiceVersion = updateServiceVersion;
         this.updateTerms = updateTerms;
-
+        
+        
+        function getServicesForOrg(orgId) {
+            return Service.query({ orgId: orgId }).$promise;
+        }
+        
+        function getServiceVersions(orgId, svcId) {
+            return ServiceVersion.query({ orgId: orgId, svcId: svcId }).$promise;
+        }
         
         function getDefinition(orgId, svcId, versionId) {
             return ServiceVersionDefinition.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise;
+        }
+        
+        function getEndpoint(orgId, svcId, versionId) {
+            return ServiceEndpoint.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
 
         function getVersion(orgId, svcId, versionId) {

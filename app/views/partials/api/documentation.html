@@ -1,13 +1,95 @@
-<div class="row">
-    <!-- Swagger API documentation panel -->
-    <div class="col-md-9">
+<div class="row" style="margin-bottom: 50px">
+    <div class="col-md-12 mb10" ng-if="hasOAuth && loggedIn">
+        <div class="panel panel-default">
+            <div class="clickable panel-heading text-center" ng-click="toggleOAuthPanel()" ng-style="oAuthPanelStyle">
+                <a class="clickable">oAuth2.0 Authorization Required!</a>
+            </div>
+            <div class="panel-body" uib-collapse="oAuthClosed">
+                <div class="col-sm-12">
+                <form role="form">
+                    <div class="col-sm-6 form-group mb30">
+                        <div class="input-group mb5">
+                            <span class="input-group-addon ion ion-person"></span>
+                            <input type="text" class="form-control" placeholder="Client ID" ng-model="appVersion.oAuthClientId">
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 form-group mb30">
+                        <div class="input-group">
+                            <span class="input-group-addon ion ion-locked"></span>
+                            <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="small text-muted text-uppercase mb5">Scopes</p>
+                    </div>
+                    <div class="ui-checkbox ui-checkbox-circle scope-checkbox" ng-show="!(selectedScopes.length == 0)">
+                        <label class="col-sm-12 mt10" ng-repeat="scope in selectedScopes">
+                            <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
+                                    <span class="col-sm-12">
+                                        <span class="col-sm-12">{{scope.desc}}</span>
+                                        <span class="col-sm-12 xsmall text-muted">{{scope.scope}}</span>
+                                    </span>
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="col-sm-12" style="margin-left: 45px">
+                    <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
+                    <div class="mt10" ng-show="oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0)">
+                        <p class="text-justified text-warning xsmall">
+                            The grant button is disabled because the selected Application does not
+                            have a OAuth Callback URL defined. Without a callback URL the grant
+                            process cannot be completed.
+                        </p>
+                        <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
+                            <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
+                        </a>
+                    </div>
+                    <div class="mt10" ng-show="!oAuthConfig.enable_implicit_grant">
+                        <p class="text-justified text-warning xsmall">
+                            The grant button is disabled because the service has not enabled
+                            the "Implicit Grant" flow. Without this the grant process cannot
+                            be completed.
+                        </p>
+                    </div>
+                    <div class="mt10" ng-show="(appVersion == undefined) && oAuthConfig.enable_implicit_grant">
+                        <p class="text-justified text-warning xsmall">
+                            The grant button is disabled because there is no client ID or
+                            client secret available. To enable the grant process, create a
+                            contract with this service.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end authorization panel -->
+    </div>
+
+    <div class="col-md-12">
         <div class="panel panel-default mb15">
-            <div class="panel-heading">
-                Swagger specification
-                <span class="btn btn-xs btn-info pull-right" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download</span>
+            <div class="panel-heading row">
+                API Documentation
+                <span ng-if="loggedIn" class="btn btn-xs right btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download Swagger Spec</span>
             </div>
             <div class="panel-body">
-                <div swagger-ui input-type="json"
+                <div class="right swagger-custom-header-popover-wrapper" ng-if="loggedIn">
+                    <span id="custom-headers" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/custom-headers-popover.html'" popover-placement="bottom-right" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Custom Headers <span class="badge circle badge-primary">{{customHeaders.length}}</span></span>
+                </div>
+
+                <div class="right swagger-contract-select-popover-wrapper" ng-if="loggedIn">
+                    <span id="contract-select" class="btn btn-sm btn-default" uib-popover-template="'views/popovers/contract-select-popover.html'" popover-placement="bottom" popover-trigger="outsideClick" ng-disabled="contractApps.length === 0">Change Contract</span>
+                </div>
+
+                <div ng-if="loggedIn">
+                    <div class="text-warning" ng-show="contractApps.length === 0">
+                        <p>No contracts exist for this service. You can create one using the button above.</p>
+                    </div>
+                    <div ng-show="contractApps.length > 0">
+                        <span class="text-light">Testing contract:</span> <span class="text-bold text-primary">{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}</span>
+                    </div>
+                </div>
+
+                <div swagger-ui input-type="json" base-path="endpoint.managedEndpoint"
                      template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
                      api-explorer="true" apikey="docTester.apikey"
                      custom-headers="customHeaders"
@@ -16,259 +98,8 @@
                 <div class="text-center" ng-if="isLoading">
                     <span class="fa fa-spinner fa-pulse fa-4x"></span>
                 </div>
+                </div>
             </div>
         </div>
-    </div><!-- end Swagger Documentation panel -->
-
-    <!-- Sidebar panels -->
-    <div class="col-md-3">
-
-        <!-- API URL panel -->
-        <div class="panel panel-default mb15">
-            <div class="panel-heading text-center">
-                API Information
-            </div>
-            <div class="panel-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">API URL</label>
-                        </div>
-                        <div class="col-md-12">
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input readonly type="url" name="url" class="form-control" ng-model="endpoint.managedEndpoint">
-                                <div class="input-group-btn">
-                                    <button clipboard text="endpoint.managedEndpoint" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('API URL')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Organization ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="org" class="form-control" ng-model="serviceVersion.service.organization.id" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.organization.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Organization ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Service ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="service" class="form-control" ng-model="serviceVersion.service.id" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.service.id" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Service ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">Version ID</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="version" class="form-control" ng-model="serviceVersion.version" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.version" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Version ID')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="hasOAuth">
-                        <div class="col-md-12">
-                            <label class="control-label text-primary">OAuth Provision Key</label>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <input type="url" name="provKey" class="form-control" ng-model="serviceVersion.provisionKey" disabled>
-                                <div class="input-group-btn">
-                                    <button clipboard text="serviceVersion.provisionKey" class="btn btn-sm btn-line-default fa fa-copy" ng-click="copy('Provision Key')" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div><!-- end API URL panel -->
-
-        <!-- Existing Contracts panel -->
-        <div class="panel panel-default mb15" ng-if="loggedIn">
-            <div class="panel-heading text-center">
-                API Key for Testing
-            </div>
-            <div class="panel-body text-center">
-                <div ng-if="contractApps.length === 0">
-                    <p>No contracts exist for this service.</p>
-                    <p>You can create a contract for this service using the button above.</p>
-                </div>
-                <form id="appForm" name="appForm" class="form form-horizontal" ng-if="contractApps.length > 0">
-                    <p>Application API key to use for testing:</p>
-                    <div class="btn-group dropdown" uib-dropdown>
-                        <button type="button" class="btn btn-line-info dropdown-toggle" uib-dropdown-toggle>
-                            <span class="xsmall" ng-if="selectedContract">{{selectedContract.appOrganizationName}}<br></span>
-                            <b>{{selectedContract ? selectedContract.appName + ' - ' + selectedContract.appVersion : 'Please select a contract'}}<span class="caret"></span></b>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li ng-repeat="contract in contractApps | orderBy:'createdOn'" ng-click="selectContract(contract)">
-                                <a><span class="xsmall">{{contract.appOrganizationName}}</span><br><b>{{contract.appName}} - {{contract.appVersion}}</b></a>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
-        </div><!-- end Existing Contracts panel -->
-
-        <!-- Custom Headers panel -->
-        <div class="panel panel-default mb15" ng-if="loggedIn">
-            <div class="panel-heading text-center">
-                Custom Headers
-            </div>
-            <div class="panel-body">
-                <div class="col-sm-12 text-center" ng-if="customHeaders.length === 0">
-                    <button class="btn btn-default" ng-click="addHeader()">Add Custom Header</button>
-                </div>
-                <uib-accordion class="accordion-panel" ng-show="customHeaders.length > 0">
-                    <div ng-repeat="header in customHeaders">
-                        <auth-accordion-group heading="{{header.name.length > 0 ? header.name : 'Custom Header'}}">
-                            <form role="form" class="form">
-                                <div class="form-group">
-                                    <div class="input-group mb5">
-                                        <span class="input-group-addon fa fa-fw fa-header"></span>
-                                        <input type="text" class="form-control" placeholder="Header Name" ng-model="header.name">
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon fa fa-fw fa-envelope-o"></span>
-                                        <input type="text" class="form-control" placeholder="Header Value" ng-model="header.value">
-                                    </div>
-                                </div>
-                            </form>
-                            <p class="btn btn-danger right btn-xs" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Remove Header" ng-click="removeHeader(header)"><span class="fa fa-trash"></span></p>
-                        </auth-accordion-group>
-                    </div>
-                    <p class="btn btn-default btn-xs right fa fa-plus" tooltip-popup-delay="300" tooltip-placement="bottom" uib-tooltip="Add Header" ng-click="addHeader()"></p>
-                </uib-accordion>
-            </div>
-        </div><!-- end Custom Headers panel -->
-
-        <!-- Enabled OAuth Types panel -->
-        <div class="panel panel-default mb15" ng-if="hasOAuth">
-            <div class="panel-heading text-center">
-                Enabled OAuth2 Profiles
-            </div>
-            <div class="panel-body text-center">
-                <table class="table">
-                    <tbody>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_authorization_code, 'text-danger': !oAuthConfig.enable_authorization_code}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_authorization_code, 'fa-times-circle': !oAuthConfig.enable_authorization_code}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Authorization Code</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_client_credentials, 'text-danger': !oAuthConfig.enable_client_credentials}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_client_credentials, 'fa-times-circle': !oAuthConfig.enable_client_credentials}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Client Credentials</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_implicit_grant, 'text-danger': !oAuthConfig.enable_implicit_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_implicit_grant, 'fa-times-circle': !oAuthConfig.enable_implicit_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Implicit Grant</span>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'text-success': oAuthConfig.enable_password_grant, 'text-danger': !oAuthConfig.enable_password_grant}">
-                        <td>
-                            <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle': oAuthConfig.enable_password_grant, 'fa-times-circle': !oAuthConfig.enable_password_grant}"></span>
-                        </td>
-                        <td>
-                            <span class="text-bold">Password Grant</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div><!-- end Enabled OAuth Types panel -->
-
-        <!-- Authorization panel -->
-        <div class="panel panel-default" ng-if="hasOAuth && loggedIn">
-            <div class="panel-heading text-center">
-                Additional Authorization Required
-            </div>
-            <div class="panel-body">
-                <!-- #start accordion -->
-                <uib-accordion class="accordion-panel">
-                    <auth-accordion-group heading="OAuth 2.0">
-                        <form role="form" class="form">
-                            <div class="form-group mb30">
-                                <div class="input-group mb5">
-                                    <span class="input-group-addon ion ion-person"></span>
-                                    <input type="text" class="form-control" placeholder="Client ID" ng-model="appVersion.oAuthClientId">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon ion ion-locked"></span>
-                                    <input type="text" class="form-control" placeholder="Client Secret" ng-model="appVersion.oauthClientSecret">
-                                </div>
-                            </div>
-                            <div class="ui-checkbox ui-checkbox-circle scope-checkbox" ng-show="!(selectedScopes.length == 0)">
-                                <p class="small text-muted text-uppercase mb5">Scopes</p>
-                                <label class="col-sm-12 mt10" ng-repeat="scope in selectedScopes">
-                                    <input class="col-sm-2" type="checkbox" ng-model="scope.checked">
-                                    <span class="col-sm-12">
-                                        <span class="col-sm-12">{{scope.desc}}</span>
-                                        <span class="col-sm-12 xsmall text-muted">{{scope.scope}}</span>
-                                    </span>
-                                </label>
-                            </div>
-                        </form>
-                        <div class="text-center">
-                            <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
-                            <div class="mt10" ng-show="oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0)">
-                                <p class="text-justified text-warning xsmall">
-                                    The grant button is disabled because the selected Application does not
-                                    have a OAuth Callback URL defined. Without a callback URL the grant
-                                    process cannot be completed.
-                                </p>
-                                <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
-                                    <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
-                                </a>
-                            </div>
-                            <div class="mt10" ng-show="!oAuthConfig.enable_implicit_grant">
-                                <p class="text-justified text-warning xsmall">
-                                    The grant button is disabled because the service has not enabled
-                                    the "Implicit Grant" flow. Without this the grant process cannot
-                                    be completed.
-                                </p>
-                            </div>
-                            <div class="mt10" ng-show="(appVersion == undefined) && oAuthConfig.enable_implicit_grant">
-                                <p class="text-justified text-warning xsmall">
-                                    The grant button is disabled because there is no client ID or
-                                    client secret available. To enable the grant process, create a
-                                    contract with this service.
-                                </p>
-                            </div>
-                        </div>
-                    </auth-accordion-group>
-                </uib-accordion>
-                <!-- #end accordion -->
-            </div>
-        </div><!-- end authorization panel -->
-
-    </div> <!-- end sidebar panels -->
 
 </div>
