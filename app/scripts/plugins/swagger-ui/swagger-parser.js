@@ -121,7 +121,7 @@ angular
 					form[operationId] = {
 						responseType: defaultContentType
 					};
-					operation.httpMethod = httpMethod;
+					operation.httpMethod = httpMethod.toLowerCase(); //make sure the method is always lowercase to ensure correct styling
 					operation.path = path;
 					parseParameters(swagger, operation, pathParameters, form, defaultContentType);
 					parseResponses(swagger, operation);
