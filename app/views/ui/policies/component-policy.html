@@ -1,0 +1,12 @@
+<!--{{$ctrl.policy}}-->
+<div class="policy">
+    <div class="policy-header">
+        <a ng-if="$ctrl.editMode" ng-click="$ctrl.removePolicy()" class="pull-right text-muted clickable remove-icon" uib-tooltip="Remove"><i class="fa fa-lg fa-times"></i></a>
+        <h5>{{$ctrl.policy.name}}</h5>
+        <img class="policy-icon" ng-attr-src="{{$ctrl.imgUrl}}">
+    </div>
+    <div class="policy-body">
+        <span class="text-muted text-light small">Click for details</span>
+        <!--<span>{{$ctrl.policy.policyDefinitionId}}</span>-->
+    </div>
+</div>

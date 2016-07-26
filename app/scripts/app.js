@@ -58,6 +58,7 @@
             'app.swagger',
             'app.tour',
             'app.ui',
+            'app.ui.policies',
             'app.user'
 
         ])

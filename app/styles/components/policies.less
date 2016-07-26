@@ -1,0 +1,48 @@
+// Styles for policy visualisation
+
+.policy-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  //align-items: center;
+  justify-content: flex-start;
+  align-content: space-between;
+  padding: 10px 0;
+
+  .policy {
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 360px;
+    height: 110px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    &:hover {
+      border: 1px solid @brand-primary;
+    }
+
+    .policy-header {
+      padding: 5px 5px 5px 80px;
+      position: relative;
+      border-bottom: 1px solid #eee;
+
+      .policy-icon {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        left: 10px;
+        top: 23px;
+      }
+
+      .remove-icon {
+        padding: 0 5px;
+      }
+    }
+
+    .policy-body {
+      padding: 5px 5px 5px 90px;
+    }
+  }
+
+}
