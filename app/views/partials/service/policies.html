@@ -16,29 +16,31 @@
   </div>
   <!-- The list of policies -->
   <div class="col-sm-12">
-    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">Add Policy</button>
-  </div>
-  <div class="col-sm-12" ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
-    <hr>
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-if="!isPublished && !isRetired && User.isAuthorizedFor('svcEdit')">Add Policy</button>
   </div>
 
-  <div class="col-sm-12" ng-hide="policies.length > 0">
-    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isPublished && User.isAuthorizedFor('svcEdit')">
+  <div class="col-sm-12 mt10" ng-hide="policies.length > 0">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="(isPublished || isRetired) && User.isAuthorizedFor('svcEdit')">
       It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Service, since this one has already been published and can no longer be modified!
     </div>
-    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isPublished && !User.isAuthorizedFor('svcEdit')">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="(isPublished || isRetired) && !User.isAuthorizedFor('svcEdit')">
       It looks like there aren't any policies defined!
     </div>
-    <div ng-if="!isPublished && User.isAuthorizedFor('svcEdit')">
+    <div ng-if="!isPublished && !isRetired && User.isAuthorizedFor('svcEdit')">
       <div class="col-sm-8 col-sm-offset-1 well">
-        It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you may try defining one using the Add Policy button above...
+        It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you could try defining one using the Add Policy button right there...
       </div>
       <div class="col-sm-3">
         <div class="no-entities-arrow"></div>
       </div>
     </div>
   </div>
-  <div class="col-sm-12 mt20">
-    <policy-list policies="policies" policy-configuration="policyDetails" can-edit="!isPublished && User.isAuthorizedFor('svcEdit')" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="{{ org.id }}" page-id="{{ plan.id }}" version="{{ version.version }}"></policy-list>
+
+  <div class="col-sm-12">
+    <api-policy-list policies="policies" editable="!isPublished && !isRetired && User.isAuthorizedFor('svcEdit')"></api-policy-list>
+    <!--<api-policy-list policies="policies"></api-policy-list>-->
   </div>
+  <!--<div class="col-sm-12 mt20">-->
+    <!--<policy-list policies="policies" policy-configuration="policyDetails" can-edit="!isPublished && User.isAuthorizedFor('svcEdit')" remove-function="removePolicy" reorder-function="reorderPolicies" type="plans" org-id="{{ org.id }}" page-id="{{ plan.id }}" version="{{ version.version }}"></policy-list>-->
+  <!--</div>-->
 </div>
