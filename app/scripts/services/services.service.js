@@ -6,10 +6,12 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service($uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, ServiceVersionPolicy, DefaultTerms) {
+    function service($q, $uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition,
+                     ServiceVersionPolicy, Categories, DefaultTerms, _) {
         this.deleteService = deleteService;
         this.deleteServiceVersion = deleteServiceVersion;
         this.deprecateServiceVersion = deprecateServiceVersion;
+        this.editDetails = editDetails;
         this.getServicesForOrg = getServicesForOrg;
         this.getServiceVersions = getServiceVersions;
         this.getDefinition = getDefinition;
@@ -23,6 +25,7 @@
         this.updateServiceVersion = updateServiceVersion;
         this.updateTerms = updateTerms;
         this.getDefaultTerms = getDefaultTerms;
+        this.getAllCategories = getAllCategories;
 
 
         function deleteService(orgId, svcId, svcName) {
@@ -87,9 +90,40 @@
                 return modalInstance.result;
             });
         }
+
+        function editDetails(orgId, svcId) {
+            var deferred = $q.defer();
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/serviceEdit.html',
+                size: 'lg',
+                controller: 'ServiceEditCtrl as ctrl',
+                resolve: {
+                    svc: function () {
+                        return Service.get({ orgId: orgId, svcId: svcId }).$promise;
+                    }
+                },
+                backdrop : 'static'
+            });
+            modalInstance.result.then(function(updatedSvc) {
+                console.log(updatedSvc);
+                var updateObj = {
+                    description: updatedSvc.description,
+                    categories: _.map(updatedSvc.categories, 'text'),
+                };
+                console.log(updateObj);
+                deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+            }, function () {
+                deferred.resolve('canceled');
+            });
+            return deferred.promise;
+        }
         
         function getDefaultTerms() {
             return DefaultTerms.get().$promise;
+        }
+
+        function getAllCategories() {
+            return Categories.query().$promise;
         }
         
         function getServicesForOrg(orgId) {

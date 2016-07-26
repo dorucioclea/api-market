@@ -5,7 +5,7 @@
         .service('orgService', orgService);
     
     
-    function orgService($q, $uibModal, Organization, SearchOrgs) {
+    function orgService($q, $uibModal, Organization, SearchOrgs, currentUserModel, CONFIG) {
 
         this.delete = deleteOrg;
         this.name = nameIt;
@@ -45,6 +45,9 @@
                 resolve: {
                     org: function () {
                         return Organization.get({ id: orgId }).$promise;
+                    },
+                    admin: function () {
+                        return CONFIG.APP.PUBLISHER_MODE && currentUserModel.currentUser.admin;
                     }
                 },
                 backdrop : 'static'

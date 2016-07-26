@@ -72,7 +72,7 @@
       <div class="col-sm-12">
         <label class="control-label text-primary">Service Category Tags</label>
         <tags-input id="tags" ng-model="ctrl.categories" add-from-autocomplete-only="false">
-          <auto-complete min-length="0" select-first-match="false" source="currentCategories"></auto-complete>
+          <auto-complete min-length="0" select-first-match="false" source="filterCategories($query)"></auto-complete>
         </tags-input>
         <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
       </div>

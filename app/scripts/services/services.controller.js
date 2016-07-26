@@ -6,6 +6,7 @@
         .controller('ServiceActivityCtrl', serviceActivityCtrl)
         .controller('ServiceImplementationCtrl', serviceImplCtrl)
         .controller('ServiceDefinitionCtrl', serviceDefinitionCtrl)
+        .controller('ServiceEditCtrl', serviceEditCtrl)
         .controller('ServicePendingContractsCtrl', servicePendingCtrl)
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
@@ -19,10 +20,13 @@
 
     function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
                          svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
-                         toastService, ALERT_TYPES, TOAST_TYPES, service) {
+                         toastService, ALERT_TYPES, TOAST_TYPES, service, CONFIG) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
+        $scope.orgId = $stateParams.orgId;
+        $scope.userHasEditPermission = $scope.User.isAuthorizedForIn('svcEdit', $scope.orgId);
+        $scope.userHasAdminPermission = $scope.User.isAuthorizedForIn('svcAdmin', $scope.orgId);
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
@@ -40,9 +44,11 @@
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
+        $scope.editDetails = editDetails;
         $scope.selectVersion = selectVersion;
         $scope.showInfoModal = showInfoModal;
         $scope.updateDesc = updateDesc;
+        $scope.CONFIG = CONFIG;
 
         init();
 
@@ -138,6 +144,18 @@
             return needsReadMe;
         }
 
+        function editDetails() {
+            service.editDetails($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('Details for <b>' + $scope.serviceVersion.service.name + '</b> have been updated.');
+                    // todo avoid forced reload?
+                    $state.forceReload();
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update service version details');
+            })
+        }
+
         function updateDesc(newValue) {
             service.updateDescription($stateParams.orgId, $stateParams.svcId, newValue).then(function (reply) {
                 toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
@@ -177,6 +195,34 @@
         $scope.activities = activityData.beans;
         svcScreenModel.updateTab('Activity');
 
+    }
+
+
+    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, service) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.filterCategories = filterCategories;
+        $scope.svc = svc;
+
+        init();
+
+        function init() {
+            service.getAllCategories().then(function (reply) {
+                $scope.currentCategories = reply;
+            })
+        }
+
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+
+        function filterCategories($query) {
+            return $filter('filter')($scope.currentCategories, $query);
+        }
+
+        function ok() {
+            $uibModalInstance.close($scope.svc);
+        }
     }
 
 

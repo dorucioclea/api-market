@@ -503,7 +503,7 @@
                 })
                 // Admin Users View
                 .state('root.administration.users', {
-                    url: '/users',
+                    url: '/admins',
                     templateUrl: 'views/partials/administration/users.html',
                     resolve: {
                         Admins: 'Admins',
@@ -970,6 +970,11 @@
                     url: '/profile',
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
+                })
+                .state('root.user.connected-apps', {
+                    url: '/connected',
+                    templateUrl: 'views/partials/user/connected.html',
+                    controller: 'UserConnectedAppsCtrl'
                 });
         })
 

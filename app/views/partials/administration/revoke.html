@@ -5,12 +5,15 @@
                 <div class="col-sm-12">
                     <h4>Genereate new API Keys & OAuth Credentials</h4>
                     <p>This page allows the administrator to regenerate all current API keys and OAuth credentials.</p>
+                    <!--<h4>Revoke OAuth Grants</h4>-->
+                    <!--<p>This page allows the administrator to revoke all current OAuth2 grants.</p>-->
                     <p><strong>Use with caution, as this cannot be undone.</strong></p>
                     <hr>
                 </div>
                 <div class="col-sm-12 mt30 mb30">
                     <button class="btn btn-lg btn-line-danger" ng-click="confirmRegenerateAPIKeys()" ng-disabled="timeoutForm.$invalid">Regenerate All API Keys</button>
                     <button class="btn btn-lg btn-line-danger" ng-click="confirmRegenerateCredentials()" ng-disabled="timeoutForm.$invalid">Regenerate All OAuth Credentials</button>
+                    <!--<button class="btn btn-lg btn-line-danger" ng-click="confirmRevokeAllGrants()" ng-disabled="timeoutForm.$invalid">Revoke All OAuth Grants</button>-->
                 </div>
             </div>
         </div>
