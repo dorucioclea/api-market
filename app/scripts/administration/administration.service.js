@@ -19,6 +19,8 @@
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
+        this.regenerateAllApiKeys = regenerateAllApiKeys;
+        this.regenerateAllCredentials = regenerateAllCredentials;
         this.updateExpirationTimes = updateExpirationTimes;
         this.setDefaultTerms = setDefaultTerms;
         
@@ -58,6 +60,18 @@
                 backdrop : 'static',
                 windowClass: 'default'	// Animation Class put here.
             });
+        }
+
+        function regenerateAllApiKeys() {
+            // TODO implement backend
+            // return $q.resolve('OK');
+            return $q.reject({ data: { message: 'Not yet implemented!'}});
+        }
+
+        function regenerateAllCredentials() {
+            // TODO implement backend
+            // return $q.resolve('OK');
+            return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {

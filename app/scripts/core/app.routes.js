@@ -552,6 +552,11 @@
                     },
                     controller: 'AdminStatusCtrl'
                 })
+                .state('root.administration.oauth', {
+                    url: '/apikeys-credentials',
+                    templateUrl: 'views/partials/administration/revoke.html',
+                    controller: 'AdminOAuthRevokeCtrl'
+                })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
                 .state('root.organizations', {

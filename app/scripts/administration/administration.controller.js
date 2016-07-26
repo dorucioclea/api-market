@@ -6,6 +6,7 @@
         .controller('AddAdminCtrl', addAdminCtrl)
         .controller('AdminExpirationCtrl', adminExpirationCtrl)
         .controller('AdminTermsCtrl', adminTermsCtrl)
+        .controller('AdminOAuthRevokeCtrl', adminOAuthRevokeCtrl)
         .controller('AdminStatusCtrl', adminStatusCtrl)
         .controller('AdminUsersCtrl', adminUsersCtrl)
         .controller('RemoveAdminCtrl', removeAdminCtrl);
@@ -56,6 +57,49 @@
             }, function (err) {
                 $scope.toastService.createErrorToast(err, 'Could not update default Terms & Conditions');
             });
+        }
+    }
+
+    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
+        $scope.adminTab.updateTab('OAuth');
+        $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
+        $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
+
+
+        function confirmRegenerateAPIKeys() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeOAuthConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.revokeAllGrants().then(function () {
+                    toastService.success('All OAuth grants have been revoked successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke OAuth grants.');
+                })
+            })
+        }
+        
+        function confirmRegenerateCredentials() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeOAuthConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+            
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.revokeAllGrants().then(function () {
+                    toastService.success('All OAuth grants have been revoked successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke OAuth grants.');
+                })
+            })
         }
     }
 
