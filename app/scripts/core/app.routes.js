@@ -873,27 +873,6 @@
                                 svcId: serviceId,
                                 versionId: versionId
                             }).$promise;
-                        },
-                        policyConfig: 'policyConfig',
-                        policyConfiguration: function ($q, policyData, organizationId, serviceId, versionId,
-                                                       policyConfig, ServiceVersionPolicy) {
-                            var policyConfiguration = [];
-                            var promises = [];
-
-                            angular.forEach(policyData, function (policy) {
-                                promises.push(ServiceVersionPolicy.get(
-                                    {orgId: organizationId,
-                                        svcId: serviceId,
-                                        versionId: versionId,
-                                        policyId: policy.id}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    policyConfiguration[value.id] = policyConfig.createConfigObject(value);
-                                });
-                                return policyConfiguration;
-                            });
                         }
                     },
                     data: {

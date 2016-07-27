@@ -24,6 +24,8 @@
                 <h3 class="text-bold">Service Policies</h3>
                 <p ng-if="svcPolicies.length === 0">No policies have been defined on this service.</p>
                 <p ng-if="svcPolicies.length > 0">The following policies are defined on this service:</p>
+                <api-policy-list policies="svcPolicies"></api-policy-list>
+
                 <div class="col-sm-12" ng-repeat="policy in svcPolicies">
                     <div class="row">
                         <div class="col-md-1">

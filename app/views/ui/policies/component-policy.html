@@ -12,8 +12,15 @@
     </div>
     <div id="overlay">
         <div class="policy-actions">
-            <span class="btn btn-sm btn-primary">Details</span>
+            <span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Details</span>
             <span ng-if="$ctrl.editMode" class="btn btn-sm btn-danger" ng-click="$ctrl.removePolicy()">Remove</span>
         </div>
+        <!--<div class="policy-remove-confirm">-->
+            <!--<span>Remove policy?</span>-->
+            <!--<p>-->
+                <!--<span class="btn btn-sm btn-success fa fa-check"></span>-->
+                <!--<span class="btn btn-sm btn-danger fa fa-times"></span>-->
+            <!--</p>-->
+        <!--</div>-->
     </div>
 </div>
