@@ -53,6 +53,8 @@
             </div>
 
             <div class="col-sm-9" style="padding-left: 0;">
+                <p id="basepath" class="text-light text-muted">{{serviceVersion.service.basepath}}</p>
+
                 <p>{{serviceVersion.service.description}}</p>
                 <span ng-repeat="category in serviceVersion.service.categories"><span class="label label-info"><i class="fa fa-tag"></i>&nbsp;{{category}}</span><span>&nbsp;</span></span>
 
