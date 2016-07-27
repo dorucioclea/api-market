@@ -866,13 +866,9 @@
                     url: '/policies',
                     templateUrl: 'views/partials/service/policies.html',
                     resolve: {
-                        ServiceVersionPolicy: 'ServiceVersionPolicy',
-                        policyData: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query({
-                                orgId: organizationId,
-                                svcId: serviceId,
-                                versionId: versionId
-                            }).$promise;
+                        policyService: 'policyService',
+                        policyData: function (policyService, organizationId, serviceId, versionId) {
+                            return policyService.getServicePoliciesWithDetails(organizationId, serviceId, versionId);
                         }
                     },
                     data: {
