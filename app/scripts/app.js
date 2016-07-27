@@ -54,11 +54,11 @@
             'app.organizations',
             'app.plan',
             'app.plugin.lodash',
+            'app.policies',
             'app.service',
             'app.swagger',
             'app.tour',
             'app.ui',
-            'app.ui.policies',
             'app.user'
 
         ])
