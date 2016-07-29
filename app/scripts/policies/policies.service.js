@@ -85,22 +85,22 @@
 
             function generateCORSPopover(config) {
                 console.log(config);
-                var string = '<ul class="text-light">';
+
+                var string = '';
 
                 if (config.methods.length > 0) {
-                    string += '<li>Methods: ';
-                    string += _.join(config.methods, ',');
-                    string += '</li>';
+                    string += '<p class="text-light">Allowed Methods: </p><ul class="text-light">';
+                    _.forEach(config.methods, function (method) {
+                        string += '<li>' + method + '</li>';
+                    });
+                } else {
+                    string += '<p class="text-light">Allowed Methods: <span class="text-bold">All</span></p>';
                 }
-                else string += '<li>Methods: all</li>';
-
-                if (config.preflight_continue) string += '<li>Preflight continue: <i class="fa fa-check text-success"></i></li>';
-                else string += '<li>Preflight continue: <i class="fa fa-times text-danger"></i></li>';
-
-                if (config.credentials) string += '<li>Credentials: <i class="fa fa-check text-success"></i></li>';
-                else string += '<li>Credentials: <i class="fa fa-times text-danger"></i></li>';
 
                 string += '</ul>';
+
+                string += '<p class="text-light">Allowed Origin: <span class="text-bold">' + config.origin +  '</span></p>';
+
                 return string;
             }
 
