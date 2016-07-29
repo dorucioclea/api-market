@@ -62,34 +62,49 @@
         }
     }
 
-    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
+    function adminOAuthRevokeCtrl($scope, $uibModal, toastService, _) {
         $scope.adminTab.updateTab('OAuth');
-        $scope.confirmRevokeAllGrants = confirmRevokeAllGrants;
-        
-        function confirmRevokeAllGrants() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/revokeOAuthConfirm.html',
-                controller: 'ConfirmRevokeCtrl as ctrl',
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-            
-            modalInstance.result.then(function () {
-                // Confirmation received, revoke grants
-                $scope.adminHelper.revokeAllGrants().then(function () {
-                    toastService.success('All OAuth grants have been revoked successfully!');
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Failed to revoke OAuth grants.');
-                })
+        // $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
+        // $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
+        $scope.change = change;
+        $scope.sel = false;
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.revokeSelected = revokeSelected;
+        $scope.revokAllForUser = revokeAllForUser;
+        $scope.grants = [ { name: 'A User', grants: [{ name: 'An App' }, { name: 'Another App'}] }];
+
+        function change() {
+            _.forEach($scope.grants, function (user) {
+                user.selected = !!$scope.sel;
             })
         }
-    }
 
-    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
-        $scope.adminTab.updateTab('OAuth');
-        $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
-        $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
+        function canDoBulkOperation() {
+            return _.find($scope.grants, function (user) {
+                return user.selected;
+            })
+        }
 
+        function revokeAllForUser(user) {
+            doRevoke([ user ]).then(function () {
+                toastService.success('Grant revoked.');
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.grants, function (user) {
+                return user.selected;
+            });
+            doRevoke(toRevoke).then(function () {
+                toastService.success('Grants revoked.');
+            })
+        }
+
+        function doRevoke(toRevoke) {
+            return currentUser.revokeUserGrants(toRevoke).then(function () {
+                $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
+            });
+        }
 
         function confirmRegenerateAPIKeys() {
             var modalInstance = $uibModal.open({
