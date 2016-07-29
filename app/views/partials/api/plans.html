@@ -25,27 +25,6 @@
                 <p ng-if="svcPolicies.length === 0">No policies have been defined on this service.</p>
                 <p ng-if="svcPolicies.length > 0">The following policies are defined on this service:</p>
                 <api-policy-list policies="svcPolicies"></api-policy-list>
-
-                <div class="col-sm-12" ng-repeat="policy in svcPolicies">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <h3 class="fa fa-policy-icon {{policy.icon}} fa-fw"></h3>
-                        </div>
-                        <div class="col-md-9">
-                            <div>
-                                <span class="title"><a href>{{policy.name}}</a></span>
-                            </div>
-                            <div class="description apiman-label-faded">
-                                <div ng-hide="policyConfiguration[policy.id].length > 0">
-                                    <p class="text-light small">Oops! No configuration details available for this policy.</p>
-                                </div>
-                                <div ng-repeat="config in policyConfiguration[policy.id]">
-                                    <p class="text-bold">{{config.key}}: {{config.value}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
 

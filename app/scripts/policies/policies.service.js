@@ -5,13 +5,36 @@
         .service('policyService', policyService);
 
 
-    function policyService($q, $sce, ServiceVersionPolicy, CONFIG, POLICIES, _) {
+    function policyService($q, $sce, MktServiceVersionPolicy, PlanVersionPolicy, ServiceVersionPolicy, CONFIG, POLICIES, _) {
         this.generateDetailsPopover = generateDetailsPopover;
+        // this.getPlanPoliciesWithDetailsForMarket = getPlanPoliciesWithDetailsForMarket;
+        this.getPlanPoliciesWithDetails = getPlanPoliciesWithDetails;
+        this.getServicePoliciesWithDetailsForMarket = getServicePoliciesWithDetailsForMarket;
         this.getServicePoliciesWithDetails = getServicePoliciesWithDetails;
         this.getServicePolicyDetails = getServicePolicyDetails;
         this.getPolicyDescription = getPolicyDescription;
         this.getPolicyIcon = getPolicyIcon;
+        this.deletePlanPolicy = deletePlanPolicy;
+        this.deleteServicePolicy = deleteServicePolicy;
 
+
+        function deletePlanPolicy(orgId, planId, versionId, policyId) {
+            return PlanVersionPolicy.delete({
+                orgId: orgId,
+                planId: planId,
+                versionId: versionId,
+                policyId: policyId
+            }).$promise;
+        }
+
+        function deleteServicePolicy(orgId, svcId, versionId, policyId) {
+            return ServiceVersionPolicy.delete({
+                orgId: orgId,
+                svcId: svcId,
+                versionId: versionId,
+                policyId: policyId
+            }).$promise;
+        }
 
         function generateDetailsPopover(definitionId, configuration) {
             var parsedConfiguration = angular.fromJson(configuration);
@@ -213,6 +236,57 @@
 
         }
 
+        function getPlanPolicyDetails(orgId, planId, versionId, policyId) {
+            return PlanVersionPolicy.get({
+                orgId: orgId,
+                planId: planId,
+                versionId: versionId,
+                policyId: policyId
+            }).$promise;
+        }
+
+        function getPlanPoliciesWithDetails(orgId, planId, versionId) {
+            return PlanVersionPolicy.query({
+                orgId: orgId,
+                planId: planId,
+                versionId: versionId
+            }).$promise.then(function (policies) {
+                var promises = [];
+                _.forEach(policies, function (policy) {
+                    promises.push(getPlanPolicyDetails(orgId, planId, versionId, policy.id).then(function (details) {
+                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.description = getPolicyDescription(policy.policyDefinitionId);
+                        policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                    }));
+                });
+
+                return $q.all(promises).then(function () {
+                    return policies;
+                });
+            })
+        }
+
+        function getServicePoliciesWithDetailsForMarket(orgId, svcId, versionId) {
+            return MktServiceVersionPolicy.query({
+                orgId: orgId,
+                svcId: svcId,
+                versionId: versionId
+            }).$promise.then(function (policies) {
+                var promises = [];
+                _.forEach(policies, function (policy) {
+                    promises.push(getMktServicePolicyDetails(orgId, svcId, versionId, policy.id).then(function (details) {
+                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.description = getPolicyDescription(policy.policyDefinitionId);
+                        policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                    }));
+                });
+
+                return $q.all(promises).then(function () {
+                    return policies;
+                });
+            })
+        }
+
         function getServicePoliciesWithDetails(orgId, svcId, versionId) {
             return ServiceVersionPolicy.query({
                 orgId: orgId,
@@ -236,6 +310,15 @@
 
         function getServicePolicyDetails(orgId, svcId, versionId, policyId) {
             return ServiceVersionPolicy.get({
+                orgId: orgId,
+                svcId: svcId,
+                versionId: versionId,
+                policyId: policyId
+            }).$promise;
+        }
+
+        function getMktServicePolicyDetails(orgId, svcId, versionId, policyId) {
+            return MktServiceVersionPolicy.get({
                 orgId: orgId,
                 svcId: svcId,
                 versionId: versionId,
