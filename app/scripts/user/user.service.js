@@ -13,6 +13,7 @@
         this.getUserApps = getUserApps;
         this.getUserSvcOrgs = getUserSvcOrgs;
         this.getUserServices = getUserServices;
+        this.getUserGrants = getUserGrants;
         this.revokeUserGrants = revokeUserGrants;
         this.update = update;
 
@@ -85,6 +86,11 @@
 
         function update(newUserInfo) {
             return CurrentUserInfo.update({}, newUserInfo).$promise;
+        }
+
+        function getUserGrants() {
+            // TODO backend implementation
+            return $q.when([ { name: 'An App' }, { name: 'Another App'}]);
         }
 
         function revokeUserGrants(grants) {

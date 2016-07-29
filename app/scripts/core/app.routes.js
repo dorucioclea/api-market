@@ -927,6 +927,12 @@
                 .state('root.user.connected-apps', {
                     url: '/connected',
                     templateUrl: 'views/partials/user/connected.html',
+                    resolve: {
+                        currentUser: 'currentUser',
+                        userGrants: function (currentUser) {
+                            return currentUser.getUserGrants();
+                        }
+                    },
                     controller: 'UserConnectedAppsCtrl'
                 });
         })

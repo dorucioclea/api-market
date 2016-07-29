@@ -81,13 +81,13 @@
         }
     }
     
-    function userConnectedAppsCtrl($scope, currentUser, userScreenModel, toastService, _) {
+    function userConnectedAppsCtrl($scope, userGrants, currentUser, userScreenModel, toastService, _) {
         userScreenModel.updateTab('Connected Apps');
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
         $scope.revoke = revoke;
         $scope.revokeSelected = revokeSelected;
-        $scope.connectedApps = [ { name: 'An App' }, { name: 'Another App'}];
+        $scope.connectedApps = userGrants;
         $scope.sel = false;
 
 
