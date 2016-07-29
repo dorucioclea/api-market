@@ -13,6 +13,7 @@
         this.getUserApps = getUserApps;
         this.getUserSvcOrgs = getUserSvcOrgs;
         this.getUserServices = getUserServices;
+        this.revokeUserGrants = revokeUserGrants;
         this.update = update;
 
         function checkStatus() {
@@ -84,6 +85,11 @@
 
         function update(newUserInfo) {
             return CurrentUserInfo.update({}, newUserInfo).$promise;
+        }
+
+        function revokeUserGrants(grants) {
+            // TODO backend implementation
+            return $q.when('OK');
         }
     }
 

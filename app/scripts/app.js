@@ -27,6 +27,7 @@
             'angular-ladda',
             'btford.markdown',
             'swaggerUi',
+            'smart-table',
 
             /* custom modules */
             'app.ctrls',

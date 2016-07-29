@@ -81,8 +81,48 @@
         }
     }
     
-    function userConnectedAppsCtrl(userScreenModel) {
+    function userConnectedAppsCtrl($scope, currentUser, userScreenModel, toastService, _) {
         userScreenModel.updateTab('Connected Apps');
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.change = change;
+        $scope.revoke = revoke;
+        $scope.revokeSelected = revokeSelected;
+        $scope.connectedApps = [ { name: 'An App' }, { name: 'Another App'}];
+        $scope.sel = false;
+
+
+        function change() {
+            _.forEach($scope.connectedApps, function (app) {
+                app.selected = !!$scope.sel;
+            })
+        }
+
+        function canDoBulkOperation() {
+            return _.find($scope.connectedApps, function (app) {
+                return app.selected;
+            })
+        }
+
+        function revoke(app) {
+            doRevoke([app]).then(function () {
+                toastService.success('Grant revoked.');
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.connectedApps, function (app) {
+                return app.selected;
+            });
+            doRevoke(toRevoke).then(function () {
+                toastService.success('Grants revoked.');
+            })
+        }
+
+        function doRevoke(toRevoke) {
+            return currentUser.revokeUserGrants(toRevoke).then(function () {
+                $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
+            });
+        }
     }
 
     function userEmailCtrl(userScreenModel) {
