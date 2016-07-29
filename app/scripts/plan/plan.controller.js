@@ -102,26 +102,9 @@
 
     }
 
-    function planPoliciesCtrl($scope, $uibModal, $stateParams, policyData, policyConfiguration, PlanVersionPolicy) {
+    function planPoliciesCtrl($scope, $uibModal, policyData) {
         $scope.policies = policyData;
-        $scope.policyDetails = policyConfiguration;
-        $scope.removePolicy = removePolicy;
         $scope.modalAddPolicy = modalAddPolicy;
-
-        function removePolicy(policy) {
-            PlanVersionPolicy.delete(
-                {orgId: $stateParams.orgId,
-                    planId: $stateParams.planId,
-                    versionId: $stateParams.versionId,
-                    policyId: policy.id},
-                function (data) {
-                    angular.forEach($scope.policies, function(p, index) {
-                        if (policy === p) {
-                            $scope.policies.splice(index, 1);
-                        }
-                    });
-                });
-        }
 
         function modalAddPolicy() {
             $uibModal.open({

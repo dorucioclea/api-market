@@ -6,8 +6,7 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service($q, $uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition,
-                     ServiceVersionPolicy, Categories, DefaultTerms, _) {
+    function service($q, $uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, Categories, DefaultTerms, _) {
         this.deleteService = deleteService;
         this.deleteServiceVersion = deleteServiceVersion;
         this.deprecateServiceVersion = deprecateServiceVersion;
@@ -18,7 +17,6 @@
         this.getEndpoint = getEndpoint;
         this.getVersion = getVersion;
         this.publishServiceVersion = publishServiceVersion;
-        this.removePolicy = removePolicy;
         this.retireServiceVersion = retireServiceVersion;
         this.updateDefinition = updateDefinition;
         this.updateDescription = updateDescription;
@@ -162,10 +160,6 @@
 
                 return modalInstance.result;
             });
-        }
-
-        function removePolicy(orgId, svcId, versionId, policyId) {
-            return ServiceVersionPolicy.delete({ orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId }).$promise;
         }
 
         function retireServiceVersion(orgId, svcId, versionId) {

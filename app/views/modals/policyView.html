@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{policy.name}} Details</h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+
+<div class="modal-body">
+    <p>User credentials will {{ policy.details.configuration.hide_credentials ? '' : 'not' }} be hidden.</p>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="modalClose()">OK</button>
+</div>

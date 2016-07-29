@@ -646,25 +646,11 @@
         };
     }
 
-    function servicePoliciesCtrl($scope, $uibModal, $stateParams, policyData, policyConfiguration,
-                                 svcScreenModel, service) {
+    function servicePoliciesCtrl($scope, $uibModal, policyData,
+                                 svcScreenModel) {
 
         $scope.policies = policyData;
-        $scope.policyDetails = policyConfiguration;
         svcScreenModel.updateTab('Policies');
-
-        $scope.removePolicy = function (policy) {
-            service.removePolicy($stateParams.orgId, $stateParams.svcId, $stateParams.versionId, policy.id).then(
-                function (data) {
-                    angular.forEach($scope.policies, function (p, index) {
-                        if (policy === p) {
-                            $scope.policies.splice(index, 1);
-                        }
-                    });
-                });
-        };
-
-        $scope.modalAnim = 'default';
 
         $scope.modalAddPolicy = function () {
             $uibModal.open({

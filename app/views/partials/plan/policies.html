@@ -24,7 +24,7 @@
       <div class="no-entities-arrow" ng-hide="locked"></div>
     </div>
   </div>
-  <div class="col-sm-12 mt20">
-  <policy-list policies="policies" policy-configuration="policyDetails" remove-function="removePolicy" can-edit="!locked" reorder-function="reorderPolicies" type="plans" org-id="{{ org.id }}" page-id="{{ plan.id }}" version="{{ version.version }}"></policy-list>
+  <div class="col-sm-12">
+    <api-policy-list policies="policies" editable="!locked && User.isAuthorizedFor('planEdit')" type="plan"></api-policy-list>
 </div>
 </div>
