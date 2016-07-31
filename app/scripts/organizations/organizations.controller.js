@@ -12,7 +12,8 @@
         .controller('PendingCtrl', pendingMembersCtrl)
         .controller('PlansCtrl', plansCtrl)
         .controller('ServicesCtrl', servicesCtrl)
-        .controller('OrgDeleteCtrl', orgDeleteCtrl);
+        .controller('OrgDeleteCtrl', orgDeleteCtrl)
+        .controller('OrgEditCtrl', orgEditCtrl);
 
 
     function applicationsCtrl($scope, $state, appData, orgScreenModel, ApplicationVersion) {
@@ -152,8 +153,8 @@
         }
     }
 
-    function organizationCtrl($scope, $uibModal, $q, $stateParams, screenSize, orgData, organizationId, pendingContracts,
-                              pendingMemberships, memberService, toastService, TOAST_TYPES, Organization, Member,
+    function organizationCtrl($scope, $state, $stateParams, screenSize, orgData, pendingContracts,
+                              pendingMemberships, memberService, orgService, toastService, Member,
                               orgScreenModel, CONFIG) {
 
         $scope.displayTab = orgScreenModel;
@@ -165,9 +166,8 @@
         $scope.xs = screenSize.on('xs', function(match) {
             $scope.xs = match;
         });
-        $scope.updateOrgDescription = updateOrgDescription;
-        $scope.updateOrgFriendlyName = updateOrgFriendlyName;
-        $scope.updateOrgVisibility = updateOrgVisibility;
+        $scope.deleteOrg = deleteOrg;
+        $scope.editDetails = editDetails;
         $scope.useFriendlyNames = CONFIG.APP.ORG_FRIENDLY_NAME_ENABLED;
         init();
 
@@ -178,55 +178,27 @@
             });
         }
 
-        function updateOrgDescription(newValue) {
-            Organization.update({ id: organizationId }, { description: newValue }, function (reply) {
-                toastService.createToast(TOAST_TYPES.INFO, 'Description updated.', true);
+        function deleteOrg() {
+            orgService.delete($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('<b>' + $scope.orgScreenModel.organization.name + ' has been deleted!</b>');
+                    $state.go('root.myOrganizations');
+                }
             }, function (error) {
-                toastService.createErrorToast(error, 'Could not update the organization\'s description.');
-            });
-        }
-
-        function updateOrgFriendlyName() {
-            var modalinstance = $uibModal.open({
-                templateUrl: 'views/modals/organizationEditFriendlyName.html',
-                controller: 'OrgFriendlyNameModalCtrl as ctrl',
-                resolve: {
-                    orgFriendlyName: function () {
-                        return $scope.org.friendlyName;
-                    }
-                },
-                backdrop : 'static'
-            });
-
-            modalinstance.result.then(function (updatedOrgFriendlyName) {
-                Organization.update({id: organizationId}, { friendlyName: updatedOrgFriendlyName }, function () {
-                    toastService.success('Organization friendly name now set to <b>' + updatedOrgFriendlyName + '</b>');
-                    $scope.org.friendlyName = updatedOrgFriendlyName;
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update the organization friendly name.');
-                });
+                toastService.createErrorToast(error, 'Could not delete organization');
             })
         }
 
-        function updateOrgVisibility() {
-            var modalinstance = $uibModal.open({
-                templateUrl: 'views/modals/organizationEditVisibility.html',
-                controller: 'OrgVisibilityModalCtrl as ctrl',
-                resolve: {
-                    currentlyPrivate: function () {
-                        return $scope.org.organizationPrivate;
-                    }
-                },
-                backdrop : 'static'
-            });
 
-            modalinstance.result.then(function (setOrgPrivate) {
-                Organization.update({id: organizationId}, { organizationPrivate: setOrgPrivate }, function () {
-                    toastService.success(setOrgPrivate ? 'Organization now set to <b>Private</b>.' : 'Organization now set to <b>Public</b>.');
-                    $scope.org.organizationPrivate = setOrgPrivate;
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update the organization visibility.');
-                });
+        function editDetails() {
+            orgService.editDetails($stateParams.orgId).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('Settings for <b>' + $scope.org.name + '</b> have been updated.');
+                    // todo avoid forced reload?
+                    $state.forceReload();
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update organization details');
             })
         }
     }
@@ -334,10 +306,11 @@
         }
     }
 
-    function orgDeleteCtrl($scope, $uibModalInstance, org) {
+    function orgDeleteCtrl($scope, $uibModalInstance, org, CONFIG) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.org = org;
+        $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
 
         function cancel() {
             $uibModalInstance.dismiss('canceled');
@@ -348,14 +321,30 @@
         }
     }
 
-    function servicesCtrl($scope, $state, $uibModal, svcData, _,
-                          orgScreenModel, ServiceVersion) {
+    function orgEditCtrl($scope, $uibModalInstance, org, admin) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.org = org;
+        $scope.admin = admin;
+
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+
+        function ok() {
+            $uibModalInstance.close($scope.org);
+        }
+    }
+
+    function servicesCtrl($scope, $state, $uibModal, svcData, _, toastService,
+                          orgScreenModel, service) {
 
         $scope.services = svcData;
         $scope.canDeprecate = canDeprecate;
         $scope.canPublish = canPublish;
         $scope.canRetire = canRetire;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeleteSvcVersion = confirmDeleteSvcVersion;
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
@@ -414,101 +403,35 @@
         }
 
         function confirmDeleteSvc(svcVersion) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDelete.html',
-                size: 'lg',
-                controller: 'DeleteServiceCtrl as ctrl',
-                resolve: {
-                    organizationId: function () {
-                        return svcVersion.organizationId;
-                    },
-                    serviceId: function () {
-                        return svcVersion.id;
-                    },
-                    serviceName: function () {
-                        return svcVersion.name;
-                    }
-                },
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (result) {
+            service.deleteService(svcVersion.organizationId, svcVersion.id, svcVersion.name);
+        }
+        
+        function confirmDeleteSvcVersion(svcVersion) {
+            service.deleteServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (result) {
                 if ( result === 'success') {
                     $state.forceReload();
+                } else {
+                    toastService.createErrorToast(result, 'Could not delete service version!');
                 }
             });
         }
 
         function confirmDeprecateSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/serviceDeprecate.html',
-                        size: 'lg',
-                        controller: 'DeprecateServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
-
-
+            service.deprecateServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function confirmPublishSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/servicePublish.html',
-                        size: 'lg',
-                        controller: 'PublishServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
+            service.publishServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function confirmRetireSvc(svcVersion) {
-            ServiceVersion.get(
-                {orgId: svcVersion.organizationId, svcId: svcVersion.id, versionId: svcVersion.version},
-                function (reply) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/modals/serviceRetire.html',
-                        size: 'lg',
-                        controller: 'RetireServiceCtrl as ctrl',
-                        resolve: {
-                            svcVersion: function () {
-                                return reply;
-                            }
-                        },
-                        backdrop : 'static',
-                        windowClass: $scope.modalAnim	// Animation Class put here.
-                    });
-
-                    modalInstance.result.then(function (status) {
-                        svcVersion.status = status;
-                    })
-                });
+            service.retireServiceVersion(svcVersion.organizationId, svcVersion.id, svcVersion.version).then(function (status) {
+                svcVersion.status = status;
+            });
         }
 
         function toMetrics(svcVersion) {

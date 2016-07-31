@@ -3,7 +3,7 @@
 
     angular.module('app.ctrl.modals.lifecycle', [])
 
-        /// ==== NewApplication Controller
+    /// ==== NewApplication Controller
         .controller('NewApplicationCtrl',
             function ($scope, $uibModalInstance, $state, flowFactory, alertService, imageService,
                       orgScreenModel, toastService, REGEX, TOAST_TYPES, Application) {
@@ -180,8 +180,8 @@
 
         /// ==== NewService Controller
         .controller('NewServiceCtrl',
-            function ($scope, $uibModal, $state, $stateParams, flowFactory, alertService,
-                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Categories, Service) {
+            function ($scope, $filter, $uibModal, $state, $stateParams, flowFactory, alertService, service,
+                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Service) {
 
                 $scope.org = orgScreenModel.organization;
                 $scope.configVars = CONFIG;
@@ -194,13 +194,14 @@
                 $scope.readFile = readFile;
                 $scope.closeAlert = closeAlert;
                 $scope.createService = createService;
+                $scope.filterCategories = filterCategories;
                 $scope.modalClose = modalClose;
                 init();
 
                 function init() {
                     alertService.resetAllAlerts();
                     imageService.clear();
-                    Categories.query({}, function (reply) {
+                    service.getAllCategories().then(function (reply) {
                         $scope.currentCategories = reply;
                     });
                 }
@@ -250,6 +251,10 @@
                     });
                 }
 
+                function filterCategories($query) {
+                    return $filter('filter')($scope.currentCategories, $query);
+                }
+
                 function modalClose() {
                     imageService.clear();
                     $scope.$close();	// this method is associated with $uibModal scope which is this.
@@ -275,8 +280,8 @@
                     });
                 }
 
-            })        
-        
+            })
+
         /// ==== PublishService Controller
         .controller('PublishServiceCtrl',
             function ($scope, $uibModalInstance,
@@ -349,6 +354,29 @@
                     }, function (fail) {
                         $uibModalInstance.close("fail");
                     })
+                }
+            })
+
+        /// ==== DeleteServiceVersion Controller
+        .controller('DeleteServiceVersionCtrl',
+            function ($scope, $uibModalInstance, svcVersion, lastVersion, ServiceVersion) {
+
+                $scope.serviceVersion = svcVersion;
+                $scope.lastVersion = lastVersion;
+                $scope.modalClose = modalClose;
+                $scope.doDelete = doDelete;
+
+                function modalClose() {
+                    $uibModalInstance.dismiss('canceled');
+                }
+
+                function doDelete() {
+                    ServiceVersion.delete({ orgId: svcVersion.service.organization.id,
+                        svcId: svcVersion.service.id, versionId: svcVersion.version }).$promise.then(function () {
+                        $uibModalInstance.close("success");
+                    }, function (err) {
+                        $uibModalInstance.close(err);
+                    });
                 }
             })
 

@@ -1,0 +1,23 @@
+<div class="row mb30">
+    <div class="panel panel-default mb30">
+        <div class="panel-body">
+            <div class="row terms-admin">
+                <div class="col-sm-12">
+                    <h4>Default Terms & Conditions</h4>
+                    <p>These are the Terms & Conditions that applications that want to create a contract with a Service that does not specify it's own Terms will have to agree to.</p>
+                    <p>They can be modified below.</p>
+                    <hr>
+                </div>
+                <div class="col-sm-12">
+                    <div btf-markdown="terms" class="terms"></div>
+                </div>
+                <div class="col-sm-12 mt20">
+                    <textarea class="terms-editor" ng-model="terms">{{terms}}</textarea>
+                </div>
+                <div class="col-sm-12 mt20">
+                    <button class="btn btn-line-primary" ng-click="updateDefaultTerms()">Update Terms & Conditions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

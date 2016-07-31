@@ -1,67 +1,75 @@
- <div class="page page-ui-notifications">
-
-  <ol class="breadcrumb breadcrumb-small">
-    <li>Publisher</li>
+<div class="page page-api">
+  <api-page-breadcrumbs>
     <li class="active"><a ui-sref="root.myOrganizations">My Organizations</a></li>
     <li class="active"><a ui-sref="root.organization({orgId: org.id})">{{org.name}}</a></li>
-  </ol>
-  <div class="toast toast-bottomRight">
-    <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-      <div ng-bind-html="toast.msg">Test Toast</div>
-    </uib-alert>
-  </div>
-  <div class="row">
+  </api-page-breadcrumbs>
 
-    <!-- Organization Basic Settings panel -->
-    <div class="col col-md-4 mb30">
-      <div class="panel panel-default">
+  <api-page-header has-logo="false">
+    <div>
+      <span id="org-name" class="size-h3 text-primary text-uppercase text-bold">{{orgScreenModel.organization.name}}</span>
+      <span class="small text-muted ml10 mb5" ng-if="!orgScreenModel.organization.organizationPrivate"><span class="fa fa-globe"></span>&nbsp;Public Organization</span>
+      <span class="small text-muted ml10 mb5" ng-if="orgScreenModel.organization.organizationPrivate"><span class="fa fa-lock"></span>&nbsp;Private Organization</span>
+      <div class="right" ng-if="User.isAuthorizedForIn('orgAdmin', orgScreenModel.organization.id)">
+        <api-page-actions>
+          <li id="edit-details">
+            <a ng-click="editDetails()" class="clickable">
+              Edit Details
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li id="delete-org" class="text-danger">
+            <a ng-click="deleteOrg()" class="clickable">
+              <span class="text-danger">Delete Organization</span>
+            </a>
+          </li>
+        </api-page-actions>
+      </div>
+      <p class="size-h5" ng-if="User.currentUser.admin"><span ng-if="org.friendlyName && org.friendlyName.length > 0">({{ org.friendlyName }})</span><span class="text-muted" ng-if="!org.friendlyName || org.friendlyName.length === 0">(No branding name set)</span></p>
+
+      <div>{{orgScreenModel.organization.description}}</div>
+
+      <!--<div class="col-sm-12">-->
+      <!--<div class="col-sm-12 text-light">-->
+      <!--<i class="fa fa-clock-o fa-fw"></i>-->
+      <!--<span>Created on</span>-->
+      <!--<span data-field="createdOn">{{org.createdOn | date}}</span>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-sm-12 text-light">-->
+      <!--<div class="col-sm-12">-->
+      <!--<i class="fa fa-users fa-fw"></i>-->
+      <!--<span data-field="numMembers" class="ng-binding">{{memberCount}}</span>-->
+      <!--<span>{{ memberCount === 1 ? 'Member' : 'Members' }}</span>-->
+      <!--</div>-->
+      <!--</div>-->
+    </div>
+  </api-page-header>
+
+  <div id="navtabs" class="api-row">
+    <div class="api-content-container navtab-container">
+      <input id="plans" type="radio" name="tabs" ui-sref-active="active" ui-sref=".plans" ng-if="User.isAuthorizedForIn('planView', org.id)">
+      <label for="plans">Plans</label>
+
+      <input id="services" type="radio" name="tabs" ui-sref-active="active" ui-sref=".services" ng-if="User.isAuthorizedForIn('svcView', org.id)">
+      <label for="services">Services <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
+
+      <input id="members" type="radio" name="tabs" ui-sref-active="active" ui-sref=".members">
+      <label for="members">Members</label>
+
+      <input id="pending" type="radio" name="tabs" ui-sref-active="active" ui-sref=".pending" ng-if="User.isAuthorizedForIn('orgAdmin', org.id)">
+      <label for="pending">Membership Requests <span class="badge text-bold" ng-if="pendingMemberships.length > 0">{{pendingMemberships.length}}</span></label>
+    </div>
+  </div>
+
+
+  <div class="api-row">
+    <div class="api-content-container">
+      <div class="panel">
         <div class="panel-body">
-          <div class="col-sm-12">
-            <h4 class="text-primary text-uppercase text-bold">{{org.name}}</h4>
-            <h5 ng-if="User.currentUser.admin"><span ng-if="org.friendlyName && org.friendlyName.length > 0">({{ org.friendlyName }})</span><span class="text-muted" ng-if="!org.friendlyName || org.friendlyName.length === 0">No branding name set.</span>&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgFriendlyName()"></a></h5>
-            <span class="small text-muted mb5" ng-if="!org.organizationPrivate"><span class="fa fa-globe"></span>&nbsp;Public Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
-            <span class="small text-muted mb5" ng-if="org.organizationPrivate"><span class="fa fa-lock"></span>&nbsp;Private Organization&nbsp;<a class="fa fa-pencil clickable" ng-if="User.isAuthorizedFor('orgAdmin')" ng-click="updateOrgVisibility()"></a></span>
-            <hr>
-          </div>
-          <div class="col-sm-12">
-            <div class="col-sm-12 text-light">
-              <i class="fa fa-clock-o fa-fw"></i>
-              <span>Created on</span>
-              <span data-field="createdOn">{{org.createdOn | date}}</span>
-            </div>
-          </div>
-          <div class="col-sm-12 text-light">
-            <div class="col-sm-12">
-              <i class="fa fa-users fa-fw"></i>
-              <span data-field="numMembers" class="ng-binding">{{memberCount}}</span>
-              <span>{{ memberCount === 1 ? 'Member' : 'Members' }}</span>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <hr>
-          </div>
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label class="control-label text-primary">Description</label>
-              <div id="desc" click-to-edit value="org.description" save-function="updateOrgDescription" ng-if="User.isAuthorizedFor('orgAdmin')"></div>
-              <div ng-if="!User.isAuthorizedFor('orgAdmin')">{{org.description}}</div>
-            </div>
-          </div>
+          <div ui-view></div>
         </div>
       </div>
-    </div><!-- end Organization Basic Settings panel -->
-
-    <!-- Organization Actions panels -->
-    <div class="col-md-8 mb20" ng-init="activeTab = 1">
-      <div class="btn-group btn-radio">
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Plans'" id="plans" ui-sref=".plans" ng-if="User.isAuthorizedFor('planView')">Plans</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Services'" id="services" ui-sref=".services" ng-if="User.isAuthorizedFor('svcView')">Services <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Members'" id="members" ui-sref=".members">Members</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="User.isAuthorizedFor('orgAdmin')">Membership Requests <span class="badge text-bold" ng-if="pendingMemberships.length > 0">{{pendingMemberships.length}}</span></label>
-      </div>
-      <div class="col-sm-12 mt10" ui-view></div>
-
     </div>
-
   </div>
+
 </div>

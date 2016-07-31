@@ -1,0 +1,8 @@
+<div class="btn-group dropdown" uib-dropdown>
+    <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle ng-disabled="$ctrl.versions.length === 1">
+        Version: {{$ctrl.currentVersion}}<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li ng-repeat="version in $ctrl.versions | orderBy:'createdOn'" ng-click="$ctrl.selectVersion(version)"><a>{{version.version}}</a></li>
+    </ul>
+</div>

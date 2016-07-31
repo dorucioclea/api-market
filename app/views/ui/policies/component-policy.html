@@ -1,0 +1,27 @@
+<div class="policy" uib-popover-html="$ctrl.policy.details" popover-animation="true" popover-placement="top" popover-trigger="mouseenter">
+    <div id="content">
+        <div class="policy-header">
+            <h5>{{$ctrl.policy.name}}</h5>
+            <img class="policy-icon" ng-attr-src="{{$ctrl.policy.iconPath}}">
+        </div>
+        <div class="policy-body">
+            <span class="text-muted text-light small">{{$ctrl.policy.description}}</span>
+            <!--<span>{{$ctrl.policy.policyDefinitionId}}</span>-->
+        </div>
+    </div>
+    <div id="overlay" ng-if="$ctrl.editMode">
+        <div class="policy-actions">
+            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Edit</span>-->
+            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Enable</span>-->
+            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Disable</span>-->
+            <span class="btn btn-sm btn-danger" ng-click="$ctrl.removePolicy()">Remove</span>
+        </div>
+        <!--<div class="policy-remove-confirm">-->
+            <!--<span>Remove policy?</span>-->
+            <!--<p>-->
+                <!--<span class="btn btn-sm btn-success fa fa-check"></span>-->
+                <!--<span class="btn btn-sm btn-danger fa fa-times"></span>-->
+            <!--</p>-->
+        <!--</div>-->
+    </div>
+</div>

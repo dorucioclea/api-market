@@ -49,8 +49,7 @@
             <div class="col-sm-8">
                 <h4>API Key&nbsp;&nbsp;<a class="btn btn-primary btn-xs right"
                                ng-mouseenter="hoverKey = true;" ng-mouseleave="hoverKey = false;"
-                               uib-tooltip="Reissue API Key" tooltip-placement="left"
-                               ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshApiKey(applicationVersion)"><span class="fa fa-refresh" ng-class="{'fa-spin': hoverKey}"></span> Reissue</a>
+                               ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshApiKey(applicationVersion)"><span class="fa fa-refresh" ng-class="{'fa-spin': hoverKey}"></span> Generate New Key</a>
                 </h4>
             </div>
             <div class="col-sm-8">
@@ -73,8 +72,7 @@
             <div class="col-sm-8">
                 <h4>OAuth Credentials&nbsp;&nbsp;<a class="btn btn-primary btn-xs right"
                                          ng-mouseenter="hoverOAuth = true" ng-mouseleave="hoverOAuth = false"
-                                         uib-tooltip="Reissue OAuth Credentials" tooltip-placement="left"
-                                         ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshOAuth(applicationVersion)"><span class="fa fa-refresh" ng-class="{ 'fa-spin': hoverOAuth }"></span> Reissue</a>
+                                         ng-if="User.isAuthorizedFor('appEdit')" ng-click="refreshOAuth(applicationVersion)"><span class="fa fa-refresh" ng-class="{ 'fa-spin': hoverOAuth }"></span> Generate New Credentials</a>
                 </h4>
             </div>
             <div class="col-sm-8">

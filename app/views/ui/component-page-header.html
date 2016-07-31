@@ -1,0 +1,11 @@
+<div class="api-row mt5">
+    <div class="api-content-container">
+        <div class="panel">
+            <div class="panel-body">
+                <!-- Main API info panel -->
+                <div id="logo-slot" class="col-sm-1 pl0" ng-transclude="logoSlot" ng-if="$ctrl.hasLogo"></div>
+                <div ng-class="{ 'col-sm-11 pl30 pr0': $ctrl.hasLogo, 'col-sm-12 pl0 pr0': !$ctrl.hasLogo }" ng-transclude="headerSlot"></div>
+            </div><!-- end main info panel -->
+        </div>
+    </div>
+</div>

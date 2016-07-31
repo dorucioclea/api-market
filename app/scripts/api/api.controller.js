@@ -270,7 +270,7 @@
     }
 
     /// ==== Service Plans Controller
-    function svcPlanCtrl($scope, $stateParams, svcTab, svcPolicies, ServiceVersionPolicy,
+    function svcPlanCtrl($scope, $stateParams, svcTab, svcPolicies,
                          planData, policyConfig, PlanVersionPolicy) {
         $scope.svcPolicies = svcPolicies;
         $scope.plans = planData;
@@ -281,10 +281,6 @@
 
         function init() {
             svcTab.updateTab('Plans');
-
-            angular.forEach($scope.svcPolicies, function (policy) {
-                getSvcPolicyDetails(policy);
-            });
             angular.forEach($scope.plans, function (plan) {
                 getPlanPolicies(plan);
             });
@@ -307,18 +303,6 @@
                     angular.forEach(policies, function (policy) {
                         getPolicyDetails(policy, plan);
                     });
-                });
-        }
-
-        function getSvcPolicyDetails(policy) {
-            ServiceVersionPolicy.get(
-                {orgId: $stateParams.orgId,
-                    svcId: $stateParams.svcId,
-                    versionId: $stateParams.versionId,
-                    policyId: policy.id},
-                function (policyDetails) {
-                    $scope.policyConfiguration[policyDetails.id] =
-                        policyConfig.createConfigObject(policyDetails);
                 });
         }
     }

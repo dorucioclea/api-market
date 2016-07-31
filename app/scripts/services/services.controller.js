@@ -6,6 +6,7 @@
         .controller('ServiceActivityCtrl', serviceActivityCtrl)
         .controller('ServiceImplementationCtrl', serviceImplCtrl)
         .controller('ServiceDefinitionCtrl', serviceDefinitionCtrl)
+        .controller('ServiceEditCtrl', serviceEditCtrl)
         .controller('ServicePendingContractsCtrl', servicePendingCtrl)
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
@@ -19,10 +20,13 @@
 
     function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
                          svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
-                         toastService, ALERT_TYPES, TOAST_TYPES, service) {
+                         toastService, ALERT_TYPES, TOAST_TYPES, service, CONFIG) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
+        $scope.orgId = $stateParams.orgId;
+        $scope.userHasEditPermission = $scope.User.isAuthorizedForIn('svcEdit', $scope.orgId);
+        $scope.userHasAdminPermission = $scope.User.isAuthorizedForIn('svcAdmin', $scope.orgId);
         svcScreenModel.updateService(svcData);
         $scope.displayTab = svcScreenModel;
         $scope.versions = svcVersions;
@@ -36,12 +40,15 @@
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
         $scope.confirmDeleteSvc = confirmDeleteSvc;
+        $scope.confirmDeleteSvcVersion = confirmDeleteSvcVersion;
         $scope.confirmDeprecateSvc = confirmDeprecateSvc;
         $scope.confirmPublishSvc = confirmPublishSvc;
         $scope.confirmRetireSvc = confirmRetireSvc;
+        $scope.editDetails = editDetails;
         $scope.selectVersion = selectVersion;
         $scope.showInfoModal = showInfoModal;
         $scope.updateDesc = updateDesc;
+        $scope.CONFIG = CONFIG;
 
         init();
 
@@ -79,90 +86,47 @@
         }
 
         function confirmDeleteSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDelete.html',
-                size: 'lg',
-                controller: 'DeleteServiceCtrl as ctrl',
-                resolve: {
-                    organizationId: function () {
-                        return $scope.serviceVersion.service.organization.id;
-                    },
-                    serviceId: function () {
-                        return $scope.serviceVersion.service.id;
-                    },
-                    serviceName: function () {
-                        return $scope.serviceVersion.service.name;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (result) {
+            service.deleteService($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.service.name).then(function (result) {
                 if (result === 'success') {
                     $state.go('root.organization.services', {orgId: $scope.serviceVersion.service.organization.id});
                 }
             });
         }
 
-        function confirmDeprecateSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceDeprecate.html',
-                size: 'lg',
-                controller: 'DeprecateServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-
-            modalInstance.result.then(function (status) {
-                $state.forceReload();
+        function confirmDeleteSvcVersion() {
+            service.deleteServiceVersion($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function (result) {
+                if (result === 'success') {
+                    $state.go('root.organization.services', { orgId: $scope.serviceVersion.service.organization.id });
+                } else {
+                    toastService.createErrorToast(result, 'Could not delete service version!');
+                }
             })
+        }
+
+        function confirmDeprecateSvc() {
+            service.deprecateServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
+                $state.forceReload();
+            });
         }
 
         function confirmPublishSvc() {
             if (checkNeedsReadMe()) {
                 toastService.warning('<b>No README found!</b><br><span class="text-light">Cannot publish the service without a README file.</span>')
             } else {
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'views/modals/servicePublish.html',
-                    size: 'lg',
-                    controller: 'PublishServiceCtrl as ctrl',
-                    resolve: {
-                        svcVersion: function () {
-                            return $scope.serviceVersion;
-                        }
-                    },
-                    backdrop: 'static',
-                    windowClass: $scope.modalAnim	// Animation Class put here.
-                });
-
-                modalInstance.result.then(function (status) {
+                service.publishServiceVersion($scope.serviceVersion.service.organization.id,
+                    $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
                     $state.forceReload();
-                })
+                });
             }
         }
 
         function confirmRetireSvc() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/serviceRetire.html',
-                size: 'lg',
-                controller: 'RetireServiceCtrl as ctrl',
-                resolve: {
-                    svcVersion: function () {
-                        return $scope.serviceVersion;
-                    }
-                },
-                backdrop: 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-            modalInstance.result.then(function (status) {
+            service.retireServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function () {
                 $state.forceReload();
-            })
+            });
         }
 
         function checkNeedsReadMe() {
@@ -178,6 +142,18 @@
                     ' Without a README you will not be able to publish the service!</span>');
             }
             return needsReadMe;
+        }
+
+        function editDetails() {
+            service.editDetails($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id).then(function (reply) {
+                if (reply != 'canceled') {
+                    toastService.info('Details for <b>' + $scope.serviceVersion.service.name + '</b> have been updated.');
+                    // todo avoid forced reload?
+                    $state.forceReload();
+                }
+            }, function (error) {
+                toastService.createErrorToast(error, 'Could not update service version details');
+            })
         }
 
         function updateDesc(newValue) {
@@ -219,6 +195,34 @@
         $scope.activities = activityData.beans;
         svcScreenModel.updateTab('Activity');
 
+    }
+
+
+    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, service) {
+        $scope.cancel = cancel;
+        $scope.ok = ok;
+        $scope.filterCategories = filterCategories;
+        $scope.svc = svc;
+
+        init();
+
+        function init() {
+            service.getAllCategories().then(function (reply) {
+                $scope.currentCategories = reply;
+            })
+        }
+
+        function cancel() {
+            $uibModalInstance.dismiss('canceled');
+        }
+
+        function filterCategories($query) {
+            return $filter('filter')($scope.currentCategories, $query);
+        }
+
+        function ok() {
+            $uibModalInstance.close($scope.svc);
+        }
     }
 
 
@@ -419,6 +423,7 @@
         $scope.$watch('updatedService', function (newValue) {
             var dirty = false;
             if (newValue.autoAcceptContracts != $scope.version.autoAcceptContracts) dirty = true;
+            if (newValue.termsAgreementRequired != $scope.version.termsAgreementRequired) dirty = true;
             if (newValue.plans && $scope.version.plans &&
                 newValue.plans.length !== $scope.version.plans.length) {
                 dirty = true;
@@ -483,6 +488,7 @@
                 });
             });
             $scope.updatedService.autoAcceptContracts = $scope.version.autoAcceptContracts;
+            $scope.updatedService.termsAgreementRequired = $scope.version.termsAgreementRequired;
         }
 
         var getSelectedPlans = function () {
@@ -523,7 +529,7 @@
                 $scope.updatedService).then(
                 function (reply) {
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Available Plans & Contract Management for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Settings for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                     if ($scope.tabStatus.hasPlan) {
                         $state.forceReload();
@@ -640,25 +646,11 @@
         };
     }
 
-    function servicePoliciesCtrl($scope, $uibModal, $stateParams, policyData, policyConfiguration,
-                                 svcScreenModel, service) {
+    function servicePoliciesCtrl($scope, $uibModal, policyData,
+                                 svcScreenModel) {
 
         $scope.policies = policyData;
-        $scope.policyDetails = policyConfiguration;
         svcScreenModel.updateTab('Policies');
-
-        $scope.removePolicy = function (policy) {
-            service.removePolicy($stateParams.orgId, $stateParams.svcId, $stateParams.versionId, policy.id).then(
-                function (data) {
-                    angular.forEach($scope.policies, function (p, index) {
-                        if (policy === p) {
-                            $scope.policies.splice(index, 1);
-                        }
-                    });
-                });
-        };
-
-        $scope.modalAnim = 'default';
 
         $scope.modalAddPolicy = function () {
             $uibModal.open({

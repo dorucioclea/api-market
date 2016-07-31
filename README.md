@@ -1,17 +1,23 @@
-# apim-market
+# api-market
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.12.1.
+This is the API Store & API Publisher repository.
 
-## Build & development
 
-Run `grunt` for building and `grunt serve` to run against an online dev environment.
-Run `grunt` serveLocal for a local docker machine, or a local API Engine.
+## Running development server
 
-Note: For development, if you run 'grunt serveLocal' you can switch to from the publisher view to the marketplace by URL manipulation. For example: `/org/<orgId>/applications`
-Note: Fix for WSO2 IS
+For development purposes you can run `grunt serve` to start a livereload server with configuration for API Publisher, or run `grunt serve:mkt` to start a server with a profile for API Store.
+Both of these will run against the online dev backend.
 
-Unmerged
+Run `grunt serveLocal` for a local docker machine, or a local API Engine.
+
+
+## Building for deployment
+
+There are build profiles available for many different environments, these can be found in the `Gruntfile.js` file.
+Find the build profiles you want to use (for example `pub` for the publisher in dev), and then run `grunt <buildprofile>`, so for our example that would be `grunt pub`.
+
+Once the build process completes, you will find the files to be deployed in the `dist` folder, as well as a .zip file containing the deployable.
+
 
 ## Testing
 

@@ -1,59 +1,131 @@
-<overview entity-version="serviceVersion" type="svc">
-    <overview-header name="{{serviceVersion.service.name}}" icon="puzzle-piece" versions="versions"
-                     entity-version="serviceVersion" has-logo="true" base64logo="{{serviceVersion.service.base64logo}}"
-                     description="{{serviceVersion.service.description}}" select-version="selectVersion(version)"
-                     new-version="modalNewVersion()" endpoint="{{serviceVersion.service.basepath}}" save="updateDesc"
-                     edit-permission="User.isAuthorizedForIn('svcEdit', serviceVersion.service.organization.id)">
+<div class="page page-api">
+    <api-page-breadcrumbs>
+        <li><a ui-sref="root.myOrganizations">My Organizations</a></li>
+        <li><a ui-sref="root.organization({orgId: orgId})">{{serviceVersion.service.organization.name}}</a></li>
+        <li><a ui-sref="root.organization.services({orgId: orgId})">Services</a></li>
+        <li><a ui-sref="root.service.overview({orgId: orgId, appId: serviceVersion.service.id, versionId: serviceVersion.version})">{{serviceVersion.service.name}} ({{serviceVersion.version}})</a></li>
+    </api-page-breadcrumbs>
 
-        <!-- Entity Buttons -->
-        <div class="toast toast-bottomRight">
-            <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-                <div ng-bind-html="toast.msg">Test Toast</div>
-            </uib-alert>
-        </div>
-        <div class="text-center">
-            <button id="publish" class="btn btn-line-primary btn-sm" ng-disabled="!isReady || !User.isAuthorizedFor('svcAdmin')" ng-if="!isPublished" ng-click="confirmPublishSvc()">Publish</button>
-            <button id="deprecate" class="btn btn-line-warning btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired && !isDeprecated" ng-click="confirmDeprecateSvc()">Deprecate</button>
-            <button id="retire" class="btn btn-line-purple btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-if="isPublished && !isRetired" ng-click="confirmRetireSvc()">Retire</button>
-            <button id="delete" class="btn btn-line-danger btn-sm" ng-disabled="!User.isAuthorizedFor('svcAdmin')" ng-click="confirmDeleteSvc()">Delete</button>
-            <div class="mt10" ng-show="!User.isAuthorizedFor('svcAdmin') && !isPublished">
-                <p class="text-muted xsmall">
-                    You do not have the necessary permissions to publish services.
-                </p>
-            </div>
-            <div class="mt10" ng-show="!User.isAuthorizedFor('svcAdmin') && isPublished">
-                <p class="text-muted xsmall">
-                    You do not have the necessary permissions to perform these actions.
-                </p>
-            </div>
-        </div>
-    </overview-header>
+    <api-page-header has-logo="true">
+        <base64-logo id="logo" logo-class="media center-block entity-logo-list" logo="{{serviceVersion.service.base64logo}}" editable="editPermission"></base64-logo>
+        <div>
+            <!-- Main Org info panel -->
+            <span id="svc-name" class="text-primary size-h3 text-uppercase text-bold">{{serviceVersion.service.name}}<status-label style="vertical-align: text-top;" class="ml30 xlarge text-center" status="{{serviceVersion.status}}"></status-label>
+            </span>
 
-    <overview-tabs>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Overview'" id="overview" ui-sref=".overview">Overview</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Implementation'" id="implementation" ui-sref=".implementation">
-            <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">1</span>&nbsp;&nbsp;</span>Implementation
-        </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Definition'" id="definition" ui-sref=".definition"
-               ng-disabled="!tabStatus.hasImplementation">
-            <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">2</span>&nbsp;&nbsp;</span>Definition
-        </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Plans'" id="plans" ui-sref=".plans"
-               ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition)">
-            <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">3</span>&nbsp;&nbsp;</span>Plans
-        </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Scopes'" id="scopes" ui-sref=".scopes"
-               ng-disabled="!(tabStatus.hasImplementation && tabStatus.hasDefinition && tabStatus.hasPlan)">
-            <span ng-show="!(isReady || isPublished || isRetired)"><span class="badge">4</span>&nbsp;&nbsp;</span>Availability
-        </label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Policies'" id="policies" ui-sref=".policies">Policies</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Terms'" id="terms" ui-sref=".terms">Readme</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Announcements'" id="announcements" ui-sref=".announcements" ng-if="isPublished">Announcements</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Support'" id="support" ui-sref=".support" ng-if="isPublished">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Activity'" id="activity" ui-sref=".activity">Activity</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Metrics'" id="metrics" ui-sref=".metrics" ng-if="isPublished">Metrics</label>
-        <label class="btn btn-primary btn-justified" ng-model="displayTab.selectedTab" uib-btn-radio="'Pending'" id="pending" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
-        <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
-    </overview-tabs>
-</overview>
+            <div class="right">
+                <api-page-version-select current-version="serviceVersion.version" type="'app'" versions="versions"></api-page-version-select>
+
+                <api-page-actions ng-if="userHasEditPermission">
+                    <li id="new-version">
+                        <a ng-click="modalNewVersion()" class="clickable">
+                            New Version
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li id="edit-details">
+                        <a ng-click="editDetails()" class="clickable">
+                            Edit Details
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li id="publish" class="text-success" ng-if="!isPublished && !isRetired" uib-tooltip="{{ userHasAdminPermission ? (isReady ? '' : 'We are still missing some data in order to publish this service. All numbered tabs should be filled in.') : 'You do not have the necessary permissions to publish service versions.'}}" tooltip-popup-delay="250">
+                        <a ng-click="!isReady || !userHasAdminPermission || confirmPublishSvc()" ng-class="{'clickable': isReady && userHasAdminPermission, 'not-clickable': !isReady || !userHasAdminPermission}">
+                            <span class="text-success">Publish {{serviceVersion.version}}</span>
+                        </a>
+                    </li>
+                    <li id="deprecate" class="text-warning" ng-if="isPublished && !isDeprecated && !isRetired" uib-tooltip="{{ userHasAdminPermission ? '' : 'You do not have the necessary permissions to retire service versions.'}}" tooltip-popup-delay="250">
+                        <a ng-click="!userHasAdminPermission || confirmDeprecateSvc()" ng-class="{'clickable': userHasAdminPermission, 'not-clickable': !userHasAdminPermission}">
+                            <span class="text-warning">Deprecate {{serviceVersion.version}}</span>
+                        </a>
+                    </li>
+                    <li id="retire" class="text-warning" ng-if="isPublished && !isRetired" uib-tooltip="{{userHasAdminPermission ? '' : 'You do not have the necessary permissions to retire service versions.'}}" tooltip-popup-delay="250">
+                        <a ng-click="!userHasAdminPermission || confirmRetireSvc()" ng-class="{'clickable': userHasAdminPermission, 'not-clickable': !userHasAdminPermission}">
+                            <span class="text-warning">Retire {{serviceVersion.version}}</span>
+                        </a>
+                    </li>
+                    <li id="delete-version" class="text-danger" uib-tooltip="{{userHasAdminPermission ? '' : 'You do not have the necessary permissions to  delete service versions.'}}" tooltip-popup-delay="250">
+                        <a ng-click="!userHasAdminPermission || confirmDeleteSvcVersion()" ng-class="{'clickable': userHasAdminPermission, 'not-clickable': !userHasAdminPermission}" class="clickable">
+                            <span class="text-danger">Delete {{serviceVersion.version}}</span>
+                        </a>
+                    </li>
+                </api-page-actions>
+            </div>
+
+            <div class="col-sm-9" style="padding-left: 0;">
+                <p id="basepath" class="text-light text-muted">{{serviceVersion.service.basepath}}</p>
+
+                <p>{{serviceVersion.service.description}}</p>
+                <span ng-repeat="category in serviceVersion.service.categories"><span class="label label-info"><i class="fa fa-tag"></i>&nbsp;{{category}}</span><span>&nbsp;</span></span>
+
+                <div class="mt30 text-light text-muted">
+                    <div>
+                        <i class="fa fa-clock-o fa-fw"></i>
+                        <span>Created on</span>
+                        <span>{{serviceVersion.createdOn | date}}</span>
+                    </div>
+                    <div>
+                        <i class="fa fa-user fa-fw"></i>
+                        <span>Created by</span>
+                        <span>{{serviceVersion.createdBy}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </api-page-header>
+
+    <div id="navtabs" class="api-row">
+        <div class="api-content-container navtab-container">
+            <input id="overview" type="radio" name="tabs" ui-sref-active="active" ui-sref=".overview">
+            <label for="overview">Overview</label>
+
+            <input id="implementation" type="radio" name="tabs" ui-sref-active="active" ui-sref=".implementation">
+            <label for="implementation"><span ng-show="!(isReady || isPublished || isRetired)"><span class="label label-primary">1</span>&nbsp;&nbsp;</span>Implementation</label>
+
+            <input id="definition" type="radio" name="tabs" ui-sref-active="active" ui-sref=".definition">
+            <label for="definition"><span ng-show="!(isReady || isPublished || isRetired)"><span class="label label-primary">2</span>&nbsp;&nbsp;</span>Definition</label>
+
+            <input id="plans" type="radio" name="tabs" ui-sref-active="active" ui-sref=".plans">
+            <label for="plans"><span ng-show="!(isReady || isPublished || isRetired)"><span class="label label-primary">3</span>&nbsp;&nbsp;</span>Plans</label>
+
+            <input id="scopes" type="radio" name="tabs" ui-sref-active="active" ui-sref=".scopes">
+            <label for="scopes"><span ng-show="!(isReady || isPublished || isRetired)"><span class="label label-primary">4</span>&nbsp;&nbsp;</span>Availability</label>
+
+            <input id="policies" type="radio" name="tabs" ui-sref-active="active" ui-sref=".policies">
+            <label for="policies">Policies</label>
+
+            <input id="terms" type="radio" name="tabs" ui-sref-active="active" ui-sref=".terms">
+            <label for="terms">Readme</label>
+
+            <input id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements" ng-if="isPublished && !CONFIG.APP.DISABLE_ANNOUNCEMENTS">
+            <label for="announcements" ng-if="isPublished && !CONFIG.APP.DISABLE_ANNOUNCEMENTS">Announcements</label>
+
+            <input id="support" type="radio" name="tabs" ui-sref-active="active" ui-sref=".support" ng-if="isPublished && !CONFIG.APP.DISABLE_SUPPORT">
+            <label for="support" ng-if="isPublished && !CONFIG.APP.DISABLE_SUPPORT">Support <span class="badge text-bold" ng-if="(support | filter:{status:'OPEN'}).length > 0">{{(support | filter:{status: 'OPEN'}).length}}</span></label>
+
+            <input id="activity" type="radio" name="tabs" ui-sref-active="active" ui-sref=".activity">
+            <label for="activity">Activity</label>
+
+            <input id="metrics" type="radio" name="tabs" ui-sref-active="active" ui-sref=".metrics" ng-if="isPublished">
+            <label for="metrics" ng-if="isPublished">Metrics</label>
+
+            <input id="pending" type="radio" name="tabs" ui-sref-active="active" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">
+            <label for="pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
+
+            <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
+        </div>
+    </div>
+
+
+    <div class="api-row">
+        <div class="api-content-container">
+            <div class="panel">
+                <div class="panel-body">
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 

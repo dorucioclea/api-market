@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="modal-title">Edit Service: <span>{{ svc.name }}</span></h4>
+    <span class="close ion ion-android-close" ng-click="cancel()"></span>
+</div>
+<div class="modal-body style-placeholders">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form role="form" name="serviceForm" class="form-horizontal">
+
+                <div class="form-group col-md-12">
+                    <label class="control-label text-primary">Service Description</label>
+                    <textarea class="form-control" name="description" placeholder="Enter a description" ng-model="svc.description" required validate-on-timeout></textarea>
+                    <p class="text-danger xsmall" ng-show="serviceForm.description.$error.required && serviceForm.description.$timedout" ng-if="serviceForm.description.$touched">Please provide a short description of this service.</p>
+                    <p class="text-muted xsmall">Short description of the service</p>
+                </div>
+
+                <!-- CATEGORIES -->
+                <div class="form-group col-md-12">
+                    <label class="control-label text-primary">Service Category Tags</label>
+                    <tags-input id="tags" ng-model="svc.categories" add-from-autocomplete-only="false">
+                        <auto-complete min-length="0" display-property="text" select-first-match="false" source="filterCategories($query)"></auto-complete>
+                    </tags-input>
+                    <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default ml15" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="serviceForm.$invalid">Update Service</button>
+</div>

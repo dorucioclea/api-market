@@ -226,8 +226,10 @@
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
-                      serviceVersion, svcPolicies, appService) {
+                      serviceVersion, svcPolicies, appService, service) {
                 $scope.service = serviceVersion;
+                $scope.canCreateContract = canCreateContract;
+                $scope.confirmPlanSelection = confirmPlanSelection;
                 $scope.orgScreenModel = orgScreenModel;
                 $scope.servicePolicies = svcPolicies;
                 $scope.selectOrg = selectOrg;
@@ -236,12 +238,13 @@
                 $scope.selectVersion = selectVersion;
                 $scope.startCreateContract = startCreateContract;
                 $scope.modalClose = modalClose;
+                $scope.atBottom = false;
 
                 $scope.availablePlans = [];
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
                 var hasAppContext = false;
-
+                
                 init();
 
                 function init() {
@@ -255,6 +258,29 @@
                         getOrgApps(orgScreenModel.organization.id);
                     }
                     getAvailablePlans();
+
+                    if ($scope.service.termsAgreementRequired) {
+                        if ($scope.service.service.terms && $scope.service.service.terms.length > 0) $scope.terms = $scope.service.service.terms;
+                        else {
+                            service.getDefaultTerms().then(function (defaults) {
+                                $scope.terms = defaults.terms;
+                            })
+                        }
+                    }
+                }
+
+                function canCreateContract() {
+                    if ($scope.service.termsAgreementRequired) {
+                        if ($scope.termsAgreementMode) {
+                            return $scope.hasOrgContext && $scope.termsAgreed;
+                        }
+                    }
+                    return $scope.hasOrgContext;
+
+                }
+
+                function confirmPlanSelection() {
+                    $scope.termsAgreementMode = true;
                 }
 
                 function checkOrgContext() {
@@ -376,22 +402,25 @@
                 }
 
                 function startCreateContract() {
-                    requestContract().then(function () {
-                        $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
-                        $scope.modalClose();
-                        if ($scope.service.autoAcceptContracts) {
-                            createContractToast();
-                        } else {
-                            requestContractToast();
-                        }
-                    }, function (error) {
-                        $scope.modalClose();
-                        if ($scope.service.autoAcceptContracts) {
-                            toastService.createErrorToast(error, 'Could not create the contract.');
-                        } else {
-                            toastService.createErrorToast(error, 'Could not request the contract.');
-                        }
-                    })
+                    if ($scope.service.termsAgreementRequired && !$scope.termsAgreementMode) $scope.termsAgreementMode = true;
+                    else {
+                        requestContract().then(function () {
+                            $state.go('root.market-dash', {orgId: $scope.selectedAppVersion.organizationId});
+                            $scope.modalClose();
+                            if ($scope.service.autoAcceptContracts) {
+                                createContractToast();
+                            } else {
+                                requestContractToast();
+                            }
+                        }, function (error) {
+                            $scope.modalClose();
+                            if ($scope.service.autoAcceptContracts) {
+                                toastService.createErrorToast(error, 'Could not create the contract.');
+                            } else {
+                                toastService.createErrorToast(error, 'Could not request the contract.');
+                            }
+                        })
+                    }
                 }
 
                 function createContractToast() {
@@ -433,7 +462,8 @@
                         $scope.selectedPlan.plan.id,
                         $scope.selectedAppVersion.organizationId,
                         $scope.selectedAppVersion.id,
-                        $scope.selectedAppVersion.version)
+                        $scope.selectedAppVersion.version,
+                        $scope.termsAgreed)
                 }
 
                 function modalClose() {

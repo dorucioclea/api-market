@@ -45,8 +45,6 @@
             'app.ctrl.modals',
             'app.ctrl.modals.lifecycle',
             'app.ctrl.modals.support',
-            'app.ctrl.plan',
-            'app.ctrl.user',
             'app.administration',
             'app.applications',
             'app.contracts',
@@ -54,10 +52,13 @@
             'app.members',
             'app.notifications',
             'app.organizations',
+            'app.plan',
             'app.plugin.lodash',
+            'app.policies',
             'app.service',
             'app.swagger',
             'app.tour',
+            'app.ui',
             'app.user'
 
         ])

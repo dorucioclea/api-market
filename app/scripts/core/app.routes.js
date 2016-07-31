@@ -350,9 +350,9 @@
                     url: '/plans',
                     templateUrl: 'views/partials/api/plans.html',
                     resolve: {
-                        apiService: 'apiService',
-                        svcPolicies: function (apiService, organizationId, serviceId, versionId) {
-                            return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
+                        policyService: 'policyService',
+                        svcPolicies: function (policyService, organizationId, serviceId, versionId) {
+                            return policyService.getServicePoliciesWithDetailsForMarket(organizationId, serviceId, versionId);
                         },
                         planData: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServicePlans(organizationId, serviceId, versionId);
@@ -503,7 +503,7 @@
                 })
                 // Admin Users View
                 .state('root.administration.users', {
-                    url: '/users',
+                    url: '/admins',
                     templateUrl: 'views/partials/administration/users.html',
                     resolve: {
                         Admins: 'Admins',
@@ -527,6 +527,17 @@
                         }
                     },
                     controller: 'AdminExpirationCtrl'
+                })                
+                .state('root.administration.terms', {
+                    url: '/terms',
+                    templateUrl: 'views/partials/administration/terms.html',
+                    resolve: {
+                        service: 'service',
+                        currentTerms: function (service) {
+                            return service.getDefaultTerms();
+                        }
+                    },
+                    controller: 'AdminTermsCtrl'
                 })
 
                 // Admin Status View
@@ -540,6 +551,11 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
+                })
+                .state('root.administration.oauth', {
+                    url: '/apikeys-credentials',
+                    templateUrl: 'views/partials/administration/revoke.html',
+                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
@@ -619,31 +635,9 @@
                     url: '/policies',
                     templateUrl: 'views/partials/plan/policies.html',
                     resolve: {
-                        PlanVersionPolicy: 'PlanVersionPolicy',
-                        policyData: function (PlanVersionPolicy, organizationId, planId, versionId) {
-                            return PlanVersionPolicy.query(
-                                {orgId: organizationId, planId: planId, versionId: versionId}).$promise;
-                        },
-                        policyConfig: 'policyConfig',
-                        policyConfiguration: function ($q, policyData, organizationId, planId,
-                                                       policyConfig, versionId, PlanVersionPolicy) {
-                            var policyConfiguration = [];
-                            var promises = [];
-
-                            angular.forEach(policyData, function (policy) {
-                                promises.push(PlanVersionPolicy.get(
-                                    {orgId: organizationId,
-                                        planId: planId,
-                                        versionId: versionId,
-                                        policyId: policy.id}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    policyConfiguration[value.id] = policyConfig.createConfigObject(value);
-                                });
-                                return policyConfiguration;
-                            });
+                        policyService: 'policyService',
+                        policyData: function (policyService, organizationId, planId, versionId) {
+                            return policyService.getPlanPoliciesWithDetails(organizationId, planId, versionId);
                         }
                     },
                     data: {
@@ -850,34 +844,9 @@
                     url: '/policies',
                     templateUrl: 'views/partials/service/policies.html',
                     resolve: {
-                        ServiceVersionPolicy: 'ServiceVersionPolicy',
-                        policyData: function (ServiceVersionPolicy, organizationId, serviceId, versionId) {
-                            return ServiceVersionPolicy.query({
-                                orgId: organizationId,
-                                svcId: serviceId,
-                                versionId: versionId
-                            }).$promise;
-                        },
-                        policyConfig: 'policyConfig',
-                        policyConfiguration: function ($q, policyData, organizationId, serviceId, versionId,
-                                                       policyConfig, ServiceVersionPolicy) {
-                            var policyConfiguration = [];
-                            var promises = [];
-
-                            angular.forEach(policyData, function (policy) {
-                                promises.push(ServiceVersionPolicy.get(
-                                    {orgId: organizationId,
-                                        svcId: serviceId,
-                                        versionId: versionId,
-                                        policyId: policy.id}).$promise);
-                            });
-
-                            return $q.all(promises).then(function (results) {
-                                angular.forEach(results, function (value) {
-                                    policyConfiguration[value.id] = policyConfig.createConfigObject(value);
-                                });
-                                return policyConfiguration;
-                            });
+                        policyService: 'policyService',
+                        policyData: function (policyService, organizationId, serviceId, versionId) {
+                            return policyService.getServicePoliciesWithDetails(organizationId, serviceId, versionId);
                         }
                     },
                     data: {
@@ -954,6 +923,11 @@
                     url: '/profile',
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
+                })
+                .state('root.user.connected-apps', {
+                    url: '/connected',
+                    templateUrl: 'views/partials/user/connected.html',
+                    controller: 'UserConnectedAppsCtrl'
                 });
         })
 
