@@ -239,7 +239,7 @@
                 $scope.startCreateContract = startCreateContract;
                 $scope.modalClose = modalClose;
                 $scope.atBottom = false;
-
+                $scope.termsAgreed = {result: false};
                 $scope.availablePlans = [];
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
@@ -272,7 +272,7 @@
                 function canCreateContract() {
                     if ($scope.service.termsAgreementRequired) {
                         if ($scope.termsAgreementMode) {
-                            return $scope.hasOrgContext && $scope.termsAgreed;
+                            return $scope.hasOrgContext && $scope.termsAgreed.result;
                         }
                     }
                     return $scope.hasOrgContext;
@@ -463,7 +463,7 @@
                         $scope.selectedAppVersion.organizationId,
                         $scope.selectedAppVersion.id,
                         $scope.selectedAppVersion.version,
-                        $scope.termsAgreed)
+                        $scope.termsAgreed.result)
                 }
 
                 function modalClose() {
