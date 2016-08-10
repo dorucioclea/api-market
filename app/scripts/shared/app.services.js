@@ -235,7 +235,7 @@
                                             // All contracts are valid, check if app needs OAuth callback
                                             oAuthService.needsCallback(organizationId,  appId, versionId).then(function (needsCallback) {
                                                 if ( needsCallback &&
-                                                    (appVersion.oauthClientRedirect === null || appVersion.oauthClientRedirect.length === 0)) {
+                                                    (appVersion.oauthClientRedirects === null || appVersion.oauthClientRedirects.length === 0)) {
                                                     toastService.warning('<b>No OAuth callback defined!</b><br>' +
                                                         'The application cannot be registered without an OAuth callback URL');
                                                 } else {

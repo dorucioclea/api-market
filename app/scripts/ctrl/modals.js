@@ -499,7 +499,7 @@
 
                 $scope.appVersionDetails = appVersionDetails;
                 $scope.needsCallback = needsCallback;
-                $scope.callback = appVersionDetails.oauthClientRedirect;
+                $scope.callback = appVersionDetails.oauthClientRedirects;
                 $scope.id = appVersionDetails.oAuthClientId;
                 $scope.secret = appVersionDetails.oauthClientSecret;
                 $scope.modalClose = modalClose;
