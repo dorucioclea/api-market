@@ -569,12 +569,10 @@
             if($scope.serviceVersion.visibility && $scope.serviceVersion.visibility.length > 0) {
                 angular.forEach($scope.serviceVersion.visibility, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt) {
-                        mkt.selectedVisibility = true;
                         if (mkt.code === svmkt.code) {
                             mkt.checked = true;
                             mkt.selectedVisibility = svmkt.show;
                         }
-                        console.log("1.check code:" + mkt.code + " and vis: " + mkt.selectedVisibility);
                     });
                 });
             } else {
@@ -585,7 +583,6 @@
                     }
                     // and set visibilities
                     market.selectedVisibility = true;
-                    console.log("2.check code:" + mkt.code + " and vis: " + mkt.selectedVisibility);
                 })
             }
         }
