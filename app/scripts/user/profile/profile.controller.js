@@ -66,8 +66,8 @@
                 email: details.email,
                 pic: details.base64pic
             };
-            if (details.bio.length > 1000000) {
-                toastService.error("Maximum character limit of 1,000,000 for Bio exceeded");
+            if (details.bio.length > 100000) {
+                toastService.error("Maximum character limit of 100,000 for Bio exceeded");
             }
             else{
                 currentUser.update(updateObject).then(function () {
