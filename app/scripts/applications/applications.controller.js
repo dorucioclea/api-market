@@ -8,7 +8,8 @@
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl)
         .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl)
-        .controller('ReissueConfirmCtrl', reissueConfirmCtrl);
+        .controller('ReissueConfirmCtrl', reissueConfirmCtrl)
+        .controller('AppSecurityCtrl', appSecurityCtrl);
 
 
     function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
@@ -404,6 +405,10 @@
         function ok() {
             $uibModalInstance.close("OK");
         }
+    }
+
+    function appSecurityCtrl($scope) {
+
     }
 
 

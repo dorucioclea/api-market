@@ -201,6 +201,9 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId',
                 {orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
         })
+        .factory('ApplicationVersionToken', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/oauth2/tokens')
+        })
         .factory('ApplicationOAuthCallback', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId');
         })

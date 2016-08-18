@@ -717,6 +717,11 @@
                     templateUrl: 'views/partials/application/apis.html',
                     controller: 'ApisCtrl'
                 })
+                .state('root.application.security', {
+                    url: '/security',
+                    templateUrl: 'views/partials/application/security.html',
+                    controller: 'AppSecurityCtrl'
+                })
                 // Activity Tab
                 .state('root.application.activity', {
                     url: '/activity',
