@@ -854,11 +854,11 @@
                     },
                     controller: 'ServicePoliciesCtrl'
                 })
-                // Terms Tab
-                .state('root.service.terms', {
-                    url: '/terms',
+                // Readme Tab
+                .state('root.service.readme', {
+                    url: '/readme',
                     templateUrl: 'views/partials/service/terms.html',
-                    controller: 'ServiceTermsCtrl'
+                    controller: 'ServiceReadmeCtrl'
                 })
                 // Announcements Tab
                 .state('root.service.announcements', {

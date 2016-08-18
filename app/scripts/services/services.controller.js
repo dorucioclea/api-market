@@ -11,7 +11,7 @@
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
         .controller('ServicePoliciesCtrl', servicePoliciesCtrl)
-        .controller('ServiceTermsCtrl', serviceTermsCtrl)
+        .controller('ServiceReadmeCtrl', serviceReadmeCtrl)
         .controller('ServiceAnnouncementsCtrl', serviceAnnouncementsCtrl)
         .controller('ServiceSupportCtrl', serviceSupportCtrl)
         .controller('ServiceOverviewCtrl', serviceOverviewCtrl)
@@ -668,24 +668,25 @@
         };
     }
 
-    function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
+    function serviceReadmeCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
 
-        svcScreenModel.updateTab('Terms');
-        $scope.htmlTerms = $scope.serviceVersion.service.terms;
+        svcScreenModel.updateTab('Readme');
         $scope.doSave = doSave;
         $scope.reset = reset;
 
         function doSave() {
-            var termsObject = {terms: $scope.htmlTerms};
-            service.updateTerms($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id,
-                termsObject).then(
+            var updateObject = {
+                readme: $scope.serviceVersion.readme
+            };
+            service.updateServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version, updateObject).then(
                 function (reply) {
                     $state.forceReload();
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Readme for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                 }, function (error) {
-                    toastService.createErrorToast(error, 'Could not update the terms & conditions.');
+                    toastService.createErrorToast(error, 'Could not update the Readme.');
                 });
         }
 

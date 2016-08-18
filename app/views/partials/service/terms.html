@@ -14,7 +14,7 @@
                 <div class="panel panel-default mb20">
                     <div class="panel-heading">Markdown Editor</div>
                     <div class="panel-body">
-                        <textarea class="form-control" rows="20" placeholder="Enter your README file contents (optional)" ng-model="htmlTerms" style="overflow-y: scroll; resize: none;"></textarea>
+                        <textarea class="form-control" rows="20" placeholder="Enter your README file contents (optional)" ng-model="serviceVersion.readme" style="overflow-y: scroll; resize: none;"></textarea>
                         <p class="text-muted xsmall">README file in markdown format</p>
                     </div>
                 </div>
@@ -23,8 +23,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Output preview</div>
                     <div class="panel-body">
-                        <p class="well" ng-if="!htmlTerms || htmlTerms.length === 0">No input yet.</p>
-                        <div btf-markdown="htmlTerms" ng-if="htmlTerms.length > 0"></div>
+                        <p class="well" ng-if="!serviceVersion.readme || serviceVersion.readme.length === 0">No input yet.</p>
+                        <div btf-markdown="serviceVersion.readme" ng-if="serviceVersion.readme.length > 0"></div>
                     </div>
                 </div>
             </div>
