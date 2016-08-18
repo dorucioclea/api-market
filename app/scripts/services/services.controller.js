@@ -12,6 +12,7 @@
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
         .controller('ServicePoliciesCtrl', servicePoliciesCtrl)
         .controller('ServiceTermsCtrl', serviceTermsCtrl)
+        .controller('ServiceReadmeCtrl', serviceReadmeCtrl)
         .controller('ServiceAnnouncementsCtrl', serviceAnnouncementsCtrl)
         .controller('ServiceSupportCtrl', serviceSupportCtrl)
         .controller('ServiceOverviewCtrl', serviceOverviewCtrl)
@@ -569,7 +570,6 @@
             if($scope.serviceVersion.visibility && $scope.serviceVersion.visibility.length > 0) {
                 angular.forEach($scope.serviceVersion.visibility, function(svmkt){
                     angular.forEach($scope.mkts,function(mkt) {
-                        mkt.selectedVisibility = true;
                         if (mkt.code === svmkt.code) {
                             mkt.checked = true;
                             mkt.selectedVisibility = svmkt.show;
@@ -591,6 +591,7 @@
         $scope.$watch('mkts', function (newValue) {
             selectedMarketplaces = [];
             angular.forEach(newValue,function(val){
+                if(!val.hasOwnProperty('selectedVisibility')) val.selectedVisibility = true;
                 if(val.checked) selectedMarketplaces.push(val);
             });
             setSelectedMarketplaces(selectedMarketplaces);
@@ -672,18 +673,19 @@
     function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
 
         svcScreenModel.updateTab('Terms');
-        $scope.htmlTerms = $scope.serviceVersion.service.terms;
         $scope.doSave = doSave;
         $scope.reset = reset;
 
+        var orig = angular.copy($scope.serviceVersion.service.terms);
+
         function doSave() {
-            var termsObject = {terms: $scope.htmlTerms};
+            var termsObject = {terms: $scope.serviceVersion.service.terms};
             service.updateTerms($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id,
                 termsObject).then(
                 function (reply) {
                     $state.forceReload();
                     toastService.createToast(TOAST_TYPES.SUCCESS,
-                        'Readme for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        'Terms & conditions for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
                 }, function (error) {
                     toastService.createErrorToast(error, 'Could not update the terms & conditions.');
@@ -691,12 +693,47 @@
         }
 
         function reset() {
-            $scope.htmlTerms = $scope.serviceVersion.service.terms;
+            $scope.serviceVersion.service.terms = orig;
         }
 
-        $scope.$watch('htmlTerms', function (terms) {
-            $scope.changed = (terms !== $scope.serviceVersion.service.terms);
-            $scope.invalid = (terms === $scope.serviceVersion.service.terms);
+        $scope.$watch('serviceVersion.service.terms', function (terms) {
+            $scope.changed = (terms !== orig);
+            $scope.invalid = (terms === orig);
+        }, true);
+
+    }
+
+    function serviceReadmeCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
+
+        svcScreenModel.updateTab('Readme');
+        $scope.doSave = doSave;
+        $scope.reset = reset;
+
+        var orig = angular.copy($scope.serviceVersion.readme);
+
+        function doSave() {
+            var updateObject = {
+                readme: $scope.serviceVersion.readme
+            };
+            service.updateServiceVersion($scope.serviceVersion.service.organization.id,
+                $scope.serviceVersion.service.id, $scope.serviceVersion.version, updateObject).then(
+                function (reply) {
+                    $state.forceReload();
+                    toastService.createToast(TOAST_TYPES.SUCCESS,
+                        'Readme for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        true);
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Could not update the Readme.');
+                });
+        }
+
+        function reset() {
+            $scope.serviceVersion.readme = orig;
+        }
+
+        $scope.$watch('serviceVersion.readme', function (terms) {
+            $scope.changed = (terms !== orig);
+            $scope.invalid = (terms === orig);
         }, true);
 
     }

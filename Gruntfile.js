@@ -342,11 +342,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'URL': 'https://devapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+              'URL': 'https://devapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -382,11 +382,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'URL': 'https://devapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+              'URL': 'https://devapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -422,11 +422,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'URL': 'https://devapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+              'URL': 'https://devapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -462,11 +462,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://devapim.t1t.be/dev/apiengine/v1',
+              'URL': 'https://devapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://devapim.t1t.be/dev/apiengineauth/v1'
+              'URL': 'https://devapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -502,11 +502,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'URL': 'https://accapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+              'URL': 'https://accapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -542,11 +542,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'URL': 'https://accapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+              'URL': 'https://accapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
@@ -582,11 +582,11 @@ module.exports = function (grunt) {
               'DISABLE_SUPPORT': true
             },
             'BASE': {
-              'URL': 'https://accapim.t1t.be/acc/apiengine/v1',
+              'URL': 'https://accapim.t1t.be/apiengine/v1',
               'JWT_HEADER_NAME': 'jwt'
             },
             'AUTH': {
-              'URL': 'https://accapim.t1t.be/acc/apiengineauth/v1'
+              'URL': 'https://accapim.t1t.be/apiengineauth/v1'
             },
             'CONSENT': {
               'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'

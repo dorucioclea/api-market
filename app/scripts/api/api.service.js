@@ -5,10 +5,13 @@
         .service('apiService', apiService);
 
 
-    function apiService(MktSearchLatestServiceVersions, MktPublishedCategories, MktServicePolicies, MktServicePlans,
+    function apiService(SearchLatestServiceVersions, PublishedCategories, ServicePolicies, ServicePlans,
+                        ServiceSupportTickets, ServiceAnnouncementsAll, ServiceVersionPolicy,
+                        ServiceEndpoint, ServiceVersion, ServiceVersionDefinition, SearchLatestPublishedSvcsInCategories,
+                        MktSearchLatestServiceVersions, MktPublishedCategories, MktServicePolicies, MktServicePlans,
                         MktServiceSupportTickets, MktServiceAnnouncementsAll, MktServiceAvailability,
                         MktServiceVersionPolicy, ServiceVersionContracts, MktServiceEndpoint, MktServiceVersion,
-                        MktServiceVersionDefinition, MktSearchLatestPublishedSvcsInCategories) {
+                        MktServiceVersionDefinition, MktSearchLatestPublishedSvcsInCategories, loginHelper) {
         this.getMarketplaceApis = getMarketplaceApis;
         this.getMarketplaceApisInCategories = getMarketplaceApisInCategories;
         this.getPublishedCategories = getPublishedCategories;
@@ -27,28 +30,44 @@
 
 
         function getMarketplaceApis() {
-            return MktSearchLatestServiceVersions.query({},
-                {filters: [{name: "status", value: "Published", operator: 'eq'}]}
-            ).$promise;
+            if (loginHelper.checkLoggedIn()) {
+                return SearchLatestServiceVersions.query({},
+                    {filters: [{name: "status", value: "Published", operator: 'eq'}]}
+                ).$promise;
+            } else {
+                return MktSearchLatestServiceVersions.query({},
+                    {filters: [{name: "status", value: "Published", operator: 'eq'}]}
+                ).$promise;
+            }
         }
         
         function getMarketplaceApisInCategories(categoriesArray) {
-            return MktSearchLatestPublishedSvcsInCategories.query({ categories: categoriesArray }).$promise;
+            if (loginHelper.checkLoggedIn()) return SearchLatestPublishedSvcsInCategories.query({ categories: categoriesArray }).$promise;
+            else return MktSearchLatestPublishedSvcsInCategories.query({ categories: categoriesArray }).$promise;
         }
 
         function getPublishedCategories() {
-            return MktPublishedCategories.query().$promise;
+            if (loginHelper.checkLoggedIn()) return PublishedCategories.query().$promise;
+            else return MktPublishedCategories.query().$promise;
         }
         
         function searchMarketplaceApis(query) {
-            return MktSearchLatestServiceVersions.query({},
-                {filters: [{name: 'name', value: '%' + query + '%', operator: 'like'},
-                    {name: 'status', value: 'Published', operator: 'eq'}]}
-            ).$promise;
+            if (loginHelper.checkLoggedIn()) {
+                return SearchLatestServiceVersions.query({},
+                    {filters: [{name: 'name', value: '%' + query + '%', operator: 'like'},
+                        {name: 'status', value: 'Published', operator: 'eq'}]}
+                ).$promise;
+            } else {
+                return MktSearchLatestServiceVersions.query({},
+                    {filters: [{name: 'name', value: '%' + query + '%', operator: 'like'},
+                        {name: 'status', value: 'Published', operator: 'eq'}]}
+                ).$promise;
+            }
         }
         
         function getServiceAnnouncements(orgId, svcId) {
-            return MktServiceAnnouncementsAll.query({orgId: orgId, svcId: svcId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceAnnouncementsAll.query({ orgId: orgId, svcId: svcId }).$promise;
+            else return MktServiceAnnouncementsAll.query({orgId: orgId, svcId: svcId}).$promise;
         }
         
         function getServiceAvailability(orgId, svcId, versionId) {
@@ -56,11 +75,13 @@
         }
         
         function getServiceEndpoint(orgId, svcId, versionId) {
-            return MktServiceEndpoint.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceEndpoint.get({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServiceEndpoint.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
 
         function getServicePlans(orgId, svcId, versionId) {
-            return MktServicePlans.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServicePlans.query({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServicePlans.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
         
         function getServiceVersionContracts(orgId, svcId, versionId) {
@@ -68,27 +89,33 @@
         }
         
         function getServiceVersionDefinition(orgId, svcId, versionId) {
-            return MktServiceVersionDefinition.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceVersionDefinition.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServiceVersionDefinition.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
 
         function getServicePolicies(orgId, svcId, versionId) {
-            return MktServicePolicies.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServicePolicies.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServicePolicies.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
         
         function getServiceVersion(orgId, svcId, versionId) {
-            return MktServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise;
         }
 
         function getServiceVersionPolicies(orgId, svcId, versionId) {
-            return MktServiceVersionPolicy.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceVersionPolicy.query({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return MktServiceVersionPolicy.query({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
         }
 
         function getServiceVersionPolicy(orgId, svcId, versionId, policyId) {
-            return MktServiceVersionPolicy.get({orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceVersionPolicy.get({orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId}).$promise;
+            else return MktServiceVersionPolicy.get({orgId: orgId, svcId: svcId, versionId: versionId, policyId: policyId}).$promise;
         }
         
         function getServiceSupportTickets(orgId, svcId) {
-            return MktServiceSupportTickets.query({orgId: orgId, svcId: svcId}).$promise;
+            if (loginHelper.checkLoggedIn()) return ServiceSupportTickets.query({ orgId: orgId, svcId: svcId }).$promise;
+            else return MktServiceSupportTickets.query({orgId: orgId, svcId: svcId}).$promise;
         }
     }
 

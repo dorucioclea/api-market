@@ -10,6 +10,7 @@
             'REQ_TRANSFORM': 'RequestTransformer',
             'RES_TRANSFORM': 'ResponseTransformer',
             'JWT': 'JWT',
+            'JWTUp': 'JWTUp',
             'KEY_AUTH': 'KeyAuthentication',
             'CORS': 'CORS',
             'IP_RESTRICT': 'IpRestriction',
