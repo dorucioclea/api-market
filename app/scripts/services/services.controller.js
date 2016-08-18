@@ -675,6 +675,8 @@
         $scope.doSave = doSave;
         $scope.reset = reset;
 
+        var orig = angular.copy($scope.serviceVersion.readme);
+
         function doSave() {
             var updateObject = {
                 readme: $scope.serviceVersion.readme
@@ -692,7 +694,7 @@
         }
 
         function reset() {
-            $scope.htmlTerms = $scope.serviceVersion.service.terms;
+            $scope.serviceVersion.readme = orig;
         }
 
         $scope.$watch('htmlTerms', function (terms) {
