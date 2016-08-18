@@ -590,6 +590,7 @@
         $scope.$watch('mkts', function (newValue) {
             selectedMarketplaces = [];
             angular.forEach(newValue,function(val){
+                if(!val.hasOwnProperty('selectedVisibility')) val.selectedVisibility = true;
                 if(val.checked) selectedMarketplaces.push(val);
             });
             setSelectedMarketplaces(selectedMarketplaces);
