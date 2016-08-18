@@ -6,7 +6,7 @@
         .service('currentUserModel', currentUserModel);
 
     function currentUser($q, CurrentUserInfo, CurrentUserApps, ApplicationContract, ApplicationVersion,
-                         CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs) {
+                         CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs, CurrentUserToken, appService, $http, CONFIG, _) {
         this.checkStatus = checkStatus;
         this.getInfo = getInfo;
         this.getUserAppOrgs = getUserAppOrgs;
@@ -89,13 +89,36 @@
         }
 
         function getUserGrants() {
-            // TODO backend implementation
-            return $q.when([ { name: 'An App' }, { name: 'Another App'}]);
+            return CurrentUserToken.query().$promise.then(function (results) {
+                var promises = [];
+                var grants = [];
+                _.forEach(results, function (token) {
+                    console.log(token);
+                    var grant = {};
+                    grant.originalToken = angular.copy(token);
+                    promises.push(appService.getAppVersionDetails(token.organizationId, token.applicationId, token.version).then(function (appDetails) {
+                        grant.appDetails = appDetails;
+                        grants.push(grant);
+                    }));
+                });
+                return $q.all(promises).then(function () {
+                    return grants;
+                });
+            });
         }
 
         function revokeUserGrants(grants) {
-            // TODO backend implementation
-            return $q.when('OK');
+            var promises = [];
+            _.forEach(grants, function (grant) {
+                promises.push($http({
+                    method: 'DELETE',
+                    url: CONFIG.BASE.URL + '/currentuser/oauth2/tokens',
+                    data: grant,
+                    headers: {'Content-Type': 'application/json;charset=utf-8'}
+                }));
+            });
+
+            return $q.all(promises);
         }
     }
 

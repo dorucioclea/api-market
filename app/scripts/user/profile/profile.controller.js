@@ -4,7 +4,7 @@
     angular.module('app.user.profile')
     /// ==== User Controller
         .controller('UserCtrl', userCtrl)
-        .controller('UserConnectedAppsCtrl', userConnectedAppsCtrl)
+        .controller('UserSecurityCtrl', userSecurityCtrl)
         .controller('UserEmailCtrl', userEmailCtrl)
         .controller('UserNotificationsCtrl', userNotificationsCtrl)
         .controller('UserProfileCtrl', userProfileCtrl);
@@ -81,7 +81,7 @@
         }
     }
     
-    function userConnectedAppsCtrl($scope, userGrants, currentUser, userScreenModel, toastService, _) {
+    function userSecurityCtrl($scope, userGrants, currentUser, userScreenModel, toastService, _) {
         userScreenModel.updateTab('Connected Apps');
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
@@ -105,7 +105,7 @@
 
         function revoke(app) {
             doRevoke([app]).then(function () {
-                toastService.success('Grant revoked.');
+                toastService.success('Token revoked.');
             });
         }
 
@@ -114,12 +114,16 @@
                 return app.selected;
             });
             doRevoke(toRevoke).then(function () {
-                toastService.success('Grants revoked.');
+                if (toRevoke.length === 1) toastService.success('Token revoked.');
+                else toastService.success('Tokens revoked.');
+            }, function () {
+
             })
         }
 
         function doRevoke(toRevoke) {
-            return currentUser.revokeUserGrants(toRevoke).then(function () {
+            var tokensToRevoke = _.map(toRevoke, 'originalToken');
+            return currentUser.revokeUserGrants(tokensToRevoke).then(function () {
                 $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
             });
         }

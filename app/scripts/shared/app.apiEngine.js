@@ -386,6 +386,10 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/svcorgs');
         })
 
+        .factory('CurrentUserToken', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/oauth2/tokens')
+        })
+
         /// ========== USERS ============================================================================
 
         .factory('Users', function ($resource, CONFIG) {

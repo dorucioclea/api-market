@@ -1,17 +1,17 @@
 <div class="col-sm-12">
     <div class="panel panel-default panel-settings">
         <div class="panel-heading">
-            Connected Applications
+            Security
         </div>
         <div class="panel-body">
-            <p>Below is a list of all the applications that are connected to your account.</p>
-            <p>You can review and, if needed, revoke unnecessary connections from this page.</p>
+            <p>Below is a list of all the access tokens that are currently associated with your account.</p>
+            <p>You can review and, if needed, revoke unnecessary authorizations from this page.</p>
 
 
             <div class="col-sm-12 mt30" ng-hide="connectedApps.length > 0">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1 well">
-                        We couldn't find any connected apps. Check back later.
+                        We couldn't find any access tokens for your account. Check back later.
                     </div>
                 </div>
 
@@ -32,7 +32,8 @@
                                 </label>
                             </div>
                         </th>
-                        <th style="width: 100%">Application</th>
+                        <th style="width: 50%">Access Token</th>
+                        <th style="width: 50%">Application</th>
                         <th style="width: 1%"></th>
                     </tr>
                     </thead>
@@ -46,7 +47,8 @@
                                 </label>
                             </div>
                         </td>
-                        <td>{{app.name}}</td>
+                        <td>{{app.originalToken.accessToken}}</td>
+                        <td>{{app.appDetails.application.name}} - {{app.appDetails.version}}</td>
                         <td>
                             <span class="btn btn-line-primary" ng-click="revoke(app)">Revoke</span>
                         </td>

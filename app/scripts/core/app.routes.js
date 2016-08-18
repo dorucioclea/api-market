@@ -930,16 +930,16 @@
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
                 })
-                .state('root.user.connected-apps', {
+                .state('root.user.security', {
                     url: '/connected',
-                    templateUrl: 'views/partials/user/connected.html',
+                    templateUrl: 'views/partials/user/security.html',
                     resolve: {
                         currentUser: 'currentUser',
                         userGrants: function (currentUser) {
                             return currentUser.getUserGrants();
                         }
                     },
-                    controller: 'UserConnectedAppsCtrl'
+                    controller: 'UserSecurityCtrl'
                 });
         })
 
