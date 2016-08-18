@@ -11,6 +11,7 @@
         .controller('ServicePlansCtrl', servicePlansCtrl)
         .controller('ServiceScopeCtrl', serviceScopeCtrl)
         .controller('ServicePoliciesCtrl', servicePoliciesCtrl)
+        .controller('ServiceTermsCtrl', serviceTermsCtrl)
         .controller('ServiceReadmeCtrl', serviceReadmeCtrl)
         .controller('ServiceAnnouncementsCtrl', serviceAnnouncementsCtrl)
         .controller('ServiceSupportCtrl', serviceSupportCtrl)
@@ -667,6 +668,39 @@
             });
 
         };
+    }
+
+    function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
+
+        svcScreenModel.updateTab('Terms');
+        $scope.doSave = doSave;
+        $scope.reset = reset;
+
+        var orig = angular.copy($scope.serviceVersion.service.terms);
+
+        function doSave() {
+            var termsObject = {terms: $scope.serviceVersion.service.terms};
+            service.updateTerms($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id,
+                termsObject).then(
+                function (reply) {
+                    $state.forceReload();
+                    toastService.createToast(TOAST_TYPES.SUCCESS,
+                        'Terms & conditions for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
+                        true);
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Could not update the terms & conditions.');
+                });
+        }
+
+        function reset() {
+            $scope.serviceVersion.service.terms = orig;
+        }
+
+        $scope.$watch('serviceVersion.service.terms', function (terms) {
+            $scope.changed = (terms !== orig);
+            $scope.invalid = (terms === orig);
+        }, true);
+
     }
 
     function serviceReadmeCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {
