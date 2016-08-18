@@ -697,9 +697,9 @@
             $scope.serviceVersion.readme = orig;
         }
 
-        $scope.$watch('htmlTerms', function (terms) {
-            $scope.changed = (terms !== $scope.serviceVersion.service.terms);
-            $scope.invalid = (terms === $scope.serviceVersion.service.terms);
+        $scope.$watch('serviceVersion.readme', function (terms) {
+            $scope.changed = (terms !== orig);
+            $scope.invalid = (terms === orig);
         }, true);
 
     }
