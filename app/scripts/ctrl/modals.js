@@ -524,8 +524,8 @@
 
                 function updateCallback() {
                     var updateObject = {
-                        uri: $scope.callback
-                    };
+                        uris: [$scope.callback]
+                    }
 
                     ApplicationOAuthCallback.save(
                         {orgId: appVersionDetails.application.organization.id,
