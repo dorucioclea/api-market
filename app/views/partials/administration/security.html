@@ -21,7 +21,7 @@
 
                         <div class="form-group mt30">
                             <div class="col-md-12">
-                                <label class="control-label text-primary">JWT Tokens (in minutes)</label>
+                                <label class="control-label text-primary">JWT Tokens (in seconds)</label>
                                 <input type="number" name="jwt" class="form-control" ng-model="tokenTimeout.jwt" required validate-on-timeout>
                                 <p class="text-muted xsmall">Current validity period for JWT tokens, expressed in seconds</p>
                                 <p class="text-danger xsmall" ng-show="timeoutForm.jwt.$error.required && timeoutForm.jwt.$timedout" ng-if="timeoutForm.jwt.$touched">JWT timeout value is required.</p>
