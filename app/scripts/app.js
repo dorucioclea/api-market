@@ -28,6 +28,7 @@
             'btford.markdown',
             'swaggerUi',
             'smart-table',
+            'ngFileSaver',
 
             /* custom modules */
             'app.ctrls',

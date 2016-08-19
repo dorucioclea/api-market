@@ -36,7 +36,8 @@
     "angular-markdown-directive": "0.3.1",
     "lodash": "^4.13.1",
     "Trip.js": "trip.js#^3.2.0",
-    "angular-smart-table": "^2.1.8"
+    "angular-smart-table": "^2.1.8",
+    "angular-file-saver": "1.1.2"
   },
   "devDependencies": {
     "less": "2.5.1",
