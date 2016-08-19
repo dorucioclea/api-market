@@ -379,7 +379,8 @@
         function reset() {
             $scope.definitionLoaded = false;
             $scope.updatedDefinition = $scope.currentDefinition;
-            $scope.displayDefinition = angular.copy($scope.currentDefinition);
+            if ($scope.currentDefinition) $scope.displayDefinition = angular.copy($scope.currentDefinition);
+            else $scope.noDefinition = true;
             // TODO find better way to clear the input fields
             angular.element("input[type='file']").val(null);
             angular.element("input[type='url']").val(null);
@@ -392,7 +393,7 @@
                     toastService.createToast(TOAST_TYPES.SUCCESS,
                         'Service Definition for <b>' + $scope.serviceVersion.service.name + '</b> updated.',
                         true);
-                    if ($scope.tabStatus.hasDefinition) {
+                    if ($scope.tabStatus.hasDefinition && $scope.tabStatus.hasPlan) {
                         $state.forceReload();
                     } else {
                         svcScreenModel.setHasDefinition(true);
@@ -410,7 +411,7 @@
 
         $scope.$watch('updatedDefinition', function (def) {
             $scope.changed = (def !== $scope.currentDefinition);
-            $scope.invalid = (def === $scope.currentDefinition);
+            $scope.invalid = def === undefined;
         }, true);
     }
 
