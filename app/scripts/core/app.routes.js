@@ -513,9 +513,9 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
-                .state('root.administration.expiration', {
+                .state('root.administration.security', {
                     url: '/expiration',
-                    templateUrl: 'views/partials/administration/expiration.html',
+                    templateUrl: 'views/partials/administration/security.html',
                     resolve: {
                         OAuthCentralExpTime: 'OAuthCentralExpTime',
                         oauthExp: function(OAuthCentralExpTime){
@@ -551,11 +551,6 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
-                })
-                .state('root.administration.oauth', {
-                    url: '/apikeys-credentials',
-                    templateUrl: 'views/partials/administration/revoke.html',
-                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================

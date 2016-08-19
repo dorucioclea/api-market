@@ -19,9 +19,8 @@
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
-        this.regenerateAllApiKeys = regenerateAllApiKeys;
-        this.regenerateAllCredentials = regenerateAllCredentials;
-        this.revokeAllGrants = revokeAllGrants;
+        this.reissueAllKeys = reissueAllKeys;
+        this.reissueAllCredentials = reissueAllCredentials;
         this.updateExpirationTimes = updateExpirationTimes;
         this.setDefaultTerms = setDefaultTerms;
         
@@ -63,19 +62,13 @@
             });
         }
 
-        function regenerateAllApiKeys() {
-            // TODO implement backend
-            // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
-        }
-
-        function regenerateAllCredentials() {
+        function reissueAllKeys() {
             // TODO implement backend
             // return $q.resolve('OK');
             return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
-        function revokeAllGrants() {
+        function reissueAllCredentials() {
             // TODO implement backend
             // return $q.resolve('OK');
             return $q.reject({ data: { message: 'Not yet implemented!'}});

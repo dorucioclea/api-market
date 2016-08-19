@@ -24,10 +24,10 @@
     }
 
 
-    function adminExpirationCtrl($scope,oauthExp,jwtExp) {
+    function adminExpirationCtrl($scope, $uibModal, oauthExp, jwtExp, toastService) {
         $scope.adminTab.updateTab('Expiration');
-        console.log(oauthExp);
-        console.log(jwtExp);
+        $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
+        $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
         $scope.tokenTimeout = {
             oauth: oauthExp.expirationTime,
             jwt: jwtExp.expirationTime
@@ -42,6 +42,42 @@
             }, function () {
                 $scope.toastService.createToast($scope.TOAST_TYPES.DANGER, "Could not update expiration times.", true);
             });
+        }
+
+        function confirmRegenerateAPIKeys() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueApiKeysConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.reissueAllKeys().then(function () {
+                    toastService.success('All API keys have been reissued successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to reissue API keys.');
+                })
+            })
+        }
+
+        function confirmRegenerateCredentials() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueOAuthConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.reissueAllCredentials().then(function () {
+                    toastService.success('All OAuth Credentials have been reissued successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to reissue OAuth Credentials.');
+                })
+            })
         }
     }
 

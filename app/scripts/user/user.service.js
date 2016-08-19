@@ -93,7 +93,6 @@
                 var promises = [];
                 var grants = [];
                 _.forEach(results, function (token) {
-                    console.log(token);
                     var grant = {};
                     grant.originalToken = angular.copy(token);
                     var scopesArray = [];

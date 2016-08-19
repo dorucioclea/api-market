@@ -81,7 +81,7 @@
         }
     }
     
-    function userSecurityCtrl($scope, userGrants, currentUser, userScreenModel, toastService, _) {
+    function userSecurityCtrl($scope, $uibModal, userGrants, currentUser, userScreenModel, toastService, _) {
         userScreenModel.updateTab('Connected Apps');
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
@@ -104,8 +104,18 @@
         }
 
         function revoke(app) {
-            doRevoke([app]).then(function () {
-                toastService.success('Token revoked.');
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeTokenConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+            modalInstance.result.then(function () {
+                doRevoke([app]).then(function () {
+                    toastService.success('Token revoked.');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke token.');
+                });
             });
         }
 
@@ -113,12 +123,24 @@
             var toRevoke = _.filter($scope.connectedApps, function (app) {
                 return app.selected;
             });
-            doRevoke(toRevoke).then(function () {
-                if (toRevoke.length === 1) toastService.success('Token revoked.');
-                else toastService.success('Tokens revoked.');
-            }, function () {
+            var modalUrl = 'views/modals/revokeTokenConfirm.html';
+            if (toRevoke.length > 1) modalUrl = 'views/modals/revokeTokensConfirm.html';
+            var modalInstance = $uibModal.open({
+                templateUrl: modalUrl,
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
 
-            })
+            modalInstance.result.then(function () {
+                doRevoke(toRevoke).then(function () {
+                    if (toRevoke.length === 1) toastService.success('Token revoked.');
+                    else toastService.success('Tokens revoked.');
+                }, function (error) {
+                    if (toRevoke.length === 1) toastService.createErrorToast(error, 'Failed to revoke token.');
+                    else toastService.createErrorToast(error, 'Failed to revoke tokens.');
+                })
+            });
         }
 
         function doRevoke(toRevoke) {
