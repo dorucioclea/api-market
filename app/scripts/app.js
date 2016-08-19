@@ -135,7 +135,7 @@
                         return null;
                     }
                     // Skip authentication for oauth requests
-                    if (config.url.indexOf('/oauth2/') > -1 && config.url.indexOf('/oauth2/reissue') === -1) {
+                    if (config.skipJWT) {
                         return null;
                     }
 

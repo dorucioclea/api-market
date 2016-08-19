@@ -728,7 +728,8 @@
                         method: 'POST',
                         url: url,
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        data: $.param(data)
+                        data: $.param(data),
+                        skipJWT: true
                     });
                 }
             })
