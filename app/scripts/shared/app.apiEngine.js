@@ -511,7 +511,7 @@
                 }
             });
         })
-        /// ========== OAUTH ============================================================================
+        /// ========== SECURITY ============================================================================
         .factory('OAuthCentralExpTime', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/oauth/expiration-time');//post body with expirationTime (integer in seconds)
         })
@@ -520,5 +520,21 @@
         })
         .factory('OAuthTokenRevoke', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/oauth2/tokens/revoke');
+        })
+        .factory('ReissueAllKeys', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/key-auth/reissue', {}, {
+                reissue: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
+        })
+        .factory('ReissueAllCredentials', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/oauth2/reissue', {}, {
+                reissue: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
         });
 })();

@@ -15,7 +15,8 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin){
+    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin,
+                         ReissueAllKeys, ReissueAllCredentials){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
@@ -65,13 +66,15 @@
         function reissueAllKeys() {
             // TODO implement backend
             // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
+            return ReissueAllKeys.reissue({}, {}).$promise;
+            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function reissueAllCredentials() {
             // TODO implement backend
             // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
+            return ReissueAllCredentials.reissue({}, {}).$promise;
+            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {
