@@ -4,7 +4,7 @@
     angular.module('app.user.profile')
     /// ==== User Controller
         .controller('UserCtrl', userCtrl)
-        .controller('UserConnectedAppsCtrl', userConnectedAppsCtrl)
+        .controller('UserSecurityCtrl', userSecurityCtrl)
         .controller('UserEmailCtrl', userEmailCtrl)
         .controller('UserNotificationsCtrl', userNotificationsCtrl)
         .controller('UserProfileCtrl', userProfileCtrl);
@@ -81,8 +81,74 @@
         }
     }
     
-    function userConnectedAppsCtrl(userScreenModel) {
+    function userSecurityCtrl($scope, $uibModal, userGrants, currentUser, userScreenModel, toastService, _) {
         userScreenModel.updateTab('Connected Apps');
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.change = change;
+        $scope.revoke = revoke;
+        $scope.revokeSelected = revokeSelected;
+        $scope.connectedApps = userGrants;
+        $scope.sel = false;
+
+
+        function change() {
+            _.forEach($scope.connectedApps, function (app) {
+                app.selected = !!$scope.sel;
+            })
+        }
+
+        function canDoBulkOperation() {
+            return _.find($scope.connectedApps, function (app) {
+                return app.selected;
+            })
+        }
+
+        function revoke(app) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeTokenConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+            modalInstance.result.then(function () {
+                doRevoke([app]).then(function () {
+                    toastService.success('Token revoked.');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke token.');
+                });
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.connectedApps, function (app) {
+                return app.selected;
+            });
+            var modalUrl = 'views/modals/revokeTokenConfirm.html';
+            if (toRevoke.length > 1) modalUrl = 'views/modals/revokeTokensConfirm.html';
+            var modalInstance = $uibModal.open({
+                templateUrl: modalUrl,
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                doRevoke(toRevoke).then(function () {
+                    if (toRevoke.length === 1) toastService.success('Token revoked.');
+                    else toastService.success('Tokens revoked.');
+                }, function (error) {
+                    if (toRevoke.length === 1) toastService.createErrorToast(error, 'Failed to revoke token.');
+                    else toastService.createErrorToast(error, 'Failed to revoke tokens.');
+                })
+            });
+        }
+
+        function doRevoke(toRevoke) {
+            var tokensToRevoke = _.map(toRevoke, 'originalToken');
+            return currentUser.revokeUserGrants(tokensToRevoke).then(function () {
+                $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
+            });
+        }
     }
 
     function userEmailCtrl(userScreenModel) {

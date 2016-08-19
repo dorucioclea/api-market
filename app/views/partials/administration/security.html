@@ -32,7 +32,23 @@
 
                     <button class="btn btn-line-primary" ng-click="updateExpirationTimes()" ng-disabled="timeoutForm.$invalid">Update</button>
                 </div>
+                <div class="col-sm-12">
+                    <hr>
+                </div>
+                <div class="col-sm-12 mt30">
+                    <h4>Revoke Keys & Tokens</h4>
+                    <p>This page allows the administrator to revoke OAuth Grants for one or more users.</p>
+                    <!--<h4>Revoke OAuth Grants</h4>-->
+                    <!--<p>This page allows the administrator to revoke all current OAuth2 grants.</p>-->
+                    <p><strong>Use with caution, as this cannot be undone!</strong></p>
+                    <hr>
+                </div>
+                <div class="col-sm-10 col-sm-offset-1 mt30 mb30">
+                    <button class="btn btn-lg btn-line-danger mr20" ng-click="confirmRegenerateAPIKeys()" ng-disabled="timeoutForm.$invalid">Reissue All API Keys</button>
+                    <button class="btn btn-lg btn-line-danger" ng-click="confirmRegenerateCredentials()" ng-disabled="timeoutForm.$invalid">Reissue All OAuth Credentials</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+

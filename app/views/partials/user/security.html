@@ -1,0 +1,68 @@
+<div class="col-sm-12">
+    <div class="panel panel-default panel-settings">
+        <div class="panel-heading">
+            Security
+        </div>
+        <div class="panel-body">
+            <p>Below is a list of all the access tokens that are currently associated with your account.</p>
+            <p>You can review and, if needed, revoke unnecessary authorizations from this page.</p>
+
+
+            <div class="col-sm-12 mt30" ng-hide="connectedApps.length > 0">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 well">
+                        We couldn't find any access tokens for your account. Check back later.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-12" ng-show="connectedApps.length > 0">
+                <p class="btn btn-line-primary right" ng-disabled="!canDoBulkOperation()" ng-click="revokeSelected()">Revoke Selected</p>
+
+
+                <table st-table="connectedApps" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+                                <label>
+                                    <input type="checkbox" ng-model="sel" ng-click="change()">
+                                    <span class="title"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th style="width: 50%">Scopes & Token</th>
+                        <th style="width: 50%">Application</th>
+                        <th style="width: 1%"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="app in connectedApps">
+                        <td>
+                            <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle">
+                                <label>
+                                    <input type="checkbox" ng-model="app.selected">
+                                    <span class="title"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {{app.scopesString}}
+                            </div>
+                            <div>
+                                <span class="small text-light text-muted">{{app.originalToken.accessToken}}</span>
+                            </div>
+                        </td>
+                        <td>{{app.appDetails.application.name}} - {{app.appDetails.version}}</td>
+                        <td>
+                            <span class="btn btn-line-primary" ng-click="revoke(app)">Revoke</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

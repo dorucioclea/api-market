@@ -513,9 +513,9 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
-                .state('root.administration.expiration', {
+                .state('root.administration.security', {
                     url: '/expiration',
-                    templateUrl: 'views/partials/administration/expiration.html',
+                    templateUrl: 'views/partials/administration/security.html',
                     resolve: {
                         OAuthCentralExpTime: 'OAuthCentralExpTime',
                         oauthExp: function(OAuthCentralExpTime){
@@ -551,11 +551,6 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
-                })
-                .state('root.administration.oauth', {
-                    url: '/apikeys-credentials',
-                    templateUrl: 'views/partials/administration/revoke.html',
-                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
@@ -716,6 +711,17 @@
                     url: '/apis',
                     templateUrl: 'views/partials/application/apis.html',
                     controller: 'ApisCtrl'
+                })
+                .state('root.application.security', {
+                    url: '/security',
+                    templateUrl: 'views/partials/application/security.html',
+                    resolve: {
+                        appService: 'appService',
+                        tokens: function (appService, organizationId, applicationId, versionId) {
+                            return appService.getAppVersionTokens(organizationId, applicationId, versionId);
+                        }
+                    },
+                    controller: 'AppSecurityCtrl'
                 })
                 // Activity Tab
                 .state('root.application.activity', {
@@ -930,10 +936,16 @@
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
                 })
-                .state('root.user.connected-apps', {
+                .state('root.user.security', {
                     url: '/connected',
-                    templateUrl: 'views/partials/user/connected.html',
-                    controller: 'UserConnectedAppsCtrl'
+                    templateUrl: 'views/partials/user/security.html',
+                    resolve: {
+                        currentUser: 'currentUser',
+                        userGrants: function (currentUser) {
+                            return currentUser.getUserGrants();
+                        }
+                    },
+                    controller: 'UserSecurityCtrl'
                 });
         })
 

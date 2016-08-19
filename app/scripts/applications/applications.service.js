@@ -208,11 +208,13 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract) {
+    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, memberService, OAuthTokenRevoke) {
         this.getAppsForOrg = getAppsForOrg;
         this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
         this.getAppVersionContracts = getAppVersionContracts;
+        this.getAppVersionTokens = getAppVersionTokens;
+        this.revokeAppVersionTokens = revokeAppVersionTokens;
         this.getAppMetrics = getAppMetrics;
         this.updateAppDesc = updateAppDescription;
         
@@ -233,10 +235,42 @@
             return ApplicationContract.query({ orgId: orgId, appId: appId, versionId: versionId }).$promise
         }
 
+        function getAppVersionTokens(orgId, appId, versionId) {
+            return ApplicationVersionToken.query({ orgId: orgId, appId: appId, versionId: versionId }).$promise.then(function (tokens) {
+                var promises = [];
+                var grants = [];
+                _.forEach(tokens, function (token) {
+                    var grant = {};
+                    grant.originalToken = angular.copy(token);
+                    var scopesArray = [];
+                    _.forEach(_.split(token.scope, ' '), function (scopeString) {
+                        scopesArray.push(_.split(scopeString, '.')[3]);
+                    });
+                    scopesArray = _.sortBy(scopesArray);
+                    grant.scopesString = _.join(scopesArray, ', ');
+                    promises.push(memberService.getMemberDetails(token.authenticatedUserid).then(function (userDetails) {
+                        grant.userDetails = userDetails;
+                        grants.push(grant);
+                    }))
+                });
+                return $q.all(promises).then(function () {
+                    return grants;
+                });
+            });
+        }
+
         function getAppMetrics(orgId, appId, versionId, fromDt, toDt, interval) {
             return ApplicationMetrics.get({orgId: orgId, appId: appId,
                 versionId: versionId,
                 from: fromDt, to: toDt, interval: interval}).$promise;
+        }
+
+        function revokeAppVersionTokens(toRevoke) {
+            var promises = [];
+            _.forEach(toRevoke, function (token) {
+                promises.push(OAuthTokenRevoke.save({}, token).$promise);
+            });
+            return $q.all(promises);
         }
 
         function updateAppDescription(orgId, appId, newDescription) {

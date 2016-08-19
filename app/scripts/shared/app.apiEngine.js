@@ -201,6 +201,9 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId',
                 {orgId: '@application.organisation.id', appId: '@application.id', versionId: '@id'});
         })
+        .factory('ApplicationVersionToken', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId/oauth2/tokens')
+        })
         .factory('ApplicationOAuthCallback', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/applications/:appId/versions/:versionId');
         })
@@ -386,6 +389,10 @@
             return $resource(CONFIG.BASE.URL + '/currentuser/svcorgs');
         })
 
+        .factory('CurrentUserToken', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/currentuser/oauth2/tokens')
+        })
+
         /// ========== USERS ============================================================================
 
         .factory('Users', function ($resource, CONFIG) {
@@ -504,11 +511,30 @@
                 }
             });
         })
-        /// ========== OAUTH ============================================================================
+        /// ========== SECURITY ============================================================================
         .factory('OAuthCentralExpTime', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/oauth/expiration-time');//post body with expirationTime (integer in seconds)
         })
         .factory('JWTCentralExpTime', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/jwt/expiration-time'); //post body with expirationTime (integer in seconds)
+        })
+        .factory('OAuthTokenRevoke', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/oauth2/tokens/revoke');
+        })
+        .factory('ReissueAllKeys', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/key-auth/reissue', {}, {
+                reissue: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
+        })
+        .factory('ReissueAllCredentials', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/oauth2/reissue', {}, {
+                reissue: {
+                    method: 'POST',
+                    isArray: true
+                }
+            });
         });
 })();
