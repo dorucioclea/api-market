@@ -407,8 +407,7 @@
         }
     }
 
-    function appSecurityCtrl($scope, $stateParams, tokens, appService, _) {
-        console.log(tokens);
+    function appSecurityCtrl($scope, tokens, appService, toastService, _) {
         $scope.tokens = tokens;
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
@@ -449,7 +448,7 @@
 
         function doRevoke(toRevoke) {
             var tokensToRevoke = _.map(toRevoke, 'originalToken');
-            return appService.revokeAppVersionTokens($stateParams.orgId, $stateParams.appId, $stateParams.versionId, tokensToRevoke).then(function () {
+            return appService.revokeAppVersionTokens(tokensToRevoke).then(function () {
                 $scope.tokens = _.difference($scope.tokens, toRevoke);
             });
         }

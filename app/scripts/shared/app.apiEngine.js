@@ -517,5 +517,8 @@
         })
         .factory('JWTCentralExpTime', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/jwt/expiration-time'); //post body with expirationTime (integer in seconds)
+        })
+        .factory('OAuthTokenRevoke', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/security/oauth2/tokens/revoke');
         });
 })();

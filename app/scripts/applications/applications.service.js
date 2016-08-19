@@ -208,7 +208,7 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, memberService, $http, CONFIG) {
+    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, memberService, OAuthTokenRevoke) {
         this.getAppsForOrg = getAppsForOrg;
         this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
@@ -265,17 +265,11 @@
                 from: fromDt, to: toDt, interval: interval}).$promise;
         }
 
-        function revokeAppVersionTokens(orgId, appId, versionId, toRevoke) {
+        function revokeAppVersionTokens(toRevoke) {
             var promises = [];
             _.forEach(toRevoke, function (token) {
-                promises.push($http({
-                    method: 'DELETE',
-                    url: CONFIG.BASE.URL + '/organizations/' + orgId + '/applications/' + appId + '/versions/' + versionId + '/oauth2/tokens',
-                    data: token,
-                    headers: {'Content-Type': 'application/json;charset=utf-8'}
-                }));
+                promises.push(OAuthTokenRevoke.save({}, token).$promise);
             });
-
             return $q.all(promises);
         }
 
