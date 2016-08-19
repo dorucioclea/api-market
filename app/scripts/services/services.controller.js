@@ -295,12 +295,13 @@
     }
 
     function serviceDefinitionCtrl($scope, $state, $stateParams, $timeout, resourceUtil, toastService, TOAST_TYPES,
-                                   SwaggerDocFetch, svcScreenModel, service) {
+                                   docDownloader, SwaggerDocFetch, svcScreenModel, service) {
 
         svcScreenModel.updateTab('Definition');
         $scope.selectedMethod = 'JSON File';
         $scope.definitionLoaded = false;
         $scope.noDefinition = false;
+        $scope.doDownload = doDownload;
         $scope.doFetch = doFetch;
         $scope.loadDefinition = loadDefinition;
         $scope.reset = reset;
@@ -333,6 +334,10 @@
                     $scope.isLoading = false;
                 });
 
+        }
+
+        function doDownload() {
+            docDownloader.fetch($stateParams.orgId, $stateParams.svcId, $stateParams.versionId);
         }
 
         function doFetch(uri) {
@@ -374,6 +379,10 @@
         function reset() {
             $scope.definitionLoaded = false;
             $scope.updatedDefinition = $scope.currentDefinition;
+            $scope.displayDefinition = angular.copy($scope.currentDefinition);
+            // TODO find better way to clear the input fields
+            angular.element("input[type='file']").val(null);
+            angular.element("input[type='url']").val(null);
         }
 
         function saveDefinition() {

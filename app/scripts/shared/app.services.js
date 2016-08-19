@@ -734,29 +734,34 @@
             })
 
         // DOC DOWNLOADER
-        .service('docDownloader', function (toastService, ServiceVersionDefinition, CONFIG, TOAST_TYPES) {
+        .service('docDownloader', function (toastService, MktServiceVersionDefinition, ServiceVersionDefinition, loginHelper, FileSaver, CONFIG) {
 
             this.fetch = fetch;
             this.fetchWithContract = fetchWithContract;
-            this.fetchWithServiceVersion = fetchWithServiceVersion
+            this.fetchWithServiceVersion = fetchWithServiceVersion;
 
             function fetch(orgId, svcId, versionId) {
-                return ServiceVersionDefinition.get(
-                    {orgId: orgId,
-                        svcId: svcId,
-                        versionId: versionId},
-                    function (definitionSpec) {
-                        toastService.createToast(TOAST_TYPES.INFO, '<b>Downloading...</b>', true);
-                        definitionSpec.host = CONFIG.KONG.HOST;
-                        var data = angular.toJson(definitionSpec, true);
-                        var blob = new Blob([data], {type: 'text/json'}),
-                            a = document.createElement('a');
+                var fileName = svcId + '-' + versionId + '-swagger.json';
 
-                        a.download = svcId + '-' + versionId + '-swagger.json';
-                        a.href = window.URL.createObjectURL(blob);
-                        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-                        a.click();
-                    });
+                if (loginHelper.checkLoggedIn()) {
+                    return ServiceVersionDefinition.get({ orgId: orgId, svcId: svcId, versionId: versionId },
+                        function (definitionSpec) {
+                            handleDefinitionDownload(definitionSpec, fileName);
+                        });
+                } else {
+                    return MktServiceVersionDefinition.get({ orgId: orgId, svcId: svcId, versionId: versionId },
+                        function (definitionSpec) {
+                            handleDefinitionDownload(definitionSpec, fileName);
+                        });
+                }
+            }
+
+            function handleDefinitionDownload(spec, filename) {
+                toastService.info('<b>Downloading...</b>');
+                spec.host = CONFIG.KONG.HOST;
+                var data = angular.toJson(spec, true);
+                var file = new Blob([data], { type: 'text/json' });
+                FileSaver.saveAs(file, filename);
             }
 
             function fetchWithContract(contract) {
