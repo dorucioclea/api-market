@@ -720,6 +720,12 @@
                 .state('root.application.security', {
                     url: '/security',
                     templateUrl: 'views/partials/application/security.html',
+                    resolve: {
+                        appService: 'appService',
+                        tokens: function (appService, organizationId, applicationId, versionId) {
+                            return appService.getAppVersionTokens(organizationId, applicationId, versionId);
+                        }
+                    },
                     controller: 'AppSecurityCtrl'
                 })
                 // Activity Tab

@@ -407,8 +407,52 @@
         }
     }
 
-    function appSecurityCtrl($scope) {
+    function appSecurityCtrl($scope, $stateParams, tokens, appService, _) {
+        console.log(tokens);
+        $scope.tokens = tokens;
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.change = change;
+        $scope.revoke = revoke;
+        $scope.revokeSelected = revokeSelected;
+        $scope.sel = false;
 
+
+        function change() {
+            _.forEach($scope.tokens, function (token) {
+                token.selected = !!$scope.sel;
+            })
+        }
+
+        function canDoBulkOperation() {
+            return _.find($scope.tokens, function (token) {
+                return token.selected;
+            })
+        }
+
+        function revoke(app) {
+            doRevoke([app]).then(function () {
+                toastService.success('Access Token revoked.');
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.tokens, function (token) {
+                return token.selected;
+            });
+            doRevoke(toRevoke).then(function () {
+                if (toRevoke.length === 1) toastService.success('Access Token revoked.');
+                else toastService.success('Access Tokens revoked.');
+            }, function () {
+
+            })
+        }
+
+        function doRevoke(toRevoke) {
+            var tokensToRevoke = _.map(toRevoke, 'originalToken');
+            return appService.revokeAppVersionTokens($stateParams.orgId, $stateParams.appId, $stateParams.versionId, tokensToRevoke).then(function () {
+                $scope.tokens = _.difference($scope.tokens, toRevoke);
+            });
+        }
     }
 
 

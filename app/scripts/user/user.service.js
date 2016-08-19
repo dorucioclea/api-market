@@ -96,6 +96,12 @@
                     console.log(token);
                     var grant = {};
                     grant.originalToken = angular.copy(token);
+                    var scopesArray = [];
+                    _.forEach(_.split(token.scope, ' '), function (scopeString) {
+                        scopesArray.push(_.split(scopeString, '.')[3]);
+                    });
+                    scopesArray = _.sortBy(scopesArray);
+                    grant.scopesString = _.join(scopesArray, ', ');
                     promises.push(appService.getAppVersionDetails(token.organizationId, token.applicationId, token.version).then(function (appDetails) {
                         grant.appDetails = appDetails;
                         grants.push(grant);
