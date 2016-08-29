@@ -133,7 +133,7 @@
         function checkNeedsReadMe() {
             alertService.resetAllAlerts();
             var needsReadMe = !$scope.serviceVersion.autoAcceptContracts &&
-                (!$scope.serviceVersion.service.terms || $scope.serviceVersion.service.terms.length === 0);
+                (!$scope.serviceVersion.readme || $scope.serviceVersion.readme.length === 0);
             if (needsReadMe) {
                 alertService.addAlert(ALERT_TYPES.INFO,
                     '<b>Please provide a README file!</b><br><span class="small text-light">You have indicated that you want to manually manage the' +
