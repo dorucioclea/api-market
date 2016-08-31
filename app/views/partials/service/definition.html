@@ -64,7 +64,7 @@
         <input type="file" class="form-control" ng-model="file" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
         <input type="url" name="uri" class="form-control" ng-model="uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
         <div class="input-group-btn" ng-class="{'hidden': selectedMethod === 'JSON File'}">
-          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
+          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(uri)" ng-disabled="docForm.uri.$invalid">Load</button>
         </div>
       </div>
       <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'URI'}">You can use the button above to select the JSON file you want to upload.</p>
