@@ -232,7 +232,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + privuser + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
+                    },function(error){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
 
                     break;
             }
@@ -243,7 +243,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + user.username + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
+                    },function(error){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
                 } else {
                     toastService.createToast(TOAST_TYPES.WARNING,
                         'Could not find member to add with email address <b>' + email + '</b>.', true);
