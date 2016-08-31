@@ -11,7 +11,7 @@
 
 
 
-    function userCtrl($scope, headerModel, userScreenModel, toastService, currentUser) {
+    function userCtrl($scope, headerModel, userScreenModel, toastService, currentUser, currentUserModel) {
 
         init();
 
@@ -21,6 +21,17 @@
         $scope.user = userScreenModel;
         $scope.isActive = isActive;
         $scope.saveUserDetails = saveUserDetails;
+        $scope.addScheme = addScheme;
+
+        function addScheme(event) {
+            var input = event.target;
+            var string = input.value;
+            if (!(string.indexOf("http") === 0)) {
+                string = "http://" + string;
+            }
+            userScreenModel.userInfo.website = string;
+            input.value = string;
+        }
 
         function init() {
             if ($scope.publisherMode) {
@@ -71,7 +82,8 @@
             }
             else{
                 currentUser.update(updateObject).then(function () {
-                    $scope.User.updateCurrentUserInfo($scope.User);
+                    //$scope.User.updateCurrentUserInfo($scope.User);
+                    currentUserModel.refreshCurrentUserInfo(currentUserModel);
                     toastService.createToast('info', 'Profile updated!', true);
                 }, function (error) {
                     console.log(error);

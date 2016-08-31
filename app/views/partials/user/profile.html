@@ -35,7 +35,7 @@
               <span class="fa fa-link with-margin"></span>
               <span>Website</span>
             </label>
-            <input type="url" name="website" placeholder="Website" ng-model="user.userInfo.website" value="" class="form-control">
+            <input type="url" name="website" placeholder="Website" ng-model="user.userInfo.website" value="" class="form-control" ng-blur="addScheme($event)">
           </div>
         </div>
         <div class="row">
