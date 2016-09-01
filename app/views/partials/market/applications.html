@@ -50,9 +50,8 @@
         <thead>
         <tr>
             <th style="padding-left: 20px; padding-right: 10px;" nowrap="nowrap" width="5%"></th>
-            <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="45%">Application</th>
-            <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%">Version</th>
-            <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%">Status</th>
+            <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="40%">Application</th>
+            <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="10%">Version</th>
             <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="1%"># Contracts</th>
             <th style="padding-left: 10px; padding-right: 10px;" nowrap="nowrap" width="25%">Actions</th>
         </tr>
@@ -65,16 +64,15 @@
                 <a id="app-name" ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
             </td>
             <td style="padding-left: 10px; padding-right: 10px;">
-                <div class="btn-group dropdown" uib-dropdown >
-                    <button id="version-dropdown" type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="application.versions.length === 1" uib-dropdown-toggle>
-                        {{application.versions[application.selectedVersionIndex].version}}<span class="caret"></span>
+                <div style="min-width: 100%" class="btn-group dropdown" uib-dropdown >
+                    <button style="width: 100%; min-width: auto; padding-right: 5px; padding-left: 5px;" id="version-dropdown"  type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="application.versions.length === 1" uib-dropdown-toggle>
+                        {{application.versions[application.selectedVersionIndex].version}}<status-label style="padding-left: 10px; padding-right: 10px" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label><span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li ng-repeat="version in application.versions | orderBy:'createdOn'" ng-click="selectVersion(application, version)"><a>{{version.version}}</a></li>
+                        <li style="margin-left: auto; margin-right:auto; padding-left: 10px; padding-right: 5px;" ng-repeat="version in application.versions | orderBy:'createdOn'" ng-click="selectVersion(application, version)"><span><a>{{version.version}}<status-label style="padding-left: 10px; padding-right: 10px" status="{{version.status}}"></status-label></a></span></li>
                     </ul>
                 </div>
             </td>
-            <td style="padding-left: 10px; padding-right: 10px;"><status-label id="status" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label></td>
             <td class="text-center" style="padding-left: 10px; padding-right: 10px;">{{application.versions[application.selectedVersionIndex].contracts.length > 0 ? application.versions[application.selectedVersionIndex].contracts.length : 0}}</td>
             <td style="padding-left: 10px; padding-right: 10px;">
                 <div class="btn-group-xs">
