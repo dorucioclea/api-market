@@ -98,7 +98,7 @@
             <label for="terms">Terms & Conditions</label>
 
             <input id="readme" type="radio" name="tabs" ui-sref-active="active" ui-sref=".readme">
-            <label for="readme">Readme</label>
+            <label for="readme"><span ng-show="!serviceVersion.autoAcceptContracts && !(isReady || isPublished || isRetired )"><span class="label label-primary">5</span>&nbsp;&nbsp;</span>Readme</label>
 
             <input id="announcements" type="radio" name="tabs" ui-sref-active="active" ui-sref=".announcements" ng-if="isPublished && !CONFIG.APP.DISABLE_ANNOUNCEMENTS">
             <label for="announcements" ng-if="isPublished && !CONFIG.APP.DISABLE_ANNOUNCEMENTS">Announcements</label>
