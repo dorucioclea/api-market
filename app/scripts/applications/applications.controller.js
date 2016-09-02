@@ -228,11 +228,14 @@
 
         function updateMetrics() {
             appService.getAppMetrics($stateParams.orgId, $stateParams.appId, $stateParams.versionId, $scope.fromDt, $scope.toDt, $scope.interval).then(function (stats) {
+                $scope.error = false;
                 $scope.serviceIds = [];
                 angular.forEach(stats.data, function (serviceData, serviceKey) {
                     var key = serviceKey.split('.').join('_');
                     createResponseHistogram(serviceData.data, key);
                 });
+            }, function (err) {
+                $scope.error = true;
             });
         }
 
