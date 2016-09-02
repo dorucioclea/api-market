@@ -13,7 +13,7 @@
                     <input type="text" class="form-control datepicker" uib-datepicker-popup="{{format}}" ng-model="fromDt" is-open="fromOpened"
                            min-date="2015-01-01" max-date="'2025-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                            ng-required="true" show-button-bar="false" ng-disabled="isIntervalMinute"/>
-								<span class="input-group-btn">
+                    <span class="input-group-btn">
 									<button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event)" ng-disabled="isIntervalMinute"></button>
 								</span>
                 </div>
@@ -26,7 +26,7 @@
                     <input type="text" class="form-control datepicker" uib-datepicker-popup="{{format}}" ng-model="toDt" is-open="toOpened"
                            min-date="2015-01-01" max-date="'2025-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                            ng-required="true" show-button-bar="false" ng-disabled="isIntervalMinute"/>
-								<span class="input-group-btn">
+                    <span class="input-group-btn">
 									<button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event, true)" ng-disabled="isIntervalMinute"></button>
 								</span>
                 </div>
@@ -48,8 +48,12 @@
     </div>
 
 
+    <div class="col-sm-12 mt30" ng-if="metricsError && responseMetricsError">
+        <p class="text-center text-thin size-h4 text-muted">We could not retrieve the requested metrics data at this time.</p>
+        <p class="text-center text-thin size-h4 text-muted">Please try again later.</p>
+    </div>
 
-    <div class="col-sm-12 mt10">
+    <div class="col-sm-12 mt10" ng-if="!metricsError">
         <div class="panel panel-primary">
             <div class="panel-heading metric-heading text-center">Response & Usage Statistics</div>
             <div class="panel-body">
@@ -66,77 +70,87 @@
         </div>
     </div>
 
-    <div class="row-centered col-sm-12">
-        <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
-            <div class="panel panel-default mini-box text-center panel-hovered">
-                <div class="panel-body">
-                    <span class="text-bold">{{summary.requestsCount ? summary.requestsCount : 0}}</span>
-                </div>
-                <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
-                    <span class="left text-bold xsmall">Total requests</span>
-                    <span class="right fa fa-envelope xsmall"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
-            <div class="panel panel-default mini-box text-center panel-hovered">
-                <div class="panel-body">
-                    <span class="text-bold">{{summary.requestsWrong ? summary.requestsWrong : 0}}</span>
-                </div>
-                <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
-                    <span class="left text-bold xsmall">Malformed req.</span>
-                    <span class="right fa fa-undo xsmall"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
-            <div class="panel panel-default mini-box text-center panel-hovered">
-                <div class="panel-body">
-                    <span class="text-bold">{{summary.responseWrong ? summary.responseWrong : 0}}</span>
-                </div>
-                <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
-                    <span class="left text-bold xsmall">Service errors</span>
-                    <span class="right fa fa-exclamation-triangle xsmall"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
-            <div class="panel panel-default mini-box text-center panel-hovered">
-                <div class="panel-body">
-                    <span class="text-bold">{{marketInfo.developers ? marketInfo.developers : 0}}</span>
-                </div>
-                <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
-                    <span class="left text-bold xsmall">Developers</span>
-                    <span class="right fa fa-users xsmall"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
-            <div class="panel panel-default mini-box text-center panel-hovered">
-                <div class="panel-body">
-                    <span class="text-bold">{{serviceVersion.service.followers.length}}</span>
-                </div>
-                <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
-                    <span class="left text-bold xsmall">Followers</span>
-                    <span class="right fa fa-star xsmall"></span>
-                </div>
-            </div>
-        </div>
+    <div class="col-sm-12 mt30 mb30" ng-if="metricsError && !responseMetricsError">
+        <p class="text-center text-thin size-h4 text-muted">We could not retrieve the API metrics graph data at this time.</p>
     </div>
 
-    <div class="col-sm-12 mt10">
-        <div class="panel text-center">
-            <div class="panel-body">
-                <c3chart bindto-id="gauge-plot1-chart" chart-data="uptime" chart-columns="gaugeColumns">
-                    <chart-gauge min="0"
-                                 max="100"
-                                 units="uptime"
-                                 width="35"/>
-                </c3chart>
+    <div class="col-sm-12 mt30" ng-if="!metricsError && responseMetricsError">
+        <p class="text-center text-thin size-h4 text-muted">We could not retrieve the API metrics summary & uptime data at this time.</p>
+    </div>
+
+    <div ng-if="!responseMetricsError">
+        <div class="row-centered col-sm-12">
+            <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
+                <div class="panel panel-default mini-box text-center panel-hovered">
+                    <div class="panel-body">
+                        <span class="text-bold">{{summary.requestsCount ? summary.requestsCount : 0}}</span>
+                    </div>
+                    <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+                        <span class="left text-bold xsmall">Total requests</span>
+                        <span class="right fa fa-envelope xsmall"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
+                <div class="panel panel-default mini-box text-center panel-hovered">
+                    <div class="panel-body">
+                        <span class="text-bold">{{summary.requestsWrong ? summary.requestsWrong : 0}}</span>
+                    </div>
+                    <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+                        <span class="left text-bold xsmall">Malformed req.</span>
+                        <span class="right fa fa-undo xsmall"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
+                <div class="panel panel-default mini-box text-center panel-hovered">
+                    <div class="panel-body">
+                        <span class="text-bold">{{summary.responseWrong ? summary.responseWrong : 0}}</span>
+                    </div>
+                    <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+                        <span class="left text-bold xsmall">Service errors</span>
+                        <span class="right fa fa-exclamation-triangle xsmall"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
+                <div class="panel panel-default mini-box text-center panel-hovered">
+                    <div class="panel-body">
+                        <span class="text-bold">{{marketInfo.developers ? marketInfo.developers : 0}}</span>
+                    </div>
+                    <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+                        <span class="left text-bold xsmall">Developers</span>
+                        <span class="right fa fa-users xsmall"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-centered col-sm-4 col-md-3 col-lg-2 mt5">
+                <div class="panel panel-default mini-box text-center panel-hovered">
+                    <div class="panel-body">
+                        <span class="text-bold">{{serviceVersion.service.followers.length}}</span>
+                    </div>
+                    <div class="panel-footer panel-footer-sm panel-footer-primary clearfix">
+                        <span class="left text-bold xsmall">Followers</span>
+                        <span class="right fa fa-star xsmall"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 mt10">
+            <div class="panel text-center">
+                <div class="panel-body">
+                    <c3chart bindto-id="gauge-plot1-chart" chart-data="uptime" chart-columns="gaugeColumns">
+                        <chart-gauge min="0"
+                                     max="100"
+                                     units="uptime"
+                                     width="35"/>
+                    </c3chart>
+                </div>
             </div>
         </div>
     </div>

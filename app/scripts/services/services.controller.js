@@ -190,7 +190,7 @@
     function servicePendingCtrl($scope, svcScreenModel) {
         svcScreenModel.updateTab('Pending');
     }
-    
+
     function serviceActivityCtrl($scope, activityData, svcScreenModel) {
 
         $scope.activities = activityData.beans;
@@ -903,7 +903,10 @@
                     interval: $scope.interval
                 },
                 function (response) {
+                    $scope.metricsError = false;
                     createResponseHistogram(response.data);
+                }, function () {
+                    $scope.metricsError = true;
                 });
             ServiceMetricsResponseSummary.get(
                 {
@@ -914,7 +917,10 @@
                     to: $scope.toDt
                 },
                 function (metrics) {
+                    $scope.responseMetricsError = false;
                     $scope.summary = metrics.data[0];
+                }, function () {
+                    $scope.responseMetricsError = true;
                 });
         }
 
