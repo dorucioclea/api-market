@@ -584,9 +584,10 @@
                     alertService.resetAllAlerts();
                 }
 
-                function cancel() {
+                function cancel(flow) {
+                    flow.cancel();
                     imageService.clear();
-                    $scope.flow.cancel();
+                    alertService.resetAllAlerts();
                 }
 
                 function readFile ($file) {
