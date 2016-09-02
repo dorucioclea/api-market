@@ -50,11 +50,12 @@
             <div class="flex-grow" style="margin-left: 15%; margin-right: 15%;">
                 <form id="site-search" ng-submit="doSearch(query)">
                     <div class="input-group">
-                        <input type="search" class="form-control" ng-model="query" placeholder="Search APIs">
+                        <input type="search" class="form-control" ng-model="query" placeholder="Search APIs" ng-change="detectWildcard()">
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-default ion ion-ios-search-strong"></button>
                         </div>
                     </div>
+                    <p class="small text-warning" ng-if="hasWildcard">There is no need to use wildcards, the search will match any APIs that contain the letters typed.</p>
                 </form>
             </div>
 
