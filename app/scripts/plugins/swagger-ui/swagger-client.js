@@ -17,6 +17,9 @@ angular
             var query = '',
                 data = response.data,
                 config = response.config;
+            // angular needs the Content-Type header to be set to undefined to correctly POST a multipart/form-data
+            // request, here we add it back in to be able to generate a correct curl command
+            if (config.method === 'POST' && config.headers['Content-Type'] === undefined) config.headers['Content-Type'] = 'multipart/form-data';
 
             var curl = 'curl -X ' + config.method.toUpperCase();
             angular.forEach(config.headers, function (value, key) {
@@ -24,7 +27,20 @@ angular
             });
 
             if (config.data) {
-                curl += ' -d \'' + angular.toJson(angular.fromJson(config.data)) + '\'';
+                if (config.data instanceof FormData) {
+                    if (config.headers['Content-Type'] === 'multipart/form-data') {
+                        curl += ' -F \'';
+                    } else {
+                        curl += ' -d \'';
+                    }
+                    config.data.forEach(function (val, key) {
+                        curl += '' + key + '=' + val + '&';
+                    });
+                    curl = curl.slice(0, - 1);
+                    curl += '\'';
+                } else {
+                    curl += ' -d \'' + angular.toJson(angular.fromJson(config.data)) + '\'';
+                }
             }
 
             if (config.params) {
@@ -99,8 +115,6 @@ angular
             headers['Content-Type'] = body ? values.contentType : 'text/plain';
 
             // add API key if present and we are not sending to an OAuth API
-            // TODO OAuth filtering
-            console.log(hasOAuth);
             if (operation.apikey && !hasOAuth) headers.apikey = operation.apikey;
 
             // add JWT if present
@@ -148,6 +162,11 @@ angular
             swaggerModules
                 .execute(swaggerModules.BEFORE_EXPLORER_LOAD, options)
                 .then(function() {
+                    // check for multipart/form-data request
+                    if (options.method === 'post' && options.headers['Content-Type'] === 'multipart/form-data') {
+                        options.transformRequest = angular.identity;
+                        options.headers['Content-Type'] = undefined;
+                    }
                     // send request
                     $http(options)
                         .success(callback)
