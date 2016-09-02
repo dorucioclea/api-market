@@ -144,7 +144,6 @@
                     $scope.selectedContract = $scope.contractApps[0];
                 }
                 docTester.setPreferredContract($scope.selectedContract);
-                docTester.setApiKey($scope.selectedContract.apikey);
                 updateOAuthInfo($scope.selectedContract);
             } else {
                 $scope.selectedContract = undefined;
@@ -187,7 +186,6 @@
             if ($scope.hasOAuth) {
                 updateOAuthInfo(contract);
             }
-            docTester.setApiKey(contract.apikey);
         }
 
         function updateOAuthInfo(contract) {

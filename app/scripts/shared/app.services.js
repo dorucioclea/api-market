@@ -527,12 +527,7 @@
 
         // DOCUMENTATION TESTING HELPER
         .service('docTester', function () {
-            this.apikey = undefined;
             this.preferredContract = undefined;
-
-            this.setApiKey = function (key) {
-                this.apikey = key;
-            };
 
             this.setPreferredContract = function (contract) {
                 this.preferredContract = contract;
