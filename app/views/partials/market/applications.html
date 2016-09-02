@@ -64,12 +64,21 @@
                 <a id="app-name" ui-sref="root.application({orgId: application.organizationId, appId: application.id, versionId: application.versions[application.selectedVersionIndex].version})">{{application.name}}</a>
             </td>
             <td style="padding-left: 10px; padding-right: 10px;">
-                <div style="min-width: 100%" class="btn-group dropdown" uib-dropdown >
-                    <button style="width: 100%; min-width: auto; padding-right: 5px; padding-left: 5px;" id="version-dropdown"  type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="application.versions.length === 1" uib-dropdown-toggle>
-                        {{application.versions[application.selectedVersionIndex].version}}<status-label style="padding-left: 10px; padding-right: 10px" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label><span class="caret"></span>
+                <div class="btn-group dropdown api-version-dropdown" uib-dropdown>
+                    <button id="version-dropdown"  type="button" class="btn btn-default btn-block btn-sm dropdown-toggle" ng-disabled="availableVersions.length === 1" uib-dropdown-toggle>
+                        <span class="text-bold">{{application.versions[application.selectedVersionIndex].version}}</span>
+                        <status-label style="padding-left: 10px; padding-right: 10px" status="{{application.versions[application.selectedVersionIndex].status}}"></status-label>
+                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li style="margin-left: auto; margin-right:auto; padding-left: 10px; padding-right: 5px;" ng-repeat="version in application.versions | orderBy:'createdOn'" ng-click="selectVersion(application, version)"><span><a>{{version.version}}<status-label style="padding-left: 10px; padding-right: 10px" status="{{version.status}}"></status-label></a></span></li>
+                        <li ng-repeat="version in application.versions | orderBy:'createdOn'" ng-click="selectVersion(application, version)">
+                            <a class="clickable small">
+                                <span class="text-right flex-row">
+                                    <status-text class="pr20 text-thin" status="{{version.status}}"></status-text>
+                                    <span class="text-bold flex-grow">{{version.version}}</span>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </td>
