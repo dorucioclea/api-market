@@ -253,6 +253,9 @@
                         versionId: function ($stateParams) {
                             return $stateParams.versionId;
                         },
+                        versions: function (apiService, organizationId, serviceId) {
+                            return apiService.getServiceVersions(organizationId, serviceId);
+                        },
                         support: function (apiService, organizationId, serviceId) {
                             return apiService.getServiceSupportTickets(organizationId, serviceId);
                         },

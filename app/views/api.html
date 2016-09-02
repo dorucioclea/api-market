@@ -8,9 +8,39 @@
     <api-page-header has-logo="true">
         <base64-logo logo-class="media center-block entity-logo-list" logo="{{serviceVersion.service.base64logo}}"></base64-logo>
         <div>
-            <div class="col-sm-9">
-                <h3 class="text-primary text-uppercase text-bold">{{serviceVersion.service.name}}<a href ng-click="followAction()">&nbsp;&nbsp;
-                    <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a></h3>
+            <div class="col-sm-12 flex-row">
+                <div class="flex-grow">
+                    <p class="text-primary size-h3 mt5 mb5 text-uppercase text-bold">{{serviceVersion.service.name}}<a href ng-click="followAction()">
+                        <status-label class="pl10 pr10" status="{{serviceVersion.status}}"></status-label>
+                        <i class="text-info follow-icon fa" ng-class="{'fa-star-o': !userIsFollowing, 'fa-star': userIsFollowing}"></i></a>
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="btn-group dropdown api-version-dropdown" uib-dropdown>
+                        <button id="version-dropdown"  type="button" class="btn btn-default btn-block btn-lg dropdown-toggle" ng-disabled="availableVersions.length === 1" uib-dropdown-toggle>
+                            <span class="text-thin">Version: </span>
+                            <span class="text-bold">{{serviceVersion.version}}</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li ng-repeat="version in availableVersions | orderBy:'createdOn'">
+                                <a ui-sref="root.api.documentation({ orgId: serviceVersion.service.organization.id, svcId: serviceVersion.service.id, versionId: version.version})">
+                                    <span class="text-right flex-row">
+                                        <status-text class="pr20 text-thin" status="{{version.status}}"></status-text>
+                                        <span class="text-bold flex-grow">{{version.version}}</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ml10">
+                    <button id="create-contract" class="btn btn-block btn-lg btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+                    <a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a>
+                    <a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
+                </div>
+            </div>
+            <div class="col-sm-12">
                 <span class="text-light">{{endpoint.managedEndpoint}}</span>
                 <a clipboard text="endpoint.managedEndpoint" class="clickable fa fa-copy" ng-click="copyPath()" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></a>
                 <p class="mt10"><span ng-repeat="category in serviceVersion.service.categories"><span class="label label-info"><i class="fa fa-tag"></i>&nbsp;{{category}}</span><span>&nbsp;</span></span></p>
@@ -18,13 +48,8 @@
                     <span>{{serviceVersion.service.description}}</span>
                 </p>
             </div>
-            <div class="col-sm-3 text-bold pull-right text-center">
-                <h3><label class="label label-block text-nowrap text-ellipsis" ng-class="{'label-success': published, 'label-muted': deprecated || retired}">Version: {{serviceVersion.version}}</label></h3>
-                <status-label class="xlarge" status="{{serviceVersion.status}}" ng-if="!published"></status-label>
-                <button id="create-contract" class="btn btn-line-success" ng-click="modalSelectApplicationForContract()" ng-if="published && loggedIn" ng-disabled="status && !status.hasApp">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
-                <p><a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a></p>
-                <a id="login" class="clickable small text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
-            </div>
+
+
             <div class="col-sm-12 text-primary">
                 <span ng-if="showDeveloper"><span class="text-light fa fa-user"></span>&nbsp;{{serviceVersion.createdBy}}</span>
                 <a ng-attr-href="{{serviceVersion.onlinedoc}}" ng-class="{ 'ml15': showDeveloper }" ng-if="serviceVersion.onlinedoc !== null && serviceVersion.onlinedoc.length > 0"><span class="fa fa-globe"></span>&nbsp;{{serviceVersion.onlinedoc}}</a>

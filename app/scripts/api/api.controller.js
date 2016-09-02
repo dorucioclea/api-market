@@ -12,8 +12,8 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, svcModel, svcTab, loginHelper, oAuthPolicy,
-                        headerModel, toastService, followerService, support, CONFIG, EVENTS) {
+    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, versions, svcModel, svcTab, loginHelper, oAuthPolicy,
+                        headerModel, toastService, followerService, support, CONFIG, EVENTS, _) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
         $scope.serviceVersion = svcData;
@@ -39,6 +39,10 @@
             $scope.serviceVersion.service.followers.indexOf($scope.User.currentUser.username) > -1;
         $scope.followAction = followAction;
         $scope.copyPath = copyPath;
+        $scope.availableVersions = _.filter(versions, function (v) {
+            return v.status === 'Published' || v.status === 'Deprecated';
+        });
+
 
         $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 

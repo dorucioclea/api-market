@@ -21,6 +21,7 @@
         this.getServicePlans = getServicePlans;
         this.getServicePolicies = getServicePolicies;
         this.getServiceVersion = getServiceVersion;
+        this.getServiceVersions = getServiceVersions;
         this.getServiceVersionContracts = getServiceVersionContracts;
         this.getServiceVersionDefinition = getServiceVersionDefinition;
         this.getServiceVersionPolicies = getServiceVersionPolicies;
@@ -101,6 +102,11 @@
         function getServiceVersion(orgId, svcId, versionId) {
             if (loginHelper.checkLoggedIn()) return ServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
             else return MktServiceVersion.get({ orgId: orgId, svcId: svcId, versionId: versionId }).$promise;
+        }
+
+        function getServiceVersions(orgId, svcId) {
+            if (loginHelper.checkLoggedIn()) return ServiceVersion.query({ orgId: orgId, svcId: svcId }).$promise;
+            else return MktServiceVersion.query({ orgId: orgId, svcId: svcId }).$promise;
         }
 
         function getServiceVersionPolicies(orgId, svcId, versionId) {
