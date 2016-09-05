@@ -13,10 +13,13 @@
             'JWTUp': 'JWTUp',
             'KEY_AUTH': 'KeyAuthentication',
             'CORS': 'CORS',
-            'IP_RESTRICT': 'IpRestriction',
+            'IP_RESTRICT': 'IPRestriction',
             'TCP_LOG': 'TCPLog',
             'UDP_LOG': 'UDPLog',
-            'REQ_SIZE_LIMIT': 'RequestSizeLimiting'
+            'REQ_SIZE_LIMIT': 'RequestSizeLimiting',
+            'HAL': 'HAL',
+            'JSON_THREAT_PROTECTION': 'JSONThreatProtection',
+            'LDAP': 'LDAPAuthentication'
         });
 
 })();
