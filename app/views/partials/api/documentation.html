@@ -36,16 +36,6 @@
                 </div>
                 <div class="col-sm-12" style="margin-left: 45px">
                     <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirects || appVersion.oauthClientRedirects.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
-                    <div class="mt10" ng-show="oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirects || appVersion.oauthClientRedirects.length === 0)">
-                        <p class="text-justified text-warning xsmall">
-                            The grant button is disabled because the selected Application does not
-                            have a OAuth Callback URL defined. Without a callback URL the grant
-                            process cannot be completed.
-                        </p>
-                        <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
-                            <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
-                        </a>
-                    </div>
                     <div class="mt10" ng-show="!oAuthConfig.enable_implicit_grant">
                         <p class="text-justified text-warning xsmall">
                             The grant button is disabled because the service has not enabled
@@ -56,9 +46,19 @@
                     <div class="mt10" ng-show="(appVersion == undefined) && oAuthConfig.enable_implicit_grant">
                         <p class="text-justified text-warning xsmall">
                             The grant button is disabled because there is no client ID or
-                            client secret available. To enable the grant process, create a
+                            client secret available. To enable the grant process, create or select a
                             contract with this service.
                         </p>
+                    </div>
+                    <div class="mt10" ng-show="(appVersion != undefined) && oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirects || appVersion.oauthClientRedirects.length === 0)">
+                        <p class="text-justified text-warning xsmall">
+                            The grant button is disabled because the selected Application does not
+                            have a OAuth Callback URL defined. Without a callback URL the grant
+                            process cannot be completed.
+                        </p>
+                        <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
+                            <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
+                        </a>
                     </div>
                 </div>
             </div>
