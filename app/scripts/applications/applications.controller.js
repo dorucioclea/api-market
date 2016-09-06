@@ -14,7 +14,7 @@
 
     function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
-                     contractService, toastService, selectedApp) {
+                     contractService, toastService, selectedApp, EVENTS, _) {
         $scope.apikey = undefined;
         $scope.applicationVersion = appData;
         $scope.contracts = contractData;
@@ -46,9 +46,15 @@
             $scope.isRetired = $scope.applicationVersion.status === 'Retired';
 
             if (!$scope.apikey && $scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
-            // if ($scope.versions.length === 1) {
-                $scope.lastVersion = 'This version cannot be deleted because it is the last remaining one.<br>If you want to remove the application completely, use the Delete App button.'
-            // }
+            $scope.lastVersion = 'This version cannot be deleted because it is the last remaining one.<br>If you want to remove the application completely, use the Delete App button.'
+
+            $scope.$on(EVENTS.APPLICATION_DETAILS_UPDATED, function (event, payload) {
+                if (payload) {
+                    if (_.has(payload, 'apikey')) $scope.apikey = payload.apikey;
+                    if (_.has(payload, 'clientId')) $scope.applicationVersion.oAuthClientId = payload.clientId;
+                    if (_.has(payload, 'clientSecret')) $scope.applicationVersion.oauthClientSecret = payload.clientSecret;
+                }
+            })
         }
         
         function confirmDeleteVersion() {
@@ -57,7 +63,6 @@
                 $scope.applicationVersion.version).then(function () {
                 toastService.success('<b>Application Version deleted.</b>');
 
-                // TODO Redirect? If other versions, redirect to highest, else redirect to dashboard
                 $state.go('root.market-dash', { orgId: $scope.applicationVersion.application.organization.id });
 
             }, function (error) {
@@ -73,7 +78,7 @@
         function breakContract (contract) {
             contractService.break(contract.appOrganizationId, contract.appId, contract.appVersion, contract.contractId)
                 .then(function () {
-                    // TODO toast?
+                    toastService.info('Contract broken.');
                     $state.forceReload();
                 });
         }
@@ -340,7 +345,7 @@
         $scope.responseHistogramX = {'id': 'displayDate'};
     }
 
-    function overviewCtrl($scope, appScreenModel, applicationManager, toastService) {
+    function overviewCtrl($scope, appScreenModel, applicationManager, toastService, EVENTS) {
 
         appScreenModel.updateTab('Overview');
         $scope.copy = copy;
@@ -354,8 +359,7 @@
         function refreshApiKey(appVersion) {
             applicationManager.reissueApiKey(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
                     if (reply) {
-                        // TODO don't use $parent here
-                        $scope.$parent.apikey = reply.newKey;
+                        $scope.$emit(EVENTS.APPLICATION_DETAILS_UPDATED, { apikey: reply.newKey });
                         toastService.success('Reissued API key for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
                     }
             }, function (err) {
@@ -366,9 +370,7 @@
         function refreshOAuth(appVersion) {
             applicationManager.reissueOAuth(appVersion.application.organization.id, appVersion.application.id, appVersion.version).then(function (reply) {
                 if (reply) {
-                    // TODO avoid use of $parent here
-                    $scope.$parent.applicationVersion.oAuthClientId = reply.newClientId;
-                    $scope.$parent.applicationVersion.oauthClientSecret = reply.newClientSecret;
+                    $scope.$emit(EVENTS.APPLICATION_DETAILS_UPDATED, { clientId: reply.newClientId, clientSecret: reply.newClientSecret });
                     toastService.success('Reissued OAuth credentials for <b>' + appVersion.application.name + ' ' + appVersion.version +  '</b>.')
                 }
             }, function (err) {
