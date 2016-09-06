@@ -90,8 +90,8 @@
             <input id="activity" type="radio" name="tabs" ui-sref-active="active" ui-sref=".activity">
             <label for="activity">Activity</label>
 
-            <input id="metrics" type="radio" name="tabs" ui-sref-active="active" ui-sref=".metrics">
-            <label for="metrics">Metrics</label>
+            <input id="metrics" type="radio" name="tabs" ui-sref-active="active" ui-sref=".metrics" ng-if="!isRetired">
+            <label for="metrics" ng-if="!isRetired">Metrics</label>
 
             <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
         </div>
