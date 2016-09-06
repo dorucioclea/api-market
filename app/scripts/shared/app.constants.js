@@ -22,7 +22,8 @@
         .constant('EVENTS', {
             'MEMBER_LIST_UPDATED': 'member-list-updated',
             'NOTIFICATIONS_UPDATED': 'notifications-updated',
-            'API_DETAILS_PAGE_OPENED': 'api-details-page-opened'
+            'API_DETAILS_PAGE_OPENED': 'api-details-page-opened',
+            'APPLICATION_DETAILS_UPDATED': 'application-details-updated'
         })
 
         .constant('NOTIFICATIONS', {
