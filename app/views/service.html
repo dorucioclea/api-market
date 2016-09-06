@@ -115,7 +115,7 @@
             <input id="pending" type="radio" name="tabs" ui-sref-active="active" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">
             <label for="pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
 
-            <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
+            <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon text-muted"></a>
         </div>
     </div>
 
