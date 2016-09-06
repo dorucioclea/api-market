@@ -175,12 +175,13 @@
                         roleData: function (Roles) {
                             return Roles.query().$promise;
                         },
-                        requests: function ($q, $stateParams, memberService) {
+                        userService: 'userService',
+                        requests: function ($q, $stateParams, memberService, userService) {
                             var deferred = $q.defer();
                             memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
                                 var promises = [];
                                 requests.forEach(function (req) {
-                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                    promises.push(userService.getUserDetails(req.userId).then(function (results) {
                                         req.userDetails = results;
                                     }));
                                 });
@@ -410,12 +411,13 @@
                         pendingContracts: function ($stateParams, contractService) {
                             return contractService.incomingPendingForOrg($stateParams.orgId);
                         },
-                        pendingMemberships: function ($q, $stateParams, memberService) {
+                        userService: 'userService',
+                        pendingMemberships: function ($q, $stateParams, memberService, userService) {
                             var deferred = $q.defer();
                             memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
                                 var promises = [];
                                 requests.forEach(function (req) {
-                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                    promises.push(userService.getUserDetails(req.userId).then(function (results) {
                                         req.userDetails = results;
                                     }));
                                 });

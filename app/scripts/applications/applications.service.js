@@ -208,7 +208,7 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, memberService, OAuthTokenRevoke) {
+    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, userService, OAuthTokenRevoke) {
         this.getAppsForOrg = getAppsForOrg;
         this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
@@ -248,7 +248,7 @@
                     });
                     scopesArray = _.sortBy(scopesArray);
                     grant.scopesString = _.join(scopesArray, ', ');
-                    promises.push(memberService.getMemberDetails(token.authenticatedUserid).then(function (userDetails) {
+                    promises.push(userService.getUserDetails(token.authenticatedUserid).then(function (userDetails) {
                         grant.userDetails = userDetails;
                         grants.push(grant);
                     }))

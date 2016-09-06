@@ -95,26 +95,19 @@
         }
     }
 
-    function memberService($rootScope, $q, Member, MembershipRequests, RejectRequest, RequestMembership, Users, EVENTS) {
-        this.getMemberDetails = getMemberDetails;
+    function memberService($rootScope, $q, Member, MembershipRequests, RejectRequest, RequestMembership, userService, EVENTS) {
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
         this.grantMembership = grantMembership;
         this.rejectMembershipRequest = rejectMembershipRequest;
         this.requestMembership = requestMembership;
 
-
-        function getMemberDetails(userId) {
-            // TODO this is really should not be in memberService, but in userService
-            return Users.get({ userId: userId }).$promise;
-        }
-
         function getMembersForOrg(orgId) {
             var deferred = $q.defer();
             Member.query({orgId: orgId}).$promise.then(function (memberData) {
                 var promises = [];
                 angular.forEach(memberData, function (member) {
-                    promises.push(getMemberDetails(member.userId).then(function (results) {
+                    promises.push(userService.getUserDetails(member.userId).then(function (results) {
                         member.userDetails = results;
                     }));
                 });

@@ -3,7 +3,8 @@
 
     angular.module('app.user')
         .service('currentUser', currentUser)
-        .service('currentUserModel', currentUserModel);
+        .service('currentUserModel', currentUserModel)
+        .service('userService', userService);
 
     function currentUser($q, CurrentUserInfo, CurrentUserApps, ApplicationContract, ApplicationVersion,
                          CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs, CurrentUserToken, appService, $http, CONFIG, _) {
@@ -170,6 +171,14 @@
         function isAuthorizedForIn(permission, orgId) {
             if (permissionTree[orgId]) return permissionTree[orgId].indexOf(permission) !== -1;
             else return false;
+        }
+    }
+
+    function userService(Users) {
+        this.getUserDetails = getUserDetails;
+
+        function getUserDetails(userId) {
+            return Users.get({ userId: userId }).$promise;
         }
     }
 
