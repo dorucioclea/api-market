@@ -9,7 +9,6 @@
                              OrgOutgoingPendingContracts, RejectContract, RequestContract, EVENTS) {
         this.accept = accept;
         this.break = breakContract;
-        this.getPendingForApp = getPendingForApp;
         this.incomingPendingForOrg = incomingPendingForOrg;
         this.outgoingPendingForOrg = outgoingPendingForOrg;
         this.getPendingForSvc = getPendingForSvc;
@@ -34,11 +33,7 @@
             return ApplicationContract
                 .delete({orgId: orgId, appId: appId, versionId: versionId, contractId: contractId}).$promise;
         }
-        
-        function getPendingForApp(appId) {
-            // TODO backend implementation
-            return $q.when('Not yet implemented');
-        }
+
 
         function incomingPendingForOrg(orgId) {
             return OrgIncomingPendingContracts.query({ orgId: orgId }).$promise;
