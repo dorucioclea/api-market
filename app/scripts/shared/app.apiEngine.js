@@ -98,6 +98,9 @@
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
                 NOTIFICATIONS.CONTRACT_PENDING);
         })
+        .factory('CancelContractRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:serviceId/versions/:versionId/contracts/requests/cancel')
+        })
 
         /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
@@ -117,7 +120,10 @@
                 NOTIFICATIONS.MEMBERSHIP_REJECTED);
         })
         .factory('RejectRequest', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject');
+        })
+        .factory('CancelRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/cancel');
         })
 
         /// ========== NOTIFICATIONS =====================================================================

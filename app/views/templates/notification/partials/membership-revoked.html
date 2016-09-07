@@ -1,0 +1,9 @@
+<a>
+    <span class="ion ion-person left bg-danger"></span>
+    <div class="desc">
+        <span class="close ion ion-android-close" ng-click="clear($event)"></span>
+        <strong>Membership Revoked</strong>
+        <p class="small text-light">Your membership of <span class="text-primary text-bold">{{ notification.organizationName }}</span> has been revoked.</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
+    </div>
+</a>

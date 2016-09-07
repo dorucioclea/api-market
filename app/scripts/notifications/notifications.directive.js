@@ -2,13 +2,58 @@
     'use strict';
 
     angular.module('app.notifications')
+        .directive('apimNotifAdminGranted', adminGranted)
+        .directive('apimNotifAdminRevoked', adminRevoked)
+        .directive('apimNotifAnnouncementNew', announcementNew)
         .directive('apimNotification', notification)
         .directive('apimNotifContractAccepted', contractAccepted)
         .directive('apimNotifContractPending', contractPending)
         .directive('apimNotifContractRejected', contractRejected)
         .directive('apimNotifMembershipGranted', membershipGranted)
         .directive('apimNotifMembershipPending', membershipPending)
+        .directive('apimNotifMembershipRevoked', membershipRevoked)
+        .directive('apimNotifMembershipRevokedRole', membershipRevokedRole)
+        .directive('apimNotifMembershipUpdated', membershipUpdated)
+        .directive('apimNotifMembershipTransfer', membershipTransfer)
         .directive('apimNotifMembershipRejected', membershipRejected);
+
+
+    function adminGranted() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/admin-granted.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+
+    function adminRevoked() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/admin-revoked.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+    function announcementNew() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/announcement-new.html',
+            controller: clearableNotifCtrl
+        }
+    }
 
 
     function contractAccepted() {
@@ -83,6 +128,15 @@
 
                 function init() {
                     switch ($scope.notification.type) {
+                        case NOTIFICATIONS.ADMIN_GRANTED.toUpperCase():
+                            $scope.adminGranted = true;
+                            break;
+                        case NOTIFICATIONS.ADMIN_REVOKED.toUpperCase():
+                            $scope.adminRevoked = true;
+                            break;
+                        case NOTIFICATIONS.ANNOUNCEMENT_NEW.toUpperCase():
+                            $scope.announcementNew = true;
+                            break;
                         case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
                             $scope.membershipGranted = true;
                             break;
@@ -91,6 +145,18 @@
                             break;
                         case NOTIFICATIONS.MEMBERSHIP_PENDING.toUpperCase():
                             $scope.membershipPending = true;
+                            break;
+                        case NOTIFICATIONS.MEMBERSHIP_REVOKED.toUpperCase():
+                            $scope.membershipRevoked = true;
+                            break;
+                        case NOTIFICATIONS.MEMBERSHIP_REVOKED_ROLE.toUpperCase():
+                            $scope.membershipRevokedRole = true;
+                            break;
+                        case NOTIFICATIONS.MEMBERSHIP_TRANSFER.toUpperCase():
+                            $scope.membershipTransfer = true;
+                            break;
+                        case NOTIFICATIONS.MEMBERSHIP_UPDATED.toUpperCase():
+                            $scope.membershipUpdated = true;
                             break;
                         case NOTIFICATIONS.CONTRACT_PENDING.toUpperCase():
                             $scope.contractPending = true;
@@ -119,17 +185,7 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/membership-granted.html',
-            controller: function ($scope) {
-                $scope.clear = clear;
-                $scope.org = $scope.notification.orgDetails;
-
-                function clear($event) {
-                    $event.preventDefault();
-                    $event.stopPropagation();
-                    $scope.clearFunction()($scope.notification);
-                }
-                
-            }
+            controller: clearableNotifCtrl
         }
     }    
     
@@ -154,16 +210,66 @@
                 clearFunction: '&'
             },
             templateUrl: 'views/templates/notification/partials/membership-rejected.html',
-            controller: function ($scope) {
-                $scope.clear = clear;
-                $scope.org = $scope.notification.orgDetails;
+            controller: clearableNotifCtrl
+        }
+    }
 
-                function clear($event) {
-                    $event.preventDefault();
-                    $event.stopPropagation();
-                    $scope.clearFunction()($scope.notification);
-                }
-            }
+    function membershipRevoked() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/membership-revoked.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+    function membershipRevokedRole() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/membership-revoked-role.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+    function membershipUpdated() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/membership-updated.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+    function membershipTransfer() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/membership-transfer.html',
+            controller: clearableNotifCtrl
+        }
+    }
+
+    function clearableNotifCtrl($scope) {
+        $scope.clear = clear;
+        $scope.org = $scope.notification.orgDetails;
+
+        function clear($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.clearFunction()($scope.notification);
         }
     }
 })();
