@@ -1,6 +1,6 @@
 {
-  "name": "apim-market",
-  "version": "0.7.1",
+  "name": "api-market",
+  "version": "0.8.1",
   "description": "API Store",
   "appPath": "app",
   "moduleName": "apimMarketApp",

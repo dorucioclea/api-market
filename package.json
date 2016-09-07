@@ -1,5 +1,6 @@
 {
-  "name": "apimmarket",
+  "name": "api-market",
+  "version": "0.8.1",
   "description": "AngularJS API Market",
   "author": "Trust1Team",
   "private": true,
