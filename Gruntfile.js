@@ -378,7 +378,7 @@ module.exports = function (grunt) {
               'PUBLISHER_MODE': true,
               'USE_DIGIPOLIS_CONSENT_PAGE': false,
               'SHOW_API_DEVELOPER_NAME_IN_STORE': true,
-              'DISABLE_ANNOUNCEMENTS': true,
+              'DISABLE_ANNOUNCEMENTS': false,
               'DISABLE_SUPPORT': true
             },
             'BASE': {
@@ -418,7 +418,7 @@ module.exports = function (grunt) {
               'PUBLISHER_MODE': false,
               'USE_DIGIPOLIS_CONSENT_PAGE': false,
               'SHOW_API_DEVELOPER_NAME_IN_STORE': true,
-              'DISABLE_ANNOUNCEMENTS': true,
+              'DISABLE_ANNOUNCEMENTS': false,
               'DISABLE_SUPPORT': true
             },
             'BASE': {
