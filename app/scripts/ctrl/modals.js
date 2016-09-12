@@ -778,7 +778,7 @@
                         // We changed our own role, need to update the CurrentUserInfo
                         currentUserModel.refreshCurrentUserInfo(currentUserModel).then(function (success) {
                             $state.forceReload();
-                            toastService.createToast('success', 'Ownership of <b>' + $scope.orgName +
+                            toastService.createToast('success', 'Ownership of <b>' + $scope.org.name +
                                 '</b> was successfully transferred to <b>' + user + '</b>', true);
                             $scope.modalClose();
                         }, function (error) {
