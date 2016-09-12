@@ -1,0 +1,9 @@
+<a>
+    <span class="ion ion-email left bg-info"></span>
+    <div class="desc">
+        <span class="close ion ion-android-close" ng-click="clear($event)" ng-hide="!canClear"></span>
+        <strong>Request cancelled</strong>
+        <p class="small text-light">A contract request for <span class="text-primary text-bold">{{notification.serviceName}} {{notification.serviceVersion}}</span> was canceled.</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
+    </div>
+</a>

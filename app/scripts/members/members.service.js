@@ -95,12 +95,13 @@
         }
     }
 
-    function memberService($rootScope, $q, Member, MembershipRequests, RejectRequest, RequestMembership, userService, EVENTS) {
+    function memberService($rootScope, $q, CancelRequest, Member, MembershipRequests, RejectRequest, RequestMembership, userService, EVENTS) {
         this.getMembersForOrg = getMembersForOrg;
         this.getPendingRequests = getPendingRequests;
         this.grantMembership = grantMembership;
         this.rejectMembershipRequest = rejectMembershipRequest;
         this.requestMembership = requestMembership;
+        this.cancelMembershipRequest = cancelMembershipRequest;
 
         function getMembersForOrg(orgId) {
             var deferred = $q.defer();
@@ -140,6 +141,12 @@
 
         function requestMembership(orgId) {
             return RequestMembership.save({orgId: orgId}, {}, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
+        }
+
+        function cancelMembershipRequest(orgId) {
+            return CancelRequest.save({ orgId: orgId }, {}, function () {
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
             }).$promise;
         }

@@ -1,9 +1,9 @@
 <a>
-    <span class="ion ion-person left bg-danger"></span>
+    <span class="ion ion-speakerphone left bg-info"></span>
     <div class="desc">
         <span class="close ion ion-android-close" ng-click="clear($event)"></span>
-        <strong>Membership Rejected</strong>
-        <p class="small text-light">Your request to join <span class="text-primary text-bold">{{ notification.organizationName }}</span> has been rejected.</p>
+        <strong>New Announcement!</strong>
+        <p class="small text-light">A new announcement was made for <span class="text-primary text-bold">{{ notification.serviceName }}</span>.</p>
         <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
     </div>
 </a>

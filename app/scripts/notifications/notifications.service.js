@@ -8,7 +8,7 @@
     function notificationService($q, orgService, PendingNotifications, Notifications,
                                  UserIncomingNotifications, UserOutgoingNotifications,
                                  OrgIncomingNotifications, OrgOutgoingNotifications,
-                                 NOTIFICATIONS) {
+                                 NOTIFICATIONS, _) {
         this.clear = clear;
         this.clearAll = clearAll;
         this.getIncomingForOrg = getIncomingForOrg;
@@ -18,13 +18,19 @@
         this.getOutgoingForOrg = getOutgoingForOrg;
         
         function clear(notification) {
-            switch (notification.type) {
-                case NOTIFICATIONS.CONTRACT_ACCEPTED.toUpperCase():
-                case NOTIFICATIONS.CONTRACT_REJECTED.toUpperCase():
-                    return OrgIncomingNotifications.delete({ orgId: notification.applicationOrgId, notificationId: notification.id }).$promise;
-                case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
-                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
-                    return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+            if (_.find(NOTIFICATIONS.ORG, function (n) {
+                    return n.toUpperCase() === notification.type;
+                })) {
+                return OrgIncomingNotifications.delete({
+                    orgId: notification.applicationOrgId,
+                    notificationId: notification.id
+                }).$promise;
+            }
+
+            if (_.find(NOTIFICATIONS.USER, function (m) {
+                    return m.toUpperCase() === notification.type;
+                })) {
+                return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
             }
         }
 

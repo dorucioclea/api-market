@@ -5,7 +5,7 @@
         .service('contractService', contractService);
 
 
-    function contractService($q, $rootScope, appService, AcceptContract, ContractRequests, OrgIncomingPendingContracts,
+    function contractService($q, $rootScope, appService, AcceptContract, CancelContractRequest, ContractRequests, OrgIncomingPendingContracts,
                              OrgOutgoingPendingContracts, RejectContract, RequestContract, EVENTS) {
         this.accept = accept;
         this.break = breakContract;
@@ -14,6 +14,7 @@
         this.getPendingForSvc = getPendingForSvc;
         this.reject = reject;
         this.request = requestContract;
+        this.cancelRequest = cancelRequest;
         
         function accept(contract) {
             console.log("Accept Contract:"+JSON.stringify(contract));
@@ -89,6 +90,17 @@
                 termsAgreed: termsAgreed
             };
             return RequestContract.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion}, requestObj, function () {
+                $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
+            }).$promise;
+        }
+        
+        function cancelRequest(svcOrgId, svcId, svcVersion, appOrgId, appId, appVersion) {
+            var cancelObj = {
+                organizationId: appOrgId,
+                applicationId: appId,
+                version: appVersion
+            };
+            return CancelContractRequest.save({ orgId: svcOrgId, svcId: svcId, versionId: svcVersion }, cancelObj, function () {
                 $rootScope.$broadcast(EVENTS.NOTIFICATIONS_UPDATED);
             }).$promise;
         }

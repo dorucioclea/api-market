@@ -20,6 +20,8 @@
     
     function contractListCtrl($scope, contractService, toastService) {
         $scope.breakContract = breakContract;
+        $scope.cancelContractRequest = cancelContractRequest;
+
         function breakContract(contract) {
             contractService.break(contract.appOrganizationId, contract.appId, contract.appVersion, contract.contractId)
                 .then(function () {
@@ -27,6 +29,15 @@
                     toastService.success('Contract was between <b>' + contract.appName + ' ' + contract.appVersion +
                         '</b> and <b>' + contract.serviceName + ' ' +  contract.serviceVersion + '</b> was nullified.');
                 });
+        }
+
+        function cancelContractRequest(contract) {
+            contractService.cancelRequest(contract.serviceOrg, contract.serviceId, contract.serviceVersion,
+                contract.appOrg, contract.appId, contract.appVersion)
+                .then(function () {
+                    $scope.contracts.splice($scope.contracts.indexOf(contract), 1);
+                    toastService.info('Contract request canceled.');
+            })
         }
     }
     

@@ -9,13 +9,15 @@
         .directive('apimNotifContractAccepted', contractAccepted)
         .directive('apimNotifContractPending', contractPending)
         .directive('apimNotifContractRejected', contractRejected)
+        .directive('apimNotifContractRequestCancelled', contractRequestCancelled)
         .directive('apimNotifMembershipGranted', membershipGranted)
         .directive('apimNotifMembershipPending', membershipPending)
         .directive('apimNotifMembershipRevoked', membershipRevoked)
         .directive('apimNotifMembershipRevokedRole', membershipRevokedRole)
         .directive('apimNotifMembershipUpdated', membershipUpdated)
         .directive('apimNotifMembershipTransfer', membershipTransfer)
-        .directive('apimNotifMembershipRejected', membershipRejected);
+        .directive('apimNotifMembershipRejected', membershipRejected)
+        .directive('apimNotifMembershipRequestCancelled', membershipRequestCancelled);
 
 
     function adminGranted() {
@@ -113,6 +115,18 @@
             }
         }
     }
+
+    function contractRequestCancelled() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/contract-request-cancelled.html',
+            controller: clearableNotifCtrl
+        }
+    }
     
     function notification() {
         return {
@@ -128,44 +142,50 @@
 
                 function init() {
                     switch ($scope.notification.type) {
-                        case NOTIFICATIONS.ADMIN_GRANTED.toUpperCase():
+                        case NOTIFICATIONS.USER.ADMIN_GRANTED.toUpperCase():
                             $scope.adminGranted = true;
                             break;
-                        case NOTIFICATIONS.ADMIN_REVOKED.toUpperCase():
+                        case NOTIFICATIONS.USER.ADMIN_REVOKED.toUpperCase():
                             $scope.adminRevoked = true;
                             break;
-                        case NOTIFICATIONS.ANNOUNCEMENT_NEW.toUpperCase():
+                        case NOTIFICATIONS.USER.ANNOUNCEMENT_NEW.toUpperCase():
                             $scope.announcementNew = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_GRANTED.toUpperCase():
                             $scope.membershipGranted = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_REJECTED.toUpperCase():
                             $scope.membershipRejected = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_PENDING.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_PENDING.toUpperCase():
                             $scope.membershipPending = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_REVOKED.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_REVOKED.toUpperCase():
                             $scope.membershipRevoked = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_REVOKED_ROLE.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_REVOKED_ROLE.toUpperCase():
                             $scope.membershipRevokedRole = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_TRANSFER.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_TRANSFER.toUpperCase():
                             $scope.membershipTransfer = true;
                             break;
-                        case NOTIFICATIONS.MEMBERSHIP_UPDATED.toUpperCase():
+                        case NOTIFICATIONS.USER.MEMBERSHIP_UPDATED.toUpperCase():
                             $scope.membershipUpdated = true;
                             break;
-                        case NOTIFICATIONS.CONTRACT_PENDING.toUpperCase():
+                        case NOTIFICATIONS.ORG.CONTRACT_PENDING.toUpperCase():
                             $scope.contractPending = true;
                             break;
-                        case NOTIFICATIONS.CONTRACT_ACCEPTED.toUpperCase():
+                        case NOTIFICATIONS.ORG.CONTRACT_ACCEPTED.toUpperCase():
                             $scope.contractAccepted = true;
                             break;
-                        case NOTIFICATIONS.CONTRACT_REJECTED.toUpperCase():
+                        case NOTIFICATIONS.ORG.CONTRACT_REJECTED.toUpperCase():
                             $scope.contractRejected = true;
+                            break;
+                        case NOTIFICATIONS.ORG.CONTRACT_REQUEST_CANCELLED.toUpperCase():
+                            $scope.contractRequestCancelled = true;
+                            break;
+                        case NOTIFICATIONS.ORG.MEMBERSHIP_REQUEST_CANCELLED.toUpperCase():
+                            $scope.membershipRequestCancelled = true;
                             break;
                     }
                 }
@@ -200,7 +220,19 @@
                 $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
             }
         }
-    }    
+    }
+
+    function membershipRequestCancelled() {
+        return {
+            restrict: 'E',
+            scope: {
+                notification: '=',
+                clearFunction: '&'
+            },
+            templateUrl: 'views/templates/notification/partials/membership-request-cancelled.html',
+            controller: clearableNotifCtrl
+        }
+    }
     
     function membershipRejected() {
         return {

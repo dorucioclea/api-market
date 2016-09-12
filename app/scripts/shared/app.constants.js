@@ -27,19 +27,25 @@
         })
 
         .constant('NOTIFICATIONS', {
-            'ADMIN_GRANTED': 'admin_granted',
-            'ADMIN_REVOKED': 'admin_revoked',
-            'ANNOUNCEMENT_NEW': 'announcement_new',
-            'MEMBERSHIP_PENDING': 'membership_pending',
-            'MEMBERSHIP_GRANTED': 'membership_granted',
-            'MEMBERSHIP_REJECTED': 'membership_rejected',
-            'MEMBERSHIP_REVOKED': 'membership_revoked',
-            'MEMBERSHIP_REVOKED_ROLE': 'membership_revoked_role',
-            'MEMBERSHIP_TRANSFER': 'membership_transfer',
-            'MEMBERSHIP_UPDATED': 'membership_updated',
-            'CONTRACT_PENDING': 'contract_pending',
-            'CONTRACT_ACCEPTED': 'contract_accepted',
-            'CONTRACT_REJECTED': 'contract_rejected'
+            'ORG': {
+                'CONTRACT_PENDING': 'contract_pending',
+                'CONTRACT_ACCEPTED': 'contract_accepted',
+                'CONTRACT_REJECTED': 'contract_rejected',
+                'CONTRACT_REQUEST_CANCELLED': 'contract_request_cancelled',
+                'MEMBERSHIP_REQUEST_CANCELLED': 'membership_request_cancelled'
+            },
+            'USER': {
+                'ADMIN_GRANTED': 'admin_granted',
+                'ADMIN_REVOKED': 'admin_revoked',
+                'ANNOUNCEMENT_NEW': 'announcement_new',
+                'MEMBERSHIP_GRANTED': 'membership_granted',
+                'MEMBERSHIP_PENDING': 'membership_pending',
+                'MEMBERSHIP_REJECTED': 'membership_rejected',
+                'MEMBERSHIP_REVOKED': 'membership_revoked',
+                'MEMBERSHIP_REVOKED_ROLE': 'membership_revoked_role',
+                'MEMBERSHIP_TRANSFER': 'membership_transfer',
+                'MEMBERSHIP_UPDATED': 'membership_updated'
+            }
         })
 
         .constant('PERMISSIONS', {
