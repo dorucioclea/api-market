@@ -22,7 +22,7 @@
         $scope.deprecated = $scope.serviceVersion.status === 'Deprecated';
         $scope.published = $scope.serviceVersion.status === 'Published';
         $scope.retired = $scope.serviceVersion.status === 'Retired';
-        $scope.hasOAuth = svcData.provisionKey !== null && svcData.provisionKey.length > 0;
+        $scope.hasOAuth = !_.isEmpty(oAuthPolicy);
         $scope.displayTab = svcTab;
         $scope.loggedIn = loginHelper.checkLoggedIn();
         $scope.toasts = toastService.toasts;

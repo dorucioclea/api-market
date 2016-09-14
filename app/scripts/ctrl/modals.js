@@ -9,7 +9,7 @@
         /// ==== AddPolicy Controller
         .controller('AddPolicyCtrl',
             function ($scope, $uibModal, $state, $stateParams, policyDefs,
-                      toastService, TOAST_TYPES, PlanVersionPolicy, PolicyDefs, ServiceVersionPolicy) {
+                      toastService, TOAST_TYPES, PlanVersionPolicy, PolicyDefs, ServiceVersionPolicy, _) {
 
                 $scope.form = ['*'];
                 $scope.policyDefs = policyDefs;
@@ -153,6 +153,12 @@
                 function loadForm(policy) {
                     PolicyDefs.get({policyId: policy.id}, function (policyData) {
                         $scope.schema = angular.fromJson(policyData.form);
+                        if (!_.isEmpty(policyData.formOverride)) {
+                            $scope.form = angular.fromJson(policyData.formOverride);
+                        }
+                        else {
+                            $scope.form = ['*'];
+                        }
                     });
                 }
             })
