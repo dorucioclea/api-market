@@ -188,8 +188,9 @@
         /// ==== NewService Controller
         .controller('NewServiceCtrl',
             function ($scope, $filter, $uibModal, $state, $stateParams, flowFactory, alertService, service,
-                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Service) {
+                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Service, admin) {
 
+                $scope.admin = admin;
                 $scope.org = orgScreenModel.organization;
                 $scope.configVars = CONFIG;
                 $scope.imageService = imageService;

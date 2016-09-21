@@ -383,7 +383,11 @@
                 templateUrl: 'views/modals/serviceCreate.html',
                 size: 'lg',
                 controller: 'NewServiceCtrl as ctrl',
-                resolve: function() {},
+                resolve: {
+                    admin: function () {
+                        return $scope.User.currentUser.admin
+                    }
+                },
                 backdrop : 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });

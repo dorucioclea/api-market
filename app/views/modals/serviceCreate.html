@@ -77,6 +77,19 @@
         <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
       </div>
     </div>
+    <div class="form-group mt30" ng-if="admin">
+      <div class="col-sm-12">
+          <label class="control-label text-primary">Admin Service</label><br>
+          <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0">
+              <label>
+                  <input type="checkbox" ng-model="ctrl.service.admin" ng-disabled="!admin">
+                  <span class="title text-muted">Grant administrator priviledges</span>
+              </label>
+              <hr>
+              <p class="text-muted xsmall">Only check this if your service needs administrator priviledges with the API Gateay</p>
+          </div>
+      </div>
+    </div>
   </form>
 </div>
 <div class="modal-footer">
