@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="ml10 text-center">
-                    <button id="create-contract" class="btn btn-block btn-lg btn-line-success" ng-click="modalSelectApplicationForContract()" ng-disabled="!loggedIn || (status && !status.hasApp)">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
+                    <button id="create-contract" class="btn btn-block btn-lg btn-line-success" ng-click="modalSelectApplicationForContract()" ng-disabled="!loggedIn || (status && !status.hasApp) || serviceVersion.status == 'Deprecated'">{{serviceVersion.autoAcceptContracts ? 'Create' : 'Request'}} Contract</button>
                     <a id="create-app" class="clickable small text-muted text-light" ng-if="status && !status.hasApp" ui-sref="root.myOrganizations">Create an App to consume this service!</a>
                     <a id="login" class="clickable small text-center text-muted text-light" ng-if="!loggedIn" ng-click="toLogin()">Log in if you want to use this service!</a>
                 </div>
