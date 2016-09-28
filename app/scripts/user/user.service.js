@@ -44,25 +44,52 @@
         }
 
         function checkAppsForContracts(userApps) {
-            var promises = [];
-            var contractPromises = [];
-            angular.forEach(userApps, function (app) {
-                promises.push(ApplicationVersion.query({orgId: app.organizationId, appId: app.id}).$promise);
+            // Should check all apps *sequentially!* until we encounter a contract or apps are exhausted
+            var hasContract = $q.defer();
+            var chain = $q.when();
+            _.forEach(userApps, function (app) {
+                chain = chain.then(getVersions(app));
             });
-            return $q.all(promises).then(function (results) {
-                angular.forEach(results, function (versions) {
-                    angular.forEach(versions, function (version) {
-                        contractPromises.push(ApplicationContract.query({orgId: version.organizationId, appId: version.id, versionId: version.version}).$promise);
-                    });
-                });
-                return $q.all(contractPromises).then(function (versionContracts) {
-                    var hasContract = false;
-                    angular.forEach(versionContracts, function (contracts) {
-                        if (contracts.length > 0) hasContract = true;
-                    });
-                    return hasContract;
-                });
+            chain.then(function () {
+                // chain resolved successfully ==> none of the apps have a contract for any version
+                hasContract.resolve(false);
+            }, function () {
+                // chain was rejected before reaching the end ==> at least one of the app versions has a contract
+                hasContract.resolve(true);
             });
+
+            function getVersions(app) {
+                return function() {
+                    var versionsDeferred = $q.defer();
+                    ApplicationVersion.query({ orgId: app.organizationId, appId: app.id }).$promise.then(function (versions) {
+                        var versionChain = $q.when();
+                        _.forEach(versions, function (appVersion) {
+                            versionChain = versionChain.then(getContracts(appVersion));
+                        });
+                        versionChain.then(function () {
+                            // versionChain resolved successfully ==> no contracts found for this version
+                            versionsDeferred.resolve();
+                        }, function () {
+                            // versionChain was rejected ==> a contract was found!
+                            versionsDeferred.reject('has contract');
+                        })
+                    });
+                    return versionsDeferred.promise;
+                }
+            }
+
+            function getContracts(version) {
+                return function () {
+                    var contractDeferred = $q.defer();
+                    ApplicationContract.query({ orgId: version.organizationId, appId: version.id, versionId: version.version }).$promise.then(function (contracts) {
+                        if (_.isEmpty(contracts)) contractDeferred.resolve();
+                        else contractDeferred.reject('has contract');
+                    });
+                    return contractDeferred.promise;
+                }
+            }
+
+            return hasContract.promise;
         }
 
         function getInfo() {
