@@ -50,10 +50,11 @@
             // TODO rework to reduce number of backend calls
             return UserOutgoingNotifications.query().$promise.then(function (notifications) {
                 var orgPromises = [];
-                notifications.forEach(function (res) {
-                    orgPromises.push(orgService.orgInfo(res.destinationId))
+                _.forEach(_.remove(notifications, function (o) {
+                    return o.type === NOTIFICATIONS.USER.MEMBERSHIP_PENDING;
+                }), function (notif) {
+                    orgPromises.push(orgService.orgInfo(notif.destinationId));
                 });
-
                 return $q.all(orgPromises).then(function (results) {
                     return results;
                 })
