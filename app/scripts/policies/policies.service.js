@@ -39,6 +39,8 @@
         function generateDetailsPopover(definitionId, configuration) {
             var parsedConfiguration = angular.fromJson(configuration);
             switch (definitionId) {
+                case POLICIES.ACL:
+                    return generateAclPopover(parsedConfiguration);
                 case POLICIES.GALILEO:
                     return generateGalileoPopover(parsedConfiguration);
                 case POLICIES.RATE_LIMIT:
@@ -53,6 +55,8 @@
                     return generateCORSPopover(parsedConfiguration);
                 case POLICIES.REQ_SIZE_LIMIT:
                     return generateRequestSizeLimitPopover(parsedConfiguration);
+                case POLICIES.HTTP_LOG:
+                    return generateHttpLogPopover(parsedConfiguration);
                 case POLICIES.UDP_LOG:
                     return generateUDPLogPopover(parsedConfiguration);
                 case POLICIES.TCP_LOG:
@@ -71,6 +75,11 @@
                     return generateJsonThreatProtectionPopover(parsedConfiguration);
                 case POLICIES.LDAP:
                     return generateLDAPPopover(parsedConfiguration);
+            }
+
+
+            function generateAclPopover(config) {
+                // Does not have config at the moment
             }
 
             function generateGalileoPopover(config) {
@@ -122,7 +131,7 @@
             function generateCORSPopover(config) {
                 var string = '';
 
-                if (config.methods.length > 0) {
+                if (!_.isEmpty(config.methods)) {
                     string += '<p class="text-light">Allowed Methods: </p><ul class="text-light">';
                     _.forEach(config.methods, function (method) {
                         string += '<li>' + method + '</li>';
@@ -133,13 +142,22 @@
 
                 string += '</ul>';
 
-                string += '<p class="text-light">Allowed Origin: <span class="text-bold">' + config.origin +  '</span></p>';
+                if (!_.isEmpty(config.origin)) string += '<p class="text-light">Allowed Origin: <span class="text-bold">' + config.origin +  '</span></p>';
 
                 return string;
             }
 
             function generateRequestSizeLimitPopover(config) {
                 return '<span class="text-light">Requests to this service cannot exceed ' + config.allowed_payload_size + 'MB in size.</span>';
+            }
+
+            function generateHttpLogPopover(config) {
+                console.log(config);
+                if (CONFIG.APP.PUBLISHER_MODE) {
+                    return '<p class="text-light">Logs are sent to <b>' + config.http_endpoint + '</b> via ' + config.method + '.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
+                } else {
+                    // Do nothing, we don't want to expose the HTTP log server address in the API Store
+                }
             }
 
             function generateUDPLogPopover(config) {
@@ -402,6 +420,8 @@
 
         function getPolicyDescription(policyDefinitionId) {
             switch (policyDefinitionId) {
+                case POLICIES.ACL:
+                    return 'Service has an Access Control List (ACL) that limits who can access it.';
                 case POLICIES.OAUTH2:
                     return 'Service secured with OAuth2.0 authentication';
                 case POLICIES.GALILEO:
@@ -422,10 +442,12 @@
                     return 'Consumers can make requests from the browser';
                 case POLICIES.IP_RESTRICT:
                     return 'Only certain IP addresses are allowed access to the service';
+                case POLICIES.HTTP_LOG:
+                    return 'Request and response logs are sent to a server via HTTP';
                 case POLICIES.TCP_LOG:
-                    return 'Request and response logs are sent to a TCP server';
+                    return 'Request and response logs are sent to a server via TCP';
                 case POLICIES.UDP_LOG:
-                    return 'Request and response logs are sent to a UDP server';
+                    return 'Request and response logs are sent to a server via UDP';
                 case POLICIES.REQ_SIZE_LIMIT:
                     return 'Incoming requests cannot exceed a certain size';
                 case POLICIES.LDAP:

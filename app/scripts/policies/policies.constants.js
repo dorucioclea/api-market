@@ -4,6 +4,7 @@
     angular.module('app.policies')
 
         .constant('POLICIES', {
+            'ACL': 'ACL',
             'OAUTH2': 'OAuth2',
             'GALILEO': 'Analytics',
             'RATE_LIMIT': 'RateLimiting',
@@ -14,6 +15,7 @@
             'KEY_AUTH': 'KeyAuthentication',
             'CORS': 'CORS',
             'IP_RESTRICT': 'IPRestriction',
+            'HTTP_LOG': 'HTTPLog',
             'TCP_LOG': 'TCPLog',
             'UDP_LOG': 'UDPLog',
             'REQ_SIZE_LIMIT': 'RequestSizeLimiting',
