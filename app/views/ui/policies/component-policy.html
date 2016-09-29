@@ -1,4 +1,4 @@
-<div class="policy" uib-popover-html="$ctrl.policy.details" popover-animation="true" popover-placement="top" popover-trigger="mouseenter">
+<div class="policy" uib-popover-html="$ctrl.policy.popover" popover-animation="true" popover-placement="top" popover-trigger="mouseenter">
     <div id="content">
         <div class="policy-header">
             <h5>{{$ctrl.policy.name}}</h5>
@@ -9,12 +9,16 @@
             <!--<span>{{$ctrl.policy.policyDefinitionId}}</span>-->
         </div>
     </div>
-    <div id="overlay" ng-if="$ctrl.editMode">
-        <div class="policy-actions">
-            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Edit</span>-->
-            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Enable</span>-->
-            <!--<span class="btn btn-sm btn-primary" ng-click="$ctrl.showDetails()">Disable</span>-->
-            <span class="btn btn-sm btn-danger" ng-click="$ctrl.removePolicy()">Remove</span>
+    <div id="overlay" ng-class="{ 'clickable': !$ctrl.showButtons, 'fade-bg': $ctrl.showButtons }" class="opacity-trans bg-trans" ng-click="$ctrl.showButtons = true;"
+         ng-mouseleave="$ctrl.showButtons = false;" ng-if="$ctrl.editMode">
+        <div class="policy-actions" ng-if="$ctrl.showButtons">
+            <span class="btn btn-sm btn-info btn-w100" ng-click="$ctrl.editPolicy()">Edit</span>
+            <span class="btn btn-sm btn-success btn-w100" ng-click="$ctrl.enablePolicy()" ng-if="!$ctrl.policy.details.enabled">Enable</span>
+            <span class="btn btn-sm btn-warning btn-w100" ng-click="$ctrl.disablePolicy()" ng-if="$ctrl.policy.details.enabled">Disable</span>
+            <span class="btn btn-sm btn-danger btn-w100" ng-click="$ctrl.removePolicy()">Remove</span>
+        </div>
+        <div id="click-to-show" ng-if="!$ctrl.showButtons">
+            <span class="text-ultralight text-primary">Click to show options</span>
         </div>
         <!--<div class="policy-remove-confirm">-->
             <!--<span>Remove policy?</span>-->

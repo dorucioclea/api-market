@@ -16,6 +16,7 @@
         this.getPolicyIcon = getPolicyIcon;
         this.deletePlanPolicy = deletePlanPolicy;
         this.deleteServicePolicy = deleteServicePolicy;
+        this.updateServicePolicy = updateServicePolicy;
 
 
         function deletePlanPolicy(orgId, planId, versionId, policyId) {
@@ -152,7 +153,6 @@
             }
 
             function generateHttpLogPopover(config) {
-                console.log(config);
                 if (CONFIG.APP.PUBLISHER_MODE) {
                     return '<p class="text-light">Logs are sent to <b>' + config.http_endpoint + '</b> via ' + config.method + '.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
                 } else {
@@ -388,7 +388,8 @@
                 var promises = [];
                 _.forEach(policies, function (policy) {
                     promises.push(getServicePolicyDetails(orgId, svcId, versionId, policy.id).then(function (details) {
-                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.details = details;
+                        policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
                     }));
@@ -461,6 +462,20 @@
 
         function getPolicyIcon(policyDefinitionId) {
             return 'images/policies/' + policyDefinitionId.toLowerCase() + '.png';
+        }
+
+        function updateServicePolicy(orgId, svcId, versionId, policyId, defintionId, jsonConfig, enabled) {
+            var policyObj = {
+                definitionId: defintionId,
+                configuration: jsonConfig,
+                enabled: enabled
+            };
+            return ServiceVersionPolicy.update({
+                orgId: orgId,
+                svcId: svcId,
+                versionId: versionId,
+                policyId: policyId
+            }, policyObj).$promise;
         }
 
     }

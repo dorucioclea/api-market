@@ -662,8 +662,9 @@
 
         $scope.policies = policyData;
         svcScreenModel.updateTab('Policies');
+        $scope.modalAddPolicy = modalAddPolicy;
 
-        $scope.modalAddPolicy = function () {
+        function modalAddPolicy() {
             $uibModal.open({
                 templateUrl: '/views/modals/policyAdd.html',
                 size: 'lg',
@@ -677,7 +678,7 @@
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
 
-        };
+        }
     }
 
     function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {

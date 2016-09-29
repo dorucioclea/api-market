@@ -9,9 +9,31 @@
                 editable: '<',
                 type: '@'
             },
-            controller: function ($stateParams, policyService, service, toastService, _) {
+            controller: function ($stateParams, $uibModal, policyService, service, toastService, _) {
+                this.disablePolicy = disablePolicy;
+                this.editPolicy = editPolicy;
+                this.enablePolicy = enablePolicy;
                 this.removePolicy = removePolicy;
                 var controller = this;
+                console.log(controller.policies);
+
+                function disablePolicy(policy) {
+                    console.log('disable policy ', policy);
+                }
+
+                function editPolicy(policy) {
+                    console.log('edit policy ', policy);
+                    $uibModal.open({
+                        templateUrl: '/views/modals/policyEdit.html',
+                        size: 'lg',
+                        controller: 'AddPolicyCtrl as ctrl',
+                        backdrop: 'static'
+                    });
+                }
+
+                function enablePolicy(policy) {
+                    console.log('enable policy ', policy);
+                }
 
                 function removePolicy(policy) {
                     switch (this.type) {
@@ -44,7 +66,22 @@
             },
             controller: function () {
                 var ctrl = this;
+                this.disablePolicy = disablePolicy;
+                this.editPolicy = editPolicy;
+                this.enablePolicy = enablePolicy;
                 this.removePolicy = removePolicy;
+
+                function disablePolicy() {
+                    this.list.disablePolicy(ctrl.policy);
+                }
+
+                function editPolicy() {
+                    this.list.editPolicy(ctrl.policy);
+                }
+
+                function enablePolicy() {
+                    this.list.enablePolicy(ctrl.policy);
+                }
 
                 function removePolicy() {
                     this.list.removePolicy(ctrl.policy);
