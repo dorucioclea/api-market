@@ -111,8 +111,11 @@
             controller: function () {
                 var ctrl = this;
                 this.disablePolicy = disablePolicy;
+                this.doHideAll = doHideAll;
                 this.doHideButtons = doHideButtons;
+                this.doHideConfirmation = doHideConfirmation;
                 this.doShowButtons = doShowButtons;
+                this.doShowConfirmation = doShowConfirmation;
                 this.editPolicy = editPolicy;
                 this.enablePolicy = enablePolicy;
                 this.removePolicy = removePolicy;
@@ -120,16 +123,29 @@
                 function disablePolicy() {
                     this.list.disablePolicy(ctrl.policy).then(function () {
                         ctrl.policy.details.enabled = false;
-                        doHideButtons();
+                        doHideAll();
                     });
+                }
+
+                function doHideAll() {
+                    doHideButtons();
+                    doHideConfirmation();
                 }
 
                 function doHideButtons() {
                     ctrl.policy.showButtons = false;
                 }
 
+                function doHideConfirmation() {
+                    ctrl.confirmation = false;
+                }
+
                 function doShowButtons() {
                     ctrl.policy.showButtons = true;
+                }
+
+                function doShowConfirmation() {
+                    ctrl.confirmation = true;
                 }
 
                 function editPolicy() {
@@ -139,7 +155,7 @@
                 function enablePolicy() {
                     this.list.enablePolicy(ctrl.policy).then(function () {
                         ctrl.policy.details.enabled = true;
-                        doHideButtons();
+                        doHideAll();
                     });
                 }
 
