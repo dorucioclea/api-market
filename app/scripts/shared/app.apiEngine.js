@@ -184,7 +184,11 @@
         })
         .factory('PlanVersionPolicy', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
+                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId', {}, {
+                    update: {
+                        method: 'PUT'
+                    }
+            });
         })
         .factory('Member', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:userId/:roleId', {}, {
@@ -304,7 +308,11 @@
         })
         .factory('ServiceVersionPolicy', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId', {}, {
+                    update: {
+                        method: 'PUT'
+                    }
+            });
         })
         .factory('ServiceVersionActivity', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');

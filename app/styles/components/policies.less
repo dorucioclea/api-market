@@ -20,18 +20,98 @@
     overflow: hidden;
     position: relative;
 
-    #overlay    {
-      background: fade(#fff, 85%);
+    #overlay {
       text-align:center;
       position: absolute;
       width: 100%;
       height: 100%;
       opacity:0;
-      -webkit-transition: opacity .25s ease;
-      -moz-transition: opacity .25s ease;
+
+      &.opacity-trans {
+        -webkit-transition: opacity .25s ease;
+        -moz-transition: opacity .25s ease;
+        -ms-transition: opacity .25s ease;
+        -o-transition: opacity .25s ease;
+        transition: opacity .25s ease;
+      }
+
+      &.bg-trans {
+        -webkit-transition: background .25s;
+        -moz-transition: background .25s;
+        -ms-transition: background .25s;
+        -o-transition: background .25s;
+        transition: background .25s;
+      }
 
       .policy-actions {
-        margin-top: 40px;
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+
+        &.ng-enter {
+          -webkit-animation: fade-in .25s linear;
+          -o-animation: fade-in .25s linear;
+          animation: fade-in .25s linear;
+        }
+
+        &.ng-leave {
+          animation: fade-out .25s linear;
+          -webkit-animation: fade-out .25s linear;
+        }
+      }
+
+      #click-to-show {
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
+        font-size: 12px;
+
+        &.ng-enter {
+          -webkit-animation: fade-in .25s linear;
+          -o-animation: fade-in .25s linear;
+          animation: fade-in .25s linear;
+        }
+
+        &.ng-leave {
+          animation: fade-out .25s linear;
+          -webkit-animation: fade-out .25s linear;
+        }
+      }
+
+      &.fade-bg {
+        background: fade(#fff, 85%);
+        &.disabled {
+          background: fade(#eee, 85%);
+        }
+      }
+
+      #policy-remove-confirm {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        .content {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          height: 30px;
+          width: 100%;
+          margin: auto 0;
+        }
+
+        &.ng-enter {
+          -webkit-animation: fade-in .25s linear;
+          -o-animation: fade-in .25s linear;
+          animation: fade-in .25s linear;
+        }
+
+        &.ng-leave {
+          animation: fade-out .25s linear;
+          -webkit-animation: fade-out .25s linear;
+        }
       }
     }
 
@@ -39,6 +119,28 @@
       border: 1px solid @brand-primary;
       #overlay {
         opacity: 1;
+
+        .policy-actions {
+          opacity: 1;
+        }
+      }
+    }
+
+    #disabled {
+      position: absolute;
+      background: fade(#eee, 70%);
+      height: 100%;
+      width: 100%;
+
+      #disabled-text {
+        position: absolute;
+        color: #888;
+        top: 0;
+        bottom: 0;
+        height: 50px;
+        margin: auto 0;
+        width: 100%;
+        font-size: 32px;
       }
     }
 
@@ -70,6 +172,26 @@
         padding: 5px 10px 5px 80px;
       }
     }
+  }
+
+  @keyframes fade-out {
+    from { opacity:1; }
+    to { opacity:0; }
+  }
+
+  @-webkit-keyframes fade-out {
+    from { opacity:1; }
+    to { opacity:0; }
+  }
+
+  @keyframes fade-in {
+    from { opacity:0; }
+    to { opacity:1; }
+  }
+
+  @-webkit-keyframes fade-in {
+    from { opacity:0; }
+    to { opacity:1; }
   }
 
 }

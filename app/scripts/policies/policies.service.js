@@ -5,17 +5,20 @@
         .service('policyService', policyService);
 
 
-    function policyService($q, $sce, MktServiceVersionPolicy, PlanVersionPolicy, ServiceVersionPolicy, CONFIG, POLICIES, _) {
+    function policyService($q, $sce, MktServiceVersionPolicy, PlanVersionPolicy, ServiceVersionPolicy, PolicyDefs, CONFIG, POLICIES, _) {
         this.generateDetailsPopover = generateDetailsPopover;
         // this.getPlanPoliciesWithDetailsForMarket = getPlanPoliciesWithDetailsForMarket;
         this.getPlanPoliciesWithDetails = getPlanPoliciesWithDetails;
         this.getServicePoliciesWithDetailsForMarket = getServicePoliciesWithDetailsForMarket;
         this.getServicePoliciesWithDetails = getServicePoliciesWithDetails;
         this.getServicePolicyDetails = getServicePolicyDetails;
+        this.getPolicyDefinition = getPolicyDefinition;
         this.getPolicyDescription = getPolicyDescription;
         this.getPolicyIcon = getPolicyIcon;
         this.deletePlanPolicy = deletePlanPolicy;
         this.deleteServicePolicy = deleteServicePolicy;
+        this.updatePlanPolicy = updatePlanPolicy;
+        this.updateServicePolicy = updateServicePolicy;
 
 
         function deletePlanPolicy(orgId, planId, versionId, policyId) {
@@ -152,7 +155,6 @@
             }
 
             function generateHttpLogPopover(config) {
-                console.log(config);
                 if (CONFIG.APP.PUBLISHER_MODE) {
                     return '<p class="text-light">Logs are sent to <b>' + config.http_endpoint + '</b> via ' + config.method + '.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
                 } else {
@@ -304,7 +306,6 @@
             }
 
             function generateLDAPPopover(config) {
-                console.log(config);
                 if (CONFIG.APP.PUBLISHER_MODE) {
                     var string = '';
                     string += '<p class="text-light">LDAP host: <b>' + config.ldap_host + ':' + config.ldap_port + '</b></p>';
@@ -346,9 +347,11 @@
                 var promises = [];
                 _.forEach(policies, function (policy) {
                     promises.push(getPlanPolicyDetails(orgId, planId, versionId, policy.id).then(function (details) {
-                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.details = details;
+                        policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                        policy.configurable = isConfigurable(policy.policyDefinitionId);
                     }));
                 });
 
@@ -388,9 +391,11 @@
                 var promises = [];
                 _.forEach(policies, function (policy) {
                     promises.push(getServicePolicyDetails(orgId, svcId, versionId, policy.id).then(function (details) {
-                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.details = details;
+                        policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                        policy.configurable = isConfigurable(policy.policyDefinitionId);
                     }));
                 });
 
@@ -416,6 +421,10 @@
                 versionId: versionId,
                 policyId: policyId
             }).$promise;
+        }
+
+        function getPolicyDefinition(policyId) {
+            return PolicyDefs.get({policyId: policyId}).$promise;
         }
 
         function getPolicyDescription(policyDefinitionId) {
@@ -461,6 +470,38 @@
 
         function getPolicyIcon(policyDefinitionId) {
             return 'images/policies/' + policyDefinitionId.toLowerCase() + '.png';
+        }
+
+        function isConfigurable(policyDefinitionId) {
+            return !_.find(['ACL', 'HAL', 'JWT', 'JWTUp'], function (o) {
+                return o === policyDefinitionId;
+            });
+        }
+
+        function updatePlanPolicy(orgId, planId, versionId, policyId, jsonConfig, enabled) {
+            var policyObj = {
+                configuration: jsonConfig,
+                enabled: enabled
+            };
+            return PlanVersionPolicy.update({
+                orgId: orgId,
+                planId: planId,
+                versionId: versionId,
+                policyId: policyId
+            }, policyObj).$promise;
+        }
+
+        function updateServicePolicy(orgId, svcId, versionId, policyId, jsonConfig, enabled) {
+            var policyObj = {
+                configuration: jsonConfig,
+                enabled: enabled
+            };
+            return ServiceVersionPolicy.update({
+                orgId: orgId,
+                svcId: svcId,
+                versionId: versionId,
+                policyId: policyId
+            }, policyObj).$promise;
         }
 
     }
