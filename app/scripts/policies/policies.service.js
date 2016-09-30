@@ -5,17 +5,19 @@
         .service('policyService', policyService);
 
 
-    function policyService($q, $sce, MktServiceVersionPolicy, PlanVersionPolicy, ServiceVersionPolicy, CONFIG, POLICIES, _) {
+    function policyService($q, $sce, MktServiceVersionPolicy, PlanVersionPolicy, ServiceVersionPolicy, PolicyDefs, CONFIG, POLICIES, _) {
         this.generateDetailsPopover = generateDetailsPopover;
         // this.getPlanPoliciesWithDetailsForMarket = getPlanPoliciesWithDetailsForMarket;
         this.getPlanPoliciesWithDetails = getPlanPoliciesWithDetails;
         this.getServicePoliciesWithDetailsForMarket = getServicePoliciesWithDetailsForMarket;
         this.getServicePoliciesWithDetails = getServicePoliciesWithDetails;
         this.getServicePolicyDetails = getServicePolicyDetails;
+        this.getPolicyDefinition = getPolicyDefinition;
         this.getPolicyDescription = getPolicyDescription;
         this.getPolicyIcon = getPolicyIcon;
         this.deletePlanPolicy = deletePlanPolicy;
         this.deleteServicePolicy = deleteServicePolicy;
+        this.updatePlanPolicy = updatePlanPolicy;
         this.updateServicePolicy = updateServicePolicy;
 
 
@@ -346,9 +348,11 @@
                 var promises = [];
                 _.forEach(policies, function (policy) {
                     promises.push(getPlanPolicyDetails(orgId, planId, versionId, policy.id).then(function (details) {
-                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.details = details;
+                        policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                        policy.configurable = isConfigurable(policy.policyDefinitionId);
                     }));
                 });
 
@@ -392,6 +396,7 @@
                         policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
+                        policy.configurable = isConfigurable(policy.policyDefinitionId);
                     }));
                 });
 
@@ -417,6 +422,10 @@
                 versionId: versionId,
                 policyId: policyId
             }).$promise;
+        }
+
+        function getPolicyDefinition(policyId) {
+            return PolicyDefs.get({policyId: policyId}).$promise;
         }
 
         function getPolicyDescription(policyDefinitionId) {
@@ -464,12 +473,31 @@
             return 'images/policies/' + policyDefinitionId.toLowerCase() + '.png';
         }
 
-        function updateServicePolicy(orgId, svcId, versionId, policyId, defintionId, jsonConfig, enabled) {
+        function isConfigurable(policyDefinitionId) {
+            return !_.find(['ACL', 'HAL', 'JWT', 'JWTUp'], function (o) {
+                return o === policyDefinitionId;
+            });
+        }
+
+        function updatePlanPolicy(orgId, planId, versionId, policyId, jsonConfig, enabled) {
             var policyObj = {
-                definitionId: defintionId,
                 configuration: jsonConfig,
                 enabled: enabled
             };
+            return PlanVersionPolicy.update({
+                orgId: orgId,
+                planId: planId,
+                versionId: versionId,
+                policyId: policyId
+            }, policyObj).$promise;
+        }
+
+        function updateServicePolicy(orgId, svcId, versionId, policyId, jsonConfig, enabled) {
+            var policyObj = {
+                configuration: jsonConfig,
+                enabled: enabled
+            };
+            console.log(policyObj);
             return ServiceVersionPolicy.update({
                 orgId: orgId,
                 svcId: svcId,

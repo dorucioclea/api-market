@@ -18,7 +18,26 @@
                 console.log(controller.policies);
 
                 function disablePolicy(policy) {
-                    console.log('disable policy ', policy);
+                    switch (this.type) {
+                        case 'plan':
+                            return policyService.updatePlanPolicy($stateParams.orgId,
+                                $stateParams.planId,
+                                $stateParams.versionId,
+                                policy.id,
+                                policy.details.configuration, false)
+                                .then(function () {
+                                    toastService.info('' + policy.name + ' disabled.');
+                                });
+                        case 'svc':
+                            return policyService.updateServicePolicy($stateParams.orgId,
+                                $stateParams.svcId,
+                                $stateParams.versionId,
+                                policy.id,
+                                policy.details.configuration, false)
+                                .then(function () {
+                                    toastService.info('' + policy.name + ' disabled.');
+                            });
+                    }
                 }
 
                 function editPolicy(policy) {
@@ -26,13 +45,38 @@
                     $uibModal.open({
                         templateUrl: '/views/modals/policyEdit.html',
                         size: 'lg',
-                        controller: 'AddPolicyCtrl as ctrl',
+                        controller: 'EditPolicyCtrl as ctrl',
+                        resolve: {
+                            policy: policy,
+                            policyType: function() {
+                                return controller.type;
+                            }
+                        },
                         backdrop: 'static'
                     });
                 }
 
                 function enablePolicy(policy) {
-                    console.log('enable policy ', policy);
+                    switch (this.type) {
+                        case 'plan':
+                            return policyService.updatePlanPolicy($stateParams.orgId,
+                                $stateParams.planId,
+                                $stateParams.versionId,
+                                policy.id,
+                                policy.details.configuration, true)
+                                .then(function () {
+                                    toastService.info('' + policy.name + ' enabled.');
+                                });
+                        case 'svc':
+                            return policyService.updateServicePolicy($stateParams.orgId,
+                                $stateParams.svcId,
+                                $stateParams.versionId,
+                                policy.id,
+                                policy.details.configuration, true)
+                                .then(function () {
+                                    toastService.info('' + policy.name + ' enabled.');
+                            });
+                    }
                 }
 
                 function removePolicy(policy) {
@@ -67,12 +111,25 @@
             controller: function () {
                 var ctrl = this;
                 this.disablePolicy = disablePolicy;
+                this.doHideButtons = doHideButtons;
+                this.doShowButtons = doShowButtons;
                 this.editPolicy = editPolicy;
                 this.enablePolicy = enablePolicy;
                 this.removePolicy = removePolicy;
 
                 function disablePolicy() {
-                    this.list.disablePolicy(ctrl.policy);
+                    this.list.disablePolicy(ctrl.policy).then(function () {
+                        ctrl.policy.details.enabled = false;
+                        doHideButtons();
+                    });
+                }
+
+                function doHideButtons() {
+                    ctrl.policy.showButtons = false;
+                }
+
+                function doShowButtons() {
+                    ctrl.policy.showButtons = true;
                 }
 
                 function editPolicy() {
@@ -80,12 +137,17 @@
                 }
 
                 function enablePolicy() {
-                    this.list.enablePolicy(ctrl.policy);
+                    this.list.enablePolicy(ctrl.policy).then(function () {
+                        ctrl.policy.details.enabled = true;
+                        doHideButtons();
+                    });
                 }
 
                 function removePolicy() {
                     this.list.removePolicy(ctrl.policy);
                 }
+
+
             }
         });
 

@@ -184,7 +184,11 @@
         })
         .factory('PlanVersionPolicy', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
+                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId', {}, {
+                    update: {
+                        method: 'PUT'
+                    }
+            });
         })
         .factory('Member', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:userId/:roleId', {}, {

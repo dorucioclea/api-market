@@ -21,7 +21,6 @@
     position: relative;
 
     #overlay {
-      //background: fade(#fff, 85%);
       text-align:center;
       position: absolute;
       width: 100%;
@@ -79,6 +78,9 @@
 
       &.fade-bg {
         background: fade(#fff, 85%);
+        &.disabled {
+          background: fade(#eee, 85%);
+        }
       }
     }
 
@@ -90,6 +92,24 @@
         .policy-actions {
           opacity: 1;
         }
+      }
+    }
+
+    #disabled {
+      position: absolute;
+      background: fade(#eee, 70%);
+      height: 100%;
+      width: 100%;
+
+      #disabled-text {
+        position: absolute;
+        color: #888;
+        top: 0;
+        bottom: 0;
+        height: 50px;
+        margin: auto 0;
+        width: 100%;
+        font-size: 32px;
       }
     }
 

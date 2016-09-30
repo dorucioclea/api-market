@@ -1,0 +1,26 @@
+<div class="modal-header clearfix">
+    <h4 class="modal-title">{{policy.details.name}} <span>Configuration</span></h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+</div>
+
+<div class="modal-body style-placeholders">
+
+    <div class="row">
+        <div class="form policy-config json-schema">
+            <div class="col-sm-12">
+                <form name="policyForm">
+                    <div sf-schema="schema"
+                         sf-form="form"
+                         sf-model="config"
+                         sf-options="{ validateOnRender: true }">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="modalClose()">Cancel</button>
+    <button id="add-policy" ng-disabled="policyForm.$invalid" class="btn btn-primary" ng-click="updatePolicy(policyForm)">Update</button>
+</div>
