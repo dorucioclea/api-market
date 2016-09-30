@@ -14,7 +14,6 @@
         function init() {
             $scope.policy = policy;
             $scope.type = policyType;
-            console.log(policy.details.definition);
             $scope.schema = angular.fromJson(policy.details.definition.form);
             if (!_.isEmpty(policy.details.definition.formOverride)) {
                 $scope.form = angular.fromJson(policy.details.definition.formOverride);
@@ -23,7 +22,6 @@
                 $scope.form = ['*'];
             }
             $scope.config = angular.fromJson(policy.details.configuration);
-            console.log($scope.config);
         }
 
         function modalClose() {

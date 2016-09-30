@@ -306,7 +306,6 @@
             }
 
             function generateLDAPPopover(config) {
-                console.log(config);
                 if (CONFIG.APP.PUBLISHER_MODE) {
                     var string = '';
                     string += '<p class="text-light">LDAP host: <b>' + config.ldap_host + ':' + config.ldap_port + '</b></p>';
@@ -497,7 +496,6 @@
                 configuration: jsonConfig,
                 enabled: enabled
             };
-            console.log(policyObj);
             return ServiceVersionPolicy.update({
                 orgId: orgId,
                 svcId: svcId,

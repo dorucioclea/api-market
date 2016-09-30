@@ -15,7 +15,6 @@
                 this.enablePolicy = enablePolicy;
                 this.removePolicy = removePolicy;
                 var controller = this;
-                console.log(controller.policies);
 
                 function disablePolicy(policy) {
                     switch (this.type) {
@@ -41,7 +40,6 @@
                 }
 
                 function editPolicy(policy) {
-                    console.log('edit policy ', policy);
                     $uibModal.open({
                         templateUrl: '/views/modals/policyEdit.html',
                         size: 'lg',
