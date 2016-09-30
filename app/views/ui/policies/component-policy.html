@@ -21,9 +21,9 @@
          ng-mouseleave="$ctrl.doHideButtons();"
          ng-if="$ctrl.editMode">
         <div class="policy-actions" ng-if="$ctrl.policy.showButtons">
-            <span class="btn btn-sm btn-info btn-w100" ng-click="$ctrl.editPolicy()" ng-if="$ctrl.type === 'svc' && $ctrl.policy.configurable">Edit</span>
-            <span class="btn btn-sm btn-success btn-w100" ng-click="$ctrl.enablePolicy()" ng-if="$ctrl.type === 'svc' && !$ctrl.policy.details.enabled">Enable</span>
-            <span class="btn btn-sm btn-warning btn-w100" ng-click="$ctrl.disablePolicy()" ng-if="$ctrl.type === 'svc' && $ctrl.policy.details.enabled">Disable</span>
+            <span class="btn btn-sm btn-info btn-w100" ng-click="$ctrl.editPolicy()" ng-if="$ctrl.list.type === 'svc' && $ctrl.policy.configurable">Edit</span>
+            <span class="btn btn-sm btn-success btn-w100" ng-click="$ctrl.enablePolicy()" ng-if="$ctrl.list.type === 'svc' && !$ctrl.policy.details.enabled">Enable</span>
+            <span class="btn btn-sm btn-warning btn-w100" ng-click="$ctrl.disablePolicy()" ng-if="$ctrl.list.type === 'svc' && $ctrl.policy.details.enabled">Disable</span>
             <span class="btn btn-sm btn-danger btn-w100" ng-click="$ctrl.removePolicy()">Remove</span>
         </div>
         <div id="click-to-show" ng-if="!$ctrl.policy.showButtons">
