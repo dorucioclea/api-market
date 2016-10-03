@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    angular.module('app.policies')
-        .component('apiPolicyList', {
-            templateUrl: 'views/components/policies/component-policy-list.html',
+    angular.module('app.branding')
+        .component('apiBrandingAdmin', {
+            templateUrl: 'views/ui/policies/component-policy-list.html',
             bindings: {
                 policies: '<',
                 editable: '<',
@@ -35,7 +35,7 @@
                                 policy.details.configuration, false)
                                 .then(function () {
                                     toastService.info('' + policy.name + ' disabled.');
-                            });
+                                });
                     }
                 }
 
@@ -73,7 +73,7 @@
                                 policy.details.configuration, true)
                                 .then(function () {
                                     toastService.info('' + policy.name + ' enabled.');
-                            });
+                                });
                     }
                 }
 
@@ -95,73 +95,6 @@
                             break;
                     }
                 }
-            }
-        })
-        .component('apiPolicy', {
-            templateUrl: 'views/components/policies/component-policy.html',
-            require: {
-                list: '^apiPolicyList'
-            },
-            bindings: {
-                'policy': '<',
-                'editMode': '<'
-            },
-            controller: function () {
-                var ctrl = this;
-                this.disablePolicy = disablePolicy;
-                this.doHideAll = doHideAll;
-                this.doHideButtons = doHideButtons;
-                this.doHideConfirmation = doHideConfirmation;
-                this.doShowButtons = doShowButtons;
-                this.doShowConfirmation = doShowConfirmation;
-                this.editPolicy = editPolicy;
-                this.enablePolicy = enablePolicy;
-                this.removePolicy = removePolicy;
-
-                function disablePolicy() {
-                    this.list.disablePolicy(ctrl.policy).then(function () {
-                        ctrl.policy.details.enabled = false;
-                        doHideAll();
-                    });
-                }
-
-                function doHideAll() {
-                    doHideButtons();
-                    doHideConfirmation();
-                }
-
-                function doHideButtons() {
-                    ctrl.policy.showButtons = false;
-                }
-
-                function doHideConfirmation() {
-                    ctrl.confirmation = false;
-                }
-
-                function doShowButtons() {
-                    ctrl.policy.showButtons = true;
-                }
-
-                function doShowConfirmation() {
-                    ctrl.confirmation = true;
-                }
-
-                function editPolicy() {
-                    this.list.editPolicy(ctrl.policy);
-                }
-
-                function enablePolicy() {
-                    this.list.enablePolicy(ctrl.policy).then(function () {
-                        ctrl.policy.details.enabled = true;
-                        doHideAll();
-                    });
-                }
-
-                function removePolicy() {
-                    this.list.removePolicy(ctrl.policy);
-                }
-
-
             }
         });
 

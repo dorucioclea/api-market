@@ -55,7 +55,7 @@
 
             
 
-        /// ========== ACTIONS ==========================================================================
+        /// ========== ACTIONS =========================================================================================
         .factory('Action', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/actions');
         })
@@ -64,7 +64,7 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
-        /// ========== ADMIN =============================================================================
+        /// ========== ADMIN ===========================================================================================
         .factory('TermsAdmin', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/admin/defaults/terms', {}, {
                 update: {
@@ -77,7 +77,13 @@
             return $resource(CONFIG.BASE.URL + '/defaults/terms');
         })
 
-        /// ========== CONTRACTS ==========================================================================
+        /// ========== BRANDING ========================================================================================
+        .factory('Branding', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/brandings/services/:brandingId');
+        })
+
+
+        /// ========== CONTRACTS =======================================================================================
         .factory('RequestContract', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');

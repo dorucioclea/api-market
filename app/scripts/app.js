@@ -49,6 +49,7 @@
             'app.ctrl.modals.support',
             'app.administration',
             'app.applications',
+            'app.branding',
             'app.contracts',
             'app.market',
             'app.members',
