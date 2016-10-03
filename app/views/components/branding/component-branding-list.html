@@ -1,4 +1,9 @@
 <table class="table table-striped branding-list">
+    <tr ng-if="$ctrl.branding.length === 0">
+        <td>
+            <span class="text-muted text-ultralight">No branding names found.</span>
+        </td>
+    </tr>
     <tr class="branding-row" ng-repeat="item in $ctrl.branding">
         <td>
             <api-branding branding-entry="item"></api-branding>
