@@ -2,99 +2,71 @@
     'use strict';
 
     angular.module('app.branding')
-        .component('apiBrandingAdmin', {
-            templateUrl: 'views/ui/policies/component-policy-list.html',
+        .component('apiBrandingList', {
+            templateUrl: 'views/components/branding/component-branding-list.html',
             bindings: {
-                policies: '<',
-                editable: '<',
-                type: '@'
+                branding: '<'
             },
-            controller: function ($stateParams, $uibModal, policyService, service, toastService, _) {
-                this.disablePolicy = disablePolicy;
-                this.editPolicy = editPolicy;
-                this.enablePolicy = enablePolicy;
-                this.removePolicy = removePolicy;
+            controller: function (BrandingService, toastService, _) {
+                this.addBranding = addBranding;
+                this.deleteBranding = deleteBranding;
                 var controller = this;
+                this.$onInit = function () {
+                    controller.branding = _.sortBy(controller.branding, 'name');
+                };
 
-                function disablePolicy(policy) {
-                    switch (this.type) {
-                        case 'plan':
-                            return policyService.updatePlanPolicy($stateParams.orgId,
-                                $stateParams.planId,
-                                $stateParams.versionId,
-                                policy.id,
-                                policy.details.configuration, false)
-                                .then(function () {
-                                    toastService.info('' + policy.name + ' disabled.');
-                                });
-                        case 'svc':
-                            return policyService.updateServicePolicy($stateParams.orgId,
-                                $stateParams.svcId,
-                                $stateParams.versionId,
-                                policy.id,
-                                policy.details.configuration, false)
-                                .then(function () {
-                                    toastService.info('' + policy.name + ' disabled.');
-                                });
-                    }
+                function addBranding(name) {
+                    return BrandingService.createBranding(name).then(function (result) {
+                        controller.branding = _.sortBy(_.concat(controller.branding, [result]), 'name');
+                        toastService.success('Branding name added!');
+                    }, function (err) {
+                        toastService.createErrorToast(err, 'Could not add branding!');
+                    })
                 }
 
-                function editPolicy(policy) {
-                    $uibModal.open({
-                        templateUrl: '/views/modals/policyEdit.html',
-                        size: 'lg',
-                        controller: 'EditPolicyCtrl as ctrl',
-                        resolve: {
-                            policy: policy,
-                            policyType: function() {
-                                return controller.type;
-                            }
-                        },
-                        backdrop: 'static'
+                function deleteBranding(id) {
+                    return BrandingService.deleteBranding(id).then(function () {
+                        _.remove(controller.branding, function (b) {
+                            return b.id === id;
+                        });
+                        toastService.warning('Branding name deleted!');
+                    }, function (err) {
+                        toastService.createErrorToast(err, 'Could not delete branding!');
+                    })
+                }
+            }
+        })
+        .component('apiBrandingAdd', {
+            templateUrl: 'views/components/branding/component-branding-add.html',
+            require: {
+                list: '^apiBrandingList'
+            },
+            controller: function () {
+                this.addBranding = addBranding;
+
+                function addBranding(name) {
+                    if (name && name.length > 0) this.list.addBranding(name).then(function () {
+                        name = '';
                     });
                 }
+            }
 
-                function enablePolicy(policy) {
-                    switch (this.type) {
-                        case 'plan':
-                            return policyService.updatePlanPolicy($stateParams.orgId,
-                                $stateParams.planId,
-                                $stateParams.versionId,
-                                policy.id,
-                                policy.details.configuration, true)
-                                .then(function () {
-                                    toastService.info('' + policy.name + ' enabled.');
-                                });
-                        case 'svc':
-                            return policyService.updateServicePolicy($stateParams.orgId,
-                                $stateParams.svcId,
-                                $stateParams.versionId,
-                                policy.id,
-                                policy.details.configuration, true)
-                                .then(function () {
-                                    toastService.info('' + policy.name + ' enabled.');
-                                });
-                    }
+        })
+        .component('apiBranding', {
+            templateUrl: 'views/components/branding/component-branding.html',
+            require: {
+                list: '^apiBrandingList'
+            },
+            bindings: {
+                brandingEntry: '<'
+            },
+            controller: function () {
+                this.deleteBranding = deleteBranding;
+
+                function deleteBranding(id) {
+                    this.list.deleteBranding(id);
                 }
 
-                function removePolicy(policy) {
-                    switch (this.type) {
-                        case 'plan':
-                            policyService.deletePlanPolicy($stateParams.orgId, $stateParams.planId, $stateParams.versionId, policy.id).then(
-                                function () {
-                                    toastService.warning('' + policy.name + ' removed.');
-                                    _.remove(controller.policies, policy);
-                                });
-                            break;
-                        case 'svc':
-                            policyService.deleteServicePolicy($stateParams.orgId, $stateParams.svcId, $stateParams.versionId, policy.id).then(
-                                function () {
-                                    toastService.warning('' + policy.name + ' removed.');
-                                    _.remove(controller.policies, policy);
-                                });
-                            break;
-                    }
-                }
             }
         });
 

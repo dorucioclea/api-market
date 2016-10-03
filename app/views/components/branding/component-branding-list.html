@@ -1,0 +1,12 @@
+<table class="table table-striped branding-list">
+    <tr class="branding-row" ng-repeat="item in $ctrl.branding">
+        <td>
+            <api-branding branding-entry="item"></api-branding>
+        </td>
+    </tr>
+    <tr class="branding-row">
+        <td>
+            <api-branding-add></api-branding-add>
+        </td>
+    </tr>
+</table>

@@ -518,6 +518,17 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
+                .state('root.administration.branding', {
+                    url: '/branding',
+                    templateUrl: 'views/partials/administration/branding.html',
+                    resolve: {
+                        BrandingService: 'BrandingService',
+                        brandingData: function(BrandingService){
+                            return BrandingService.getBrandings();
+                        }
+                    },
+                    controller: 'AdminBrandingCtrl'
+                })
                 .state('root.administration.security', {
                     url: '/expiration',
                     templateUrl: 'views/partials/administration/security.html',

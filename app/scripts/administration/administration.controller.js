@@ -9,6 +9,7 @@
         .controller('AdminOAuthRevokeCtrl', adminOAuthRevokeCtrl)
         .controller('AdminStatusCtrl', adminStatusCtrl)
         .controller('AdminUsersCtrl', adminUsersCtrl)
+        .controller('AdminBrandingCtrl', adminBrandingCtrl)
         .controller('ConfirmRevokeCtrl', confirmRevokeCtrl)
         .controller('RemoveAdminCtrl', removeAdminCtrl);
 
@@ -203,6 +204,12 @@
         function removeAdmin(admin) {
             $scope.adminHelper.removeAdmin(admin);
         }
+    }
+
+    function adminBrandingCtrl($scope, brandingData) {
+        $scope.adminTab.updateTab('Branding');
+        $scope.branding = brandingData;
+        console.log($scope.branding);
     }
 
     function addAdminCtrl($scope, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {

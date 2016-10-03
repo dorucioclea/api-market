@@ -1,0 +1,9 @@
+<div class="name">
+    <input class="form-control" ng-model="newBrandingName">
+</div>
+<div class="actions">
+    <span class="hvr-grow fa fa-plus fa-2x"
+          ng-class="{ 'text-muted': !newBrandingName || newBrandingName.length === 0,
+           'text-success clickable': newBrandingName && newBrandingName.length > 0 }"
+          ng-click="$ctrl.addBranding(newBrandingName); newBrandingName = null;"></span>
+</div>
