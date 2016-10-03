@@ -61,10 +61,21 @@
                 brandingEntry: '<'
             },
             controller: function () {
+                this.cancelDeleteBranding = cancelDeleteBranding;
                 this.deleteBranding = deleteBranding;
+                this.doConfirmDelete = doConfirmDelete;
+                var controller = this;
 
-                function deleteBranding(id) {
-                    this.list.deleteBranding(id);
+                function cancelDeleteBranding() {
+                    controller.confirm = false;
+                }
+
+                function deleteBranding() {
+                    this.list.deleteBranding(controller.brandingEntry.id);
+                }
+
+                function doConfirmDelete() {
+                    controller.confirm = true;
                 }
 
             }
