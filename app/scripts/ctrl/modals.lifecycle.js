@@ -188,7 +188,8 @@
         /// ==== NewService Controller
         .controller('NewServiceCtrl',
             function ($scope, $filter, $uibModal, $state, $stateParams, flowFactory, alertService, service,
-                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Service, admin) {
+                      imageService, orgScreenModel, toastService, REGEX, TOAST_TYPES, CONFIG, Service, admin, branding,
+                      BrandingService, _) {
 
                 $scope.admin = admin;
                 $scope.org = orgScreenModel.organization;
@@ -199,18 +200,23 @@
                     singleFile: true
                 });
                 $scope.regex = REGEX;
+                $scope.noBrandingText = 'No branding';
                 $scope.readFile = readFile;
                 $scope.closeAlert = closeAlert;
                 $scope.createService = createService;
                 $scope.filterCategories = filterCategories;
                 $scope.modalClose = modalClose;
                 $scope.resetImage = resetImage;
+                $scope.selectBranding = selectBranding;
                 init();
 
 
                 function init() {
                     alertService.resetAllAlerts();
                     imageService.clear();
+
+                    filterBrandings();
+
                     service.getAllCategories().then(function (reply) {
                         $scope.currentCategories = reply;
                     });
@@ -247,18 +253,41 @@
                     newSvcObject.categories = cats;
 
                     Service.save({orgId: $stateParams.orgId}, newSvcObject, function (newSvc) {
-                        $scope.modalClose();
-                        imageService.clear();
-                        $state.go('root.service.overview',
-                            {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: newSvcObject.initialVersion});
-                        toastService.createToast(TOAST_TYPES.SUCCESS,
-                            'Service <b>' + newSvc.name + '</b> created!', true);
+                        if ($scope.selectedBranding) {
+                            BrandingService.addBrandingToService($stateParams.orgId, newSvc.id, $scope.selectedBranding).then(function () {
+                                handleSuccess();
+                            }, function (err) {
+                                handleSuccess();
+                                toastService.createErrorToast(err, 'Could not apply branding to service.');
+                            })
+                        } else {
+                            handleSuccess();
+                        }
+
+                        function handleSuccess() {
+                            $scope.modalClose();
+                            imageService.clear();
+                            $state.go('root.service.overview',
+                                {orgId: $stateParams.orgId, svcId: newSvc.id, versionId: newSvcObject.initialVersion});
+                            toastService.createToast(TOAST_TYPES.SUCCESS,
+                                'Service <b>' + newSvc.name + '</b> created!', true);
+                        }
                     }, function (error) {
                         if (error.status !== 409) {
                             $scope.modalClose();
                         }
                         toastService.createErrorToast(error, 'Could not create service.');
                     });
+                }
+
+                function filterBrandings() {
+                    var filtered = _.sortBy(_.filter(branding, function (b) {
+                        if ($scope.selectedBranding) return b.id != $scope.selectedBranding.id;
+                        else return true;
+                    }), 'name');
+
+                    if ($scope.selectedBranding) $scope.branding = _.concat([{name: $scope.noBrandingText }], filtered);
+                    else $scope.branding = filtered;
                 }
 
                 function filterCategories($query) {
@@ -274,6 +303,12 @@
                     flow.cancel();
                     imageService.clear();
                     alertService.resetAllAlerts();
+                }
+
+                function selectBranding(branding) {
+                    if (branding.name === $scope.noBrandingText) $scope.selectedBranding = undefined;
+                    else $scope.selectedBranding = branding;
+                    filterBrandings();
                 }
             })
 

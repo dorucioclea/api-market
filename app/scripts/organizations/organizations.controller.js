@@ -337,7 +337,7 @@
     }
 
     function servicesCtrl($scope, $state, $uibModal, svcData, _, toastService,
-                          orgScreenModel, service) {
+                          orgScreenModel, service, BrandingService) {
 
         $scope.services = svcData;
         $scope.canDeprecate = canDeprecate;
@@ -386,6 +386,9 @@
                 resolve: {
                     admin: function () {
                         return $scope.User.currentUser.admin
+                    },
+                    branding : function () {
+                        return BrandingService.getBrandings();
                     }
                 },
                 backdrop : 'static',
