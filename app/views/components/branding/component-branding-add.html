@@ -1,5 +1,7 @@
 <div class="name branding-input">
-    <input class="form-control" ng-model="newBrandingName">
+    <form ng-submit="$ctrl.addBranding(newBrandingName); newBrandingName = null;">
+        <input class="form-control" ng-model="newBrandingName">
+    </form>
 </div>
 <div class="actions branding-input">
     <span class="hvr-grow fa fa-plus fa-2x"
