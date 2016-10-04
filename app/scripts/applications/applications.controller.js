@@ -474,7 +474,7 @@
         }
 
         function doRevoke(toRevoke) {
-            var tokensToRevoke = _.map(toRevoke, 'originalToken');
+            var tokensToRevoke = _.map(toRevoke, 'originalToken.accessToken');
             return appService.revokeAppVersionTokens(tokensToRevoke).then(function () {
                 $scope.tokens = _.difference($scope.tokens, toRevoke);
             });

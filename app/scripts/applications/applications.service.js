@@ -268,7 +268,7 @@
         function revokeAppVersionTokens(toRevoke) {
             var promises = [];
             _.forEach(toRevoke, function (token) {
-                promises.push(OAuthTokenRevoke.save({}, token).$promise);
+                promises.push(OAuthTokenRevoke.delete({ token: token }).$promise);
             });
             return $q.all(promises);
         }
