@@ -38,7 +38,6 @@
 
         function updateExpirationTimes() {
             $scope.adminHelper.updateExpirationTimes($scope.tokenTimeout.oauth, $scope.tokenTimeout.jwt).then(function (reply) {
-                console.log(reply);
                 $scope.toastService.createToast($scope.TOAST_TYPES.SUCCESS, "Expiration times updated!", true);
             }, function () {
                 $scope.toastService.createToast($scope.TOAST_TYPES.DANGER, "Could not update expiration times.", true);
@@ -84,7 +83,6 @@
 
     function adminTermsCtrl($scope, currentTerms, adminHelper) {
         $scope.adminTab.updateTab('Terms');
-        console.log(currentTerms);
         $scope.terms = currentTerms.terms;
         $scope.updateDefaultTerms = updateDefaultTerms;
 
@@ -185,8 +183,6 @@
         $scope.kongCluster = angular.fromJson(status.kongCluster);
         $scope.kongInfo = angular.fromJson(status.kongInfo);
         $scope.kongStatus = angular.fromJson(status.kongStatus);
-        // console.log($scope.kongInfo);
-        // console.log($scope.kongStatus);
         $scope.status = status;
         $scope.builtOn = new Date($scope.status.builtOn);
     }
@@ -209,7 +205,6 @@
     function adminBrandingCtrl($scope, brandingData) {
         $scope.adminTab.updateTab('Branding');
         $scope.branding = brandingData;
-        console.log($scope.branding);
     }
 
     function addAdminCtrl($scope, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {
