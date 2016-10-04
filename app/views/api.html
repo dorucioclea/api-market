@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-sm-12">
-                <span class="text-light">{{endpoint.managedEndpoint}}</span>
+                <span class="text-light">{{endpoint.brandingEndpoints ? endpoint.brandingEndpoints[0].managedEndpoint : endpoint.managedEndpoint}}</span>
                 <a clipboard text="endpoint.managedEndpoint" class="clickable fa fa-copy" ng-click="copyPath()" tooltip-popup-delay="300" tooltip-placement="top" uib-tooltip="Copy to clipboard"></a>
                 <p class="mt10"><span ng-repeat="category in serviceVersion.service.categories"><span class="label label-info"><i class="fa fa-tag"></i>&nbsp;{{category}}</span><span>&nbsp;</span></span></p>
                 <p class="mb30">
