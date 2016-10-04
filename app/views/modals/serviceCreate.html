@@ -35,7 +35,7 @@
                         <span class="text-bold">https://{{configVars.KONG.HOST}}/{{selectedBranding ? selectedBranding.id.toLowerCase() : org.id.toLowerCase()}}/{{ctrl.service.basepath? ctrl.service.basepath : '[yourservice]'}}/{{ctrl.service.initialVersion ? 'v' + ctrl.service.initialVersion : '[version]'}}</span>
                     </p>
                 </div>
-                <div class="col-md-4 mt20">
+                <div class="col-md-4 mt20" ng-if="branding.length > 0">
                     <label class="control-label text-primary">Service Branding</label>
                     <div class="input-group-btn">
                         <div class="dropdown" uib-dropdown>
