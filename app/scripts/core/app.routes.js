@@ -764,17 +764,19 @@
                     url: '/org/:orgId/service/:svcId/:versionId',
                     templateUrl: 'views/service.html',
                     resolve: {
-                        Organization: 'Organization',
-                        orgData: function (Organization, organizationId) {
-                            return Organization.get({id: organizationId}).$promise;
+                        orgService: 'orgService',
+                        orgData: function (orgService, organizationId) {
+                            return orgService.orgInfo(organizationId);
                         },
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
-                            return ServiceVersion.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        service: 'service',
+                        svcData: function (service, organizationId, serviceId, versionId) {
+                            return service.getVersion(organizationId, serviceId, versionId);
                         },
-                        svcVersions: function (ServiceVersion, organizationId, serviceId) {
-                            return ServiceVersion.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        endpoint: function (service, organizationId, serviceId, versionId) {
+                            return service.getEndpoint(organizationId, serviceId, versionId);
+                        },
+                        svcVersions: function (service, organizationId, serviceId) {
+                            return service.getServiceVersions(organizationId, serviceId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;

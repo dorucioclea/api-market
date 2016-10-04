@@ -20,11 +20,12 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
+                         svcData, endpoint, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
                          toastService, ALERT_TYPES, TOAST_TYPES, service, CONFIG) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
+        $scope.endpoint = endpoint;
         $scope.orgId = $stateParams.orgId;
         $scope.userHasEditPermission = $scope.User.isAuthorizedForIn('svcEdit', $scope.orgId);
         $scope.userHasAdminPermission = $scope.User.isAuthorizedForIn('svcAdmin', $scope.orgId);
