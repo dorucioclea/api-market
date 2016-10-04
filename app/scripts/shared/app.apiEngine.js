@@ -285,6 +285,9 @@
         .factory('ServiceAnnouncementsAll', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/announcement/all');
         })
+        .factory('ServiceBranding', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/brandings/:brandingId');
+        })
         .factory('ServiceFollowers', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/followers');
         })

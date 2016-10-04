@@ -23,6 +23,23 @@
                     </tags-input>
                     <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
                 </div>
+
+                <!-- BRANDING -->
+                <div class="form-group col-md-12">
+                    <label class="control-label text-primary">Service Branding</label>
+                    <div class="input-group-btn">
+                        <div class="dropdown" uib-dropdown>
+                            <button class="btn btn-sm btn-default dropdown-toggle" uib-dropdown-toggle
+                                    type="button">
+                                {{svc.selectedBranding ? svc.selectedBranding.name : noBrandingText }}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-click="selectBranding(brand)" ng-repeat="brand in branding"><a>{{brand.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-muted xsmall">Branding to be applied to the service URL.</p>
+                </div>
             </form>
 
         </div>

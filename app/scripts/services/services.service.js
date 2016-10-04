@@ -6,7 +6,7 @@
         .service('svcScreenModel', svcScreenModel)
         .service('svcTab', svcTab);
 
-    function service($q, $uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, Categories, DefaultTerms, _) {
+    function service($q, $uibModal, Service, ServiceEndpoint, ServiceTerms, ServiceVersion, ServiceVersionDefinition, Categories, DefaultTerms, BrandingService, _) {
         this.deleteService = deleteService;
         this.deleteServiceVersion = deleteServiceVersion;
         this.deprecateServiceVersion = deprecateServiceVersion;
@@ -98,18 +98,52 @@
                 resolve: {
                     svc: function () {
                         return Service.get({ orgId: orgId, svcId: svcId }).$promise;
+                    },
+                    branding: function () {
+                        return BrandingService.getBrandings();
                     }
                 },
                 backdrop : 'static'
             });
             modalInstance.result.then(function(updatedSvc) {
-                console.log(updatedSvc);
                 var updateObj = {
                     description: updatedSvc.description,
-                    categories: _.map(updatedSvc.categories, 'text'),
+                    categories: _.map(updatedSvc.categories, 'text')
                 };
-                console.log(updateObj);
-                deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+
+                if (_.has(updatedSvc, 'selectedBranding')) {
+                    // the selected branding was changed
+
+                    if (_.has(updatedSvc.selectedBranding, 'id')) {
+                        // a new branding was selected, remove old one and apply new one
+                        // check for existing branding
+                        if (_.isEmpty(updatedSvc.brandings)) {
+                            // no existing branding, add new one
+                            BrandingService.addBrandingToService(orgId, svcId, updatedSvc.selectedBranding).then(function () {
+                                deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+                            })
+                        } else {
+                            // already has branding, remove it first
+                            BrandingService.removeBrandingFromService(orgId, svcId, updatedSvc.brandings[0].id).then(function () {
+                                BrandingService.addBrandingToService(orgId, svcId, updatedSvc.selectedBranding).then(function () {
+                                    deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+                                });
+                            })
+                        }
+
+                    } else {
+                        // user has opted to apply no branding, remove existing
+                        if (!_.isEmpty(updatedSvc.brandings)) {
+                            BrandingService.removeBrandingFromService(orgId, svcId, updatedSvc.brandings[0].id).then(function () {
+                                deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+                            })
+                        }
+                    }
+
+
+                } else {
+                    deferred.resolve(Service.update({ orgId: orgId, svcId: svcId }, updateObj).$promise);
+                }
             }, function () {
                 deferred.resolve('canceled');
             });

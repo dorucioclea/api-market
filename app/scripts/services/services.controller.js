@@ -199,15 +199,20 @@
     }
 
 
-    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, service) {
+    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, branding, service, _) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.filterCategories = filterCategories;
+        $scope.selectBranding = selectBranding;
         $scope.svc = svc;
+        $scope.noBrandingText = 'No branding';
 
         init();
 
         function init() {
+            if (!_.isEmpty($scope.svc.brandings)) $scope.svc.selectedBranding = $scope.svc.brandings[0];
+            filterBrandings();
+
             service.getAllCategories().then(function (reply) {
                 $scope.currentCategories = reply;
             })
@@ -217,12 +222,27 @@
             $uibModalInstance.dismiss('canceled');
         }
 
+        function filterBrandings() {
+            var filtered = _.sortBy(_.filter(branding, function (b) {
+                if ($scope.svc.selectedBranding) return b.id != $scope.svc.selectedBranding.id;
+                else return true;
+            }), 'name');
+
+            if ($scope.svc.selectedBranding && $scope.svc.selectedBranding.name != $scope.noBrandingText) $scope.branding = _.concat([{name: $scope.noBrandingText }], filtered);
+            else $scope.branding = filtered;
+        }
+
         function filterCategories($query) {
             return $filter('filter')($scope.currentCategories, $query);
         }
 
         function ok() {
             $uibModalInstance.close($scope.svc);
+        }
+
+        function selectBranding(branding) {
+            $scope.svc.selectedBranding = branding;
+            filterBrandings();
         }
     }
 
