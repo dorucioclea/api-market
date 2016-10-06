@@ -53,7 +53,9 @@
             </div>
 
             <div class="col-sm-9" style="padding-left: 0;">
-                <p id="basepath" class="text-light text-muted">{{endpoint.brandingEndpoints ? endpoint.brandingEndpoints[0].managedEndpoint : endpoint.managedEndpoint}} <span class="text-primary" ng-if="endpoint.brandingEndpoints">(branding applied)</span></p>
+                <p id="basepath" class="text-light text-muted">{{endpoint.brandingEndpoints ? endpoint.brandingEndpoints[0].managedEndpoint : endpoint.managedEndpoint}}
+                    <span class="text-ultralight text-primary" ng-if="endpoint.brandingEndpoints">(branding applied)</span>
+                </p>
 
 
                 <p>{{serviceVersion.service.description}}</p>
