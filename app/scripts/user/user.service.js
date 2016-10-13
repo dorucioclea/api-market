@@ -129,10 +129,7 @@
                     });
                     scopesArray = _.sortBy(scopesArray);
                     grant.scopesString = _.join(scopesArray, ', ');
-                    promises.push(appService.getAppVersionDetails(token.organizationId, token.applicationId, token.version).then(function (appDetails) {
-                        grant.appDetails = appDetails;
-                        grants.push(grant);
-                    }));
+                    grants.push(grant);
                 });
                 return $q.all(promises).then(function () {
                     return grants;
