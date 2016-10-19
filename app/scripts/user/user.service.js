@@ -117,10 +117,10 @@
         }
 
         function getUserGrants() {
-            return CurrentUserToken.query().$promise.then(function (results) {
+            return CurrentUserToken.get().$promise.then(function (results) {
                 var promises = [];
                 var grants = [];
-                _.forEach(results, function (token) {
+                _.forEach(results.data, function (token) {
                     var grant = {};
                     grant.originalToken = angular.copy(token);
                     var scopesArray = [];
