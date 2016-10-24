@@ -9,6 +9,13 @@
             <form role="form" name="serviceForm" class="form-horizontal">
 
                 <div class="form-group col-md-12">
+                    <label class="control-label text-primary">Service Name</label>
+                    <textarea class="form-control" name="name" placeholder="Edit the service's name" ng-model="svc.name" required validate-on-timeout></textarea>
+                    <p class="text-danger xsmall" ng-show="serviceForm.name.$error.required && serviceForm.name.$timedout" ng-if="serviceForm.name.$touched">Edit the name of this service</p>
+                    <p class="text-muted xsmall">The service name that will be displayed</p>
+                </div>
+
+                <div class="form-group col-md-12">
                     <label class="control-label text-primary">Service Description</label>
                     <textarea class="form-control" name="description" placeholder="Enter a description" ng-model="svc.description" required validate-on-timeout></textarea>
                     <p class="text-danger xsmall" ng-show="serviceForm.description.$error.required && serviceForm.description.$timedout" ng-if="serviceForm.description.$touched">Please provide a short description of this service.</p>

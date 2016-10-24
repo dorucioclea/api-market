@@ -107,6 +107,7 @@
             });
             modalInstance.result.then(function(updatedSvc) {
                 var updateObj = {
+                    name: updatedSvc.name,
                     description: updatedSvc.description,
                     categories: _.map(updatedSvc.categories, 'text')
                 };
