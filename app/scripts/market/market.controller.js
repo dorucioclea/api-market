@@ -147,7 +147,7 @@
 
         function canConfigureOAuth(appVersion) {
             return $scope.isNotRetired(appVersion) &&
-                appVersion.details.oAuthClientId !== null && appVersion.contracts.length > 0 &&
+                appVersion.details.oAuthClientId != null && appVersion.contracts.length > 0 &&
                 appVersion.details.oAuthClientId.length > 0;
         }
 

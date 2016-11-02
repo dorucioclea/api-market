@@ -10,7 +10,7 @@
         <base64-logo id="logo" logo-class="media center-block entity-logo-list" logo="{{serviceVersion.service.base64logo}}" editable="editPermission"></base64-logo>
         <div>
             <!-- Main Org info panel -->
-            <span id="svc-name" class="text-primary size-h3 text-uppercase text-bold">{{serviceVersion.service.name}}<status-label style="vertical-align: text-top;" class="ml30 xlarge text-center" status="{{serviceVersion.status}}"></status-label>
+            <span id="svc-name" class="text-primary size-h3 text-uppercase text-bold">{{serviceVersion.service.name}}<status-label id="status-label" class="ml30 xlarge text-center" status="{{serviceVersion.status}}"></status-label>
             </span>
 
             <div class="right">
@@ -53,7 +53,10 @@
             </div>
 
             <div class="col-sm-9" style="padding-left: 0;">
-                <p id="basepath" class="text-light text-muted">{{serviceVersion.service.basepath}}</p>
+                <p id="basepath" class="text-light text-muted">{{endpoint.brandingEndpoints ? endpoint.brandingEndpoints[0].managedEndpoint : endpoint.managedEndpoint}}
+                    <span class="text-ultralight text-primary" ng-if="endpoint.brandingEndpoints">(branding applied)</span>
+                </p>
+
 
                 <p>{{serviceVersion.service.description}}</p>
                 <span ng-repeat="category in serviceVersion.service.categories"><span class="label label-info"><i class="fa fa-tag"></i>&nbsp;{{category}}</span><span>&nbsp;</span></span>
@@ -115,7 +118,7 @@
             <input id="pending" type="radio" name="tabs" ui-sref-active="active" ui-sref=".pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">
             <label for="pending" ng-if="isPublished && !serviceVersion.autoAcceptContracts">Pending Contracts <span class="badge text-bold" ng-if="pendingContracts.length > 0">{{pendingContracts.length}}</span></label>
 
-            <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon"></a>
+            <a id="help" ng-click="showInfoModal()" class="ml30 clickable ion ion-help-circled icon text-muted"></a>
         </div>
     </div>
 

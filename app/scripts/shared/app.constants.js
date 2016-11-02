@@ -22,16 +22,30 @@
         .constant('EVENTS', {
             'MEMBER_LIST_UPDATED': 'member-list-updated',
             'NOTIFICATIONS_UPDATED': 'notifications-updated',
-            'API_DETAILS_PAGE_OPENED': 'api-details-page-opened'
+            'API_DETAILS_PAGE_OPENED': 'api-details-page-opened',
+            'APPLICATION_DETAILS_UPDATED': 'application-details-updated'
         })
 
         .constant('NOTIFICATIONS', {
-            'MEMBERSHIP_PENDING': 'membership_pending',
-            'MEMBERSHIP_GRANTED': 'membership_granted',
-            'MEMBERSHIP_REJECTED': 'membership_rejected',
-            'CONTRACT_PENDING': 'contract_pending',
-            'CONTRACT_ACCEPTED': 'contract_accepted',
-            'CONTRACT_REJECTED': 'contract_rejected'
+            'ORG': {
+                'CONTRACT_PENDING': 'CONTRACT_PENDING',
+                'CONTRACT_ACCEPTED': 'CONTRACT_ACCEPTED',
+                'CONTRACT_REJECTED': 'CONTRACT_REJECTED',
+                'CONTRACT_REQUEST_CANCELLED': 'CONTRACT_REQUEST_CANCELLED',
+                'MEMBERSHIP_REQUEST_CANCELLED': 'MEMBERSHIP_REQUEST_CANCELLED'
+            },
+            'USER': {
+                'ADMIN_GRANTED': 'ADMIN_GRANTED',
+                'ADMIN_REVOKED': 'ADMIN_REVOKED',
+                'ANNOUNCEMENT_NEW': 'ANNOUNCEMENT_NEW',
+                'MEMBERSHIP_GRANTED': 'MEMBERSHIP_GRANTED',
+                'MEMBERSHIP_PENDING': 'MEMBERSHIP_PENDING',
+                'MEMBERSHIP_REJECTED': 'MEMBERSHIP_REJECTED',
+                'MEMBERSHIP_REVOKED': 'MEMBERSHIP_REVOKED',
+                'MEMBERSHIP_REVOKED_ROLE': 'MEMBERSHIP_REVOKED_ROLE',
+                'MEMBERSHIP_TRANSFER': 'MEMBERSHIP_TRANSFER',
+                'MEMBERSHIP_UPDATED': 'MEMBERSHIP_UPDATED'
+            }
         })
 
         .constant('PERMISSIONS', {

@@ -1,0 +1,43 @@
+<div class="policy" uib-popover-html="$ctrl.policy.popover" popover-animation="true" popover-placement="top" popover-trigger="mouseenter">
+    <div id="content">
+        <div class="policy-header">
+            <h5>{{$ctrl.policy.name}}</h5>
+            <img class="policy-icon" ng-attr-src="{{$ctrl.policy.iconPath}}">
+        </div>
+        <div class="policy-body">
+            <span class="text-muted text-light small">{{$ctrl.policy.description}}</span>
+            <!--<span>{{$ctrl.policy.policyDefinitionId}}</span>-->
+        </div>
+    </div>
+    <div id="disabled" ng-if="!$ctrl.policy.details.enabled">
+        <div id="disabled-text" class="text-center">
+            <span class="text-uppercase text-ultralight">Disabled</span>
+        </div>
+    </div>
+    <div id="overlay"
+         ng-class="{ 'clickable': !$ctrl.policy.showButtons, 'fade-bg': $ctrl.policy.showButtons, 'disabled': !$ctrl.policy.details.enabled }"
+         class="opacity-trans bg-trans"
+         ng-click="$ctrl.doShowButtons()"
+         ng-mouseleave="$ctrl.doHideAll();"
+         ng-if="$ctrl.editMode">
+        <div class="policy-actions" ng-if="$ctrl.policy.showButtons && !$ctrl.confirmation">
+            <span class="btn btn-sm btn-info btn-w100" ng-click="$ctrl.editPolicy()" ng-if="$ctrl.list.type === 'svc' && $ctrl.policy.configurable">Edit</span>
+            <span class="btn btn-sm btn-success btn-w100" ng-click="$ctrl.enablePolicy()" ng-if="$ctrl.list.type === 'svc' && !$ctrl.policy.details.enabled">Enable</span>
+            <span class="btn btn-sm btn-warning btn-w100" ng-click="$ctrl.disablePolicy()" ng-if="$ctrl.list.type === 'svc' && $ctrl.policy.details.enabled">Disable</span>
+            <span class="btn btn-sm btn-danger btn-w100" ng-click="$ctrl.doShowConfirmation()">Remove</span>
+        </div>
+        <div id="click-to-show" ng-if="!$ctrl.policy.showButtons">
+            <span class="text-ultralight text-primary">Click to show options</span>
+        </div>
+        <div id="policy-remove-confirm" ng-if="$ctrl.confirmation">
+            <div class="content text-center">
+                <div class="mb5">
+                    <span class="btn btn-sm btn-danger fa fa-times mr5" ng-click="$ctrl.doHideConfirmation()"></span>
+                    <span class="btn btn-sm btn-success fa fa-check ml5" ng-click="$ctrl.removePolicy()"></span>
+                </div>
+                <span>Are you sure?</span>
+            </div>
+        </div>
+    </div>
+
+</div>

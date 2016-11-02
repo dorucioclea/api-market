@@ -9,6 +9,13 @@
             <form role="form" name="serviceForm" class="form-horizontal">
 
                 <div class="form-group col-md-12">
+                    <label class="control-label text-primary">Service Name</label>
+                    <textarea class="form-control" name="name" placeholder="Edit the service's name" ng-model="svc.name" required validate-on-timeout></textarea>
+                    <p class="text-danger xsmall" ng-show="serviceForm.name.$error.required && serviceForm.name.$timedout" ng-if="serviceForm.name.$touched">Edit the name of this service</p>
+                    <p class="text-muted xsmall">The service name that will be displayed</p>
+                </div>
+
+                <div class="form-group col-md-12">
                     <label class="control-label text-primary">Service Description</label>
                     <textarea class="form-control" name="description" placeholder="Enter a description" ng-model="svc.description" required validate-on-timeout></textarea>
                     <p class="text-danger xsmall" ng-show="serviceForm.description.$error.required && serviceForm.description.$timedout" ng-if="serviceForm.description.$touched">Please provide a short description of this service.</p>
@@ -22,6 +29,23 @@
                         <auto-complete min-length="0" display-property="text" select-first-match="false" source="filterCategories($query)"></auto-complete>
                     </tags-input>
                     <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
+                </div>
+
+                <!-- BRANDING -->
+                <div class="form-group col-md-12" ng-if="branding.length > 0">
+                    <label class="control-label text-primary">Service Branding</label>
+                    <div class="input-group-btn">
+                        <div class="dropdown" uib-dropdown>
+                            <button class="btn btn-sm btn-default dropdown-toggle" uib-dropdown-toggle
+                                    type="button">
+                                {{svc.selectedBranding ? svc.selectedBranding.name : noBrandingText }}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-click="selectBranding(brand)" ng-repeat="brand in branding"><a>{{brand.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-muted xsmall">Branding to be applied to the service URL.</p>
                 </div>
             </form>
 

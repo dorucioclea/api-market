@@ -93,7 +93,7 @@
         }
     }
     
-    function userSecurityCtrl($scope, $uibModal, userGrants, currentUser, userScreenModel, toastService, _) {
+    function userSecurityCtrl($scope, $uibModal, userGrants, userScreenModel, toastService, appService, _) {
         userScreenModel.updateTab('Connected Apps');
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
@@ -156,8 +156,8 @@
         }
 
         function doRevoke(toRevoke) {
-            var tokensToRevoke = _.map(toRevoke, 'originalToken');
-            return currentUser.revokeUserGrants(tokensToRevoke).then(function () {
+            var tokensToRevoke = _.map(toRevoke, 'originalToken.accessToken');
+            return appService.revokeAppVersionTokens(tokensToRevoke).then(function () {
                 $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
             });
         }

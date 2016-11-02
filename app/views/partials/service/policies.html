@@ -7,8 +7,9 @@
       <b>Default policies</b> applies for each service implicitly:
     <ul>
       <li><b><i>CORS</i></b> - Default values are enabled for each published API.</li>
-      <li><b><i>Key Authentication</i></b> - Default enabled for all published APIs, client API keys are provided upon subscription. This is only the case when no OAuth2 policy has been added to the service.</li>
+      <li><b><i>Key Authentication</i></b> - Default enabled for all published APIs, client API keys are provided upon subscription</li>
       <li><b><i>HTTP Logging</i></b> - Default enabled. All transaction information for a published API will be aggregated in the API metrics module.</li>
+      <li><b><i>ACL</i></b> - Access Control List.<p class="text-justified text-warning xsmall">WARNING: Without an ACL policy in place, any application with valid credentials will be able utilize your service, regardless of the presence of contracts</p></li>
     </ul>
 
     </p>
@@ -16,17 +17,17 @@
   </div>
   <!-- The list of policies -->
   <div class="col-sm-12">
-    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-if="!isPublished && !isRetired && User.isAuthorizedFor('svcEdit')">Add Policy</button>
+    <button class="btn btn-primary btn-sm pull-right" ng-click="modalAddPolicy()" ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">Add Policy</button>
   </div>
 
   <div class="col-sm-12 mt10" ng-hide="policies.length > 0">
-    <div class="col-sm-10 col-sm-offset-1 well" ng-if="(isPublished || isRetired) && User.isAuthorizedFor('svcEdit')">
-      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Service, since this one has already been published and can no longer be modified!
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isRetired && User.isAuthorizedFor('svcEdit')">
+      It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you will first have to create a new version of this Service, since this one has already been retired and can no longer be modified!
     </div>
-    <div class="col-sm-10 col-sm-offset-1 well" ng-if="(isPublished || isRetired) && !User.isAuthorizedFor('svcEdit')">
+    <div class="col-sm-10 col-sm-offset-1 well" ng-if="isRetired && !User.isAuthorizedFor('svcEdit')">
       It looks like there aren't any policies defined!
     </div>
-    <div ng-if="!isPublished && !isRetired && User.isAuthorizedFor('svcEdit')">
+    <div ng-if="!isRetired && User.isAuthorizedFor('svcEdit')">
       <div class="col-sm-8 col-sm-offset-1 well">
         It looks like there aren't any policies defined! That may be exactly what you want (of course) but if not, you could try defining one using the Add Policy button right there...
       </div>

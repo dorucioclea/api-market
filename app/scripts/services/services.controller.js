@@ -20,11 +20,12 @@
 
 
     function serviceCtrl($scope, $state, $stateParams, $uibModal, orgData, orgScreenModel, support,
-                         svcData, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
+                         svcData, endpoint, svcVersions, svcScreenModel, resourceUtil, alertService, contractService,
                          toastService, ALERT_TYPES, TOAST_TYPES, service, CONFIG) {
 
         orgScreenModel.updateOrganization(orgData);
         $scope.serviceVersion = svcData;
+        $scope.endpoint = endpoint;
         $scope.orgId = $stateParams.orgId;
         $scope.userHasEditPermission = $scope.User.isAuthorizedForIn('svcEdit', $scope.orgId);
         $scope.userHasAdminPermission = $scope.User.isAuthorizedForIn('svcAdmin', $scope.orgId);
@@ -199,15 +200,20 @@
     }
 
 
-    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, service) {
+    function serviceEditCtrl($scope, $filter, $uibModalInstance, svc, branding, service, _) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.filterCategories = filterCategories;
+        $scope.selectBranding = selectBranding;
         $scope.svc = svc;
+        $scope.noBrandingText = 'No branding';
 
         init();
 
         function init() {
+            if (!_.isEmpty($scope.svc.brandings)) $scope.svc.selectedBranding = $scope.svc.brandings[0];
+            filterBrandings();
+
             service.getAllCategories().then(function (reply) {
                 $scope.currentCategories = reply;
             })
@@ -217,12 +223,27 @@
             $uibModalInstance.dismiss('canceled');
         }
 
+        function filterBrandings() {
+            var filtered = _.sortBy(_.filter(branding, function (b) {
+                if ($scope.svc.selectedBranding) return b.id != $scope.svc.selectedBranding.id;
+                else return true;
+            }), 'name');
+
+            if ($scope.svc.selectedBranding && $scope.svc.selectedBranding.name != $scope.noBrandingText) $scope.branding = _.concat([{name: $scope.noBrandingText }], filtered);
+            else $scope.branding = filtered;
+        }
+
         function filterCategories($query) {
             return $filter('filter')($scope.currentCategories, $query);
         }
 
         function ok() {
             $uibModalInstance.close($scope.svc);
+        }
+
+        function selectBranding(branding) {
+            $scope.svc.selectedBranding = branding;
+            filterBrandings();
         }
     }
 
@@ -662,8 +683,9 @@
 
         $scope.policies = policyData;
         svcScreenModel.updateTab('Policies');
+        $scope.modalAddPolicy = modalAddPolicy;
 
-        $scope.modalAddPolicy = function () {
+        function modalAddPolicy() {
             $uibModal.open({
                 templateUrl: '/views/modals/policyAdd.html',
                 size: 'lg',
@@ -677,7 +699,7 @@
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
 
-        };
+        }
     }
 
     function serviceTermsCtrl($scope, $state, svcScreenModel, service, toastService, TOAST_TYPES) {

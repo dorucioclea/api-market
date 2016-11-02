@@ -8,7 +8,7 @@
     function notificationService($q, orgService, PendingNotifications, Notifications,
                                  UserIncomingNotifications, UserOutgoingNotifications,
                                  OrgIncomingNotifications, OrgOutgoingNotifications,
-                                 NOTIFICATIONS) {
+                                 NOTIFICATIONS, _) {
         this.clear = clear;
         this.clearAll = clearAll;
         this.getIncomingForOrg = getIncomingForOrg;
@@ -18,13 +18,19 @@
         this.getOutgoingForOrg = getOutgoingForOrg;
         
         function clear(notification) {
-            switch (notification.type) {
-                case NOTIFICATIONS.CONTRACT_ACCEPTED.toUpperCase():
-                case NOTIFICATIONS.CONTRACT_REJECTED.toUpperCase():
-                    return OrgIncomingNotifications.delete({ orgId: notification.applicationOrgId, notificationId: notification.id }).$promise;
-                case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
-                case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
-                    return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
+            if (_.find(NOTIFICATIONS.ORG, function (n) {
+                    return n.toUpperCase() === notification.type;
+                })) {
+                return OrgIncomingNotifications.delete({
+                    orgId: notification.applicationOrgId,
+                    notificationId: notification.id
+                }).$promise;
+            }
+
+            if (_.find(NOTIFICATIONS.USER, function (m) {
+                    return m.toUpperCase() === notification.type;
+                })) {
+                return UserIncomingNotifications.delete({ notificationId: notification.id }).$promise;
             }
         }
 
@@ -38,41 +44,17 @@
         
         function getNotificationsForUser() {
             return Notifications.query().$promise;
-            // // TODO rework to reduce number of backend calls
-            // var notifications = [];
-            //
-            // return $q.all([UserIncomingNotifications.query().$promise, UserOutgoingNotifications.query().$promise])
-            //     .then(function (results) {
-            //         angular.forEach(results, function (result) {
-            //             result.forEach(function (res) {
-            //                 switch (res.type) {
-            //                     case NOTIFICATIONS.MEMBERSHIP_GRANTED.toUpperCase():
-            //                     case NOTIFICATIONS.MEMBERSHIP_REJECTED.toUpperCase():
-            //                         orgService.orgInfo(res.originId).then(function (orgInfo) {
-            //                             res.orgDetails = orgInfo;
-            //                         });
-            //                         break;
-            //                     case NOTIFICATIONS.MEMBERSHIP_PENDING.toUpperCase():
-            //                         orgService.orgInfo(res.destinationId).then(function (orgInfo) {
-            //                             res.orgDetails = orgInfo;
-            //                         });
-            //                         break;
-            //                 }
-            //                 notifications.push(res);
-            //             });
-            //         });
-            //         return notifications;
-            //     })
         }
 
         function getOrgsWithPendingRequest() {
             // TODO rework to reduce number of backend calls
             return UserOutgoingNotifications.query().$promise.then(function (notifications) {
                 var orgPromises = [];
-                notifications.forEach(function (res) {
-                    orgPromises.push(orgService.orgInfo(res.destinationId))
+                _.forEach(_.remove(notifications, function (o) {
+                    return o.type === NOTIFICATIONS.USER.MEMBERSHIP_PENDING;
+                }), function (notif) {
+                    orgPromises.push(orgService.orgInfo(notif.destinationId));
                 });
-
                 return $q.all(orgPromises).then(function (results) {
                     return results;
                 })

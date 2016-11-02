@@ -55,7 +55,7 @@
 
             
 
-        /// ========== ACTIONS ==========================================================================
+        /// ========== ACTIONS =========================================================================================
         .factory('Action', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/actions');
         })
@@ -64,7 +64,7 @@
             return $resource(CONFIG.BASE.URL + '/actions/swaggerdoc');
         })
 
-        /// ========== ADMIN =============================================================================
+        /// ========== ADMIN ===========================================================================================
         .factory('TermsAdmin', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/admin/defaults/terms', {}, {
                 update: {
@@ -77,7 +77,13 @@
             return $resource(CONFIG.BASE.URL + '/defaults/terms');
         })
 
-        /// ========== CONTRACTS ==========================================================================
+        /// ========== BRANDING ========================================================================================
+        .factory('Branding', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/brandings/services/:brandingId');
+        })
+
+
+        /// ========== CONTRACTS =======================================================================================
         .factory('RequestContract', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
                 '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/request');
@@ -92,38 +98,44 @@
         })
         .factory('OrgIncomingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
-                NOTIFICATIONS.CONTRACT_PENDING);
+                NOTIFICATIONS.ORG.CONTRACT_PENDING);
         })
         .factory('OrgOutgoingPendingContracts', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/outgoing/' +
-                NOTIFICATIONS.CONTRACT_PENDING);
+                NOTIFICATIONS.ORG.CONTRACT_PENDING);
+        })
+        .factory('CancelContractRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/contracts/requests/cancel')
         })
 
         /// ========== MEMBERSHIP ==========================================================================
         .factory('MembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
-                NOTIFICATIONS.MEMBERSHIP_PENDING);
+                NOTIFICATIONS.USER.MEMBERSHIP_PENDING);
         })
         .factory('UserMembershipRequests', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/outgoing/' +
-                NOTIFICATIONS.MEMBERSHIP_PENDING);
+                NOTIFICATIONS.USER.MEMBERSHIP_PENDING);
         })
         .factory('UserMembershipGranted', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
-                NOTIFICATIONS.MEMBERSHIP_GRANTED);
+                NOTIFICATIONS.USER.MEMBERSHIP_GRANTED);
         })
         .factory('UserMembershipRejected', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications/incoming/' +
-                NOTIFICATIONS.MEMBERSHIP_REJECTED);
+                NOTIFICATIONS.USER.MEMBERSHIP_REJECTED);
         })
         .factory('RejectRequest', function ($resource, CONFIG) {
-            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject')
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/:userId/reject');
+        })
+        .factory('CancelRequest', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/membership-requests/cancel');
         })
 
         /// ========== NOTIFICATIONS =====================================================================
         .factory('ContractRequests', function ($resource, CONFIG, NOTIFICATIONS) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/notifications/incoming/' +
-                NOTIFICATIONS.CONTRACT_PENDING);
+                NOTIFICATIONS.ORG.CONTRACT_PENDING);
         })
         .factory('Notifications', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/currentuser/notifications');
@@ -178,7 +190,11 @@
         })
         .factory('PlanVersionPolicy', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId');
+                '/organizations/:orgId/plans/:planId/versions/:versionId/policies/:policyId', {}, {
+                    update: {
+                        method: 'PUT'
+                    }
+            });
         })
         .factory('Member', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/members/:userId/:roleId', {}, {
@@ -269,6 +285,9 @@
         .factory('ServiceAnnouncementsAll', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/announcement/all');
         })
+        .factory('ServiceBranding', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/brandings/:brandingId');
+        })
         .factory('ServiceFollowers', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/followers');
         })
@@ -298,7 +317,11 @@
         })
         .factory('ServiceVersionPolicy', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL +
-                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId');
+                '/organizations/:orgId/services/:svcId/versions/:versionId/policies/:policyId', {}, {
+                    update: {
+                        method: 'PUT'
+                    }
+            });
         })
         .factory('ServiceVersionActivity', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/activity');

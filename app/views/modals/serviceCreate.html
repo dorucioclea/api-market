@@ -1,85 +1,116 @@
 <div class="modal-header clearfix">
-  <h4 class="modal-title">New Service for <span class="text-bold text-primary">{{org.name}}</span></h4>
-  <span class="close ion ion-android-close" ng-click="modalClose()"></span>
+    <h4 class="modal-title">New Service for <span class="text-bold text-primary">{{org.name}}</span></h4>
+    <span class="close ion ion-android-close" ng-click="modalClose()"></span>
 </div>
 <!-- Application Create panel -->
 <div class="modal-body style-placeholders">
-  <form role="form" name="serviceForm" class="form-horizontal" novalidate>
-    <div class="form-group mt30">
-      <div class="col-md-7 col-sm-3 col-xs-7">
-        <label class="control-label text-primary">Service Name</label>
-        <input type="text" name="serviceName" class="form-control" placeholder="Enter service name..." ng-model="ctrl.service.name" required ng-pattern="regex.SERVICE_NAME" validate-on-timeout>
-        <p class="text-danger xsmall" ng-show="serviceForm.serviceName.$error.required && serviceForm.serviceName.$timedout" ng-if="serviceForm.serviceName.$touched">Service name is required.</p>
-        <p class="text-danger xsmall" ng-show="serviceForm.serviceName.$error.pattern && serviceForm.serviceName.$timedout">Allowed characters: A-z (both upper and lowercase), numbers, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-        <p class="text-muted xsmall">Human-readable name of the service</p>
-      </div>
-      <div class="col-md-3 col-sm-3 col-xs-5">
-        <label class="control-label text-primary">Initial Version</label>
-        <div class="input-group">
-          <span class="input-group-addon input-version-addon">v</span>
-          <input type="text" name="version" class="form-control input-version" placeholder="version number" maxlength="20" ng-model="ctrl.service.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
-        </div>
-        <p class="text-danger xsmall" ng-show="serviceForm.version.$error.required && serviceForm.version.$timedout" ng-if="serviceForm.version.$touched">Initial version is required.</p>
-        <p class="text-danger xsmall" ng-show="serviceForm.version.$error.pattern && serviceForm.version.$timedout">Only numeric characters are allowed.</p>
-        <p class="text-muted xsmall">Version the service will start out as. Usually v1 for new services</p>
-      </div>
-    </div>
+    <form role="form" name="serviceForm" class="form-horizontal" novalidate>
 
-    <div class="form-group">
-      <div class="col-md-6 col-sm-6 col-xs-9 mt30">
-        <label class="control-label text-primary">Service Identifier</label>
-        <input type="text" name="basepath" class="form-control" maxlength="20" placeholder="Ex.: yourservice" ng-model="ctrl.service.basepath" required ng-pattern="regex.BASEPATH" validate-on-timeout>
-        <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.required && serviceForm.basepath.$timedout" ng-if="serviceForm.basepath.$touched">Identifier is required.</p>
-        <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.pattern && serviceForm.basepath.$timedout">Allowed characters: Only lowercase letters (a-z) and dashes. No spaces, slashes, etc.</p>
-        <p class="text-muted xsmall">
-          Must be unique within the organization. Will be a part of the path on the API gateway where your service can be reached.<br>For this service, the path would be as follows:<br>
-          <span class="text-bold">https://{{configVars.KONG.HOST}}/{{org.id.toLowerCase()}}/{{ctrl.service.basepath? ctrl.service.basepath : '[yourservice]'}}/{{ctrl.service.initialVersion ? 'v' + ctrl.service.initialVersion : '[version]'}}</span>
-        </p>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-5 col-md-offset-1 mt30" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
-        <label class="control-label text-primary">Service Logo</label>
-        <div>
-          <div class="thumbnail logo" ng-if="!$flow.files.length" flow-drop>
-            <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
-          </div>
-          <div class="thumbnail logo" ng-if="$flow.files.length">
-            <img flow-img="$flow.files[0]" />
-          </div>
-          <p class="text-muted xsmall">Adding an image will make it easier to recognize your service</p>
-          <div>
-            <span class="btn btn-line-primary btn-sm" ng-if="!$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
-            <span class="btn btn-line-primary btn-sm" ng-if="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-            <span class="btn btn-line-danger btn-sm" ng-if="$flow.files.length" ng-click="resetImage($flow);">Remove</span>
-          </div>
-          <div class="col-sm-8 mt10">
-            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
-              <div ng-bind-html="alert.msg"></div>
-            </uib-alert>
-          </div>
+        <div class="form-group">
+            <div class="col-md-7">
+                <div class="col-md-8 col-sm-3 col-xs-7">
+                    <label class="control-label text-primary">Service Name</label>
+                    <input type="text" name="serviceName" class="form-control" placeholder="Enter service name..." ng-model="ctrl.service.name" required ng-pattern="regex.SERVICE_NAME" validate-on-timeout>
+                    <p class="text-danger xsmall" ng-show="serviceForm.serviceName.$error.required && serviceForm.serviceName.$timedout" ng-if="serviceForm.serviceName.$touched">Service name is required.</p>
+                    <p class="text-danger xsmall" ng-show="serviceForm.serviceName.$error.pattern && serviceForm.serviceName.$timedout">Allowed characters: A-z (both upper and lowercase), numbers, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
+                    <p class="text-muted xsmall">Human-readable name of the service</p>
+                </div>
+                <div class="col-md-4 col-sm-3 col-xs-5">
+                    <label class="control-label text-primary">Initial Version</label>
+                    <div class="input-group">
+                        <span class="input-group-addon input-version-addon">v</span>
+                        <input type="text" name="version" class="form-control input-version" placeholder="version number" maxlength="20" ng-model="ctrl.service.initialVersion" required ng-pattern="regex.VERSION" validate-on-timeout>
+                    </div>
+                    <p class="text-danger xsmall" ng-show="serviceForm.version.$error.required && serviceForm.version.$timedout" ng-if="serviceForm.version.$touched">Initial version is required.</p>
+                    <p class="text-danger xsmall" ng-show="serviceForm.version.$error.pattern && serviceForm.version.$timedout">Only numeric characters are allowed.</p>
+                    <p class="text-muted xsmall">Version the service will start out as. Usually v1 for new services</p>
+                </div>
+                <div class="col-md-8 col-sm-12 col-xs-9 mt20">
+                    <label class="control-label text-primary">Service Identifier</label>
+                    <input type="text" name="basepath" class="form-control" maxlength="20" placeholder="Ex.: yourservice" ng-model="ctrl.service.basepath" required ng-pattern="regex.BASEPATH" validate-on-timeout>
+                    <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.required && serviceForm.basepath.$timedout" ng-if="serviceForm.basepath.$touched">Identifier is required.</p>
+                    <p class="text-danger xsmall" ng-show="serviceForm.basepath.$error.pattern && serviceForm.basepath.$timedout">Allowed characters: Only lowercase letters (a-z) and dashes. No spaces, slashes, etc.</p>
+                    <p class="text-muted xsmall">
+                        Must be unique within the organization. Will be a part of the path on the API gateway where your service can be reached.<br>For this service, the path would be as follows:<br>
+                        <span class="text-bold">https://{{configVars.KONG.HOST}}/{{selectedBranding ? selectedBranding.id.toLowerCase() : org.id.toLowerCase()}}/{{ctrl.service.basepath? ctrl.service.basepath : '[yourservice]'}}/{{ctrl.service.initialVersion ? 'v' + ctrl.service.initialVersion : '[version]'}}</span>
+                    </p>
+                </div>
+                <div class="col-md-4 mt20" ng-if="branding.length > 0">
+                    <label class="control-label text-primary">Service Branding</label>
+                    <div class="input-group-btn">
+                        <div class="dropdown" uib-dropdown>
+                            <button class="btn btn-sm btn-default dropdown-toggle" uib-dropdown-toggle
+                                    type="button">
+                                {{selectedBranding ? selectedBranding.name : noBrandingText }}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="clickable" ng-click="selectBranding(brand)" ng-repeat="brand in branding"><a>{{brand.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-muted xsmall">Branding to be applied to the service URL.</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5" flow-init flow-file-added="readFile($file, $event, $flow)" flow-object="flow">
+                <label class="control-label text-primary">Service Logo</label>
+                <div>
+                    <div class="thumbnail logo" ng-if="!$flow.files.length" flow-drop>
+                        <img src="http://www.placehold.it/250/EFEFEF/AAAAAA&text=Drop+image+here" />
+                    </div>
+                    <div class="thumbnail logo" ng-if="$flow.files.length">
+                        <img flow-img="$flow.files[0]" />
+                    </div>
+                    <p class="text-muted xsmall">Adding an image will make it easier to recognize your service</p>
+                    <div>
+                        <span class="btn btn-line-primary btn-sm" ng-if="!$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+                        <span class="btn btn-line-primary btn-sm" ng-if="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+                        <span class="btn btn-line-danger btn-sm" ng-if="$flow.files.length" ng-click="resetImage($flow);">Remove</span>
+                    </div>
+                    <div class="col-sm-8 mt10">
+                        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                            <div ng-bind-html="alert.msg"></div>
+                        </uib-alert>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-group mt30">
-      <div class="col-md-12">
-        <label class="control-label text-primary">Service Description</label>
-        <textarea class="form-control" name="description" placeholder="Enter a description" ng-model="ctrl.service.description" required validate-on-timeout></textarea>
-        <p class="text-danger xsmall" ng-show="serviceForm.description.$error.required && serviceForm.description.$timedout" ng-if="serviceForm.basepath.$touched">Please provide a short description of this service.</p>
-        <p class="text-muted xsmall">Short description of the service</p>
-      </div>
-    </div>
-    <div class="form-group mt30">
-      <div class="col-sm-12">
-        <label class="control-label text-primary">Service Category Tags</label>
-        <tags-input id="tags" ng-model="ctrl.categories" add-from-autocomplete-only="false">
-          <auto-complete min-length="0" select-first-match="false" source="filterCategories($query)"></auto-complete>
-        </tags-input>
-        <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
-      </div>
-    </div>
-  </form>
+
+        <div class="form-group mt30">
+            <div class="col-md-12">
+                <label class="control-label text-primary">Service Description</label>
+                <textarea class="form-control" name="description" placeholder="Enter a description" ng-model="ctrl.service.description" required validate-on-timeout></textarea>
+                <p class="text-danger xsmall" ng-show="serviceForm.description.$error.required && serviceForm.description.$timedout" ng-if="serviceForm.basepath.$touched">Please provide a short description of this service.</p>
+                <p class="text-muted xsmall">Short description of the service</p>
+            </div>
+        </div>
+
+        <div class="form-group mt30">
+            <div class="col-sm-12">
+                <label class="control-label text-primary">Service Category Tags</label>
+                <tags-input id="tags" ng-model="ctrl.categories" add-from-autocomplete-only="false">
+                    <auto-complete min-length="0" select-first-match="false" source="filterCategories($query)"></auto-complete>
+                </tags-input>
+                <p class="text-muted xsmall">Adding category tags will make your service easier to find for potential consumers</p>
+            </div>
+        </div>
+
+        <div class="form-group mt30" ng-if="admin">
+            <div class="col-sm-12">
+                <label class="control-label text-primary">Admin Service</label>
+                <div class="ui-checkbox ui-checkbox-primary ui-checkbox-circle" style="margin-bottom: 0; padding-top: 5px">
+                    <label>
+                        <input type="checkbox" ng-model="ctrl.service.admin" ng-disabled="!admin">
+                        <span class="title text-muted">Grant administrator privileges</span>
+                    </label>
+                    <p class="text-muted xsmall mt58">Only check this if your service needs administrator privileges on the API Gateway</p>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
-  <button class="btn btn-primary" ng-click="createService(ctrl.service, ctrl.categories)" ng-disabled="serviceForm.$invalid || !imageService.image.isValid">Create Service</button>
+    <button class="btn btn-default ml15" ng-click="modalClose()">Cancel</button>
+    <button class="btn btn-primary" ng-click="createService(ctrl.service, ctrl.categories)" ng-disabled="serviceForm.$invalid || !imageService.image.isValid">Create Service</button>
 </div>

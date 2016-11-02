@@ -337,7 +337,7 @@
     }
 
     function servicesCtrl($scope, $state, $uibModal, svcData, _, toastService,
-                          orgScreenModel, service) {
+                          orgScreenModel, service, BrandingService) {
 
         $scope.services = svcData;
         $scope.canDeprecate = canDeprecate;
@@ -383,7 +383,14 @@
                 templateUrl: 'views/modals/serviceCreate.html',
                 size: 'lg',
                 controller: 'NewServiceCtrl as ctrl',
-                resolve: function() {},
+                resolve: {
+                    admin: function () {
+                        return $scope.User.currentUser.admin
+                    },
+                    branding : function () {
+                        return BrandingService.getBrandings();
+                    }
+                },
                 backdrop : 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });

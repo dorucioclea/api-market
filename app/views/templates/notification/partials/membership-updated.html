@@ -1,0 +1,9 @@
+<a>
+    <span class="ion ion-person left bg-info"></span>
+    <div class="desc">
+        <span class="close ion ion-android-close" ng-click="clear($event)"></span>
+        <strong>Membership Updated</strong>
+        <p class="small text-light">You now have the <span class="text-primary text-bold">{{ notification.role }}</span> role in <span class="text-primary text-bold">{{ notification.organizationName }}</span>.</p>
+        <p class="xsmall text-muted">{{ notification.createdOn | relativeDate }}</p>
+    </div>
+</a>

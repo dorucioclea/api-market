@@ -175,12 +175,13 @@
                         roleData: function (Roles) {
                             return Roles.query().$promise;
                         },
-                        requests: function ($q, $stateParams, memberService) {
+                        userService: 'userService',
+                        requests: function ($q, $stateParams, memberService, userService) {
                             var deferred = $q.defer();
                             memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
                                 var promises = [];
                                 requests.forEach(function (req) {
-                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                    promises.push(userService.getUserDetails(req.userId).then(function (results) {
                                         req.userDetails = results;
                                     }));
                                 });
@@ -410,12 +411,13 @@
                         pendingContracts: function ($stateParams, contractService) {
                             return contractService.incomingPendingForOrg($stateParams.orgId);
                         },
-                        pendingMemberships: function ($q, $stateParams, memberService) {
+                        userService: 'userService',
+                        pendingMemberships: function ($q, $stateParams, memberService, userService) {
                             var deferred = $q.defer();
                             memberService.getPendingRequests($stateParams.orgId).then(function (requests) {
                                 var promises = [];
                                 requests.forEach(function (req) {
-                                    promises.push(memberService.getMemberDetails(req.userId).then(function (results) {
+                                    promises.push(userService.getUserDetails(req.userId).then(function (results) {
                                         req.userDetails = results;
                                     }));
                                 });
@@ -515,6 +517,17 @@
                         }
                     },
                     controller: 'AdminUsersCtrl'
+                })
+                .state('root.administration.branding', {
+                    url: '/branding',
+                    templateUrl: 'views/partials/administration/branding.html',
+                    resolve: {
+                        BrandingService: 'BrandingService',
+                        brandingData: function(BrandingService){
+                            return BrandingService.getBrandings();
+                        }
+                    },
+                    controller: 'AdminBrandingCtrl'
                 })
                 .state('root.administration.security', {
                     url: '/expiration',
@@ -751,17 +764,19 @@
                     url: '/org/:orgId/service/:svcId/:versionId',
                     templateUrl: 'views/service.html',
                     resolve: {
-                        Organization: 'Organization',
-                        orgData: function (Organization, organizationId) {
-                            return Organization.get({id: organizationId}).$promise;
+                        orgService: 'orgService',
+                        orgData: function (orgService, organizationId) {
+                            return orgService.orgInfo(organizationId);
                         },
-                        ServiceVersion: 'ServiceVersion',
-                        svcData: function (ServiceVersion, organizationId, serviceId, versionId) {
-                            return ServiceVersion.get(
-                                {orgId: organizationId, svcId: serviceId, versionId: versionId}).$promise;
+                        service: 'service',
+                        svcData: function (service, organizationId, serviceId, versionId) {
+                            return service.getVersion(organizationId, serviceId, versionId);
                         },
-                        svcVersions: function (ServiceVersion, organizationId, serviceId) {
-                            return ServiceVersion.query({orgId: organizationId, svcId: serviceId}).$promise;
+                        endpoint: function (service, organizationId, serviceId, versionId) {
+                            return service.getEndpoint(organizationId, serviceId, versionId);
+                        },
+                        svcVersions: function (service, organizationId, serviceId) {
+                            return service.getServiceVersions(organizationId, serviceId);
                         },
                         organizationId: function ($stateParams) {
                             return $stateParams.orgId;

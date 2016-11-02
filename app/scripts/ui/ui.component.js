@@ -14,7 +14,7 @@
             transclude: true
         })
         .component('apiPageHeader', {
-            templateUrl: 'views/ui/component-page-header.html',
+            templateUrl: 'views/components/ui/component-page-header.html',
             bindings: {
                 'hasLogo': '<'
             },
@@ -24,11 +24,11 @@
             }
         })
         .component('apiPageActions', {
-            templateUrl: 'views/ui/component-actions.html',
+            templateUrl: 'views/components/ui/component-actions.html',
             transclude: true
         })
         .component('apiPageVersionSelect', {
-            templateUrl: 'views/ui/component-version-select.html',
+            templateUrl: 'views/components/ui/component-version-select.html',
             bindings: {
                 'currentVersion': '=',
                 'type': '=',

@@ -64,17 +64,11 @@
         }
 
         function reissueAllKeys() {
-            // TODO implement backend
-            // return $q.resolve('OK');
             return ReissueAllKeys.reissue({}, {}).$promise;
-            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function reissueAllCredentials() {
-            // TODO implement backend
-            // return $q.resolve('OK');
             return ReissueAllCredentials.reissue({}, {}).$promise;
-            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {

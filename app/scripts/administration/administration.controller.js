@@ -9,6 +9,7 @@
         .controller('AdminOAuthRevokeCtrl', adminOAuthRevokeCtrl)
         .controller('AdminStatusCtrl', adminStatusCtrl)
         .controller('AdminUsersCtrl', adminUsersCtrl)
+        .controller('AdminBrandingCtrl', adminBrandingCtrl)
         .controller('ConfirmRevokeCtrl', confirmRevokeCtrl)
         .controller('RemoveAdminCtrl', removeAdminCtrl);
 
@@ -37,7 +38,6 @@
 
         function updateExpirationTimes() {
             $scope.adminHelper.updateExpirationTimes($scope.tokenTimeout.oauth, $scope.tokenTimeout.jwt).then(function (reply) {
-                console.log(reply);
                 $scope.toastService.createToast($scope.TOAST_TYPES.SUCCESS, "Expiration times updated!", true);
             }, function () {
                 $scope.toastService.createToast($scope.TOAST_TYPES.DANGER, "Could not update expiration times.", true);
@@ -83,7 +83,6 @@
 
     function adminTermsCtrl($scope, currentTerms, adminHelper) {
         $scope.adminTab.updateTab('Terms');
-        console.log(currentTerms);
         $scope.terms = currentTerms.terms;
         $scope.updateDefaultTerms = updateDefaultTerms;
 
@@ -184,8 +183,6 @@
         $scope.kongCluster = angular.fromJson(status.kongCluster);
         $scope.kongInfo = angular.fromJson(status.kongInfo);
         $scope.kongStatus = angular.fromJson(status.kongStatus);
-        // console.log($scope.kongInfo);
-        // console.log($scope.kongStatus);
         $scope.status = status;
         $scope.builtOn = new Date($scope.status.builtOn);
     }
@@ -203,6 +200,11 @@
         function removeAdmin(admin) {
             $scope.adminHelper.removeAdmin(admin);
         }
+    }
+
+    function adminBrandingCtrl($scope, brandingData) {
+        $scope.adminTab.updateTab('Branding');
+        $scope.branding = brandingData;
     }
 
     function addAdminCtrl($scope, $state, username, toastService, AdminUser, TOAST_TYPES, EmailSearch) {
