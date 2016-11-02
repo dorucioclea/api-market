@@ -35,17 +35,7 @@
                 </form>
                 </div>
                 <div class="col-sm-12" style="margin-left: 45px">
-                    <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
-                    <div class="mt10" ng-show="oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirect || appVersion.oauthClientRedirect.length === 0)">
-                        <p class="text-justified text-warning xsmall">
-                            The grant button is disabled because the selected Application does not
-                            have a OAuth Callback URL defined. Without a callback URL the grant
-                            process cannot be completed.
-                        </p>
-                        <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
-                            <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
-                        </a>
-                    </div>
+                    <button class="mt10 btn btn-warning" ng-click="doGrant()" ng-disabled="hasGrant || !appVersion.oauthClientRedirects || appVersion.oauthClientRedirects.length === 0 || !canGrant() || !oAuthConfig.enable_implicit_grant || (appVersion == undefined)">Grant</button>
                     <div class="mt10" ng-show="!oAuthConfig.enable_implicit_grant">
                         <p class="text-justified text-warning xsmall">
                             The grant button is disabled because the service has not enabled
@@ -56,9 +46,19 @@
                     <div class="mt10" ng-show="(appVersion == undefined) && oAuthConfig.enable_implicit_grant">
                         <p class="text-justified text-warning xsmall">
                             The grant button is disabled because there is no client ID or
-                            client secret available. To enable the grant process, create a
+                            client secret available. To enable the grant process, create or select a
                             contract with this service.
                         </p>
+                    </div>
+                    <div class="mt10" ng-show="(appVersion != undefined) && oAuthConfig.enable_implicit_grant && (!appVersion.oauthClientRedirects || appVersion.oauthClientRedirects.length === 0)">
+                        <p class="text-justified text-warning xsmall">
+                            The grant button is disabled because the selected Application does not
+                            have a OAuth Callback URL defined. Without a callback URL the grant
+                            process cannot be completed.
+                        </p>
+                        <a ui-sref="root.application({orgId: appVersion.application.organization.id, appId: appVersion.application.id, versionId: appVersion.version})">
+                            <p class="text-warning xsmall">You can set the Callback URL <span class="text-bold">here</span>.</p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
         <div class="panel panel-default mb15">
             <div class="panel-heading row">
                 API Documentation
-                <span ng-if="loggedIn" class="btn btn-xs right btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download Swagger Spec</span>
+                <span class="btn btn-xs right btn-info" ng-click="docDownloader.fetchWithServiceVersion(serviceVersion)">Download Swagger Spec</span>
             </div>
             <div class="panel-body">
                 <div class="right swagger-custom-header-popover-wrapper" ng-if="loggedIn">
@@ -91,8 +91,8 @@
 
                 <div swagger-ui input-type="json" base-path="endpoint.managedEndpoint"
                      template-url="views/templates/swagger/main.html" input="currentDefinitionSpec"
-                     api-explorer="true" apikey="docTester.apikey"
-                     custom-headers="customHeaders"
+                     api-explorer="true" apikey="selectedContract.apikey"
+                     custom-headers="customHeaders" has-oauth="hasOAuth"
                      jwt-enabled="jwtEnabled" logged-in="loggedIn" ng-if="!isLoading">
                 </div>
                 <div class="text-center" ng-if="isLoading">

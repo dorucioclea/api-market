@@ -167,6 +167,7 @@
                                 <button class="btn btn-default" type="submit" disabled ng-bind="'explorerCreateContractToTryIt'|swaggerTranslate" ng-if="loggedIn && !apikey"></button>
                                 <button class="btn btn-default" type="submit" disabled ng-bind="'explorerLogInToTryIt'|swaggerTranslate" ng-if="!loggedIn"></button>
                                 <a class="hide-try-it" ng-if="op.explorerResult&&!op.hideExplorerResult" ng-click="op.hideExplorerResult=true" href="javascript:;" swagger-translate="responseHide"></a>
+                                <img ng-show="op.loading" src="images/swagger/throbber.gif">
                             </div>
                         </form>
                         <div ng-if="op.explorerResult" ng-show="!op.hideExplorerResult">

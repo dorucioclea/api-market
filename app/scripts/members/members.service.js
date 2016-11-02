@@ -105,6 +105,7 @@
 
 
         function getMemberDetails(userId) {
+            // TODO this is really should not be in memberService, but in userService
             return Users.get({ userId: userId }).$promise;
         }
 

@@ -239,7 +239,7 @@
                 $scope.startCreateContract = startCreateContract;
                 $scope.modalClose = modalClose;
                 $scope.atBottom = false;
-
+                $scope.termsAgreed = {result: false};
                 $scope.availablePlans = [];
                 $scope.policyConfig = [];
                 var noPlanSelected = true;
@@ -272,7 +272,7 @@
                 function canCreateContract() {
                     if ($scope.service.termsAgreementRequired) {
                         if ($scope.termsAgreementMode) {
-                            return $scope.hasOrgContext && $scope.termsAgreed;
+                            return $scope.hasOrgContext && $scope.termsAgreed.result;
                         }
                     }
                     return $scope.hasOrgContext;
@@ -463,7 +463,7 @@
                         $scope.selectedAppVersion.organizationId,
                         $scope.selectedAppVersion.id,
                         $scope.selectedAppVersion.version,
-                        $scope.termsAgreed)
+                        $scope.termsAgreed.result)
                 }
 
                 function modalClose() {
@@ -499,7 +499,7 @@
 
                 $scope.appVersionDetails = appVersionDetails;
                 $scope.needsCallback = needsCallback;
-                $scope.callback = appVersionDetails.oauthClientRedirect;
+                $scope.callback = appVersionDetails.oauthClientRedirects;
                 $scope.id = appVersionDetails.oAuthClientId;
                 $scope.secret = appVersionDetails.oauthClientSecret;
                 $scope.modalClose = modalClose;
@@ -524,8 +524,8 @@
 
                 function updateCallback() {
                     var updateObject = {
-                        uri: $scope.callback
-                    };
+                        uris: [$scope.callback]
+                    }
 
                     ApplicationOAuthCallback.save(
                         {orgId: appVersionDetails.application.organization.id,
@@ -584,9 +584,10 @@
                     alertService.resetAllAlerts();
                 }
 
-                function cancel() {
+                function cancel(flow) {
+                    flow.cancel();
                     imageService.clear();
-                    $scope.flow.cancel();
+                    alertService.resetAllAlerts();
                 }
 
                 function readFile ($file) {

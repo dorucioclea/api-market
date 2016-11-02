@@ -23,7 +23,7 @@
           <div>
             <span class="btn btn-line-primary btn-sm" ng-if="!flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
             <span class="btn btn-line-primary btn-sm" ng-if="flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
-            <span class="btn btn-line-danger btn-sm" ng-if="flow.files.length" ng-click="cancel()">Remove</span>
+            <span class="btn btn-line-danger btn-sm" ng-if="flow.files.length" ng-click="cancel(flow)">Remove</span>
           </div>
           <div class="col-sm-8 mt10">
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">

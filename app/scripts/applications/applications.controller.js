@@ -8,7 +8,8 @@
         .controller('AppMetricsCtrl', appMetricsCtrl)
         .controller('OverviewCtrl', overviewCtrl)
         .controller('DeleteApplicationVersionCtrl', deleteApplicationVersionCtrl)
-        .controller('ReissueConfirmCtrl', reissueConfirmCtrl);
+        .controller('ReissueConfirmCtrl', reissueConfirmCtrl)
+        .controller('AppSecurityCtrl', appSecurityCtrl);
 
 
     function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
@@ -227,11 +228,14 @@
 
         function updateMetrics() {
             appService.getAppMetrics($stateParams.orgId, $stateParams.appId, $stateParams.versionId, $scope.fromDt, $scope.toDt, $scope.interval).then(function (stats) {
+                $scope.error = false;
                 $scope.serviceIds = [];
                 angular.forEach(stats.data, function (serviceData, serviceKey) {
                     var key = serviceKey.split('.').join('_');
                     createResponseHistogram(serviceData.data, key);
                 });
+            }, function (err) {
+                $scope.error = true;
             });
         }
 
@@ -403,6 +407,75 @@
 
         function ok() {
             $uibModalInstance.close("OK");
+        }
+    }
+
+    function appSecurityCtrl($scope, $uibModal, tokens, appService, toastService, _) {
+        $scope.tokens = tokens;
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.change = change;
+        $scope.revoke = revoke;
+        $scope.revokeSelected = revokeSelected;
+        $scope.sel = false;
+
+
+        function change() {
+            _.forEach($scope.tokens, function (token) {
+                token.selected = !!$scope.sel;
+            })
+        }
+
+        function canDoBulkOperation() {
+            return _.find($scope.tokens, function (token) {
+                return token.selected;
+            })
+        }
+
+        function revoke(token) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/revokeTokenConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+            modalInstance.result.then(function () {
+                doRevoke([token]).then(function () {
+                    toastService.success('Access Token revoked.');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to revoke Access Token.');
+                });
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.tokens, function (token) {
+                return token.selected;
+            });
+            var modalUrl = 'views/modals/revokeTokenConfirm.html';
+            if (toRevoke.length > 1) modalUrl = 'views/modals/revokeTokensConfirm.html';
+            var modalInstance = $uibModal.open({
+                templateUrl: modalUrl,
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                doRevoke(toRevoke).then(function () {
+                    if (toRevoke.length === 1) toastService.success('Access Token revoked.');
+                    else toastService.success('Access Tokens revoked.');
+                }, function (error) {
+                    if (toRevoke.length === 1) toastService.createErrorToast(error, 'Failed to revoke Access Token.');
+                    else toastService.createErrorToast(error, 'Failed to revoke Access Tokens.');
+                })
+            });
+        }
+
+        function doRevoke(toRevoke) {
+            var tokensToRevoke = _.map(toRevoke, 'originalToken');
+            return appService.revokeAppVersionTokens(tokensToRevoke).then(function () {
+                $scope.tokens = _.difference($scope.tokens, toRevoke);
+            });
         }
     }
 

@@ -47,6 +47,8 @@
                     return generateKeyAuthPopover(parsedConfiguration);
                 case POLICIES.JWT:
                     return generateJWTPopover(parsedConfiguration);
+                case POLICIES.JWTUp:
+                    return generateJWTUpPopover(parsedConfiguration);
                 case POLICIES.CORS:
                     return generateCORSPopover(parsedConfiguration);
                 case POLICIES.REQ_SIZE_LIMIT:
@@ -103,6 +105,11 @@
                 });
                 string += '</ul>';
 
+                return string;
+            }
+
+            function generateJWTUpPopover(config) {
+                var string = '<span class="text-light">JWT RS256 signed to upstream API.</span><ul class="text-light">';
                 return string;
             }
 
@@ -340,6 +347,8 @@
                     return 'Outgoing responses are transformed';
                 case POLICIES.JWT:
                     return 'Service secured with JWT authentication';
+                case POLICIES.JWTUp:
+                    return 'Upstream API always receives signed JWT';
                 case POLICIES.KEY_AUTH:
                     return 'Service secured with Key authentication';
                 case POLICIES.CORS:

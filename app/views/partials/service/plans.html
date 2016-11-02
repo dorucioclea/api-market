@@ -19,7 +19,7 @@
                         </label>
                     </div>
                     <div class="col-sm-6">
-                        <div class="btn-group dropdown pull-right">
+                        <div class="btn-group dropdown pull-right" uib-dropdown>
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle ng-disabled="isPublished || !User.isAuthorizedFor('svcEdit')">
                                 Version: {{plan.selectedVersion}}<span class="caret"></span>
                             </button>

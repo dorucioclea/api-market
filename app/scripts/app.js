@@ -27,6 +27,8 @@
             'angular-ladda',
             'btford.markdown',
             'swaggerUi',
+            'smart-table',
+            'ngFileSaver',
 
             /* custom modules */
             'app.ctrls',
@@ -135,7 +137,11 @@
                         return null;
                     }
                     // Skip authentication for oauth requests
-                    if (config.url.indexOf('/oauth2/') > -1 && config.url.indexOf('/oauth2/reissue') === -1) {
+                    if (config.url.indexOf('/oauth2/') > -1 &&
+                        config.url.indexOf('/oauth2/reissue') === -1 &&
+                        config.url.indexOf('/currentuser/') === -1 &&
+                        config.url.indexOf('/security/') === -1 &&
+                        config.url.indexOf('/organizations/') === -1) {
                         return null;
                     }
 

@@ -1,6 +1,6 @@
 {
-  "name": "apim-market",
-  "version": "0.7.1",
+  "name": "api-market",
+  "version": "0.8.1",
   "description": "API Store",
   "appPath": "app",
   "moduleName": "apimMarketApp",
@@ -35,7 +35,9 @@
     "angular-ui-switch": "angular-ui-switch2#0.1.0",
     "angular-markdown-directive": "0.3.1",
     "lodash": "^4.13.1",
-    "Trip.js": "trip.js#^3.2.0"
+    "Trip.js": "trip.js#^3.2.0",
+    "angular-smart-table": "^2.1.8",
+    "angular-file-saver": "1.1.2"
   },
   "devDependencies": {
     "less": "2.5.1",

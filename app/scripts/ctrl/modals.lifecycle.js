@@ -19,6 +19,7 @@
                 $scope.closeAlert = closeAlert;
                 $scope.createApplication = createApplication;
                 $scope.modalClose = modalClose;
+                $scope.resetImage = resetImage;
                 init();
 
                 function init() {
@@ -61,6 +62,12 @@
                 function modalClose() {
                     imageService.clear();
                     $uibModalInstance.dismiss('canceled');
+                }
+
+                function resetImage(flow) {
+                    flow.cancel();
+                    imageService.clear();
+                    alertService.resetAllAlerts();
                 }
             })
 
@@ -196,7 +203,9 @@
                 $scope.createService = createService;
                 $scope.filterCategories = filterCategories;
                 $scope.modalClose = modalClose;
+                $scope.resetImage = resetImage;
                 init();
+
 
                 function init() {
                     alertService.resetAllAlerts();
@@ -258,6 +267,12 @@
                 function modalClose() {
                     imageService.clear();
                     $scope.$close();	// this method is associated with $uibModal scope which is this.
+                }
+
+                function resetImage(flow) {
+                    flow.cancel();
+                    imageService.clear();
+                    alertService.resetAllAlerts();
                 }
             })
 

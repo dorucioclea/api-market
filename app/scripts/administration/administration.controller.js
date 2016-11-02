@@ -24,10 +24,10 @@
     }
 
 
-    function adminExpirationCtrl($scope,oauthExp,jwtExp) {
+    function adminExpirationCtrl($scope, $uibModal, oauthExp, jwtExp, toastService) {
         $scope.adminTab.updateTab('Expiration');
-        console.log(oauthExp);
-        console.log(jwtExp);
+        $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
+        $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
         $scope.tokenTimeout = {
             oauth: oauthExp.expirationTime,
             jwt: jwtExp.expirationTime
@@ -42,6 +42,42 @@
             }, function () {
                 $scope.toastService.createToast($scope.TOAST_TYPES.DANGER, "Could not update expiration times.", true);
             });
+        }
+
+        function confirmRegenerateAPIKeys() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueApiKeysConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.reissueAllKeys().then(function () {
+                    toastService.success('All API keys have been reissued successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to reissue API keys.');
+                })
+            })
+        }
+
+        function confirmRegenerateCredentials() {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/modals/reissueOAuthConfirm.html',
+                controller: 'ConfirmRevokeCtrl as ctrl',
+                backdrop : 'static',
+                windowClass: $scope.modalAnim	// Animation Class put here.
+            });
+
+            modalInstance.result.then(function () {
+                // Confirmation received, revoke grants
+                $scope.adminHelper.reissueAllCredentials().then(function () {
+                    toastService.success('All OAuth Credentials have been reissued successfully!');
+                }, function (error) {
+                    toastService.createErrorToast(error, 'Failed to reissue OAuth Credentials.');
+                })
+            })
         }
     }
 
@@ -62,34 +98,49 @@
         }
     }
 
-    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
+    function adminOAuthRevokeCtrl($scope, $uibModal, toastService, _) {
         $scope.adminTab.updateTab('OAuth');
-        $scope.confirmRevokeAllGrants = confirmRevokeAllGrants;
-        
-        function confirmRevokeAllGrants() {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/modals/revokeOAuthConfirm.html',
-                controller: 'ConfirmRevokeCtrl as ctrl',
-                backdrop : 'static',
-                windowClass: $scope.modalAnim	// Animation Class put here.
-            });
-            
-            modalInstance.result.then(function () {
-                // Confirmation received, revoke grants
-                $scope.adminHelper.revokeAllGrants().then(function () {
-                    toastService.success('All OAuth grants have been revoked successfully!');
-                }, function (error) {
-                    toastService.createErrorToast(error, 'Failed to revoke OAuth grants.');
-                })
+        // $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
+        // $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
+        $scope.change = change;
+        $scope.sel = false;
+        $scope.canDoBulkOperation = canDoBulkOperation;
+        $scope.revokeSelected = revokeSelected;
+        $scope.revokAllForUser = revokeAllForUser;
+        $scope.grants = [ { name: 'A User', grants: [{ name: 'An App' }, { name: 'Another App'}] }];
+
+        function change() {
+            _.forEach($scope.grants, function (user) {
+                user.selected = !!$scope.sel;
             })
         }
-    }
 
-    function adminOAuthRevokeCtrl($scope, $uibModal, toastService) {
-        $scope.adminTab.updateTab('OAuth');
-        $scope.confirmRegenerateAPIKeys = confirmRegenerateAPIKeys;
-        $scope.confirmRegenerateCredentials = confirmRegenerateCredentials;
+        function canDoBulkOperation() {
+            return _.find($scope.grants, function (user) {
+                return user.selected;
+            })
+        }
 
+        function revokeAllForUser(user) {
+            doRevoke([ user ]).then(function () {
+                toastService.success('Grant revoked.');
+            });
+        }
+
+        function revokeSelected() {
+            var toRevoke = _.filter($scope.grants, function (user) {
+                return user.selected;
+            });
+            doRevoke(toRevoke).then(function () {
+                toastService.success('Grants revoked.');
+            })
+        }
+
+        function doRevoke(toRevoke) {
+            return currentUser.revokeUserGrants(toRevoke).then(function () {
+                $scope.connectedApps = _.difference($scope.connectedApps, toRevoke);
+            });
+        }
 
         function confirmRegenerateAPIKeys() {
             var modalInstance = $uibModal.open({
@@ -181,7 +232,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + privuser + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
+                    },function(error){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
 
                     break;
             }
@@ -192,7 +243,7 @@
                         $state.forceReload();
                         toastService.createToast(TOAST_TYPES.SUCCESS,
                             'Granted <b>' + user.username + '</b> with admin priviledges', true);
-                    },function(err){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
+                    },function(error){toastService.createErrorToast(error, 'Failed to grant admin privileges.');});
                 } else {
                     toastService.createToast(TOAST_TYPES.WARNING,
                         'Could not find member to add with email address <b>' + email + '</b>.', true);

@@ -300,6 +300,7 @@
         $scope.isCategorySelected = isCategorySelected;
         $scope.clearSelectedCategories = clearSelectedCategories;
         $scope.query = '';
+        $scope.detectWildcard = detectWildcard;
 
         populate(svcData.beans);
 
@@ -314,6 +315,10 @@
                     api.noMetrics = true;
                 }
             })
+        }
+
+        function detectWildcard() {
+            $scope.hasWildcard = $scope.query.indexOf('*') > -1;
         }
 
         function doSearch(query) {

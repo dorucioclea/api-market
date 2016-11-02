@@ -31,6 +31,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         {{ definitionLoaded ? 'Updated Documentation Preview' : 'Current Documentation' }}
+        <span class="btn btn-xs right btn-info" ng-click="doDownload()" ng-if="!isLoading && !definitionLoaded">Download Swagger Spec</span>
       </div>
       <div class="panel-body">
         <div ng-if="!isLoading" swagger-ui input-type="json" loading="isLoading"
@@ -60,10 +61,10 @@
             </ul>
           </div>
         </div>
-        <input type="file" class="form-control" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
-        <input type="url" name="uri" class="form-control" ng-model="ctrl.uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
+        <input type="file" class="form-control" ng-model="file" accept="application/json" definition-select="loadDefinition($fileContent)" ng-class="{'hidden' : selectedMethod === 'URI'}"/>
+        <input type="url" name="uri" class="form-control" ng-model="uri" validate-on-timeout placeholder="URI to Swagger documentation" ng-class="{'hidden': selectedMethod === 'JSON File'}" required>
         <div class="input-group-btn" ng-class="{'hidden': selectedMethod === 'JSON File'}">
-          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(ctrl.uri)" ng-disabled="docForm.uri.$invalid">Load</button>
+          <button class="btn btn-line-primary" ladda="isLoading" ng-click="doFetch(uri)" ng-disabled="docForm.uri.$invalid">Load</button>
         </div>
       </div>
       <p class="text-muted xsmall" ng-class="{'hidden' : selectedMethod === 'URI'}">You can use the button above to select the JSON file you want to upload.</p>

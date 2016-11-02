@@ -6,13 +6,15 @@
         .service('currentUserModel', currentUserModel);
 
     function currentUser($q, CurrentUserInfo, CurrentUserApps, ApplicationContract, ApplicationVersion,
-                         CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs) {
+                         CurrentUserAppOrgs, CurrentUserServices, CurrentUserSvcOrgs, CurrentUserToken, appService, $http, CONFIG, _) {
         this.checkStatus = checkStatus;
         this.getInfo = getInfo;
         this.getUserAppOrgs = getUserAppOrgs;
         this.getUserApps = getUserApps;
         this.getUserSvcOrgs = getUserSvcOrgs;
         this.getUserServices = getUserServices;
+        this.getUserGrants = getUserGrants;
+        this.revokeUserGrants = revokeUserGrants;
         this.update = update;
 
         function checkStatus() {
@@ -84,6 +86,44 @@
 
         function update(newUserInfo) {
             return CurrentUserInfo.update({}, newUserInfo).$promise;
+        }
+
+        function getUserGrants() {
+            return CurrentUserToken.query().$promise.then(function (results) {
+                var promises = [];
+                var grants = [];
+                _.forEach(results, function (token) {
+                    var grant = {};
+                    grant.originalToken = angular.copy(token);
+                    var scopesArray = [];
+                    _.forEach(_.split(token.scope, ' '), function (scopeString) {
+                        scopesArray.push(_.split(scopeString, '.')[3]);
+                    });
+                    scopesArray = _.sortBy(scopesArray);
+                    grant.scopesString = _.join(scopesArray, ', ');
+                    promises.push(appService.getAppVersionDetails(token.organizationId, token.applicationId, token.version).then(function (appDetails) {
+                        grant.appDetails = appDetails;
+                        grants.push(grant);
+                    }));
+                });
+                return $q.all(promises).then(function () {
+                    return grants;
+                });
+            });
+        }
+
+        function revokeUserGrants(grants) {
+            var promises = [];
+            _.forEach(grants, function (grant) {
+                promises.push($http({
+                    method: 'DELETE',
+                    url: CONFIG.BASE.URL + '/currentuser/oauth2/tokens',
+                    data: grant,
+                    headers: {'Content-Type': 'application/json;charset=utf-8'}
+                }));
+            });
+
+            return $q.all(promises);
         }
     }
 

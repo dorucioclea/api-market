@@ -15,13 +15,13 @@
     }
 
     //ADMIN SERVICE
-    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin){
+    function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin,
+                         ReissueAllKeys, ReissueAllCredentials){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
-        this.regenerateAllApiKeys = regenerateAllApiKeys;
-        this.regenerateAllCredentials = regenerateAllCredentials;
-        this.revokeAllGrants = revokeAllGrants;
+        this.reissueAllKeys = reissueAllKeys;
+        this.reissueAllCredentials = reissueAllCredentials;
         this.updateExpirationTimes = updateExpirationTimes;
         this.setDefaultTerms = setDefaultTerms;
         
@@ -63,22 +63,18 @@
             });
         }
 
-        function regenerateAllApiKeys() {
+        function reissueAllKeys() {
             // TODO implement backend
             // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
-        }
-
-        function regenerateAllCredentials() {
-            // TODO implement backend
-            // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
+            return ReissueAllKeys.reissue({}, {}).$promise;
+            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
-        function revokeAllGrants() {
+        function reissueAllCredentials() {
             // TODO implement backend
             // return $q.resolve('OK');
-            return $q.reject({ data: { message: 'Not yet implemented!'}});
+            return ReissueAllCredentials.reissue({}, {}).$promise;
+            // return $q.reject({ data: { message: 'Not yet implemented!'}});
         }
         
         function updateExpirationTimes(oauthExpTime, jwtExpTime) {

@@ -49,7 +49,7 @@
 
 
 
-  <div class="col-sm-12 mt10" ng-repeat="service in responseHistogramData">
+  <div class="col-sm-12 mt10" ng-repeat="service in responseHistogramData" ng-if="!error">
     <div class="panel panel-primary">
       <div class="panel-heading metric-heading text-center">{{service.name}}</div>
       <div class="panel-body">
@@ -64,5 +64,10 @@
         </c3chart>
       </div>
     </div>
+  </div>
+
+  <div class="col-sm-12 mt30" ng-if="error">
+    <p class="text-center text-thin size-h4 text-muted">We could not retrieve the requested metrics data at this time.</p>
+    <p class="text-center text-thin size-h4 text-muted">Please try again later.</p>
   </div>
 </div>

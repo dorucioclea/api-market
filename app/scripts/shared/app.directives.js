@@ -413,6 +413,23 @@
             };
         })
 
+        .directive('statusText', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    status: '@'
+                },
+                template: '<span class="text-uppercase" ' +
+                'data-ng-class=\"{\'text-success\': status === \'Published\' || status === \'Registered\'' +
+                ' || status === \'Locked\' || status === \'OPEN\',' +
+                '\'text-warning\': status === \'Ready\' || status === \'Deprecated\', ' +
+                '\'text-purple\': status === \'Created\', ' +
+                '\'text-danger\': status === \'CLOSED\', ' +
+                '\'text-muted\': status === \'Retired\'}\">' +
+                '{{status}}</span>'
+            }
+        })
+
         .directive('apiList', function () {
             return {
                 restrict: 'E',

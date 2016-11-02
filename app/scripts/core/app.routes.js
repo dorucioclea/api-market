@@ -253,6 +253,9 @@
                         versionId: function ($stateParams) {
                             return $stateParams.versionId;
                         },
+                        versions: function (apiService, organizationId, serviceId) {
+                            return apiService.getServiceVersions(organizationId, serviceId);
+                        },
                         support: function (apiService, organizationId, serviceId) {
                             return apiService.getServiceSupportTickets(organizationId, serviceId);
                         },
@@ -513,9 +516,9 @@
                     },
                     controller: 'AdminUsersCtrl'
                 })
-                .state('root.administration.expiration', {
+                .state('root.administration.security', {
                     url: '/expiration',
-                    templateUrl: 'views/partials/administration/expiration.html',
+                    templateUrl: 'views/partials/administration/security.html',
                     resolve: {
                         OAuthCentralExpTime: 'OAuthCentralExpTime',
                         oauthExp: function(OAuthCentralExpTime){
@@ -551,11 +554,6 @@
                         }
                     },
                     controller: 'AdminStatusCtrl'
-                })
-                .state('root.administration.oauth', {
-                    url: '/apikeys-credentials',
-                    templateUrl: 'views/partials/administration/revoke.html',
-                    controller: 'AdminOAuthRevokeCtrl'
                 })
 
                 // ORGANIZATIONS SEARCH PAGE ======================================================
@@ -717,6 +715,17 @@
                     templateUrl: 'views/partials/application/apis.html',
                     controller: 'ApisCtrl'
                 })
+                .state('root.application.security', {
+                    url: '/security',
+                    templateUrl: 'views/partials/application/security.html',
+                    resolve: {
+                        appService: 'appService',
+                        tokens: function (appService, organizationId, applicationId, versionId) {
+                            return appService.getAppVersionTokens(organizationId, applicationId, versionId);
+                        }
+                    },
+                    controller: 'AppSecurityCtrl'
+                })
                 // Activity Tab
                 .state('root.application.activity', {
                     url: '/activity',
@@ -860,6 +869,12 @@
                     templateUrl: 'views/partials/service/terms.html',
                     controller: 'ServiceTermsCtrl'
                 })
+                // Readme Tab
+                .state('root.service.readme', {
+                    url: '/readme',
+                    templateUrl: 'views/partials/service/readme.html',
+                    controller: 'ServiceReadmeCtrl'
+                })
                 // Announcements Tab
                 .state('root.service.announcements', {
                     url: '/announcements',
@@ -924,10 +939,16 @@
                     templateUrl: 'views/partials/user/profile.html',
                     controller: 'UserProfileCtrl'
                 })
-                .state('root.user.connected-apps', {
+                .state('root.user.security', {
                     url: '/connected',
-                    templateUrl: 'views/partials/user/connected.html',
-                    controller: 'UserConnectedAppsCtrl'
+                    templateUrl: 'views/partials/user/security.html',
+                    resolve: {
+                        currentUser: 'currentUser',
+                        userGrants: function (currentUser) {
+                            return currentUser.getUserGrants();
+                        }
+                    },
+                    controller: 'UserSecurityCtrl'
                 });
         })
 
