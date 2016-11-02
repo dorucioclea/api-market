@@ -236,10 +236,10 @@
         }
 
         function getAppVersionTokens(orgId, appId, versionId) {
-            return ApplicationVersionToken.query({ orgId: orgId, appId: appId, versionId: versionId }).$promise.then(function (tokens) {
+            return ApplicationVersionToken.get({ orgId: orgId, appId: appId, versionId: versionId }).$promise.then(function (tokens) {
                 var promises = [];
                 var grants = [];
-                _.forEach(tokens, function (token) {
+                _.forEach(tokens.data, function (token) {
                     var grant = {};
                     grant.originalToken = angular.copy(token);
                     var scopesArray = [];
