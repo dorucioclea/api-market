@@ -38,6 +38,7 @@
         $scope.isPublished =
             $scope.serviceVersion.status === 'Published' || $scope.serviceVersion.status === 'Deprecated';
         $scope.isRetired = $scope.serviceVersion.status === 'Retired';
+        $scope.isAdminService = $scope.serviceVersion.service.admin;
         $scope.tabStatus = svcScreenModel.tabStatus;
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -83,7 +84,6 @@
             }
             // Check if user is authorized to accept or reject contracts
             $scope.canAccept = !!$scope.User.isAuthorizedFor('svcAdmin');
-
             checkNeedsReadMe();
         }
 

@@ -10,7 +10,7 @@
         <base64-logo id="logo" logo-class="media center-block entity-logo-list" logo="{{serviceVersion.service.base64logo}}" editable="editPermission"></base64-logo>
         <div>
             <!-- Main Org info panel -->
-            <span id="svc-name" class="text-primary size-h3 text-uppercase text-bold">{{serviceVersion.service.name}}<status-label id="status-label" class="ml30 xlarge text-center" status="{{serviceVersion.status}}"></status-label>
+            <span id="svc-name" class="text-primary size-h3 text-uppercase text-bold"><i ng-show="isAdminService" class="fa fa-user-secret fa-lg">&nbsp;</i>{{serviceVersion.service.name}}<status-label id="status-label" class="ml30 xlarge text-center" status="{{serviceVersion.status}}"></status-label>
             </span>
 
             <div class="right">
