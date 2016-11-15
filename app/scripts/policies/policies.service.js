@@ -370,7 +370,8 @@
                 var promises = [];
                 _.forEach(policies, function (policy) {
                     promises.push(getMktServicePolicyDetails(orgId, svcId, versionId, policy.id).then(function (details) {
-                        policy.details = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
+                        policy.details = details;
+                        policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
                     }));
