@@ -342,7 +342,10 @@
                         jwtEnabled: function (svcPolicies, serviceVersion) {
                             var jwt = false;
                             angular.forEach(svcPolicies, function (policy) {
-                                if (policy.policyDefinitionId === 'JWT' || serviceVersion.service.admin) {
+                                if (policy.policyDefinitionId === 'JWT') {
+                                    jwt = true;
+                                }
+                                if (serviceVersion && serviceVersion.service && serviceVersion.service.admin) {
                                     jwt = true;
                                 }
                             });
