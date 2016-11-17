@@ -141,6 +141,8 @@ angular
                 case 'date-time':
                     result = (new Date()).toISOString();
                     break;
+                default:
+                    result = schema.type;
             }
             return result;
         }
