@@ -3,6 +3,7 @@
         <h4>Pending Contracts</h4>
         <p ng-hide="!canAccept">The list below contains all of the pending contract requests for this Service. The requests can be accepted or rejected here.</p>
         <p ng-hide="canAccept">The list below contains all of the pending contract requests for this Service. You do not have the neccesary permissions to accecpt or reject contracts.</p>
+        <p ng-hide="!isAdminService" class="text-warning large"><i class="fa fa-warning fa-lg">&nbsp;</i>This is a service with administrator priviledges. Carefully review contract requests before approving them.</p>
         <hr>
     </div>
 
