@@ -305,6 +305,13 @@
                     resolve: {
                         apiService: 'apiService',
                         loginHelper: 'loginHelper',
+                        serviceVersion: function (apiService, loginHelper, organizationId, serviceId, versionId) {
+                            if (loginHelper.checkLoggedIn()) {
+                                return apiService.getServiceVersion(organizationId, serviceId, versionId);
+                            } else {
+                                return null;
+                            }
+                        },
                         svcContracts: function (apiService, loginHelper, organizationId, serviceId, versionId) {
                             if (loginHelper.checkLoggedIn()) {
                                 return apiService.getServiceVersionContracts(organizationId, serviceId, versionId);
@@ -332,10 +339,13 @@
                                 return oAuthPolicy;
                             });
                         },
-                        jwtEnabled: function (svcPolicies) {
+                        jwtEnabled: function (svcPolicies, serviceVersion) {
                             var jwt = false;
                             angular.forEach(svcPolicies, function (policy) {
                                 if (policy.policyDefinitionId === 'JWT') {
+                                    jwt = true;
+                                }
+                                if (serviceVersion && serviceVersion.service && serviceVersion.service.admin) {
                                     jwt = true;
                                 }
                             });
