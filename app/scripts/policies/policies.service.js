@@ -41,7 +41,6 @@
 
         function generateDetailsPopover(definitionId, configuration) {
             var parsedConfiguration = angular.fromJson(configuration);
-            console.log(configuration);
             switch (definitionId) {
                 case POLICIES.ACL:
                     return generateAclPopover(parsedConfiguration);
@@ -308,7 +307,6 @@
 
             function generateLDAPPopover(config) {
                 if (CONFIG.APP.PUBLISHER_MODE) {
-                    console.log(config);
                     var string = '';
                     string += '<p class="text-light">LDAP host: <b>' + config.ldap_host + ':' + config.ldap_port + '</b></p>';
                     string += '<ul class="text-light">';
@@ -395,8 +393,6 @@
                 _.forEach(policies, function (policy) {
                     promises.push(getServicePolicyDetails(orgId, svcId, versionId, policy.id).then(function (details) {
                         policy.details = details;
-                        console.log(policy);
-                        console.log(details);
                         policy.popover = generateDetailsPopover(policy.policyDefinitionId, details.configuration);
                         policy.description = getPolicyDescription(policy.policyDefinitionId);
                         policy.iconPath = getPolicyIcon(policy.policyDefinitionId);
