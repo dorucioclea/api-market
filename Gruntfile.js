@@ -1862,6 +1862,51 @@ module.exports = function (grunt) {
     'replace:t1t'
   ]);
 
+  grunt.registerTask('digiAll', [
+    'sandMkt-int',
+    'sandMkt-ext',
+    'sandPub',
+    'digiDevMkt-int',
+    'digiDevMkt-ext',
+    'digiDevPub',
+    'digiAccMkt-int',
+    'digiAccMkt-ext',
+    'digiAccPub',
+    'digiProdMkt-int',
+    'digiProdMkt-ext',
+    'digiProdPub'
+  ]);
+
+  grunt.registerTask('digiDev', [
+    'digiDevMkt-int',
+    'digiDevMkt-ext',
+    'digiDevPub'
+  ]);
+
+  grunt.registerTask('digiAcc', [
+    'digiAccMkt-int',
+    'digiAccMkt-ext',
+    'digiAccPub'
+  ]);
+
+  grunt.registerTask('digiProd', [
+    'digiProdMkt-int',
+    'digiProdMkt-ext',
+    'digiProdPub'
+  ]);
+
+  grunt.registerTask('digiSand', [
+    'sandMkt-int',
+    'sandMkt-ext',
+    'sandPub'
+  ]);
+
+  grunt.registerTask('t1tDev', [
+    'mkt-int',
+    'mkt-ext',
+    'pub'
+  ]);
+
   grunt.registerTask('test', [
     'clean',
     'wiredep',

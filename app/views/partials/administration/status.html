@@ -156,17 +156,19 @@
             <!--<div class="col-md-12">-->
                 <!--<p>There {{kongInfo.configuration.cassandra.contact_points.length === 1 ? 'is' : 'are' }} <span class="label large label-primary">{{kongInfo.configuration.cassandra.contact_points.length}}</span> {{kongInfo.configuration.cassandra.contact_points.length === 1 ? 'node' : 'nodes'}} in the cluster.</p>-->
             <!--</div>-->
-            <div class="col-md-3">
-                Replication factor:
-            </div>
-            <div class="col-md-9 text-bold">
-                {{kongInfo.configuration.cassandra.replication_factor}}
-            </div>
-            <div class="col-md-3">
-                Replication strategy:
-            </div>
-            <div class="col-md-9 text-bold">
-                {{kongInfo.configuration.cassandra.replication_strategy}}
+            <div ng-show="kongInfo.configuration.database == 'cassandra'">
+                <div class="col-md-3">
+                    Replication factor:
+                </div>
+                <div class="col-md-9 text-bold">
+                    {{kongInfo.configuration.cassandra.replication_factor}}
+                </div>
+                <div class="col-md-3">
+                    Replication strategy:
+                </div>
+                <div class="col-md-9 text-bold">
+                    {{kongInfo.configuration.cassandra.replication_strategy}}
+                </div>
             </div>
         </div>
     </div>
@@ -187,13 +189,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="plugin in kongInfo.plugins.available_on_server" ng-class="{ 'in-use': kongInfo.plugins.enabled_in_cluster.indexOf(plugin) > -1, 'not-in-use': kongInfo.plugins.enabled_in_cluster.indexOf(plugin) === -1}">
+                    <tr ng-repeat="(key, value) in kongInfo.plugins.available_on_server" ng-class="{ 'in-use': kongInfo.plugins.enabled_in_cluster.indexOf(key) > -1, 'not-in-use': kongInfo.plugins.enabled_in_cluster.indexOf(key) === -1}" ng-show="value">
                         <td>
-                            {{plugin}}
+                            {{key}}
                         </td>
                         <td class="text-center">
-                            <span class="fa fa-check text-success" uib-tooltip="In Use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(plugin) > -1"></span>
-                            <span class="fa fa-times text-danger" uib-tooltip="Not in use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(plugin) === -1"></span>
+                            <span class="fa fa-check text-success" uib-tooltip="In Use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(key) > -1"></span>
+                            <span class="fa fa-times text-danger" uib-tooltip="Not in use" tooltip-placement="bottom" ng-if="kongInfo.plugins.enabled_in_cluster.indexOf(key) === -1"></span>
                         </td>
                     </tr>
                     </tbody>

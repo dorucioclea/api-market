@@ -17,7 +17,7 @@
                     case 'cassandra':
                         $scope.imageSrc = 'images/cassandra_logo.png';
                         break;
-                    case 'postgresql':
+                    case 'postgres':
                         $scope.imageSrc = 'images/postgresql-logo.png'
                 }
             }
