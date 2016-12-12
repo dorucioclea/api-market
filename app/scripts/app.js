@@ -2,72 +2,72 @@
     'use strict';
 
     angular.module('app', [
-            /* Angular modules */
-            'ngAnimate',
-            'ngResource',
-            'ngSanitize',
-            'ngAria',
-            'ngMaterial',
-            'uiSwitch',
+        /* Angular modules */
+        'ngAnimate',
+        'ngResource',
+        'ngSanitize',
+        'ngAria',
+        'ngMaterial',
+        'uiSwitch',
 
-            /* 3rd party modules */
-            'ui.router',
-            'ngStorage',
-            'ui.bootstrap',
-            'angular-loading-bar',
-            'matchMedia',
-            'ngTagsInput',
-            'schemaForm',
-            'angular-clipboard',
-            'flow',
-            'gridshore.c3js.chart',
-            'textAngular',
-            'relativeDate',
-            'angular-jwt',
-            'angular-ladda',
-            'btford.markdown',
-            'swaggerUi',
-            'smart-table',
-            'ngFileSaver',
+        /* 3rd party modules */
+        'ui.router',
+        'ngStorage',
+        'ui.bootstrap',
+        'angular-loading-bar',
+        'matchMedia',
+        'ngTagsInput',
+        'schemaForm',
+        'angular-clipboard',
+        'flow',
+        'gridshore.c3js.chart',
+        'textAngular',
+        'relativeDate',
+        'angular-jwt',
+        'angular-ladda',
+        'btford.markdown',
+        'swaggerUi',
+        'smart-table',
+        'ngFileSaver',
 
-            /* custom modules */
-            'app.ctrls',
-            'app.config',
-            'app.constants',
-            'app.directives',
-            'app.services',
-            'app.filters',
-            'app.api',
-            'app.apiEngine',
-            'app.core.components',
-            'app.core.login',
-            'app.core.routes',
-            'app.core.util',
-            'app.ctrl.auth.oauth',
-            'app.ctrl.login',
-            'app.ctrl.modals',
-            'app.ctrl.modals.lifecycle',
-            'app.ctrl.modals.support',
-            'app.administration',
-            'app.applications',
-            'app.branding',
-            'app.contracts',
-            'app.market',
-            'app.members',
-            'app.notifications',
-            'app.organizations',
-            'app.plan',
-            'app.plugin.lodash',
-            'app.policies',
-            'app.service',
-            'app.swagger',
-            'app.tour',
-            'app.ui',
-            'app.user'
+        /* custom modules */
+        'app.ctrls',
+        'app.config',
+        'app.constants',
+        'app.directives',
+        'app.services',
+        'app.filters',
+        'app.api',
+        'app.apiEngine',
+        'app.core.components',
+        'app.core.login',
+        'app.core.routes',
+        'app.core.util',
+        'app.ctrl.auth.oauth',
+        'app.ctrl.login',
+        'app.ctrl.modals',
+        'app.ctrl.modals.lifecycle',
+        'app.ctrl.modals.support',
+        'app.administration',
+        'app.applications',
+        'app.branding',
+        'app.contracts',
+        'app.market',
+        'app.members',
+        'app.notifications',
+        'app.organizations',
+        'app.plan',
+        'app.plugin.lodash',
+        'app.policies',
+        'app.service',
+        'app.swagger',
+        'app.tour',
+        'app.ui',
+        'app.user'
 
-        ])
+    ])
 
-        // disable spinner in loading-bar
+    // disable spinner in loading-bar
         .config(function (cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = false;
             cfpLoadingBarProvider.latencyThreshold = 100;
@@ -81,13 +81,21 @@
             $sessionStorageProvider.setKeyPrefix(CONFIG.STORAGE.SESSION_STORAGE);
         })
 
-        .run(function($state, $rootScope, loginHelper) {
+        .run(function($state, $rootScope, loginHelper, CONFIG) {
+            // TODO improve/fix this mess
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 if (!loginHelper.checkLoggedIn()) {
                     if (!loginHelper.checkJWTInUrl()) {
-                        if (!loginHelper.isTransitioningToError() && !loginHelper.checkLoginError() && loginHelper.checkLoginRequiredForState(toState)) {
-                            event.preventDefault();
-                            loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                        if (!loginHelper.isTransitioningToError()) {
+                            if (loginHelper.checkLoginError()) {
+                                if (CONFIG.APP.PUBLISHER_MODE) event.preventDefault();
+                            }
+                            else if (loginHelper.checkLoginRequiredForState(toState)) {
+                                event.preventDefault();
+                                loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
+                            }
+                        } else {
+                            if ( !(toState.name === 'root.maintenance' || toState.name === 'root.error' || toState.name === 'accessdenied')) event.preventDefault();
                         }
                     } else {
                         loginHelper.extractJWTFromUrl();

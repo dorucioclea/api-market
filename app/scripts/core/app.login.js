@@ -29,8 +29,6 @@
         }
 
         function checkLoginError() {
-            console.log('check login error');
-            console.log(checkErrorInUrl());
             if (checkErrorInUrl()) {
                 var error = $location.search().errorcode;
                 var msg = $location.search().errormessage;
@@ -38,13 +36,15 @@
                     if (CONFIG.APP.PUBLISHER_MODE) {
                         transitionToError = true;
                         $state.get('root.maintenance').error = angular.copy(msg);
-                        $state.go('root.maintenance');
+                        $state.go('root.maintenance').then(function () {
+                            transitionToError = false;
+                        });
                     } else {
                         errorHelper.showLoginErrorModal(error, msg);
                     }
                 }
-                // $location.search('errormessage', null);
-                // $location.search('errorcode', null);
+                $location.search('errormessage', null);
+                $location.search('errorcode', null);
                 return true;
             }
             return false;
@@ -134,8 +134,6 @@
         }
 
         function redirectToLogin(redirectUrl) {
-            console.log('redirect');
-            console.log(redirectUrl);
             if (!$sessionStorage.loginInProgress) {
                 // WSO2 Fix -- WSO2 has race condition when multiple redirect requests are sent with same SAML
                 // Setting this boolean prevents additional requests from being sent
@@ -160,12 +158,9 @@
                     },
                     responseType: 'text'
                 }).then(function (result) {
-                    // console.log("redirect result: "+JSON.stringify(result));
                     window.location.href = result.data;
-                }, function (error) {
+                }, function () {
                     $state.go('accessdenied');
-                    // console.log('Request failed with error code: ', error.status);
-                    // console.log(error);
                 });
             }
         }
