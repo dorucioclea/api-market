@@ -26,8 +26,12 @@
             $stateProvider
 
             // ERROR PAGE =====================================================================
-                .state('error', {
+                .state('root.error', {
                     templateUrl: '/views/error.html',
+                    controller: 'ErrorCtrl'
+                })
+                .state('root.maintenance', {
+                    templateUrl: '/views/maintenanceLogin.html',
                     controller: 'ErrorCtrl'
                 })
                 .state('accessdenied', {

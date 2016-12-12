@@ -42,6 +42,7 @@
             'app.core.components',
             'app.core.login',
             'app.core.routes',
+            'app.core.util',
             'app.ctrl.auth.oauth',
             'app.ctrl.login',
             'app.ctrl.modals',
@@ -84,7 +85,7 @@
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 if (!loginHelper.checkLoggedIn()) {
                     if (!loginHelper.checkJWTInUrl()) {
-                        if (loginHelper.checkLoginRequiredForState(toState)) {
+                        if (!loginHelper.isTransitioningToError() && !loginHelper.checkLoginError() && loginHelper.checkLoginRequiredForState(toState)) {
                             event.preventDefault();
                             loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
                         }
@@ -100,22 +101,56 @@
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
-                            if (!loginHelper.checkJWTInUrl()) {
+                            if (!loginHelper.checkJWTInUrl() && !loginHelper.checkLoginError()) {
                                 console.log('stateChangeError redirect');
                                 loginHelper.redirectToLogin();
                             }
                             break;
                         default:
-                            $state.get('error').error = error;
-                            $state.go('error');
+                            $state.get('root.error').error = error;
+                            $state.go('root.error');
                             break;
                     }
                 }
                 else {
                     // unexpected error
-                    $state.go('error');
+                    $state.go('root.error');
                 }
             });
+        })
+
+        .config(function ($provide) {
+            $provide.decorator('$exceptionHandler', extendExceptionHandler);
+
+            function extendExceptionHandler($delegate) {
+                return function(exception, cause) {
+                    var errorData = {
+                        exception: exception,
+                        cause: cause
+                    };
+                    // TODO custom error handling
+                    // console.log(errorData);
+                    $delegate(exception, cause);
+                };
+            }
+        })
+
+
+        .factory('httpErrorInterceptor', function ($q, $rootScope, EVENTS, _) {
+            return {
+                response: function (response) {
+                    return response;
+                },
+                responseError: function (response) {
+                    // TODO expand HTTP error handler
+                    if (!_.isEmpty(response) && response.status === 503) {
+                        if (!_.isEmpty(response.data) && response.data.errorCode === 20001) {
+                            $rootScope.$broadcast(EVENTS.MAINTENANCE_MODE_ERROR, { code: response.data.errorCode, msg: response.data.message });
+                        }
+                    }
+                    return $q.reject(response);
+                }
+            };
         })
 
         .factory('apikeyInjector', function(CONFIG) {
@@ -185,6 +220,9 @@
                         }
                     }
                 }];
+
+            // Http interceptor to handle session timeouts and basic errors
+            $httpProvider.interceptors.push('httpErrorInterceptor');
             $httpProvider.interceptors.push('jwtInterceptor');
             $httpProvider.interceptors.push('apikeyInjector');
         })

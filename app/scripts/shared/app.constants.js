@@ -20,6 +20,7 @@
         })
         
         .constant('EVENTS', {
+            'MAINTENANCE_MODE_ERROR': 'maintenance-mode-error',
             'MEMBER_LIST_UPDATED': 'member-list-updated',
             'NOTIFICATIONS_UPDATED': 'notifications-updated',
             'API_DETAILS_PAGE_OPENED': 'api-details-page-opened',

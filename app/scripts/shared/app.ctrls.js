@@ -129,7 +129,6 @@
             if($scope.error.message === 'JWT must have 3 parts'){
                 $state.go('accessdenied',$scope.error);
             }
-            console.log($scope.error.message);
         })
 
         .controller('AccessDeniedCtrl', function ($scope, $state) {
@@ -351,6 +350,7 @@
             
             function login() {
                 $localStorage.hasVisited = true;
+                console.log('first Visit redirect');
                 loginHelper.redirectToLogin();
             }
             
