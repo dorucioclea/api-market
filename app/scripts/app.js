@@ -95,7 +95,7 @@
                                 loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
                             }
                         } else {
-                            if ( !(toState.name === 'root.maintenance' || toState.name === 'root.error' || toState.name === 'accessdenied')) event.preventDefault();
+                            if (loginHelper.checkLoginRequiredForState(toState)) event.preventDefault();
                         }
                     } else {
                         loginHelper.extractJWTFromUrl();

@@ -70,7 +70,9 @@
         function checkLoginRequiredForState(currentState) {
             switch (currentState.name) {
                 case '':
-                case 'error':
+                case 'accessdenied':
+                case 'root.error':
+                case 'root.maintenance':
                 case 'oauth':
                 case 'logout':
                 case 'root.apis.grid':
