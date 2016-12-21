@@ -161,6 +161,10 @@
                         contractService: 'contractService',
                         pendingContracts: function (organizationId, contractService) {
                             return contractService.outgoingPendingForOrg(organizationId);
+                        },
+                        Gateways: 'Gateways',
+                        gateways: function (Gateways) {
+                            return Gateways.query().$promise;
                         }
                     },
                     controller: 'MarketAppsCtrl'
@@ -720,6 +724,10 @@
                                 appId: applicationId,
                                 versionId: versionId
                             }).$promise;
+                        },
+                        Gateways : 'Gateways',
+                        gateways: function (Gateways) {
+                            return Gateways.query().$promise;
                         }
                     },
                     controller: 'ApplicationCtrl'

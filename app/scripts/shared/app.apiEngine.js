@@ -27,7 +27,7 @@
         .factory('MktServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/support/:supportId');
         })
-        .factory('MktServiceAnnouncementsAll', function ($resource, CONFIG) {
+        .factory('`', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/announcement/all');
         })
         .factory('MktServiceAvailability', function ($resource, CONFIG) {
@@ -53,7 +53,10 @@
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition');
         })
 
-            
+        /// ========== GATEWAYS ========================================================================================
+        .factory('Gateways', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL+ '/gateways');
+        })
 
         /// ========== ACTIONS =========================================================================================
         .factory('Action', function ($resource, CONFIG) {

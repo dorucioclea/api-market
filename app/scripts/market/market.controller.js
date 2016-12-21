@@ -46,7 +46,7 @@
     function marketAppsCtrl ($scope, $uibModal, $state, $stateParams,
                              appData, pendingContracts,
                              selectedApp, applicationManager, docTester, toastService, service,
-                             ApplicationContract, $localStorage, $timeout, tourGuide, _) {
+                             ApplicationContract, gateways, $localStorage, $timeout, tourGuide, _) {
         $scope.$state = $state;
         $scope.applications = appData;
         $scope.orgId = $stateParams.orgId;
@@ -72,6 +72,7 @@
         $scope.copyKey = copyKey;
         $scope.copyProvisionKey = copyProvisionKey;
         $scope.selectVersion = selectVersion;
+        $scope.multipleGateways = gateways.length > 1;
 
 
         init();

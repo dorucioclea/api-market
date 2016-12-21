@@ -12,7 +12,7 @@
         .controller('AppSecurityCtrl', appSecurityCtrl);
 
 
-    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData,
+    function appCtrl($scope, $uibModal, $state, $stateParams, appData, appVersions, contractData, gateways,
                      appScreenModel, orgData, orgScreenModel, headerModel, actionService, applicationManager, appService,
                      contractService, toastService, selectedApp, EVENTS, _) {
         $scope.apikey = undefined;
@@ -43,6 +43,7 @@
             $scope.isReady = $scope.applicationVersion.status === 'Ready';
             $scope.isRegistered =
                 $scope.applicationVersion.status === 'Registered' || $scope.applicationVersion.status === 'Retired';
+            $scope.multipleGateways = gateways.length > 1;
             $scope.isRetired = $scope.applicationVersion.status === 'Retired';
 
             if (!$scope.apikey && $scope.contracts && $scope.contracts.length > 0) $scope.apikey = $scope.contracts[0].apikey;
