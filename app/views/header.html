@@ -12,6 +12,9 @@
     <li ng-if="publisherMode">
         <a id="pub-title"  class="btn btn-logo" ui-sref="root.myOrganizations"><h4>{{title}}</h4></a>
     </li>
+    <li ng-if="maintenanceMode">
+        <label ng-click="showMaintenanceInfo()" uib-tooltip="Click for more info" tooltip-placement="bottom" tooltip-class="header-tooltip" class="clickable label-warning label-maintenance">In Maintenance</label>
+    </li>
 
     <!-- Search box -->
     <!--<li ng-show="showSearch">-->

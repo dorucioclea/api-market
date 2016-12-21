@@ -3,7 +3,8 @@
 
     angular.module('app.core.util', [])
         .controller('ErrorModalCtrl', errorModalCtrl)
-        .service('errorHelper', errorHelper);
+        .service('errorHelper', errorHelper)
+        .service('statusHelper', statusHelper);
 
 
     function errorModalCtrl($scope, $uibModalInstance, code, msg) {
@@ -55,6 +56,32 @@
                     }
                 },
                 windowClass: 'error-modal'
+            });
+        }
+    }
+
+    function statusHelper($uibModal, SystemStatus) {
+        this.checkStatus = checkStatus;
+        this.showMaintenanceModal = showMaintenanceModal;
+
+        function checkStatus() {
+            return SystemStatus.get().$promise;
+        }
+
+        function showMaintenanceModal(msg) {
+            $uibModal.open({
+                templateUrl: 'views/modals/errors/maintenanceInfo.html',
+                size: 'lg',
+                controller: 'ErrorModalCtrl',
+                resolve: {
+                    code: function () {
+                        return 0;
+                    },
+                    msg: function () {
+                        return msg;
+                    }
+                },
+                windowClass: 'error-modal warning'
             });
         }
     }

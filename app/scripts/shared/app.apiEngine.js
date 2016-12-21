@@ -522,6 +522,9 @@
         .factory('StatusInfo', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/status');
         })
+        .factory('SystemStatus', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL + '/system/status');
+        })
 
         /// ========== OAUTH ============================================================================
 
