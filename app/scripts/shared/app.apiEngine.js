@@ -27,7 +27,7 @@
         .factory('MktServiceSupportTickets', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/support/:supportId');
         })
-        .factory('`', function ($resource, CONFIG) {
+        .factory('MktServiceAnnouncementsAll', function ($resource, CONFIG) {
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/announcement/all');
         })
         .factory('MktServiceAvailability', function ($resource, CONFIG) {
