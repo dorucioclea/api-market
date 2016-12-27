@@ -5,13 +5,14 @@
         .controller('EditPolicyCtrl', editPolicyCtrl);
 
 
-    function editPolicyCtrl($scope, $state, $stateParams, policy, policyType, policyService, toastService, _) {
+    function editPolicyCtrl($scope, $state, $stateParams, policy, policyType, policyService, toastService, _, POLICIES) {
         $scope.modalClose = modalClose;
         $scope.updatePolicy = updatePolicy;
 
         init();
 
         function init() {
+            console.log(policy);
             $scope.policy = policy;
             $scope.type = policyType;
             $scope.schema = angular.fromJson(policy.details.definition.form);
@@ -21,7 +22,20 @@
             else {
                 $scope.form = ['*'];
             }
-            $scope.config = angular.fromJson(policy.details.configuration);
+            var config = angular.fromJson(policy.details.configuration);
+
+            if (policy.policyDefinitionId === POLICIES.OAUTH2) {
+                config = removeScopePrefixes(config);
+            }
+            $scope.config = config;
+        }
+
+        function removeScopePrefixes(configuration) {
+            _.forEach(configuration.scopes, function(scope) {
+                scope.scope = _.last(_.split(scope.scope, "."));
+                return scope;
+            });
+            return configuration;
         }
 
         function modalClose() {
