@@ -1866,6 +1866,32 @@ module.exports = function (grunt) {
       'digiAll', 't1tAll'
   ]);
 
+  grunt.registerTask('buildAllMkt', [
+      'sandMkt-int',
+      'sandMkt-ext',
+      'digiDevMkt-int',
+      'digiDevMkt-ext',
+      'digiAccMkt-int',
+      'digiAccMkt-ext',
+      'digiProdMkt-int',
+      'digiProdMkt-ext',
+      'mkt-int',
+      'mkt-ext',
+      'acc-mkt-int',
+      'acc-mkt-ext',
+      't1tProdMkt'
+  ]);
+
+  grunt.registerTask('buildAllPub', [
+      'sandPub',
+      'digiDevPub',
+      'digiAccPub',
+      'digiProdPub',
+      'pub',
+      'acc-pub',
+      't1tProdPub'
+  ]);
+
   grunt.registerTask('digiAll', [
     'sandMkt-int',
     'sandMkt-ext',
