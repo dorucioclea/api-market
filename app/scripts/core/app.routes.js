@@ -26,8 +26,12 @@
             $stateProvider
 
             // ERROR PAGE =====================================================================
-                .state('error', {
+                .state('root.error', {
                     templateUrl: '/views/error.html',
+                    controller: 'ErrorCtrl'
+                })
+                .state('root.maintenance', {
+                    templateUrl: '/views/maintenanceLogin.html',
                     controller: 'ErrorCtrl'
                 })
                 .state('accessdenied', {
@@ -157,6 +161,10 @@
                         contractService: 'contractService',
                         pendingContracts: function (organizationId, contractService) {
                             return contractService.outgoingPendingForOrg(organizationId);
+                        },
+                        Gateways: 'Gateways',
+                        gateways: function (Gateways) {
+                            return Gateways.query().$promise;
                         }
                     },
                     controller: 'MarketAppsCtrl'
@@ -716,6 +724,10 @@
                                 appId: applicationId,
                                 versionId: versionId
                             }).$promise;
+                        },
+                        Gateways : 'Gateways',
+                        gateways: function (Gateways) {
+                            return Gateways.query().$promise;
                         }
                     },
                     controller: 'ApplicationCtrl'

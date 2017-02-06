@@ -5,18 +5,49 @@
         .service('loginHelper', loginHelper);
     
 
-    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, $window, resourceUtil, currentUser, LogOutRedirect, CONFIG) {
+    function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, $window, resourceUtil, currentUser, LogOutRedirect, CONFIG, errorHelper, _) {
         this.checkIsFirstVisit = checkIsFirstVisit;
+        this.checkLoginError = checkLoginError;
         this.checkLoggedIn = checkLoggedIn;
         this.checkLoginRequiredForState = checkLoginRequiredForState;
         this.checkJWTInSession = checkJWTInSession;
         this.checkJWTInUrl = checkJWTInUrl;
         this.extractJWTFromUrl = extractJWTFromUrl;
+        this.isTransitioningToError = isTransitioningToError;
         this.logout = logout;
         this.redirectToLogin = redirectToLogin;
+
+        var transitionToError = false;
+        var LOGIN_ERROR_CODE = '20002';
+
+        function isTransitioningToError() {
+            return transitionToError;
+        }
         
         function checkIsFirstVisit() {
             return !!$localStorage.hasVisited;
+        }
+
+        function checkLoginError() {
+            if (checkErrorInUrl()) {
+                var error = $location.search().errorcode;
+                var msg = $location.search().errormessage;
+                if (error === LOGIN_ERROR_CODE) {
+                    if (CONFIG.APP.PUBLISHER_MODE) {
+                        transitionToError = true;
+                        $state.get('root.maintenance').error = angular.copy(msg);
+                        $state.go('root.maintenance').then(function () {
+                            transitionToError = false;
+                        });
+                    } else {
+                        errorHelper.showLoginErrorModal(error, msg);
+                    }
+                }
+                $location.search('errormessage', null);
+                $location.search('errorcode', null);
+                return true;
+            }
+            return false;
         }
 
         function checkLoggedIn() {
@@ -27,15 +58,21 @@
             return !!$sessionStorage.jwt;
         }
 
+        function checkErrorInUrl() {
+            return !_.isEmpty($location.search().errorcode);
+        }
+
         function checkJWTInUrl() {
             var jwt = $location.search().jwt;
-            return (jwt && jwt.length > 0);
+            return !_.isEmpty(jwt);
         }
 
         function checkLoginRequiredForState(currentState) {
             switch (currentState.name) {
                 case '':
-                case 'error':
+                case 'accessdenied':
+                case 'root.error':
+                case 'root.maintenance':
                 case 'oauth':
                 case 'logout':
                 case 'root.apis.grid':
@@ -123,12 +160,9 @@
                     },
                     responseType: 'text'
                 }).then(function (result) {
-                    console.log("redirect result: "+JSON.stringify(result));
                     window.location.href = result.data;
-                }, function (error) {
+                }, function () {
                     $state.go('accessdenied');
-                    console.log('Request failed with error code: ', error.status);
-                    console.log(error);
                 });
             }
         }

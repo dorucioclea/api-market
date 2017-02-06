@@ -4,9 +4,9 @@
     angular.module('app.ctrls', [])
 
         // Root Controller
-        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$uibModal', '$timeout',
+        .controller('AppCtrl', ['$rootScope', '$scope', '$state', '$uibModal', '$interval', '$timeout', 'statusHelper',
             'Action', 'ACTIONS', 'currentUserModel', 'toastService', 'TOAST_TYPES', 'docTester', '$sessionStorage', 'CONFIG',
-            function($rs, $scope, $state, $uibModal, $timeout,
+            function($rs, $scope, $state, $uibModal, $interval, $timeout, statusHelper,
                      Action, ACTIONS, currentUserModel, toastService, TOAST_TYPES, docTester, $sessionStorage, CONFIG) {
                 var mm = window.matchMedia('(max-width: 767px)');
 
@@ -37,6 +37,23 @@
                 });
 
                 $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
+
+                var checkStatus = function() {
+                    statusHelper.checkStatus().then(function (result) {
+                        if (result.maintenanceModeEnabled) {
+                            $scope.maintenanceMode = true;
+                            $scope.maintenanceMessage = result.maintenanceMessage;
+                        } else {
+                            $scope.maintenanceMode = false;
+                        }
+                    });
+                };
+                checkStatus();
+                $interval(checkStatus, 300000);
+
+                $scope.showMaintenanceInfo = function () {
+                    statusHelper.showMaintenanceModal($scope.maintenanceMessage);
+                };
 
                 //Make currentUserModel available to all child controllers
                 $scope.User = currentUserModel;
@@ -129,7 +146,6 @@
             if($scope.error.message === 'JWT must have 3 parts'){
                 $state.go('accessdenied',$scope.error);
             }
-            console.log($scope.error.message);
         })
 
         .controller('AccessDeniedCtrl', function ($scope, $state) {
@@ -351,6 +367,7 @@
             
             function login() {
                 $localStorage.hasVisited = true;
+                console.log('first Visit redirect');
                 loginHelper.redirectToLogin();
             }
             

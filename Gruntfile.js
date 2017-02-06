@@ -610,46 +610,86 @@ module.exports = function (grunt) {
           }
         }
       },
-      t1tprod: {
-        constants: {
-          'CONFIG': {
-            'APP': {
-              'ORG_FRIENDLY_NAME_ENABLED': true,
-              'PUBLISHER_MODE': true,
-              'USE_DIGIPOLIS_CONSENT_PAGE': false,
-              'SHOW_API_DEVELOPER_NAME_IN_STORE': true,
-              'DISABLE_ANNOUNCEMENTS': true,
-              'DISABLE_SUPPORT': true
-            },
-            'BASE': {
-              'URL': 'https://apim.t1t.be/apiengine/v1',
-              'JWT_HEADER_NAME': 'jwt'
-            },
-            'AUTH': {
-              'URL': 'https://apim.t1t.be/apiengineauth/v1'
-            },
-            'CONSENT': {
-              'URL': 'https://api-oauth2-o.antwerpen.be/v1/authorize?response_type=code&client_id=a017ae62-c2e3-4f7b-af22-e689732481e9&service=AStad-AProfiel-v1&scopes=basic,contact&lng=en'
-            },
-            'STORAGE': {
-              'LOCAL_STORAGE': 'apim-',
-              'SESSION_STORAGE': 'apim_session_t1tprod-'
-            },
-            'SECURITY': {
-              'REDIRECT_URL': '/login/idp/redirect',
-              'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c2',
-              'IDP_URL': 'https://idp.t1t.be/auth/realms/APIEngine/protocol/saml',
-              'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine',
-              'CLIENT_TOKEN': 'jwt',
-              'WSO2_LOGIN_FIX': false
-            },
-            KONG: {
-              HOST: 'apim.t1t.be'
+        t1tprodMkt: {
+            constants: {
+                'CONFIG': {
+                    'APP': {
+                        'ORG_FRIENDLY_NAME_ENABLED': true,
+                        'PUBLISHER_MODE': false,
+                        'USE_DIGIPOLIS_CONSENT_PAGE': false,
+                        'SHOW_API_DEVELOPER_NAME_IN_STORE': true,
+                        'DISABLE_ANNOUNCEMENTS': true,
+                        'DISABLE_SUPPORT': true
+                    },
+                    'BASE': {
+                        'URL': 'https://apim.t1t.be/apiengine/v1',
+                        'JWT_HEADER_NAME': 'jwt'
+                    },
+                    'AUTH': {
+                        'URL': 'https://apim.t1t.be/apiengineauth/v1'
+                    },
+                    'CONSENT': {
+                        'URL': ''
+                    },
+                    'STORAGE': {
+                        'LOCAL_STORAGE': 'apim-',
+                        'SESSION_STORAGE': 'apim_session_t1tprod-'
+                    },
+                    'SECURITY': {
+                        'REDIRECT_URL': '/login/idp/redirect',
+                        'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97p3',
+                        'IDP_URL': 'https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml',
+                        'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
+                        'SP_NAME': 'T1G-PROD',
+                        'CLIENT_TOKEN': 'jwt',
+                        'WSO2_LOGIN_FIX': false
+                    },
+                    KONG: {
+                        HOST: 'apim.t1t.be'
+                    }
+                }
             }
-          }
-        }
-      },
+        },
+        t1tprodPub: {
+            constants: {
+                'CONFIG': {
+                    'APP': {
+                        'ORG_FRIENDLY_NAME_ENABLED': true,
+                        'PUBLISHER_MODE': true,
+                        'USE_DIGIPOLIS_CONSENT_PAGE': false,
+                        'SHOW_API_DEVELOPER_NAME_IN_STORE': true,
+                        'DISABLE_ANNOUNCEMENTS': true,
+                        'DISABLE_SUPPORT': true
+                    },
+                    'BASE': {
+                        'URL': 'https://apim.t1t.be/apiengine/v1',
+                        'JWT_HEADER_NAME': 'jwt'
+                    },
+                    'AUTH': {
+                        'URL': 'https://apim.t1t.be/apiengineauth/v1'
+                    },
+                    'CONSENT': {
+                        'URL': ''
+                    },
+                    'STORAGE': {
+                        'LOCAL_STORAGE': 'apim-',
+                        'SESSION_STORAGE': 'apim_session_t1tprod-'
+                    },
+                    'SECURITY': {
+                        'REDIRECT_URL': '/login/idp/redirect',
+                        'API_KEY': '05bac13c95a346cbc6e177d747e038db',
+                        'IDP_URL': 'https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml',
+                        'SP_URL': 'https://api.t1t.be/API-Engine-auth/v1/login/idp/callback',
+                        'SP_NAME': 'T1G-PROD',
+                        'CLIENT_TOKEN': 'jwt',
+                        'WSO2_LOGIN_FIX': false
+                    },
+                    KONG: {
+                        HOST: 'apim.t1t.be'
+                    }
+                }
+            }
+        },
       digiDevPub: {
         constants: {
           'CONFIG': {
@@ -1486,7 +1526,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'set_global:task:t1tProdPub',
     'wiredep',
-    'ngconstant:t1tprod',
+    'ngconstant:t1tprodPub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1504,7 +1544,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'set_global:task:t1tProdMkt',
     'wiredep',
-    'ngconstant:t1tprod',
+    'ngconstant:t1tprodMkt',
     'less:dist',
     'useminPrepare',
     'copy:dist',

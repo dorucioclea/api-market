@@ -53,7 +53,10 @@
             return $resource(CONFIG.AUTH.URL + '/organizations/:orgId/services/:svcId/versions/:versionId/definition');
         })
 
-            
+        /// ========== GATEWAYS ========================================================================================
+        .factory('Gateways', function ($resource, CONFIG) {
+            return $resource(CONFIG.BASE.URL+ '/gateways');
+        })
 
         /// ========== ACTIONS =========================================================================================
         .factory('Action', function ($resource, CONFIG) {
@@ -518,6 +521,9 @@
         })
         .factory('StatusInfo', function ($resource, CONFIG) {
             return $resource(CONFIG.BASE.URL + '/security/status');
+        })
+        .factory('SystemStatus', function ($resource, CONFIG) {
+            return $resource(CONFIG.AUTH.URL + '/system/status');
         })
 
         /// ========== OAUTH ============================================================================

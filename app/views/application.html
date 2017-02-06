@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li id="publish" class="text-success" ng-if="!isRegistered" uib-tooltip="{{ User.isAuthorizedFor('appAdmin') ? (isReady ? '' : 'An application must have at least one contract to be registered.') : 'You do not have the necessary permissions to register applications.'}}" tooltip-popup-delay="250">
+                    <li id="publish" class="text-success" ng-if="!isRegistered && multipleGateways" uib-tooltip="{{ User.isAuthorizedFor('appAdmin') ? (isReady ? '' : 'An application must have at least one contract to be registered.') : 'You do not have the necessary permissions to register applications.'}}" tooltip-popup-delay="250">
                         <a ng-click="!isReady || !User.isAuthorizedFor('appAdmin') || confirmPublishApp(applicationVersion)" ng-class="{'clickable': isReady && User.isAuthorizedFor('appAdmin'), 'not-clickable': !isReady || !User.isAuthorizedFor('appAdmin')}">
                             <span class="text-success">Register</span>
                         </a>
