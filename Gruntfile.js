@@ -622,11 +622,11 @@ module.exports = function (grunt) {
                         'DISABLE_SUPPORT': true
                     },
                     'BASE': {
-                        'URL': 'https://prodapim.t1t.be/apiengine/v1',
+                        'URL': 'https://apim.t1t.be/apiengine/v1',
                         'JWT_HEADER_NAME': 'jwt'
                     },
                     'AUTH': {
-                        'URL': 'https://prodapim.t1t.be/apiengineauth/v1'
+                        'URL': 'https://apim.t1t.be/apiengineauth/v1'
                     },
                     'CONSENT': {
                         'URL': ''
@@ -645,7 +645,7 @@ module.exports = function (grunt) {
                         'WSO2_LOGIN_FIX': false
                     },
                     KONG: {
-                        HOST: 'prodapim.t1t.be'
+                        HOST: 'apim.t1t.be'
                     }
                 }
             }
@@ -662,11 +662,11 @@ module.exports = function (grunt) {
                         'DISABLE_SUPPORT': true
                     },
                     'BASE': {
-                        'URL': 'https://prodapim.t1t.be/apiengine/v1',
+                        'URL': 'https://apim.t1t.be/apiengine/v1',
                         'JWT_HEADER_NAME': 'jwt'
                     },
                     'AUTH': {
-                        'URL': 'https://prodapim.t1t.be/apiengineauth/v1'
+                        'URL': 'https://apim.t1t.be/apiengineauth/v1'
                     },
                     'CONSENT': {
                         'URL': ''
@@ -685,7 +685,7 @@ module.exports = function (grunt) {
                         'WSO2_LOGIN_FIX': false
                     },
                     KONG: {
-                        HOST: 'prodapim.t1t.be'
+                        HOST: 'apim.t1t.be'
                     }
                 }
             }
