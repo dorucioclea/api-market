@@ -518,9 +518,9 @@ module.exports = function (grunt) {
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '05bac13c95a346cbc6e177d747e038db',
-              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'IDP_URL': 'https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine-ACC',
+              'SP_NAME': 'T1G-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
             },
@@ -558,9 +558,9 @@ module.exports = function (grunt) {
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c1',
-              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'IDP_URL': 'https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine-ACC',
+              'SP_NAME': 'T1G-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
             },
@@ -598,9 +598,9 @@ module.exports = function (grunt) {
             'SECURITY': {
               'REDIRECT_URL': '/login/idp/redirect',
               'API_KEY': '6b8406cc81fe4ca3cc9cd4a0abfb97c3',
-              'IDP_URL': 'https://devidp.t1t.be/auth/realms/APIEngineACC/protocol/saml',
+              'IDP_URL': 'https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml',
               'SP_URL': 'http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback',
-              'SP_NAME': 'APIEngine-ACC',
+              'SP_NAME': 'T1G-ACC',
               'CLIENT_TOKEN': 'jwt',
               'WSO2_LOGIN_FIX': false
             },
