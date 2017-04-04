@@ -1,0 +1,24 @@
+default:
+  appName: "api-market"
+  port: 3000
+  environment: "local"
+  redirect:
+    scheme: "http"
+    domain: "localhost"
+    port: 3000
+  gw:
+    auth:
+      uri: "https://accapim.t1t.be/apiengineauth/v1"
+    web:
+      uri: "https://accapim.t1t.be/apiengine/v1"
+    apikey: "6b8406cc81fe4ca3cc9cd4a0abfb97c1"
+
+test:
+  appName: "api-market"
+  scheme: "http"
+  port: 3001
+  environment: "TEST"
+  redirect:
+    scheme: "http"
+    domain: "localhost"
+    port: 3001
