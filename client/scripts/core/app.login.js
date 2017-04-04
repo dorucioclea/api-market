@@ -3,7 +3,7 @@
 
     angular.module('app.core.login', [])
         .service('loginHelper', loginHelper);
-    
+
 
     function loginHelper($q, $http, $localStorage, $sessionStorage, $state, $location, $window, resourceUtil, currentUser, LogOutRedirect, CONFIG, errorHelper, _) {
         this.checkIsFirstVisit = checkIsFirstVisit;
@@ -23,7 +23,7 @@
         function isTransitioningToError() {
             return transitionToError;
         }
-        
+
         function checkIsFirstVisit() {
             return !!$localStorage.hasVisited;
         }
@@ -97,7 +97,6 @@
             var jwt = $location.search().jwt;
             if (jwt && jwt.length > 0) {
                 $sessionStorage.jwt = jwt;
-                delete $sessionStorage.loginInProgress;
                 $location.search('jwt', null);
                 deferred.resolve("Logged In");
             } else {
@@ -129,42 +128,34 @@
                 function logoutRedirect() {
                     // $state.go('logout');
                     delete $sessionStorage.jwt;
-                    delete $sessionStorage.loginInProgress;
                 }
             })
 
         }
 
         function redirectToLogin(redirectUrl) {
-            if (!$sessionStorage.loginInProgress) {
-                // WSO2 Fix -- WSO2 has race condition when multiple redirect requests are sent with same SAML
-                // Setting this boolean prevents additional requests from being sent
-                if (CONFIG.SECURITY.WSO2_LOGIN_FIX) {
-                    $sessionStorage.loginInProgress = true;
-                }
-                var redirect = window.location.href;
-                if (redirectUrl) redirect = redirectUrl;
-                var url = 'auth/' + CONFIG.SECURITY.REDIRECT_URL;
-                var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
-                    CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
-                    '", "clientAppRedirect": "' + redirect + '", "token": "' +
-                    CONFIG.SECURITY.CLIENT_TOKEN + '"}';
+            var redirect = window.location.href;
+            if (redirectUrl) redirect = redirectUrl;
+            var url = 'auth' + CONFIG.SECURITY.REDIRECT_URL;
+            var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
+                CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
+                '", "clientAppRedirect": "' + redirect + '", "token": "' +
+                CONFIG.SECURITY.CLIENT_TOKEN + '"}';
 
-                return $http({
-                    method: 'POST',
-                    skipAuthorization: true,
-                    url: url,
-                    data: data,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    responseType: 'text'
-                }).then(function (result) {
-                    window.location.href = result.data;
-                }, function () {
-                    $state.go('accessdenied');
-                });
-            }
+            return $http({
+                method: 'POST',
+                skipAuthorization: true,
+                url: url,
+                data: data,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                responseType: 'text'
+            }).then(function (result) {
+                window.location.href = result.data;
+            }, function () {
+                $state.go('accessdenied');
+            });
         }
     }
 

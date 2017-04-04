@@ -234,12 +234,12 @@
                         },
                     SECURITY:
                         {
-                            REDIRECT_URL: '/login/idp/redirect',
-                            API_KEY: '05bac13c95a346cbc6e177d747e038db',
-                            IDP_URL: 'https://identityserver-o.antwerpen.be/samlsso',
-                            SP_URL: 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
-                            SP_NAME: 'apiengine-z',
-                            CLIENT_TOKEN: 'jwt',
+                            REDIRECT_URL: '<%= config.security.redirect %>',
+                            API_KEY: '<%= config.gw.apikey %>',
+                            IDP_URL: '<%= config.security.idp %>',
+                            SP_URL: '<%= config.security.sp.uri %>',
+                            SP_NAME: '<%= config.security.sp.name %>',
+                            CLIENT_TOKEN: '<%= config.security.token %>',
                             WSO2_LOGIN_FIX: false },
                     KONG: { HOST: '<%= config.kong.host %>' }
                 });
