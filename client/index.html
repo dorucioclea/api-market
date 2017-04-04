@@ -17,7 +17,7 @@
   <title ng-bind="header"></title>
 
   <!-- build:css styles/vendor.min.css -->
-  <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="styles/vendors/bootstrap.min.css">-->
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
@@ -104,6 +104,7 @@
 <script src="../bower_components/blob-polyfill/Blob.js"></script>
 <script src="../bower_components/file-saver.js/FileSaver.js"></script>
 <script src="../bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
+<script src="../bower_components/keycloak/dist/keycloak.js"></script> <!-- TODO load script from keycloak server -->
 <!-- endbower -->
 <script src="../bower_components/highlight/src/highlight.js"></script>
 <!-- endbuild -->
@@ -239,8 +240,8 @@
                             IDP_URL: '<%= config.security.idp %>',
                             SP_URL: '<%= config.security.sp.uri %>',
                             SP_NAME: '<%= config.security.sp.name %>',
-                            CLIENT_TOKEN: '<%= config.security.token %>',
-                            WSO2_LOGIN_FIX: false },
+                            CLIENT_TOKEN: '<%= config.security.token %>'
+                        },
                     KONG: { HOST: '<%= config.kong.host %>' }
                 });
     })();

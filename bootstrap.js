@@ -60,7 +60,7 @@ function initializeExpress(callback) {
     app.use(bodyParser.json({ limit: '4096kb' }));
 
     // Uncomment to enable request logging
-    app.use(logger.middleware);
+    // app.use(logger.middleware);
 
     app.set('views', path.join(__dirname + '/server/', 'views'));
     app.set('view engine', 'ejs');

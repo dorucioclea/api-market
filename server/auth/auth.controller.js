@@ -11,10 +11,10 @@ function proxy(req, res) {
     };
 
     srvProxy.proxy(options).then(response => {
-        console.log(response);
+        // console.log(response);
         return res.status(response.statusCode).json(response.body);
     }, err => {
-        console.log(err);
+        // console.log(err);
         return res.status(500).json(err);
     });
 }

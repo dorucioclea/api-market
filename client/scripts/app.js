@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app', [
+    let module = angular.module('app', [
         /* Angular modules */
         'ngAnimate',
         'ngResource',
@@ -65,23 +65,23 @@
         'app.ui',
         'app.user'
 
-    ])
+    ]);
 
     // disable spinner in loading-bar
-        .config(function (cfpLoadingBarProvider) {
+    module.config(function (cfpLoadingBarProvider) {
             cfpLoadingBarProvider.includeSpinner = false;
             cfpLoadingBarProvider.latencyThreshold = 100;
-        })
+    });
 
         // ngStorage key config
-        .config(function ($localStorageProvider, CONFIG) {
+    module.config(function ($localStorageProvider, CONFIG) {
             $localStorageProvider.setKeyPrefix(CONFIG.STORAGE.LOCAL_STORAGE);
-        })
-        .config(function ($sessionStorageProvider, CONFIG) {
+        });
+    module.config(function ($sessionStorageProvider, CONFIG) {
             $sessionStorageProvider.setKeyPrefix(CONFIG.STORAGE.SESSION_STORAGE);
-        })
+        });
 
-        .run(function($state, $rootScope, loginHelper, CONFIG) {
+    module.run(function($state, $rootScope, loginHelper, CONFIG) {
             // TODO improve/fix this mess
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 if (!loginHelper.checkLoggedIn()) {
@@ -125,9 +125,9 @@
                     $state.go('root.error');
                 }
             });
-        })
+        });
 
-        .config(function ($provide) {
+    module.config(function ($provide) {
             $provide.decorator('$exceptionHandler', extendExceptionHandler);
 
             function extendExceptionHandler($delegate) {
@@ -141,10 +141,9 @@
                     $delegate(exception, cause);
                 };
             }
-        })
+        });
 
-
-        .factory('httpErrorInterceptor', function ($q, $rootScope, EVENTS, _) {
+    module.factory('httpErrorInterceptor', function ($q, $rootScope, EVENTS, _) {
             return {
                 response: function (response) {
                     return response;
@@ -159,80 +158,129 @@
                     return $q.reject(response);
                 }
             };
-        })
+        });
 
-        .factory('apikeyInjector', function(CONFIG) {
-            return {
-                request: function (config) {
-                    // Add API key header, unless the request originates from Swagger UI
-                    if (!config.isSwaggerUIRequest) config.headers.apikey = CONFIG.SECURITY.API_KEY;
-                    return config;
-                }
-            };
-        })
-
-        .config(function ($httpProvider, jwtInterceptorProvider) {
+    module.config(function ($httpProvider, jwtInterceptorProvider) {
             // We're annotating the function so that the $injector works when the file is minified (known issue)
-            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
-                'config', 'CONFIG',
-                function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
-                    // Skip authentication for any requests ending in .html
-                    if (config.url.substr(config.url.length - 5) == '.html') {
-                        return null;
-                    }
-                    // Skip authentication for oauth requests
-                    if (config.url.indexOf('/oauth2/') > -1 &&
-                        config.url.indexOf('/oauth2/reissue') === -1 &&
-                        config.url.indexOf('/currentuser/') === -1 &&
-                        config.url.indexOf('/security/') === -1 &&
-                        config.url.indexOf('/organizations/') === -1) {
-                        return null;
-                    }
-
-                    // Skip authentication for Swagger UI requests
-                    if (config.isSwaggerUIRequest) {
-                        return null;
-                    }
-
-                    if ($sessionStorage.jwt) {
-                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                            // Token is expired, user needs to relogin
-                            console.log('Token expired, redirect to login');
-                            delete $sessionStorage.jwt;
-                            console.log('tokenGetter redirect');
-                            loginHelper.redirectToLogin();
-                        } else {
-                            // Token is still valid, check if we need to refresh
-                            var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
-                            date.setMinutes(date.getMinutes() - 15);
-                            if (date < new Date()) {
-                                // do refresh, then return new jwt
-                                console.log('Refreshing token');
-                                var refreshUrl = 'auth/login/idp/token/refresh';
-                                return $http({
-                                    url: refreshUrl,
-                                    // This makes it so that this request doesn't send the JWT
-                                    skipAuthorization: true,
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
-                                    data: {
-                                        originalJWT: $sessionStorage.jwt
-                                    }
-                                }).then(function(response) {
-                                    $sessionStorage.jwt = response.data.jwt;
-                                    return $sessionStorage.jwt;
-                                });
-                            } else {
-                                return $sessionStorage.jwt;
-                            }
-                        }
-                    }
-                }];
+            // jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
+            //     'config', 'CONFIG',
+            //     function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
+            //         // Skip authentication for any requests ending in .html
+            //         if (config.url.substr(config.url.length - 5) == '.html') {
+            //             return null;
+            //         }
+            //         // Skip authentication for oauth requests
+            //         if (config.url.indexOf('/oauth2/') > -1 &&
+            //             config.url.indexOf('/oauth2/reissue') === -1 &&
+            //             config.url.indexOf('/currentuser/') === -1 &&
+            //             config.url.indexOf('/security/') === -1 &&
+            //             config.url.indexOf('/organizations/') === -1) {
+            //             return null;
+            //         }
+            //
+            //         // Skip authentication for Swagger UI requests
+            //         if (config.isSwaggerUIRequest) {
+            //             return null;
+            //         }
+            //
+            //         if ($sessionStorage.jwt) {
+            //             if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+            //                 // Token is expired, user needs to relogin
+            //                 console.log('Token expired, redirect to login');
+            //                 delete $sessionStorage.jwt;
+            //                 console.log('tokenGetter redirect');
+            //                 loginHelper.redirectToLogin();
+            //             } else {
+            //                 // Token is still valid, check if we need to refresh
+            //                 var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
+            //                 date.setMinutes(date.getMinutes() - 15);
+            //                 if (date < new Date()) {
+            //                     // do refresh, then return new jwt
+            //                     console.log('Refreshing token');
+            //                     var refreshUrl = 'auth/login/idp/token/refresh';
+            //                     return $http({
+            //                         url: refreshUrl,
+            //                         // This makes it so that this request doesn't send the JWT
+            //                         skipAuthorization: true,
+            //                         method: 'POST',
+            //                         headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
+            //                         data: {
+            //                             originalJWT: $sessionStorage.jwt
+            //                         }
+            //                     }).then(function(response) {
+            //                         $sessionStorage.jwt = response.data.jwt;
+            //                         return $sessionStorage.jwt;
+            //                     });
+            //                 } else {
+            //                     return $sessionStorage.jwt;
+            //                 }
+            //             }
+            //         }
+            //     }];
 
             // Http interceptor to handle session timeouts and basic errors
             $httpProvider.interceptors.push('httpErrorInterceptor');
-            $httpProvider.interceptors.push('jwtInterceptor');
-            $httpProvider.interceptors.push('apikeyInjector');
-        })
+            // $httpProvider.interceptors.push('jwtInterceptor');
+    });
+
+    // let auth = {};
+    // let logout = function () {
+    //     console.log('*** LOGOUT');
+    //     auth.loggedIn = false;
+    //     auth.authz = null;
+    //     window.location = auth.logoutUrl;
+    // };
+    //
+    // angular.element(document).ready(function () {
+    //     let keycloakAuth = new Keycloak('../keycloak.json');
+    //     auth.loggedIn = false;
+    //     keycloakAuth.init({ onLoad: 'check-sso'}).success(function () {
+    //         if (keycloakAuth.authenticated) {
+    //             auth.loggedIn = true;
+    //             auth.authz = keycloakAuth;
+    //             angular.bootstrap(document, ["app"]);
+    //         } else {
+    //             keycloakAuth.init({onLoad: 'login-required'}).success(function () {
+    //                 auth.loggedIn = true;
+    //                 auth.authz = keycloakAuth;
+    //                 angular.bootstrap(document, ["app"]);
+    //             }).error(function () {
+    //                 console.log('*** ERROR');
+    //                 window.location.reload();
+    //             });
+    //         }
+    //     });
+    // });
+    //
+    // module.factory('Auth', function () {
+    //     return auth;
+    // });
+    //
+    // // Keycloak interceptor will be used for all requests
+    // module.factory('authInterceptor', function ($q, $rootScope, Auth, SIGNBOX) {
+    //     return {
+    //         request: function (config) {
+    //             var deferred = $q.defer();
+    //             if (Auth.authz.token) {
+    //                 Auth.authz.updateToken(300).success(function () {
+    //                     config.headers = config.headers || {};
+    //                     config.headers['X-Consumer-JWT'] = Auth.authz.token;
+    //                     deferred.resolve(config);
+    //                 }).error(function () {
+    //                     Auth.authz.clearToken();
+    //                     deferred.reject('Failed to refresh token');
+    //                     console.log('refresh fail');
+    //                     $rootScope.doLogout();
+    //                 });
+    //             } else {
+    //                 // No token found, need to redirect to login
+    //                 console.log('no token found');
+    //                 $rootScope.doLogout();
+    //             }
+    //             config.headers.apikey = SIGNBOX.KEY;
+    //             return deferred.promise;
+    //         }
+    //     };
+    // });
 
 }());

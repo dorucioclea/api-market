@@ -9,7 +9,7 @@ function proxy (options) {
     let requestOptions = {
         method: options.verb,
         uri: endpoint.replace('/auth', ''),
-        followRedirect : false,
+        followRedirect : true,
         resolveWithFullResponse: true,
         json: true
     };
@@ -28,7 +28,7 @@ function proxy (options) {
     requestOptions.headers = headers;
 
 
-    console.log(requestOptions);
+    console.log('request sent');
     return rp(requestOptions);
 }
 

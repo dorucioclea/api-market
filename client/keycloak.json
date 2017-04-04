@@ -1,0 +1,8 @@
+{
+  "realm": "Signbox-Provant",
+  "auth-server-url": "https://accidp.t1t.be/auth",
+  "ssl-required": "external",
+  "resource": "Signbox-Provant",
+  "public-client": true,
+  "use-resource-role-mappings": true
+}
