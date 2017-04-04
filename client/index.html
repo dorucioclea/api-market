@@ -129,7 +129,6 @@
 <!-- Custom scripts -->
 <script src="scripts/app.js"></script>
 <script src="scripts/shared/app.ctrls.js"></script>
-<script src="scripts/shared/app.config.js"></script>
 <script src="scripts/shared/app.constants.js"></script>
 <script src="scripts/shared/app.directives.js"></script>
 <script src="scripts/shared/app.services.js"></script>
@@ -211,6 +210,41 @@
 <script src="scripts/user/profile/profile.module.js"></script>
 <script src="scripts/user/profile/profile.controller.js"></script>
 <!-- endbuild -->
+
+<script>
+    'use strict';
+
+    (function () {
+        "use strict";
+
+        angular.module('app.config', [])
+            .constant('CONFIG',
+                { APP:
+                    {
+                        ORG_FRIENDLY_NAME_ENABLED: <%= config.orgFriendlyName %>,
+                        PUBLISHER_MODE: <%= config.publisherMode %>,
+                        SHOW_API_DEVELOPER_NAME_IN_STORE: <%= config.showApiDeveloperNameInStore %>,
+                        DISABLE_ANNOUNCEMENTS: <%= config.disableAnnouncements %>,
+                        DISABLE_SUPPORT: <%= config.disableSupport %>
+                    },
+                    STORAGE:
+                        {
+                            LOCAL_STORAGE: '<%= config.storage.local %>',
+                            SESSION_STORAGE: '<%= config.storage.session %>'
+                        },
+                    SECURITY:
+                        {
+                            REDIRECT_URL: '/login/idp/redirect',
+                            API_KEY: '05bac13c95a346cbc6e177d747e038db',
+                            IDP_URL: 'https://identityserver-o.antwerpen.be/samlsso',
+                            SP_URL: 'https://api-engine-z.antwerpen.be/API-Engine-auth/v1/login/idp/callback',
+                            SP_NAME: 'apiengine-z',
+                            CLIENT_TOKEN: 'jwt',
+                            WSO2_LOGIN_FIX: false },
+                    KONG: { HOST: '<%= config.kong.host %>' }
+                });
+    })();
+</script>
 
 </body>
 </html>

@@ -208,7 +208,7 @@
                             if (date < new Date()) {
                                 // do refresh, then return new jwt
                                 console.log('Refreshing token');
-                                var refreshUrl = CONFIG.AUTH.URL + '/login/idp/token/refresh';
+                                var refreshUrl = 'auth/login/idp/token/refresh';
                                 return $http({
                                     url: refreshUrl,
                                     // This makes it so that this request doesn't send the JWT

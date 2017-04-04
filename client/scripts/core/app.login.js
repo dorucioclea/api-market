@@ -144,7 +144,7 @@
                 }
                 var redirect = window.location.href;
                 if (redirectUrl) redirect = redirectUrl;
-                var url = CONFIG.AUTH.URL + CONFIG.SECURITY.REDIRECT_URL;
+                var url = 'auth/' + CONFIG.SECURITY.REDIRECT_URL;
                 var data = '{"idpUrl": "' + CONFIG.SECURITY.IDP_URL + '", "spUrl": "' +
                     CONFIG.SECURITY.SP_URL + '", "spName": "' + CONFIG.SECURITY.SP_NAME +
                     '", "clientAppRedirect": "' + redirect + '", "token": "' +
