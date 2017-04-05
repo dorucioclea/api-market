@@ -8,13 +8,30 @@ default:
     port: 3000
   gw:
     auth:
-      uri: "https://accapim.t1t.be/apiengineauth/v1"
+      uri: "< api engine auth uri >"
     web:
-      uri: "https://accapim.t1t.be/apiengine/v1"
-    apikey: "6b8406cc81fe4ca3cc9cd4a0abfb97c1"
+      uri: "< api engine web uri >"
+    apikey: "< t1g apikey >"
+  orgFriendlyName: true
+  publisherMode: false
+  showApiDeveloperNameInStore: false
+  disableAnnouncements: true
+  disableSupport: true
+  security:
+    redirect: "/login/idp/redirect"
+    idp: "https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml"
+    sp:
+      uri: "http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback"
+      name: "T1G-ACC"
+    token: "jwt"
+  storage:
+    local: "t1g-"
+    session: "t1g-session-"
+  kong:
+    host: "< t1g base uri >"
 
 test:
-  appName: "api-market"
+  appName: "t1t-skeleton"
   scheme: "http"
   port: 3001
   environment: "TEST"
