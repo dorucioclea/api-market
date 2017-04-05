@@ -1,5 +1,6 @@
 'use strict';
 const config = require(__base + 'modules/t1t-config');
+const resUtil = require('../util/response.util');
 const srvProxy = require('./auth.service.js');
 
 function proxy(req, res) {
@@ -7,6 +8,7 @@ function proxy(req, res) {
         verb: req.method,
         uri: req.originalUrl,
         payload: req.body,
+        headers: req.headers,
         authorization: req.headers.authorization
     };
 
@@ -14,8 +16,8 @@ function proxy(req, res) {
         // console.log(response);
         return res.status(response.statusCode).json(response.body);
     }, err => {
-        // console.log(err);
-        return res.status(500).json(err);
+        console.log(err);
+        return resUtil.error(err, res);
     });
 }
 

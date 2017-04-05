@@ -142,7 +142,7 @@
             _.forEach(grants, function (grant) {
                 promises.push($http({
                     method: 'DELETE',
-                    url: 'api/currentuser/oauth2/tokens',
+                    url: 'proxy/currentuser/oauth2/tokens',
                     data: grant,
                     headers: {'Content-Type': 'application/json;charset=utf-8'}
                 }));

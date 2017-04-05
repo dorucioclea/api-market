@@ -6,7 +6,7 @@ const ctrlApi = require('./api.controller.js');
 module.exports = function createRouter(app) {
     const router = new express.Router();
 
-    router.route('/api/*')
+    router.route('/proxy/*')
         .all(ctrlApi.proxy);
 
     // Register our routes

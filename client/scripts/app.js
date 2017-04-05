@@ -162,65 +162,65 @@
 
     module.config(function ($httpProvider, jwtInterceptorProvider) {
             // We're annotating the function so that the $injector works when the file is minified (known issue)
-            // jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
-            //     'config', 'CONFIG',
-            //     function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
-            //         // Skip authentication for any requests ending in .html
-            //         if (config.url.substr(config.url.length - 5) == '.html') {
-            //             return null;
-            //         }
-            //         // Skip authentication for oauth requests
-            //         if (config.url.indexOf('/oauth2/') > -1 &&
-            //             config.url.indexOf('/oauth2/reissue') === -1 &&
-            //             config.url.indexOf('/currentuser/') === -1 &&
-            //             config.url.indexOf('/security/') === -1 &&
-            //             config.url.indexOf('/organizations/') === -1) {
-            //             return null;
-            //         }
-            //
-            //         // Skip authentication for Swagger UI requests
-            //         if (config.isSwaggerUIRequest) {
-            //             return null;
-            //         }
-            //
-            //         if ($sessionStorage.jwt) {
-            //             if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-            //                 // Token is expired, user needs to relogin
-            //                 console.log('Token expired, redirect to login');
-            //                 delete $sessionStorage.jwt;
-            //                 console.log('tokenGetter redirect');
-            //                 loginHelper.redirectToLogin();
-            //             } else {
-            //                 // Token is still valid, check if we need to refresh
-            //                 var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
-            //                 date.setMinutes(date.getMinutes() - 15);
-            //                 if (date < new Date()) {
-            //                     // do refresh, then return new jwt
-            //                     console.log('Refreshing token');
-            //                     var refreshUrl = 'auth/login/idp/token/refresh';
-            //                     return $http({
-            //                         url: refreshUrl,
-            //                         // This makes it so that this request doesn't send the JWT
-            //                         skipAuthorization: true,
-            //                         method: 'POST',
-            //                         headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
-            //                         data: {
-            //                             originalJWT: $sessionStorage.jwt
-            //                         }
-            //                     }).then(function(response) {
-            //                         $sessionStorage.jwt = response.data.jwt;
-            //                         return $sessionStorage.jwt;
-            //                     });
-            //                 } else {
-            //                     return $sessionStorage.jwt;
-            //                 }
-            //             }
-            //         }
-            //     }];
+            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
+                'config', 'CONFIG',
+                function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
+                    // Skip authentication for any requests ending in .html
+                    if (config.url.substr(config.url.length - 5) == '.html') {
+                        return null;
+                    }
+                    // Skip authentication for oauth requests
+                    if (config.url.indexOf('/oauth2/') > -1 &&
+                        config.url.indexOf('/oauth2/reissue') === -1 &&
+                        config.url.indexOf('/currentuser/') === -1 &&
+                        config.url.indexOf('/security/') === -1 &&
+                        config.url.indexOf('/organizations/') === -1) {
+                        return null;
+                    }
+
+                    // Skip authentication for Swagger UI requests
+                    if (config.isSwaggerUIRequest) {
+                        return null;
+                    }
+
+                    if ($sessionStorage.jwt) {
+                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
+                            // Token is expired, user needs to relogin
+                            console.log('Token expired, redirect to login');
+                            delete $sessionStorage.jwt;
+                            console.log('tokenGetter redirect');
+                            loginHelper.redirectToLogin();
+                        } else {
+                            // Token is still valid, check if we need to refresh
+                            var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
+                            date.setMinutes(date.getMinutes() - 15);
+                            if (date < new Date()) {
+                                // do refresh, then return new jwt
+                                console.log('Refreshing token');
+                                var refreshUrl = 'auth/login/idp/token/refresh';
+                                return $http({
+                                    url: refreshUrl,
+                                    // This makes it so that this request doesn't send the JWT
+                                    skipAuthorization: true,
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
+                                    data: {
+                                        originalJWT: $sessionStorage.jwt
+                                    }
+                                }).then(function(response) {
+                                    $sessionStorage.jwt = response.data.jwt;
+                                    return $sessionStorage.jwt;
+                                });
+                            } else {
+                                return $sessionStorage.jwt;
+                            }
+                        }
+                    }
+                }];
 
             // Http interceptor to handle session timeouts and basic errors
             $httpProvider.interceptors.push('httpErrorInterceptor');
-            // $httpProvider.interceptors.push('jwtInterceptor');
+            $httpProvider.interceptors.push('jwtInterceptor');
     });
 
     // let auth = {};

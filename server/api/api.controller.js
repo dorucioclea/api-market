@@ -1,5 +1,6 @@
 'use strict';
 const config = require(__base + 'modules/t1t-config');
+const resUtil = require('../util/response.util');
 const srvProxy = require('./api.service.js');
 
 function proxy(req, res) {
@@ -11,11 +12,9 @@ function proxy(req, res) {
     };
 
     srvProxy.proxy(options).then(response => {
-        console.log(response);
         return res.status(response.statusCode).json(response.body);
     }, err => {
-        console.log(err);
-        return res.status(500).json(err);
+        return resUtil.error(err, res);
     });
 }
 

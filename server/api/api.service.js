@@ -1,5 +1,6 @@
 'use strict';
 const config = require(__base + 'modules/t1t-config');
+const reqUtil = require('../util/request.util');
 const rp = require('request-promise');
 const _ = require('lodash');
 
@@ -8,8 +9,9 @@ function proxy (options) {
 
     let requestOptions = {
         method: options.verb,
-        uri: endpoint.replace('/api', ''),
+        uri: endpoint.replace('/proxy', ''),
         followRedirect : false,
+        simple: false,
         resolveWithFullResponse: true,
         json: true
     };
@@ -19,12 +21,11 @@ function proxy (options) {
         requestOptions.json = true;
     }
 
-    let headers = {};
+    let headers = reqUtil.defaultHeaders();_.omit(options.headers, 'host');
     if (options.authorization) {
         headers['Authorization'] = options.authorization;
     }
-    headers['apikey'] = config.apikey;
-    headers['Content-Type'] = 'application/json';
+
     requestOptions.headers = headers;
 
     return rp(requestOptions);
