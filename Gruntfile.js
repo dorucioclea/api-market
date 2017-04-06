@@ -1407,7 +1407,6 @@ module.exports = function (grunt) {
     'set_global:task:pub',
     'wiredep',
     'ngconstant:dev',
-    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1418,8 +1417,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('mkt-int', [
@@ -1427,7 +1425,6 @@ module.exports = function (grunt) {
     'set_global:task:mkt-int',
     'wiredep',
     'ngconstant:devInt',
-    'replace:mkt',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1438,8 +1435,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('mkt-ext', [
@@ -1447,7 +1443,6 @@ module.exports = function (grunt) {
     'set_global:task:mkt-ext',
     'wiredep',
     'ngconstant:devExt',
-    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1458,8 +1453,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('acc-pub', [
@@ -1467,7 +1461,6 @@ module.exports = function (grunt) {
     'set_global:task:acc-pub',
     'wiredep',
     'ngconstant:acc',
-    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1478,8 +1471,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('acc-mkt-int', [
@@ -1487,7 +1479,6 @@ module.exports = function (grunt) {
     'set_global:task:acc-mkt-int',
     'wiredep',
     'ngconstant:accInt',
-    'replace:mkt',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1498,8 +1489,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('acc-mkt-ext', [
@@ -1507,7 +1497,6 @@ module.exports = function (grunt) {
     'set_global:task:acc-mkt-ext',
     'wiredep',
     'ngconstant:accExt',
-    'replace:pub',
     'less:dist',
     'useminPrepare',
     'copy:dist',
@@ -1518,8 +1507,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'compress',
-    'replace:t1t'
+    'compress'
   ]);
 
   grunt.registerTask('t1tProdPub', [
@@ -1983,7 +1971,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('t1tAcc', [
     'acc-mkt-int',
-    'acc-mkt-ext',
     'acc-pub'
   ]);
 
