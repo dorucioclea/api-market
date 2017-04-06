@@ -41,6 +41,7 @@
         'app.apiEngine',
         'app.core.components',
         'app.core.login',
+        'app.core.keycloak',
         'app.core.routes',
         'app.core.util',
         'app.ctrl.auth.oauth',
@@ -81,24 +82,15 @@
             $sessionStorageProvider.setKeyPrefix(CONFIG.STORAGE.SESSION_STORAGE);
         });
 
-    module.run(function($state, $rootScope, loginHelper, CONFIG) {
-            // TODO improve/fix this mess
+    module.run(function($state, $rootScope, kcHelper, loginHelper, CONFIG) {
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 if (!loginHelper.checkLoggedIn()) {
-                    if (!loginHelper.checkJWTInUrl()) {
-                        if (!loginHelper.isTransitioningToError()) {
-                            if (loginHelper.checkLoginError()) {
-                                if (CONFIG.APP.PUBLISHER_MODE) event.preventDefault();
-                            }
-                            else if (loginHelper.checkLoginRequiredForState(toState)) {
-                                event.preventDefault();
-                                loginHelper.redirectToLogin($state.href(toState.name, toParams, {absolute: true}));
-                            }
-                        } else {
-                            if (loginHelper.checkLoginRequiredForState(toState)) event.preventDefault();
-                        }
-                    } else {
-                        loginHelper.extractJWTFromUrl();
+                    if (loginHelper.checkLoginError()) {
+                        if (CONFIG.APP.PUBLISHER_MODE) event.preventDefault();
+                    }
+                    else if (loginHelper.checkLoginRequiredForState(toState)) {
+                        event.preventDefault();
+                        kcHelper.redirectToLogin();
                     }
                 }
             });
@@ -109,9 +101,9 @@
                     switch (error.status) {
                         case 401: // Unauthorized
                             console.log('Unauthorized');
-                            if (!loginHelper.checkJWTInUrl() && !loginHelper.checkLoginError()) {
+                            if (!loginHelper.checkLoginError()) {
                                 console.log('stateChangeError redirect');
-                                loginHelper.redirectToLogin();
+                                kcHelper.redirectToLogin();
                             }
                             break;
                         default:
@@ -160,127 +152,54 @@
             };
         });
 
-    module.config(function ($httpProvider, jwtInterceptorProvider) {
-            // We're annotating the function so that the $injector works when the file is minified (known issue)
-            jwtInterceptorProvider.tokenGetter = ['$sessionStorage', '$state', '$http', 'jwtHelper', 'loginHelper',
-                'config', 'CONFIG',
-                function($sessionStorage, $state, $http, jwtHelper, loginHelper, config, CONFIG) {
-                    // Skip authentication for any requests ending in .html
-                    if (config.url.substr(config.url.length - 5) == '.html') {
-                        return null;
-                    }
-                    // Skip authentication for oauth requests
-                    if (config.url.indexOf('/oauth2/') > -1 &&
-                        config.url.indexOf('/oauth2/reissue') === -1 &&
-                        config.url.indexOf('/currentuser/') === -1 &&
-                        config.url.indexOf('/security/') === -1 &&
-                        config.url.indexOf('/organizations/') === -1) {
-                        return null;
-                    }
-
-                    // Skip authentication for Swagger UI requests
-                    if (config.isSwaggerUIRequest) {
-                        return null;
-                    }
-
-                    if ($sessionStorage.jwt) {
-                        if (jwtHelper.isTokenExpired($sessionStorage.jwt)) {
-                            // Token is expired, user needs to relogin
-                            console.log('Token expired, redirect to login');
-                            delete $sessionStorage.jwt;
-                            console.log('tokenGetter redirect');
-                            loginHelper.redirectToLogin();
-                        } else {
-                            // Token is still valid, check if we need to refresh
-                            var date = jwtHelper.getTokenExpirationDate($sessionStorage.jwt);
-                            date.setMinutes(date.getMinutes() - 15);
-                            if (date < new Date()) {
-                                // do refresh, then return new jwt
-                                console.log('Refreshing token');
-                                var refreshUrl = 'auth/login/idp/token/refresh';
-                                return $http({
-                                    url: refreshUrl,
-                                    // This makes it so that this request doesn't send the JWT
-                                    skipAuthorization: true,
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.SECURITY.API_KEY },
-                                    data: {
-                                        originalJWT: $sessionStorage.jwt
-                                    }
-                                }).then(function(response) {
-                                    $sessionStorage.jwt = response.data.jwt;
-                                    return $sessionStorage.jwt;
-                                });
-                            } else {
-                                return $sessionStorage.jwt;
-                            }
-                        }
-                    }
-                }];
-
-            // Http interceptor to handle session timeouts and basic errors
-            $httpProvider.interceptors.push('httpErrorInterceptor');
-            $httpProvider.interceptors.push('jwtInterceptor');
+    module.config(function ($httpProvider) {
+        // Http interceptor to handle session timeouts and basic errors
+        $httpProvider.interceptors.push('httpErrorInterceptor');
+        $httpProvider.interceptors.push('authInterceptor');
     });
 
-    // let auth = {};
-    // let logout = function () {
-    //     console.log('*** LOGOUT');
-    //     auth.loggedIn = false;
-    //     auth.authz = null;
-    //     window.location = auth.logoutUrl;
-    // };
-    //
-    // angular.element(document).ready(function () {
-    //     let keycloakAuth = new Keycloak('../keycloak.json');
-    //     auth.loggedIn = false;
-    //     keycloakAuth.init({ onLoad: 'check-sso'}).success(function () {
-    //         if (keycloakAuth.authenticated) {
-    //             auth.loggedIn = true;
-    //             auth.authz = keycloakAuth;
-    //             angular.bootstrap(document, ["app"]);
-    //         } else {
-    //             keycloakAuth.init({onLoad: 'login-required'}).success(function () {
-    //                 auth.loggedIn = true;
-    //                 auth.authz = keycloakAuth;
-    //                 angular.bootstrap(document, ["app"]);
-    //             }).error(function () {
-    //                 console.log('*** ERROR');
-    //                 window.location.reload();
-    //             });
-    //         }
-    //     });
-    // });
-    //
-    // module.factory('Auth', function () {
-    //     return auth;
-    // });
-    //
-    // // Keycloak interceptor will be used for all requests
-    // module.factory('authInterceptor', function ($q, $rootScope, Auth, SIGNBOX) {
-    //     return {
-    //         request: function (config) {
-    //             var deferred = $q.defer();
-    //             if (Auth.authz.token) {
-    //                 Auth.authz.updateToken(300).success(function () {
-    //                     config.headers = config.headers || {};
-    //                     config.headers['X-Consumer-JWT'] = Auth.authz.token;
-    //                     deferred.resolve(config);
-    //                 }).error(function () {
-    //                     Auth.authz.clearToken();
-    //                     deferred.reject('Failed to refresh token');
-    //                     console.log('refresh fail');
-    //                     $rootScope.doLogout();
-    //                 });
-    //             } else {
-    //                 // No token found, need to redirect to login
-    //                 console.log('no token found');
-    //                 $rootScope.doLogout();
-    //             }
-    //             config.headers.apikey = SIGNBOX.KEY;
-    //             return deferred.promise;
-    //         }
-    //     };
-    // });
+    let auth = {};
+
+    angular.element(document).ready(function () {
+        let keycloakAuth = new Keycloak('../keycloak.json');
+        auth.loggedIn = false;
+        keycloakAuth.init({ onLoad: 'check-sso'}).success(function () {
+                auth.loggedIn = true;
+                auth.authz = keycloakAuth;
+                angular.bootstrap(document, ["app"]);
+        });
+    });
+
+    module.factory('Auth', function () {
+        return auth;
+    });
+
+    // Keycloak interceptor will be used for all requests
+    module.factory('authInterceptor', function ($q, Auth, kcHelper, _) {
+        return {
+            request: function (config) {
+                let deferred = $q.defer();
+                if (_.startsWith(config.url, 'proxy/')) {
+                    if (Auth.authz.token) {
+                        Auth.authz.updateToken(60).success(function () {
+                            config.headers = config.headers || {};
+                            config.headers['Authorization'] = 'Bearer ' + Auth.authz.token;
+                            deferred.resolve(config);
+                        }).error(function () {
+                            Auth.authz.clearToken();
+                            deferred.reject('Failed to refresh token');
+                            kcHelper.redirectToLogin();
+                        });
+                    } else {
+                        // No token found, need to redirect to login
+                        kcHelper.redirectToLogin();
+                    }
+                } else {
+                    deferred.resolve(config);
+                }
+                return deferred.promise;
+            }
+        };
+    });
 
 }());

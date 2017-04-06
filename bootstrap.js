@@ -74,6 +74,8 @@ function initializeExpress(callback) {
         app.use('/' , express.static(__dirname + '/.local'));
         app.use('/bower_components', express.static(__dirname + '/bower_components'));
     } else app.use('/' , express.static(__dirname + '/dist'));
+    // Make keycloak.json available to FE
+    app.use('/keycloak.json', express.static(__dirname + '/config/keycloak.json'));
 
 
     // Error handling middleware should be loaded after the loading the routes

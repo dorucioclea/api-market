@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app"
+<html lang="en"
       id="app" custom-page
       class="app off-canvas {{themeActive}}" ng-class="{'body-full': bodyFull}"
       ng-controller="AppCtrl">
@@ -144,6 +144,7 @@
 
 <script src="scripts/core/app.components.js"></script>
 <script src="scripts/core/app.login.js"></script>
+<script src="scripts/core/app.keycloak.js"></script>
 <script src="scripts/core/app.routes.js"></script>
 <script src="scripts/core/app.util.js"></script>
 
@@ -233,15 +234,6 @@
                         {
                             LOCAL_STORAGE: '<%= config.storage.local %>',
                             SESSION_STORAGE: '<%= config.storage.session %>'
-                        },
-                    SECURITY:
-                        {
-                            REDIRECT_URL: '<%= config.security.redirect %>',
-                            API_KEY: '<%= config.gw.apikey %>',
-                            IDP_URL: '<%= config.security.idp %>',
-                            SP_URL: '<%= config.security.sp.uri %>',
-                            SP_NAME: '<%= config.security.sp.name %>',
-                            CLIENT_TOKEN: '<%= config.security.token %>'
                         },
                     KONG: { HOST: '<%= config.kong.host %>' }
                 });

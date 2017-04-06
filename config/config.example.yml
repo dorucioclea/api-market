@@ -17,13 +17,6 @@ default:
   showApiDeveloperNameInStore: false
   disableAnnouncements: true
   disableSupport: true
-  security:
-    redirect: "/login/idp/redirect"
-    idp: "https://idp.t1t.be/auth/realms/Trust1Gateway/protocol/saml"
-    sp:
-      uri: "http://accapi.t1t.be/API-Engine-auth/v1/login/idp/callback"
-      name: "T1G-ACC"
-    token: "jwt"
   storage:
     local: "t1g-"
     session: "t1g-session-"

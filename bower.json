@@ -40,7 +40,7 @@
     "angular-smart-table": "^2.1.8",
     "angular-file-saver": "1.1.2",
     "Ionicons": "ionicons#^2.0.1",
-    "keycloak": "^3.0.0"
+    "keycloak": "2.5.1"
   },
   "devDependencies": {
     "less": "2.5.1",
