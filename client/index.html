@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app"
+<html lang="en"
       id="app" custom-page
       class="app off-canvas {{themeActive}}" ng-class="{'body-full': bodyFull}"
       ng-controller="AppCtrl">
@@ -17,7 +17,6 @@
   <title ng-bind="header"></title>
 
   <!-- build:css styles/vendor.min.css -->
-  <link rel="stylesheet" href="styles/vendors/bootstrap.min.css">
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
@@ -32,9 +31,11 @@
   <!-- endbuild -->
 
   <!-- fonts -->
+  <!-- build:css styles/fonts.min.css -->
   <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,300' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.css">
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css">
+  <!-- endbuild -->
 
   <!-- build:css styles/app.min.css -->
   <link rel="stylesheet" href="styles/main.css">
@@ -104,6 +105,7 @@
 <script src="../bower_components/blob-polyfill/Blob.js"></script>
 <script src="../bower_components/file-saver.js/FileSaver.js"></script>
 <script src="../bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
+<script src="../bower_components/keycloak/dist/keycloak.js"></script> <!-- TODO load script from keycloak server -->
 <!-- endbower -->
 <script src="../bower_components/highlight/src/highlight.js"></script>
 <!-- endbuild -->
@@ -129,7 +131,6 @@
 <!-- Custom scripts -->
 <script src="scripts/app.js"></script>
 <script src="scripts/shared/app.ctrls.js"></script>
-<script src="scripts/shared/app.config.js"></script>
 <script src="scripts/shared/app.constants.js"></script>
 <script src="scripts/shared/app.directives.js"></script>
 <script src="scripts/shared/app.services.js"></script>
@@ -143,6 +144,7 @@
 
 <script src="scripts/core/app.components.js"></script>
 <script src="scripts/core/app.login.js"></script>
+<script src="scripts/core/app.keycloak.js"></script>
 <script src="scripts/core/app.routes.js"></script>
 <script src="scripts/core/app.util.js"></script>
 
@@ -211,6 +213,32 @@
 <script src="scripts/user/profile/profile.module.js"></script>
 <script src="scripts/user/profile/profile.controller.js"></script>
 <!-- endbuild -->
+
+<script>
+    'use strict';
+
+    (function () {
+        "use strict";
+
+        angular.module('app.config', [])
+            .constant('CONFIG',
+                { APP:
+                    {
+                        ORG_FRIENDLY_NAME_ENABLED: <%= config.orgFriendlyName %>,
+                        PUBLISHER_MODE: <%= config.publisherMode %>,
+                        SHOW_API_DEVELOPER_NAME_IN_STORE: <%= config.showApiDeveloperNameInStore %>,
+                        DISABLE_ANNOUNCEMENTS: <%= config.disableAnnouncements %>,
+                        DISABLE_SUPPORT: <%= config.disableSupport %>
+                    },
+                    STORAGE:
+                        {
+                            LOCAL_STORAGE: '<%= config.storage.local %>',
+                            SESSION_STORAGE: '<%= config.storage.session %>'
+                        },
+                    KONG: { HOST: '<%= config.kong.host %>' }
+                });
+    })();
+</script>
 
 </body>
 </html>

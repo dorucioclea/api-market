@@ -61,12 +61,7 @@
                         currentUserInfo: function (currentUserModel, loginHelper) {
                             if (loginHelper.checkJWTInSession()) return currentUserModel.refreshCurrentUserInfo(currentUserModel);
                             else {
-                                if (loginHelper.checkJWTInUrl()) {
-                                    console.log('JWT in URL');
-                                    return loginHelper.extractJWTFromUrl();
-                                }
-                                else
-                                    return {};
+                                return {};
                             }
                         },
                         notificationService: 'notificationService',

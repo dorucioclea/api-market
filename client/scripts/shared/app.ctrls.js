@@ -157,7 +157,7 @@
             function($scope, $uibModal, $state, $localStorage, $sessionStorage, CONFIG, docTester,
                      currentUserInfo, notifications, pendingNotifications, currentUser,
                      currentUserModel, headerModel, orgScreenModel, notificationService,
-                     toastService, jwtHelper, loginHelper, EVENTS) {
+                     toastService, jwtHelper, kcHelper, loginHelper, EVENTS) {
                 
                 var controller = this;
                 $scope.currentUserModel = currentUserModel;
@@ -271,11 +271,11 @@
                 }
 
                 function doLogOut() {
-                    loginHelper.logout();
+                    kcHelper.logout();
                 }
 
                 function toggleFloatingSidebar() {
-                    $scope.floatingSidebar = $scope.floatingSidebar ? false : true;
+                    $scope.floatingSidebar = !$scope.floatingSidebar;
                 }
 
                 function toApis() {
@@ -289,7 +289,7 @@
 
                 function toLogin() {
                     console.log('login button redirect');
-                    loginHelper.redirectToLogin();
+                    kcHelper.redirectToLogin();
                 }
 
                 function toMarketDash() {
@@ -361,14 +361,14 @@
             }
         })
         
-        .controller('FirstVisitCtrl', function ($scope, $uibModalInstance, $localStorage, loginHelper) {
+        .controller('FirstVisitCtrl', function ($scope, $uibModalInstance, $localStorage, kcHelper) {
             $scope.login = login;
             $scope.later = later;
             
             function login() {
                 $localStorage.hasVisited = true;
                 console.log('first Visit redirect');
-                loginHelper.redirectToLogin();
+                kcHelper.redirectToLogin();
             }
             
             function later() {
