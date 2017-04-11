@@ -6,14 +6,10 @@
     // UI-Router states
 
     // UI-Router Routing Config
-        .config(function ($stateProvider, $urlRouterProvider, CONFIG) {
+        .config(function ($stateProvider, $urlRouterProvider) {
 
             // UI-Router Conditional Redirects
-            $urlRouterProvider.otherwise(function($injector){
-                var $state = $injector.get("$state");
-                if (CONFIG.APP.PUBLISHER_MODE) $state.go('root.myOrganizations');
-                else $state.go('root.apis.grid');
-            });
+            $urlRouterProvider.otherwise('/apis/grid');
             $urlRouterProvider.when('/org/{orgId}/api/{svcId}/{versionId}', '/org/{orgId}/api/{svcId}/{versionId}/documentation');
             $urlRouterProvider.when('/org/{orgId}', '/org/{orgId}/plans');
             $urlRouterProvider.when('/org/{orgId}/application/{appId}/{versionId}', '/org/{orgId}/application/{appId}/{versionId}/overview');
@@ -591,9 +587,6 @@
                         appOrgData: function (currentUser) {
                             return currentUser.getUserAppOrgs();
                         },
-                        svcOrgData: function (currentUser) {
-                            return currentUser.getUserSvcOrgs();
-                        },
                         orgService: 'orgService',
                         orgs: function (orgService) {
                             return orgService.search();
@@ -617,9 +610,6 @@
                         currentUser: 'currentUser',
                         appOrgData: function (currentUser) {
                             return currentUser.getUserAppOrgs();
-                        },
-                        svcOrgData: function (currentUser) {
-                            return currentUser.getUserSvcOrgs();
                         }
                     },
                     controller: 'MyOrganizationsCtrl'

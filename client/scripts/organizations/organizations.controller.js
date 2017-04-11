@@ -45,7 +45,7 @@
         }
     }
 
-    function myOrganizationsCtrl($scope, $stateParams, $uibModal, filterFilter, appOrgData, svcOrgData, toastService, headerModel) {
+    function myOrganizationsCtrl($scope, $stateParams, $uibModal, filterFilter, appOrgData, toastService, headerModel) {
 
         $scope.toasts = toastService.toasts;
         $scope.toastService = toastService;
@@ -56,11 +56,7 @@
         function init() {
             headerModel.setIsButtonVisible(false, false, false);
 
-            if ($scope.publisherMode) {
-                $scope.orgs = svcOrgData;
-            } else {
-                $scope.orgs = appOrgData;
-            }
+            $scope.orgs = appOrgData;
             $scope.orgs.forEach(function (org) {
                 org.isMember = true;
             });
@@ -79,14 +75,6 @@
                 templateUrl: 'views/modals/organizationCreate.html',
                 size: 'lg',
                 controller: 'NewOrganizationCtrl as ctrl',
-                resolve: {
-                    publisherMode: function () {
-                        return $scope.publisherMode;
-                    },
-                    admin: function () {
-                        return $scope.User.currentUser.admin
-                    }
-                },
                 backdrop : 'static',
                 windowClass: $scope.modalAnim	// Animation Class put here.
             });
@@ -95,18 +83,14 @@
 
     }
 
-    function organizationsCtrl($scope, appOrgData, orgs, svcOrgData, pendingOrgs, orgService, toastService, _) {
+    function organizationsCtrl($scope, appOrgData, orgs, pendingOrgs, orgService, toastService, _) {
 
         $scope.doSearch = doSearch;
         $scope.orgNameRegex = '\\w+';
         init();
 
         function init() {
-            if ($scope.publisherMode) {
-                $scope.memberOrgs = svcOrgData;
-            } else {
-                $scope.memberOrgs = appOrgData;
-            }
+            $scope.memberOrgs = appOrgData;
             $scope.pendingOrgs = pendingOrgs;
             $scope.orgs = processResults(orgs.beans);
             $scope.totalOrgs = orgs.totalSize;
@@ -306,11 +290,10 @@
         }
     }
 
-    function orgDeleteCtrl($scope, $uibModalInstance, org, CONFIG) {
+    function orgDeleteCtrl($scope, $uibModalInstance, org) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.org = org;
-        $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
 
         function cancel() {
             $uibModalInstance.dismiss('canceled');
@@ -321,11 +304,10 @@
         }
     }
 
-    function orgEditCtrl($scope, $uibModalInstance, org, admin) {
+    function orgEditCtrl($scope, $uibModalInstance, org) {
         $scope.cancel = cancel;
         $scope.ok = ok;
         $scope.org = org;
-        $scope.admin = admin;
 
         function cancel() {
             $uibModalInstance.dismiss('canceled');

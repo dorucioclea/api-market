@@ -86,11 +86,7 @@
             }
 
             function generateGalileoPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    return '<span class="text-light">Service token: <b>' + config.service_token + '</b>.</span>';
-                } else {
-                    // We probably don't want to expose the Service's Galileo key in the API Store, so do nothing here
-                }
+                // We probably don't want to expose the Service's Galileo key in the API Store, so do nothing here
             }
 
             function generateRateLimitPopover(config) {
@@ -155,54 +151,19 @@
             }
 
             function generateHttpLogPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    return '<p class="text-light">Logs are sent to <b>' + config.http_endpoint + '</b> via ' + config.method + '.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
-                } else {
-                    // Do nothing, we don't want to expose the HTTP log server address in the API Store
-                }
+                // Do nothing, we don't want to expose the HTTP log server address in the API Store
             }
 
             function generateUDPLogPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    return '<p class="text-light">Logs are sent to <b>' + config.host + ':' + config.port + '</b>.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
-                } else {
-                    // Do nothing, we don't want to expose the UDP log server address in the API Store
-                }
+                // Do nothing, we don't want to expose the UDP log server address in the API Store
             }
 
             function generateTCPLogPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    return '<p class="text-light">Logs are sent to <b>' + config.host + ':' + config.port + '</b>.</p><p class="text-light">Timeout is set to ' + config.timeout +'ms.</p>'
-                } else {
-                    // Do nothing, we don't want to expose the TCP log server address in the API Store
-                }
+                // Do nothing, we don't want to expose the TCP log server address in the API Store
             }
 
             function generateIPRestrictionPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    var string = '';
-                    if (_.keys(config.blacklist).length > 0) {
-                        string += '<p class="text-bold">Blacklisted IPs:</p>';
-                        string += '<ul class="text-light">';
-                        _.forEach(config.blacklist, function (value) {
-                            string += '<li>' + value + '</li>';
-                        });
-                        string += '</ul>';
-                    }
-
-                    if (_.keys(config.whitelist).length > 0) {
-                        string += '<p class="text-bold">Whitelisted IPs:</p>';
-                        string += '<ul class="text-light">';
-                        _.forEach(config.whitelist, function (value) {
-                            string += '<li>' + value + '</li>';
-                        });
-                        string += '</ul>';
-                    }
-                    if (string.length > 0) return string;
-                    else return '<p class="text-light">No config found</p>';
-                } else {
-                    // Do nothing, we don't want to expose the list of black/whitelisted IP's
-                }
+                // Do nothing, we don't want to expose the list of black/whitelisted IP's
             }
 
             function generateOAuthPopover(config) {
@@ -306,25 +267,7 @@
             }
 
             function generateLDAPPopover(config) {
-                if (CONFIG.APP.PUBLISHER_MODE) {
-                    var string = '';
-                    string += '<p class="text-light">LDAP host: <b>' + config.ldap_host + ':' + config.ldap_port + '</b></p>';
-                    string += '<ul class="text-light">';
-                    string += '<li>Base DN: ' + config.base_dn + '</li>';
-                    string += '<li>Attribute: ' + config.attribute + '</li>';
-                    string += '</ul>';
-
-                    if (config.hide_credentials) string += '<p class="text-light">Credentials will be hidden from the upstream server.</p>';
-                    else string += '<p class="text-light">Credentials will be sent along to the upstream server.</p>';
-
-                    if (config.verify_ldap_host) string += '<p class="text-light">LDAP host <b>will be verified</b>.</p>';
-                    else string += '<p class="text-light">LDAP host <b>will not be verified</b>.</p>';
-
-                    if (string.length > 0) return string;
-                    else return '<p class="text-light">No config found</p>';
-                } else {
-                    // Do nothing, we don't want to expose the list of black/whitelisted IP's
-                }
+                // Do nothing, we don't want to expose the list of black/whitelisted IP's
             }
 
         }

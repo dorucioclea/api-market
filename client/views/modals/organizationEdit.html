@@ -7,13 +7,6 @@
       <div class="col-sm-12">
 
         <form role="form" name="orgForm" class="form-horizontal">
-          <div class="form-group col-md-12" ng-if="admin">
-              <label class="control-label text-primary">Branding Name</label>
-              <input type="text" name="orgFriendlyName" class="form-control" placeholder="Enter branding name..." ng-model="org.friendlyName" ng-pattern="regex.ORG_NAME" validate-on-timeout>
-              <p class="text-danger xsmall" ng-show="orgForm.orgFriendlyName.$error.pattern && orgForm.orgFriendlyName.$timedout">Allowed characters: Alphanumeric, dashes, underscores and single spaces. All other characters will be rejected. Leading and trailing spaces will be trimmed.</p>
-              <p class="text-muted xsmall">Name that will be shown to end users on the API Store. If left blank, no name will be shown.</p>
-          </div>
-
           <div class="form-group col-md-12">
               <label class="control-label text-primary">Organization Description</label>
               <textarea class="form-control" placeholder="Enter a description (optional)" data-ng-model="org.description"></textarea>

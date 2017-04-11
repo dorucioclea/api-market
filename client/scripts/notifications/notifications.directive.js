@@ -87,10 +87,7 @@
             scope: {
                 notification: '='
             },
-            templateUrl: 'views/templates/notification/partials/contract-pending.html',
-            controller: function ($scope, CONFIG) {
-                $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
-            }
+            templateUrl: 'views/templates/notification/partials/contract-pending.html'
         }
     }
     
@@ -215,10 +212,7 @@
             scope: {
                 notification: '='
             },
-            templateUrl: 'views/templates/notification/partials/membership-pending.html',
-            controller: function ($scope, CONFIG) {
-                $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
-            }
+            templateUrl: 'views/templates/notification/partials/membership-pending.html'
         }
     }
 

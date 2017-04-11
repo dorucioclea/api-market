@@ -85,9 +85,7 @@
     module.run(function($state, $rootScope, kcHelper, loginHelper, CONFIG) {
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 if (!loginHelper.checkLoggedIn()) {
-                    if (loginHelper.checkLoginError()) {
-                        if (CONFIG.APP.PUBLISHER_MODE) event.preventDefault();
-                    }
+                    if (loginHelper.checkLoginError()) {}
                     else if (loginHelper.checkLoginRequiredForState(toState)) {
                         event.preventDefault();
                         kcHelper.redirectToLogin();

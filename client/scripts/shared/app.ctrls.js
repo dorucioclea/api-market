@@ -36,8 +36,6 @@
                     });
                 });
 
-                $scope.publisherMode = CONFIG.APP.PUBLISHER_MODE;
-
                 var checkStatus = function() {
                     statusHelper.checkStatus().then(function (result) {
                         if (result.maintenanceModeEnabled) {
@@ -60,15 +58,7 @@
 
                 $scope.toasts = toastService.toasts;
 
-                $scope.togglePublisher = function () {
-                    $scope.publisherMode = !$scope.publisherMode;
-                    setHeader();
-                };
-
-                var setHeader = function () {
-                    $scope.header = 'ACPAAS - API ' + ($scope.publisherMode ? 'Publisher' : 'Store');
-                };
-                setHeader();
+                $scope.header = 'ACPAAS - API Store';
 
                 $scope.navFull = false;
 
@@ -185,7 +175,6 @@
 
                 function init() {
                     $scope.loggedIn = loginHelper.checkLoggedIn();
-                    $scope.title = CONFIG.APP.PUBLISHER_MODE ? 'API Publisher' : 'API Store';
 
                     checkIsEmailPresent();
                     checkFirstVisit();
@@ -227,7 +216,7 @@
                 }
 
                 function checkFirstVisit() {
-                    if (!$scope.loggedIn && !$scope.publisherMode && !loginHelper.checkIsFirstVisit()) {
+                    if (!$scope.loggedIn && !loginHelper.checkIsFirstVisit()) {
                         console.log('first visit!');
 
                         $uibModal.open({
@@ -247,7 +236,7 @@
                 }
 
                 function checkNeedsPopover() {
-                    if ($scope.loggedIn && !$scope.publisherMode) {
+                    if ($scope.loggedIn) {
                         currentUser.checkStatus().then(function (status) {
                             $scope.status = status;
                             if (!$scope.status.hasOrg && !$localStorage.orgPopupSeen) controller.orgPopoverOpen = true;
@@ -388,8 +377,7 @@
                     if ($scope.secondsRemaining > 0) {
                         countDownSecond();
                     } else {
-                        if ($scope.publisherMode) $state.go('root.myOrganizations');
-                        else $state.go('root.apis.grid');
+                        $state.go('root.apis.grid');
                     }
                 }, 1000);
             }

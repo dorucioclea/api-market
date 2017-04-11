@@ -34,11 +34,7 @@
         }
 
         function init() {
-            if ($scope.publisherMode) {
-                headerModel.setIsButtonVisible(false, false, false);
-            } else {
-                headerModel.setIsButtonVisible(true, true, true);
-            }
+            headerModel.setIsButtonVisible(true, true, true);
 
             userScreenModel.userInfo.base64pic = $scope.User.currentUser.base64pic;
 
