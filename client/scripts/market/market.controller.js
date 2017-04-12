@@ -302,6 +302,7 @@
         $scope.clearSelectedCategories = clearSelectedCategories;
         $scope.query = '';
         $scope.detectWildcard = detectWildcard;
+        $scope.copyrightYear = moment().format('YYYY');
 
         populate(svcData.beans);
 
