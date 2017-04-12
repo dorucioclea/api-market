@@ -552,12 +552,6 @@
                     templateUrl: 'views/partials/application/overview.html',
                     controller: 'OverviewCtrl'
                 })
-                // Contracts Tab
-                .state('root.application.contracts', {
-                    url: '/contracts',
-                    templateUrl: 'views/partials/application/contracts.html',
-                    controller: 'ContractsCtrl'
-                })
                 // APIs Tab
                 .state('root.application.apis', {
                     url: '/apis',
