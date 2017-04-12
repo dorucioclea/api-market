@@ -558,8 +558,8 @@
         /// ==== EditImgCtrl Controller
         .controller('EditImgCtrl',
             function ($scope, $uibModal, $state, $stateParams, flowFactory, alertService,
-                      imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel, svcScreenModel,
-                      Application, currentUser, Service) {
+                      imageService, toastService, TOAST_TYPES, appScreenModel, currentUserModel,
+                      Application, currentUser) {
                 $scope.imageService = imageService;
                 $scope.alerts = alertService.alerts;
                 $scope.flow = flowFactory.create({
@@ -582,9 +582,6 @@
                     } else if (angular.isUndefined($stateParams.planId) && angular.isUndefined($stateParams.svcId)) {
                         type = 'Application';
                         $scope.currentLogo = appScreenModel.application.application.base64logo;
-                    } else {
-                        type = 'Service';
-                        $scope.currentLogo = svcScreenModel.service.service.base64logo;
                     }
 
                     alertService.resetAllAlerts();
@@ -610,7 +607,7 @@
                 }
 
                 function updateLogo() {
-                    var updateObject = {};
+                    let updateObject = {};
                     if (type === 'User') {
                         if (imageService.image.fileData) {
                             updateObject.pic = imageService.image.fileData;
@@ -629,19 +626,10 @@
                         case 'Application':
                             Application.update({orgId: $stateParams.orgId, appId: $stateParams.appId},
                                 updateObject,
-                                function (reply) {
+                                function () {
                                     handleResult(true, 'Application logo updated!');
                                 }, function (error) {
                                     handleResult(false, 'Could not update Application Logo.', error);
-                                });
-                            break;
-                        case 'Service':
-                            Service.update({orgId: $stateParams.orgId, svcId: $stateParams.svcId},
-                                updateObject,
-                                function (reply) {
-                                    handleResult(true, 'Service logo updated!');
-                                }, function (error) {
-                                    handleResult(false, 'Could not update Service Logo.', error);
                                 });
                             break;
                         case 'User':

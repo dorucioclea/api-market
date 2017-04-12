@@ -59,7 +59,6 @@
         'app.organizations',
         'app.plugin.lodash',
         'app.policies',
-        'app.service',
         'app.swagger',
         'app.tour',
         'app.ui',
