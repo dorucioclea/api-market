@@ -90,7 +90,7 @@
     }
     
     function userSecurityCtrl($scope, $uibModal, userGrants, userScreenModel, toastService, appService, _) {
-        userScreenModel.updateTab('Connected Apps');
+        userScreenModel.updateTab('Security');
         $scope.canDoBulkOperation = canDoBulkOperation;
         $scope.change = change;
         $scope.revoke = revoke;
