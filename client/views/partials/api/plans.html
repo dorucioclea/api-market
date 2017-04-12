@@ -33,7 +33,7 @@
                 <p>The following plans are available to create contracts with the Service. These plans will add additional policies, an overview of which you can find below:</p>
 
                 <uib-accordion class="accordion-panel">
-                    <uib-accordion-group class="panel-primary" is-open="true" ng-repeat="plan in plans">
+                    <div uib-accordion-group class="panel-primary" is-open="true" ng-repeat="plan in plans">
                         <uib-accordion-heading>
                             <h4>
                                 {{plan.planName}}
@@ -64,7 +64,7 @@
 
                             <hr />
                         </div>
-                    </uib-accordion-group>
+                    </div>
                 </uib-accordion>
             </div>
         </div>

@@ -57,7 +57,6 @@
         'app.members',
         'app.notifications',
         'app.organizations',
-        'app.plan',
         'app.plugin.lodash',
         'app.policies',
         'app.service',
