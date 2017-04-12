@@ -137,16 +137,10 @@
 
     }
 
-    function service(ServiceEndpoint, ServiceVersion, DefaultTerms) {
+    function service(ServiceEndpoint, ServiceVersion) {
         this.getServiceVersions = getServiceVersions;
         this.getEndpoint = getEndpoint;
         this.getVersion = getVersion;
-        this.getDefaultTerms = getDefaultTerms; //TODO move this somewhere else (admin service?)
-
-
-        function getDefaultTerms() {
-            return DefaultTerms.get().$promise;
-        }
 
         function getServiceVersions(orgId, svcId) {
             return ServiceVersion.query({ orgId: orgId, svcId: svcId }).$promise;

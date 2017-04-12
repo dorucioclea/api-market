@@ -16,13 +16,14 @@
 
     //ADMIN SERVICE
     function adminHelper($uibModal, $q, StatusInfo, OAuthCentralExpTime, JWTCentralExpTime, TermsAdmin,
-                         ReissueAllKeys, ReissueAllCredentials){
+                         ReissueAllKeys, ReissueAllCredentials, DefaultTerms){
         this.addAdmin = addAdmin;
         this.getStatus = getStatus;
         this.removeAdmin = removeAdmin;
         this.reissueAllKeys = reissueAllKeys;
         this.reissueAllCredentials = reissueAllCredentials;
         this.updateExpirationTimes = updateExpirationTimes;
+        this.getDefaultTerms = getDefaultTerms;
         this.setDefaultTerms = setDefaultTerms;
         
         function addAdmin(username){
@@ -38,6 +39,10 @@
                 backdrop : 'static',
                 windowClass: 'default'	// Animation Class put here.
             });
+        }
+
+        function getDefaultTerms() {
+            return DefaultTerms.get().$promise;
         }
         
         function getStatus() {

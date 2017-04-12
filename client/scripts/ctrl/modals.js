@@ -232,7 +232,7 @@
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
-                      serviceVersion, svcPolicies, appService, service) {
+                      serviceVersion, svcPolicies, appService, service, adminHelper) {
                 $scope.service = serviceVersion;
                 $scope.canCreateContract = canCreateContract;
                 $scope.confirmPlanSelection = confirmPlanSelection;
@@ -268,7 +268,7 @@
                     if ($scope.service.termsAgreementRequired) {
                         if ($scope.service.service.terms && $scope.service.service.terms.length > 0) $scope.terms = $scope.service.service.terms;
                         else {
-                            service.getDefaultTerms().then(function (defaults) {
+                            adminHelper.getDefaultTerms().then(function (defaults) {
                                 $scope.terms = defaults.terms;
                             })
                         }

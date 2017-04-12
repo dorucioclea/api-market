@@ -444,9 +444,9 @@
                     url: '/terms',
                     templateUrl: 'views/partials/administration/terms.html',
                     resolve: {
-                        service: 'service',
-                        currentTerms: function (service) {
-                            return service.getDefaultTerms();
+                        adminHelper: 'adminHelper',
+                        currentTerms: function (adminHelper) {
+                            return adminHelper.getDefaultTerms();
                         }
                     },
                     controller: 'AdminTermsCtrl'
