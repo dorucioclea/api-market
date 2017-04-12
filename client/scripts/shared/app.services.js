@@ -449,27 +449,6 @@
             };
         })
 
-        // ORGANIZATION SCREEN MODEL
-        .service('orgScreenModel', function (Organization) {
-
-            this.selectedTab = 'Plans';
-            this.organization = undefined;
-
-            this.updateTab = function (newTab) {
-                this.selectedTab = newTab;
-            };
-
-            this.updateOrganization = function (org) {
-                this.organization = org;
-            };
-
-            this.getOrgDataForId = function (orgScreenModel, id) {
-                Organization.get({id: id}, function (reply) {
-                    orgScreenModel.updateOrganization(reply);
-                });
-            };
-        })
-
         // RESOURCE UTILITY SERVICE
         .service('resourceUtil', function () {
             this.cleanResponse = cleanResponse;

@@ -2,10 +2,31 @@
     'use strict';
 
     angular.module('app.organizations')
+        .service('orgScreenModel', orgScreenModel)
         .service('orgService', orgService);
-    
-    
-    function orgService($q, $uibModal, Organization, SearchOrgs, currentUserModel) {
+
+    // ORGANIZATION SCREEN MODEL
+    function orgScreenModel(Organization) {
+        this.selectedTab = 'Plans';
+        this.organization = undefined;
+
+        this.updateTab = function (newTab) {
+            this.selectedTab = newTab;
+        };
+
+        this.updateOrganization = function (org) {
+            this.organization = org;
+        };
+
+        this.getOrgDataForId = function (orgScreenModel, id) {
+            Organization.get({id: id}, function (reply) {
+                orgScreenModel.updateOrganization(reply);
+            });
+        };
+    }
+
+
+    function orgService($q, $uibModal, Organization, SearchOrgs) {
 
         this.delete = deleteOrg;
         this.name = nameIt;
