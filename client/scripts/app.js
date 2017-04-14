@@ -39,7 +39,6 @@
         'app.filters',
         'app.api',
         'app.apiEngine',
-        'app.core.components',
         'app.core.login',
         'app.core.keycloak',
         'app.core.routes',
