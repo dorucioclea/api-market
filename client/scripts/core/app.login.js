@@ -44,7 +44,7 @@
         }
 
         function checkJWTInSession() {
-            return !_.isEmpty(Auth.authz.token);
+            return !_.isEmpty(Auth.get().authz.token);
         }
 
         function checkErrorInUrl() {
