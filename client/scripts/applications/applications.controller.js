@@ -142,8 +142,9 @@
         }
 
         function canConfigureOAuth () {
-            return $scope.applicationVersion.oAuthClientId !== null &&
-                $scope.applicationVersion.oAuthClientId.length > 0;
+            return $scope.applicationVersion.oAuthClientId &&
+                   $scope.applicationVersion.oAuthClientId !== null &&
+                   $scope.applicationVersion.oAuthClientId.length > 0;
         }
 
         function showOAuthConfig(appVersion) {
@@ -176,7 +177,7 @@
             $scope.contracts.forEach(function (contract) {
                 if (!contract.serviceEndpoint) {
                     service.getEndpoint(contract.serviceOrganizationId, contract.serviceId, contract.serviceVersion).then(function (endpoint) {
-                        contract.serviceEndpoint = endpoint.managedEndpoint;
+                        contract.serviceEndpoint = endpoint.managedEndpoints;
                     })
                 }
             })

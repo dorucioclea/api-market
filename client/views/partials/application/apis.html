@@ -20,8 +20,8 @@
             <tr ng-repeat="contract in contracts">
                 <td>
                     <a class="clickable mt10" ng-click="toApiDoc(contract)">{{contract.serviceName}}</a>
-                    <p class="small text-light">
-                        {{contract.serviceEndpoint}} <a id="copy-basepath" clipboard text="contract.serviceEndpoint" ng-click="copyEndpoint(contract.serviceName)" class="fa fa-copy clickable" uib-tooltip="Click to copy service basepath to clipboard."></a>
+                    <p class="small text-light mb0" data-ng-repeat="ep in contract.serviceEndpoint">
+                        {{ep}} <a id="copy-basepath" clipboard text="ep" ng-click="copyEndpoint(contract.serviceName)" class="fa fa-copy clickable" uib-tooltip="Click to copy service basepath to clipboard."></a>
                     </p>
                 </td>
                 <td>{{contract.serviceVersion}}</td>
