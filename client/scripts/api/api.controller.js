@@ -205,7 +205,7 @@
 
         function canGrant() {
             var canDoGrant = false;
-            if ($stateParams.scopes == undefined || $stateParams.scopes == null) return true;
+            if ($stateParams.scopes === undefined || $stateParams.scopes === null) return true;
             angular.forEach($scope.selectedScopes, function (value) {
                 if (value.checked) {
                     canDoGrant = true;
@@ -243,7 +243,7 @@
                 var paramString = uri.substr(paramStart + 13);
                 //remove every param that are send after bearer token
                 var n = paramString.indexOf('&');
-                paramString = paramString.substring(0, n != -1 ? n : s.length);
+                paramString = paramString.substring(0, n !== -1 ? n : s.length);
                 var headerObj = {
                     name: 'Authorization',
                     value: 'Bearer ' + paramString

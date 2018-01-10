@@ -167,6 +167,7 @@
 
     module.service('Auth', function ($q) {
         this.checkToken = checkToken;
+        this.generateToken = generateToken;
         this.get = get;
         let checkInProgress;
 
@@ -190,9 +191,7 @@
 
         function getGwToken(tokenRefreshed) {
             if (tokenRefreshed) {
-                return exchangeToken(auth.authz.token).then(() => {
-                    return auth.gwToken;
-                });
+                return exchangeToken(auth.authz.token).then(setAndReturnToken);
             } else {
                 // make sure we have a GW token
                 if (auth.gwToken) {
@@ -200,14 +199,30 @@
                     return auth.gwToken;
                 } else {
                     // gwToken not set, exchange current KeyCloak token for gwToken
-                    return exchangeToken(auth.authz.token).then(() => {
-                        return auth.gwToken;
-                    });
+                    return exchangeToken(auth.authz.token).then(setAndReturnToken);
                 }
             }
         }
 
-        function exchangeToken(kcToken) {
+        /**
+         * Generates a token for the specified API key, based on the current KC Token
+         * @param apikey: API key to use for GW token generation
+         */
+        function generateToken(apikey) {
+            // make sure KC Token is valid
+            return checkToken().then(() => {
+                return exchangeToken(auth.authz.token, apikey);
+            })
+        }
+
+        /**
+         * Will take the keycloak token and transform it into a GW token,
+         * optionally using the provided API key
+         * @param kcToken: the keycloak token
+         * @param apikey: the API key to use to retrieve the GW token
+         *        (optional, if not provided will default to api key from config.yml)
+         */
+        function exchangeToken(kcToken, apikey) {
             // Sending and receiving data in JSON format using POST method
             // Need to use XHR because $http causes circular dependency
             let deferred = $q.defer();
@@ -217,14 +232,18 @@
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    auth.gwToken = JSON.parse(xhr.responseText).token;
-                    deferred.resolve(auth.gwToken);
+                    deferred.resolve(JSON.parse(xhr.responseText).token);
                 }
             };
-            const data = JSON.stringify({ "kcToken": kcToken });
+            const data = JSON.stringify({ "kcToken": kcToken, "contractApiKey": apikey });
             xhr.send(data);
 
             return deferred.promise;
+        }
+
+        function setAndReturnToken(gwToken) {
+            auth.gwToken = gwToken;
+            return auth.gwToken;
         }
     });
 

@@ -4,7 +4,8 @@ const ResUtil = require('./../util/response.util');
 
 function exchangeToken(req, res) {
     let kcToken = req.body.kcToken;
-    srvToken.exchangeToken(kcToken).then(tokenResponse => {
+    let contractApiKey = req.body.contractApiKey;
+    srvToken.exchangeToken(kcToken, contractApiKey).then(tokenResponse => {
         return ResUtil.json(res, tokenResponse)
     }, err => {
         return ResUtil.error(res, err);
