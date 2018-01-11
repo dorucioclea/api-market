@@ -208,17 +208,14 @@
 
     }
 
-    function appMetricsCtrl($scope, $stateParams, $parse, appScreenModel, appService) {
+    function appMetricsCtrl($scope, $stateParams, $parse, appScreenModel, appService, toastService, _) {
         init();
         function init() {
             appScreenModel.updateTab('Metrics');
-            $scope.responseHistogramData = {};
 
             $scope.fromDt = new Date();
             $scope.fromDt.setDate($scope.fromDt.getDate() - 7); //Start with a one week period
             $scope.toDt = new Date();
-            $scope.interval = 'day';
-            $scope.isIntervalMinute = false;
             updateMetrics();
         }
 
@@ -234,115 +231,133 @@
         };
 
         function updateMetrics() {
-            appService.getAppMetrics($stateParams.orgId, $stateParams.appId, $stateParams.versionId, $scope.fromDt, $scope.toDt, $scope.interval).then(function (stats) {
+            $scope.loading = true;
+            $scope.responseHistogramData = [];
+
+            appService.getAppMetrics($stateParams.orgId, $stateParams.appId, $stateParams.versionId, $scope.fromDt, $scope.toDt).then(function (stats) {
                 $scope.error = false;
-                $scope.serviceIds = [];
-                angular.forEach(stats.data, function (serviceData, serviceKey) {
-                    var key = serviceKey.split('.').join('_');
-                    createResponseHistogram(serviceData.data, key);
+                let noData = true;
+                _.forEach(stats.data, function (serviceData, serviceKey) {
+                    if (!_.isUndefined(serviceData) && !_.isEmpty(serviceData)) {
+                        noData = false;
+                        createResponseHistogram(serviceData.serviceData, serviceKey);
+                    }
                 });
+                $scope.noData = noData;
             }, function (err) {
-                $scope.error = true;
-            });
+                if (err.data.type === "InvalidMetricCriteriaException") {
+                    toastService.warning('<b>Invalid date range!</b><br>From date must fall before To date.');
+                } else {
+                    $scope.error = true;
+                }
+            }).finally(() => { $scope.loading = false; });
         }
 
         $scope.$watch('fromDt', function (newValue, oldValue) {
             if (newValue !== oldValue) {
-                if (!$scope.isIntervalMinute) {
-                    updateMetrics();
-                }
+                updateMetrics();
             }
         });
 
         $scope.$watch('toDt', function (newValue, oldValue) {
             if (newValue !== oldValue) {
-                if (!$scope.isIntervalMinute) {
-                    updateMetrics();
-                }
-            }
-        });
-
-        $scope.$watch('interval', function (newValue, oldValue) {
-            if (newValue !== oldValue) {
-                if ($scope.interval === 'minute') {
-                    $scope.isIntervalMinute = true;
-                    getMinuteMetrics();
-                } else {
-                    $scope.isIntervalMinute = false;
-                }
                 updateMetrics();
             }
         });
 
-        function getMinuteMetrics() {
-            $scope.fromDt = new Date();
-            $scope.fromDt.setDate($scope.fromDt.getDate() - 1); // Only get minute statistics for the last day.
-            $scope.toDt = new Date();
-            updateMetrics();
+        function setBlanksToZeroAndRound(property) {
+            return !_.isUndefined(property) && !_.isNull(property) ? _.round(property) : 0;
         }
 
-        function setBlanksToZero(property) {
-            return angular.isDefined(property) ? property : 0;
-        }
+        function createResponseHistogram(dataArray, dataKey) {
+            let entries = [];
 
-        function createResponseHistogram(dataArray, dataArrayId) {
-            var property = 'responseHistogramData.' + dataArrayId;
-            var propertyId = property + '.id';
-            var propertyName = property + '.name';
-            var propertyEntries = property + '.entries';
-            var entries = [];
+            // determine service params
+            let serviceMetricsObject = detectServiceInfo(dataKey);
 
-            angular.forEach(dataArray, function(data) {
-                var date = new Date(data.interval);
-                var display = '';
+            _.forEach(dataArray, function (data) {
+                let parsed = JSON.parse(data);
 
-                switch ($scope.interval) {
-                    case 'month':
-                        display = date.getMonth();
-                        break;
-                    case 'week':
-                        display = date.getDate() + '/' + (date.getMonth() + 1);
-                        break;
-                    case 'day':
-                        display = date.getDate() + '/' + (date.getMonth() + 1);
-                        break;
-                    case 'hour':
-                        display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
-                        if (date.getHours < 10) {
-                            display += '0';
-                        }
-                        display += date.getHours() + ':00';
-                        break;
-                    case 'minute':
-                        display = date.getDate() + '/' + (date.getMonth() + 1) + ' ';
-                        if (date.getHours() < 10) {
-                            display += '0';
-                        }
-                        display += date.getHours() + ':';
-                        if (date.getMinutes() < 10) {
-                            display += '0';
-                        }
-                        display += date.getMinutes();
-                        break;
-                }
+                // determine the metric we are dealing with
+                let metric = determineMetric(parsed);
 
-                entries.push({
-                    'x': date,
-                    'displayDate': display,
-                    'count': setBlanksToZero(data.count)
+                _.forEach(parsed.pointlist, point => {
+                    // see if there is an entry for this date
+                    let existing = _.find(entries, dp => {
+                        return dp.point === point[0];
+                    });
+
+                    if (existing) { existing[metric] = setBlanksToZeroAndRound(point[1]); }
+                    else {
+                        // create new datapoint
+                        let tempDate = new Date(point[0]);
+                        let dataPoint = {
+                            point: point[0],
+                            'x': tempDate,
+                            displayDate: tempDate.getDate() + '/' + tempDate.getMonth() + 1,
+                            request_count: 0,
+                            request_200: 0,
+                            request_400: 0,
+                            request_500: 0
+                        };
+                        dataPoint[metric] = setBlanksToZeroAndRound(point[1]);
+                        entries.push(dataPoint);
+                    }
                 });
             });
 
-            entries.sort(function(a, b) {
+
+            function detectServiceInfo(input) {
+                let components = _.split(input, ', ');
+
+                return {
+                    id:   _.split(_.find(components, c => { return _.split(c, '=')[0] === 'id'}), '=')[1],
+                    name: _.split(_.find(components, c => { return _.split(c, '=')[0] === 'name'}), '=')[1],
+                    desc: _.split(_.find(components, c => { return _.split(c, '=')[0] === 'description'}), '=')[1],
+                };
+            }
+
+            function determineMetric(input) {
+                let components = _.split(input.metric, '.');
+                switch (components[components.length -1]) {
+                    case 'latency':
+                        return 'latency_kong';
+                    case 'upstream_latency':
+                        return 'latency_upstream';
+                    case 'uniques':
+                        return 'user_uniques';
+                    case 'count':
+                        return 'request_count';
+                    case '200':
+                        return 'request_200';
+                    case '400':
+                        return 'request_400';
+                    case '500':
+                        return 'request_500';
+                    case 'size':
+                        if (components[components.length -2] === 'request') { return 'request_size'; }
+                        else { return 'response_size'; }
+                }
+            }
+
+            entries.sort(function (a, b) {
                 return a.x - b.x;
             });
-            $parse(propertyId).assign($scope, dataArrayId);
-            $parse(propertyName).assign($scope, dataArrayId.split('_').join(' '));
-            $parse(propertyEntries).assign($scope, entries);
+            serviceMetricsObject.entries = entries;
+            // create new service object in responseHistogramData
+            $scope.responseHistogramData.push(serviceMetricsObject);
         }
 
         $scope.responseHistogramColumns = [
-            {'id': 'count', 'name': 'Requests', 'type': 'spline', 'color': 'blue'}
+            {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': '#071F82'},
+            {'id': 'latency_upstream', 'name': 'Upstream latency', 'type': 'line', 'color': '#104752'},
+            {'id': 'request_count', 'name': 'Requests', 'type': 'line', 'color': '#0BA396'},
+            {'id': 'request_200', 'name': 'Success (2XX)', 'type': 'line', 'color': '#ADDB4D'},
+            {'id': 'request_400', 'name': 'Client Error (4XX)', 'type': 'line', 'color': '#FDBE28'},
+            {'id': 'request_500', 'name': 'Server Error (5XX)', 'type': 'line', 'color': '#F5331B'},
+            {'id': 'request_size', 'name': 'Request Size', 'type': 'line', 'color': '#D191FF'},
+            {'id': 'response_size', 'name': 'Response Size', 'type': 'line', 'color': '#ECD1FF'},
+            {'id': 'user_uniques', 'name': 'Unique users', 'type': 'line', 'color': '#5D4B51'}
         ];
         $scope.responseHistogramX = {'id': 'displayDate'};
     }

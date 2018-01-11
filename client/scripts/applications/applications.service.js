@@ -208,7 +208,7 @@
         }
     }
 
-    function appService(Application, ApplicationMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, userService, OAuthTokenRevoke) {
+    function appService(Application, ApplicationVersionMetrics, ApplicationVersion, ApplicationContract, ApplicationVersionToken, $q, _, userService, OAuthTokenRevoke) {
         this.getAppsForOrg = getAppsForOrg;
         this.getAppVersions = getAppVersions;
         this.getAppVersionDetails = getAppVersionDetails;
@@ -259,10 +259,8 @@
             });
         }
 
-        function getAppMetrics(orgId, appId, versionId, fromDt, toDt, interval) {
-            return ApplicationMetrics.get({orgId: orgId, appId: appId,
-                versionId: versionId,
-                from: fromDt, to: toDt, interval: interval}).$promise;
+        function getAppMetrics(orgId, appId, versionId, fromDt, toDt) {
+            return ApplicationVersionMetrics.get({ orgId, appId, versionId, from: fromDt, to: toDt }).$promise;
         }
 
         function revokeAppVersionTokens(toRevoke) {
