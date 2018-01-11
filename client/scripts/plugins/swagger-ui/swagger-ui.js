@@ -76,7 +76,7 @@ angular
     })
     .controller('swaggerUiController', function($scope, $http, $location, $q, $anchorScroll, $timeout, swaggerClient, swaggerModules, swaggerTranslator, Auth) {
 
-        let swagger;
+        var swagger;
 
         // WARNING authentication is not implemented, please use 'api-explorer-transform' directive's param to customize API calls
 
@@ -85,7 +85,7 @@ angular
          */
         function loadSwagger(url, callback) {
             $scope.loading = true;
-            let options = {
+            var options = {
                 method: 'GET',
                 url: url
             };
@@ -109,7 +109,7 @@ angular
          */
         function swaggerLoaded(swaggerUrl, swaggerType) {
             $scope.loading = false;
-            let parseResult = {};
+            var parseResult = {};
             // execute modules
             $scope.parser = $scope.parser || 'auto';
             swaggerModules
@@ -203,7 +203,7 @@ angular
                         swaggerModules
                             .execute(swaggerModules.BEFORE_PARSE, url, swagger)
                             .then(function() {
-                                let contentType = headers()['content-type'] || 'application/json',
+                                var contentType = headers()['content-type'] || 'application/json',
                                     swaggerType = contentType.split(';')[0];
 
                                 swaggerLoaded(url, swaggerType);
@@ -232,7 +232,7 @@ angular
          * transform a relative URL to an absolute URL
          */
         function absoluteUrl(url) {
-            let a = document.createElement('a');
+            var a = document.createElement('a');
             a.href = url;
             return a.href;
         }
@@ -242,7 +242,7 @@ angular
          */
         $scope.expand = function(resource, expandOperations) {
             resource.open = true;
-            for (let i = 0, op = resource.operations, l = op.length; i < l; i++) {
+            for (var i = 0, op = resource.operations, l = op.length; i < l; i++) {
                 op[i].open = expandOperations;
             }
         };
@@ -265,15 +265,15 @@ angular
             if ($scope.customHeaders && $scope.customHeaders.length > 0) operation.customHeaders = $scope.customHeaders;
 
             // JWT handler
-            let prep = $q.defer();
+            var prep = $q.defer();
             if ($scope.jwtEnabled) {
-                Auth.generateToken($scope.apikey).then(jwt => {
+                Auth.generateToken($scope.apikey).then(function(jwt) {
                     operation.jwt = encodeURIComponent(jwt);
                     prep.resolve();
                 });
             } else { prep.resolve(); }
 
-            prep.promise.then(() => {
+            prep.promise.then(function() {
                 swaggerClient
                     .send(swagger, operation, $scope.form[operation.id], $scope.basePath, $scope.hasOauth)
                     .then(function(result) {
