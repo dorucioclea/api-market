@@ -256,6 +256,9 @@
                         endpoint: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServiceEndpoint(organizationId, serviceId, versionId);
                         },
+                        marketInfo: function(apiService, organizationId, serviceId, versionId) {
+                            return apiService.getServiceVersionMarketInfo(organizationId, serviceId, versionId);
+                        },
                         svcPolicies: function (apiService, organizationId, serviceId, versionId) {
                             return apiService.getServiceVersionPolicies(organizationId, serviceId, versionId);
                         },

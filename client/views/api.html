@@ -59,6 +59,11 @@
             <div class="col-sm-12">
                 <hr>
             </div>
+            <div class="col-sm-12 text-small text-muted market-info" ng-if="marketInfo">
+                <span uib-tooltip="Unique Users" tooltip-placement="bottom"><i class="fa fa-users"></i> {{marketInfo.distinctUsers}}</span>
+                <span class="spacer"></span>
+                <span uib-tooltip="Followers" tooltip-placement="bottom"><i class="fa fa-star"></i> {{marketInfo.followers}}</span>
+            </div>
             <div class="col-sm-12 text-light mt20" ng-if="hasOAuth">
                 <div class="col-sm-4  text-left">
                     <span class="fa fa-fw xlarge" ng-class="{'fa-check-circle text-success': oAuthConfig.enable_authorization_code, 'fa-times-circle text-danger': !oAuthConfig.enable_authorization_code}"></span> Authorization Code

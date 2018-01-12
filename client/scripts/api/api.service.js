@@ -7,8 +7,8 @@
         .service('svcTab', svcTab);
 
 
-    function apiService(SearchLatestServiceVersions, PublishedCategories, ServicePolicies, ServicePlans,
-                        ServiceSupportTickets, ServiceAnnouncementsAll, ServiceVersionPolicy,
+    function apiService($q, SearchLatestServiceVersions, PublishedCategories, ServicePolicies, ServicePlans,
+                        ServiceSupportTickets, ServiceAnnouncementsAll, ServiceVersionPolicy, ServiceVersionMarketInfo,
                         ServiceEndpoint, ServiceVersion, ServiceVersionDefinition, SearchLatestPublishedSvcsInCategories,
                         MktSearchLatestServiceVersions, MktPublishedCategories, MktServicePolicies, MktServicePlans,
                         MktServiceSupportTickets, MktServiceAnnouncementsAll, MktServiceAvailability,
@@ -26,6 +26,7 @@
         this.getServiceVersions = getServiceVersions;
         this.getServiceVersionContracts = getServiceVersionContracts;
         this.getServiceVersionDefinition = getServiceVersionDefinition;
+        this.getServiceVersionMarketInfo = getServiceVersionMarketInfo;
         this.getServiceVersionPolicies = getServiceVersionPolicies;
         this.getServiceVersionPolicy = getServiceVersionPolicy;
         this.getServiceSupportTickets = getServiceSupportTickets;
@@ -94,6 +95,11 @@
         function getServiceVersionDefinition(orgId, svcId, versionId) {
             if (loginHelper.checkLoggedIn()) return ServiceVersionDefinition.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
             else return MktServiceVersionDefinition.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+        }
+
+        function getServiceVersionMarketInfo(orgId, svcId, versionId) {
+            if (loginHelper.checkLoggedIn()) return ServiceVersionMarketInfo.get({orgId: orgId, svcId: svcId, versionId: versionId}).$promise;
+            else return $q.when();
         }
 
         function getServicePolicies(orgId, svcId, versionId) {

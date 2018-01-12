@@ -12,7 +12,7 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, versions, svcModel, svcTab, loginHelper, oAuthPolicy,
+    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, marketInfo, svcData, versions, svcModel, svcTab, loginHelper, oAuthPolicy,
                         headerModel, toastService, followerService, support, CONFIG, EVENTS, _) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
@@ -42,7 +42,7 @@
         $scope.availableVersions = _.filter(versions, function (v) {
             return v.status === 'Published' || v.status === 'Deprecated';
         });
-
+        $scope.marketInfo = marketInfo;
 
         $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 

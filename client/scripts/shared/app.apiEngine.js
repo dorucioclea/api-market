@@ -301,7 +301,7 @@
                });
            })
            .factory('ServiceVersionMarketInfo', function ($resource, CONFIG) {
-               return $resource('proxy/organizations/:orgId/services/:svcId/versions/:versionId/marketinfo');
+               return $resource('proxy/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
            })
            .factory('ServiceVersionDefinition', function ($resource, CONFIG) {
                return $resource('proxy/organizations/:orgId/services/:svcId/versions/:versionId/definition',
@@ -341,9 +341,6 @@
            })
            .factory('ServiceMetricsResponseSummary', function ($resource, CONFIG) {
                return $resource('proxy/organizations/:orgId/services/:svcId/versions/:versionId/metrics/summaryResponseStats');
-           })
-           .factory('ServiceMarketInfo', function ($resource, CONFIG) {
-               return $resource('proxy/organizations/:orgId/services/:svcId/versions/:versionId/market/info');
            })
            .factory('ServiceSupportTickets', function ($resource, CONFIG) {
                return $resource('proxy/organizations/:orgId/services/:svcId/support/:supportId', {},
