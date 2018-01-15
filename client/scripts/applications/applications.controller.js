@@ -294,7 +294,7 @@
                         let dataPoint = {
                             point: point[0],
                             'x': tempDate,
-                            displayDate: tempDate.getDate() + '/' + tempDate.getMonth() + 1,
+                            displayDate: moment(tempDate).format('DD-MM-YYYY, hh:mm:ss'),
                             request_count: 0,
                             request_200: 0,
                             request_400: 0,
