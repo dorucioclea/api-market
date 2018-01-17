@@ -63,6 +63,8 @@
                 <span uib-tooltip="Unique Users" tooltip-placement="bottom"><i class="fa fa-users"></i> {{marketInfo.distinctUsers}}</span>
                 <span class="spacer"></span>
                 <span uib-tooltip="Followers" tooltip-placement="bottom"><i class="fa fa-star"></i> {{marketInfo.followers}}</span>
+                <span class="spacer"></span>
+                <span uib-tooltip="Uptime" tooltip-placement="bottom" data-ng-if="marketInfo.uptime"><i class="fa fa-dashboard"></i> {{marketInfo.uptime}}%</span>
             </div>
             <div class="col-sm-12 text-light mt20" ng-if="hasOAuth">
                 <div class="col-sm-4  text-left">
