@@ -238,9 +238,9 @@
                 $scope.error = false;
                 let noData = true;
                 _.forEach(stats.data, function (serviceData, serviceKey) {
-                    if (!_.isUndefined(serviceData) && !_.isEmpty(serviceData)) {
+                    if (!_.isUndefined(serviceData) && !_.isEmpty(serviceData) && !_.isEmpty(serviceData.applicationData)) {
                         noData = false;
-                        createResponseHistogram(serviceData.serviceData, serviceKey);
+                        createResponseHistogram(serviceData.applicationData, serviceKey);
                     }
                 });
                 $scope.noData = noData;
@@ -295,10 +295,7 @@
                             point: point[0],
                             'x': tempDate,
                             displayDate: moment(tempDate).format('DD-MM-YYYY, hh:mm:ss'),
-                            request_count: 0,
-                            request_200: 0,
-                            request_400: 0,
-                            request_500: 0
+                            request_count: 0
                         };
                         dataPoint[metric] = setBlanksToZeroAndRound(point[1]);
                         entries.push(dataPoint);
@@ -313,6 +310,7 @@
                 return {
                     id:   _.split(_.find(components, c => { return _.split(c, '=')[0] === 'id'}), '=')[1],
                     name: _.split(_.find(components, c => { return _.split(c, '=')[0] === 'name'}), '=')[1],
+                    version: _.split(_.find(components, c => { return _.split(c, '=')[0] === 'version'}), '=')[1],
                     desc: _.split(_.find(components, c => { return _.split(c, '=')[0] === 'description'}), '=')[1],
                 };
             }
@@ -349,15 +347,16 @@
         }
 
         $scope.responseHistogramColumns = [
-            {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': '#071F82'},
-            {'id': 'latency_upstream', 'name': 'Upstream latency', 'type': 'line', 'color': '#104752'},
-            {'id': 'request_count', 'name': 'Requests', 'type': 'line', 'color': '#0BA396'},
-            {'id': 'request_200', 'name': 'Success (2XX)', 'type': 'line', 'color': '#ADDB4D'},
-            {'id': 'request_400', 'name': 'Client Error (4XX)', 'type': 'line', 'color': '#FDBE28'},
-            {'id': 'request_500', 'name': 'Server Error (5XX)', 'type': 'line', 'color': '#F5331B'},
-            {'id': 'request_size', 'name': 'Request Size', 'type': 'line', 'color': '#D191FF'},
-            {'id': 'response_size', 'name': 'Response Size', 'type': 'line', 'color': '#ECD1FF'},
-            {'id': 'user_uniques', 'name': 'Unique users', 'type': 'line', 'color': '#5D4B51'}
+            // {'id': 'latency_kong', 'name': 'Kong latency', 'type': 'line', 'color': '#071F82'},
+            // {'id': 'latency_upstream', 'name': 'Upstream latency', 'type': 'line', 'color': '#104752'},
+            // {'id': 'request_count', 'name': 'Requests', 'type': 'line', 'color': '#0BA396'},
+            {'id': 'request_count', 'name': 'Requests', 'type': 'line', 'color': '#ADDB4D'},
+            // {'id': 'request_200', 'name': 'Success (2XX)', 'type': 'line', 'color': '#ADDB4D'},
+            // {'id': 'request_400', 'name': 'Client Error (4XX)', 'type': 'line', 'color': '#FDBE28'},
+            // {'id': 'request_500', 'name': 'Server Error (5XX)', 'type': 'line', 'color': '#F5331B'},
+            // {'id': 'request_size', 'name': 'Request Size', 'type': 'line', 'color': '#D191FF'},
+            // {'id': 'response_size', 'name': 'Response Size', 'type': 'line', 'color': '#ECD1FF'},
+            // {'id': 'user_uniques', 'name': 'Unique users', 'type': 'line', 'color': '#5D4B51'}
         ];
         $scope.responseHistogramX = {'id': 'displayDate'};
     }

@@ -41,7 +41,7 @@
 
   <div class="col-sm-12 mt10" ng-repeat="service in responseHistogramData" ng-if="!error">
     <div class="panel panel-primary">
-      <div class="panel-heading metric-heading">{{service.name}} | <span class="metric-service-desc">{{ service.desc }}</span></div>
+      <div class="panel-heading metric-heading">{{service.name}} <span class="metric-service-version">{{service.version}}</span> | <span class="metric-service-desc">{{ service.desc }}</span></div>
       <div class="panel-body">
         <c3chart bindto-id="{{service.id}}" chart-data="service.entries" chart-columns="responseHistogramColumns" chart-x="responseHistogramX">
           <chart-axis>
