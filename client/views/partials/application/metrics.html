@@ -6,41 +6,31 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <div class="col-sm-4">
+    <div class="col-sm-4 col-sm-offset-1">
       <div class="form-group">
         <label class="control-label">From</label>
         <div class="input-group">
           <input type="text" class="form-control datepicker" uib-datepicker-popup="{{format}}" ng-model="fromDt" is-open="fromOpened"
                  min-date="2015-01-01" max-date="'2025-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                  ng-required="true" show-button-bar="false" ng-disabled="isIntervalMinute"/>
-								<span class="input-group-btn">
+          <span class="input-group-btn">
 									<button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event)" ng-disabled="isIntervalMinute"></button>
 								</span>
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 col-sm-offset-2">
       <div class="form-group">
         <label class="control-label">To</label>
         <div class="input-group">
           <input type="text" class="form-control datepicker" uib-datepicker-popup="{{format}}" ng-model="toDt" is-open="toOpened"
                  min-date="2015-01-01" max-date="'2025-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                  ng-required="true" show-button-bar="false" ng-disabled="isIntervalMinute"/>
-								<span class="input-group-btn">
+          <span class="input-group-btn">
 									<button type="button" class="btn btn-default ion ion-calendar" ng-click="open($event, true)" ng-disabled="isIntervalMinute"></button>
 								</span>
         </div>
       </div>
-    </div>
-    <div class="col-sm-4">
-      <label for="interval">Interval</label>
-      <select class="form-control" id="interval" ng-model="interval">
-        <option value="month">Month</option>
-        <option value="week">Week</option>
-        <option value="day">Day</option>
-        <option value="hour">Hour</option>
-        <option value="minute">Minute</option>
-      </select>
     </div>
     <div class="col-sm-12">
       <hr>
@@ -51,7 +41,7 @@
 
   <div class="col-sm-12 mt10" ng-repeat="service in responseHistogramData" ng-if="!error">
     <div class="panel panel-primary">
-      <div class="panel-heading metric-heading text-center">{{service.name}}</div>
+      <div class="panel-heading metric-heading">{{service.name}} <span class="metric-service-version">{{service.version}}</span> | <span class="metric-service-desc">{{ service.desc }}</span></div>
       <div class="panel-body">
         <c3chart bindto-id="{{service.id}}" chart-data="service.entries" chart-columns="responseHistogramColumns" chart-x="responseHistogramX">
           <chart-axis>
@@ -66,8 +56,20 @@
     </div>
   </div>
 
-  <div class="col-sm-12 mt30" ng-if="error">
+  <div class="metrics-loading-overlay mt30" data-ng-if="loading">
+    <div class="spinner">
+      <i class="fa fa-spinner fa-pulse"></i>
+    </div>
+    <div class="loading-text">Loading</div>
+  </div>
+
+  <div class="col-sm-12 mt30" data-ng-if="error">
     <p class="text-center text-thin size-h4 text-muted">We could not retrieve the requested metrics data at this time.</p>
+    <p class="text-center text-thin size-h4 text-muted">Please try again later.</p>
+  </div>
+
+  <div class="col-sm-12 mt30" data-ng-if="noData">
+    <p class="text-center text-thin size-h4 text-muted">No metrics data is available at this time.</p>
     <p class="text-center text-thin size-h4 text-muted">Please try again later.</p>
   </div>
 </div>

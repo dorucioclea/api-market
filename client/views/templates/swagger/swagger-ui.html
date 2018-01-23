@@ -37,7 +37,7 @@
                 </ul>
             </div>
             <ul class="list-unstyled collapse operations in" ng-if="api.open">
-                <li ng-repeat="op in api.operations track by $index" class="operation {{op.httpMethod}}">
+                <li ng-repeat="op in api.operations | orderBy:'path' track by $index" class="operation {{op.httpMethod}}">
                     <div id="{{op.operationId}}" class="heading">
                         <a ng-click="op.open=!op.open;permalink(op.operationId)" href="javascript:;">
                             <div class="clearfix">

@@ -3,7 +3,7 @@ const config = require(__base + 'modules/t1t-config');
 const reqUtil = require('../util/request.util');
 const rp = require('request-promise');
 
-function exchangeToken(kcToken) {
+function exchangeToken(kcToken, contractApiKey) {
     const endpoint = config.gw.auth.uri + '/login/idp/exchange';
 
     let requestOptions = {
@@ -16,6 +16,7 @@ function exchangeToken(kcToken) {
         body: kcToken,
         headers: reqUtil.defaultHeaders()
     };
+    if (contractApiKey && contractApiKey.length) { requestOptions.headers.apikey = contractApiKey; }
 
     return rp(requestOptions);
 }

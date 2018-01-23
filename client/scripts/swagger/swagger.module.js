@@ -17,7 +17,7 @@
          * Module entry point
          */
         this.execute = function(options) {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
             deferred.resolve(true);
             return deferred.promise;
         };
@@ -28,12 +28,12 @@
          * Module entry point
          */
         this.execute = function(url, swagger) {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
 
             // Remove all path properties that start with "X-"
             Object.keys(swagger.paths).forEach(function (path) {
                 Object.keys(swagger.paths[path]).forEach(function (pathKey) {
-                    if (pathKey.substr(0, 2) == 'x-') {
+                    if (pathKey.substr(0, 2) === 'x-') {
                         delete swagger.paths[path][pathKey];
                     }
                 })
@@ -49,7 +49,7 @@
          * Module entry point
          */
         this.execute = function(options) {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
             options.isSwaggerUIRequest = true;
             deferred.resolve(options);
             return deferred.promise;

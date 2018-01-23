@@ -74,7 +74,7 @@ angular
             }
         };
     })
-    .controller('swaggerUiController', function($scope, $http, $location, $anchorScroll, $sessionStorage, $timeout, swaggerClient, swaggerModules, swaggerTranslator) {
+    .controller('swaggerUiController', function($scope, $http, $location, $q, $anchorScroll, $timeout, swaggerClient, swaggerModules, swaggerTranslator, Auth) {
 
         var swagger;
 
@@ -263,13 +263,24 @@ angular
             operation.loading = true;
             if ($scope.apikey) operation.apikey = $scope.apikey;
             if ($scope.customHeaders && $scope.customHeaders.length > 0) operation.customHeaders = $scope.customHeaders;
-            if ($scope.jwtEnabled) operation.jwt = encodeURIComponent($sessionStorage.jwt);
-            swaggerClient
-                .send(swagger, operation, $scope.form[operation.id], $scope.basePath, $scope.hasOauth)
-                .then(function(result) {
-                    operation.loading = false;
-                    operation.explorerResult = result;
+
+            // JWT handler
+            var prep = $q.defer();
+            if ($scope.jwtEnabled) {
+                Auth.generateToken($scope.apikey).then(function(jwt) {
+                    operation.jwt = encodeURIComponent(jwt);
+                    prep.resolve();
                 });
+            } else { prep.resolve(); }
+
+            prep.promise.then(function() {
+                swaggerClient
+                    .send(swagger, operation, $scope.form[operation.id], $scope.basePath, $scope.hasOauth)
+                    .then(function(result) {
+                        operation.loading = false;
+                        operation.explorerResult = result;
+                    });
+            });
         };
 
     })

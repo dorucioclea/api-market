@@ -44,14 +44,16 @@ angular
                 resources = [],
                 infos = swagger.info,
                 openPath = $location.hash(),
-                defaultContentType = 'application/json';
+                defaultContentType = 'application/json',
+                sortResources = !swagger.tags;
+
 
             operationId = 0;
             paramId = 0;
             parseInfos(swagger, url, infos, defaultContentType);
             parseTags(swagger, resources, map);
             parseOperations(swagger, resources, form, map, defaultContentType, openPath);
-            cleanUp(resources, openPath);
+            cleanUp(resources, openPath, sortResources);
             // prepare result
             parseResult.infos = infos;
             parseResult.resources = resources;
@@ -253,7 +255,7 @@ angular
             }
         }
 
-        function cleanUp(resources, openPath) {
+        function cleanUp(resources, openPath, sortResources) {
             var i,
                 resource,
                 operations;
@@ -266,15 +268,26 @@ angular
                     resources.splice(i--, 1);
                 }
             }
-            // sort resources alphabeticaly
-            resources.sort(function(a, b) {
-                if (a.name > b.name) {
-                    return 1;
-                } else if (a.name < b.name) {
-                    return -1;
-                }
-                return 0;
-            });
+            // // sort resources alphabeticaly
+            // resources.sort(function(a, b) {
+            //     if (a.name > b.name) {
+            //         return 1;
+            //     } else if (a.name < b.name) {
+            //         return -1;
+            //     }
+            //     return 0;
+            // });
+            if (sortResources) {
+                // sort resources alphabetically
+                resources.sort(function(a, b) {
+                    if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name < b.name) {
+                        return -1;
+                    }
+                    return 0;
+                });
+            }
             swaggerModel.clearCache();
         }
 

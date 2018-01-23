@@ -12,7 +12,7 @@
         .controller('TermsCtrl', termsCtrl);
     
 
-    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, svcData, versions, svcModel, svcTab, loginHelper, oAuthPolicy,
+    function apiDocCtrl($scope, $rootScope, $uibModal, endpoint, marketInfo, svcData, versions, svcModel, svcTab, loginHelper, oAuthPolicy,
                         headerModel, toastService, followerService, support, CONFIG, EVENTS, _) {
         headerModel.setIsButtonVisible(true, true, true);
         svcModel.setService(svcData);
@@ -42,7 +42,7 @@
         $scope.availableVersions = _.filter(versions, function (v) {
             return v.status === 'Published' || v.status === 'Deprecated';
         });
-
+        $scope.marketInfo = marketInfo;
 
         $rootScope.$broadcast(EVENTS.API_DETAILS_PAGE_OPENED);
 
@@ -205,7 +205,7 @@
 
         function canGrant() {
             var canDoGrant = false;
-            if ($stateParams.scopes == undefined || $stateParams.scopes == null) return true;
+            if ($stateParams.scopes === undefined || $stateParams.scopes === null) return true;
             angular.forEach($scope.selectedScopes, function (value) {
                 if (value.checked) {
                     canDoGrant = true;
@@ -243,7 +243,7 @@
                 var paramString = uri.substr(paramStart + 13);
                 //remove every param that are send after bearer token
                 var n = paramString.indexOf('&');
-                paramString = paramString.substring(0, n != -1 ? n : s.length);
+                paramString = paramString.substring(0, n !== -1 ? n : s.length);
                 var headerObj = {
                     name: 'Authorization',
                     value: 'Bearer ' + paramString
