@@ -31,11 +31,6 @@
 </aside>
 
 <div class="page page-dashboard page-ui-notifications" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}">
-    <div class="toast toast-bottomRight">
-        <uib-alert ng-repeat="toast in toasts" type="{{toast.type}}" close="closeAlert($index)" class="toast-fade">
-            <div ng-bind-html="toast.msg">Test Toast</div>
-        </uib-alert>
-    </div>
     <!-- dashboard header -->
     <div style="padding-left: 0; padding-right: 0;">
         <div class="dash-head clearfix flex-row" ng-class="{ 'nav-expand' : navFull, 'nav-offcanvas' : navOffCanvas}">
