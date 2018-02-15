@@ -232,12 +232,12 @@
             function ($scope, $uibModal, $state, $stateParams, $timeout, selectedApp, orgScreenModel,
                       policyConfig, contractService, toastService, TOAST_TYPES, Application, ApplicationVersion,
                       currentUser, PlanVersion, PlanVersionPolicy, ServiceVersionPolicy,
-                      serviceVersion, svcPolicies, appService, service, adminHelper) {
+                      serviceVersion, svcPoliciesWithDetails, appService, service, adminHelper, policyService) {
                 $scope.service = serviceVersion;
                 $scope.canCreateContract = canCreateContract;
                 $scope.confirmPlanSelection = confirmPlanSelection;
                 $scope.orgScreenModel = orgScreenModel;
-                $scope.servicePolicies = svcPolicies;
+                $scope.servicePoliciesWithDetails = svcPoliciesWithDetails;
                 $scope.selectOrg = selectOrg;
                 $scope.selectApp = selectApp;
                 $scope.selectPlan = selectPlan;
@@ -254,7 +254,6 @@
                 init();
 
                 function init() {
-                    getServicePolicyDetails(svcPolicies);
                     if (angular.isDefined(selectedApp.appVersion) && selectedApp.appVersion !== null) {
                         $scope.selectedAppVersion = selectedApp.appVersion;
                         hasAppContext = true;
@@ -349,39 +348,8 @@
                 }
 
                 function getPlanPolicies() {
-                    PlanVersionPolicy.query(
-                        {orgId: $scope.selectedPlan.plan.organization.id,
-                            planId: $scope.selectedPlan.plan.id,
-                            versionId: $scope.selectedPlan.version},
-                        function (policies) {
-                            $scope.selectedPlanPolicies = policies;
-                            angular.forEach(policies, function (policy) {
-                                getPlanPolicyDetails(policy);
-                            });
-                        });
-                }
-
-                function getPlanPolicyDetails(policy) {
-                    PlanVersionPolicy.get(
-                        {orgId: $scope.selectedPlan.plan.organization.id,
-                            planId: $scope.selectedPlan.plan.id,
-                            versionId: $scope.selectedPlan.version,
-                            policyId: policy.id},
-                        function (deets) {
-                            $scope.policyConfig[deets.id] = policyConfig.createConfigObject(deets);
-                        });
-                }
-
-                function getServicePolicyDetails(policies) {
-                    angular.forEach(policies, function (policy) {
-                        ServiceVersionPolicy.get({orgId: $scope.service.service.organization.id,
-                                svcId: $scope.service.service.id,
-                                versionId: $scope.service.version,
-                                policyId: policy.id},
-                            function (deets) {
-                                $scope.policyConfig[deets.id] = policyConfig.createConfigObject(deets);
-                            }
-                        );
+                    policyService.getPlanPoliciesWithDetails($scope.selectedPlan.plan.organization.id, $scope.selectedPlan.plan.id, $scope.selectedPlan.version).then(function(policies) {
+                        $scope.selectedPlanPolicies = policies;
                     });
                 }
 
