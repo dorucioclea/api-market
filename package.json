@@ -147,6 +147,7 @@
     "tv4": "1.0.15",
     "underscore": "1.8.3",
     "winston": "^2.3.0",
-    "winston-daily-rotate-file": "^1.4.2"
+    "winston-daily-rotate-file": "^1.4.2",
+    "yarn": "^1.5.1"
   }
 }

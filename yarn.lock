@@ -10460,6 +10460,10 @@ yargs@~3.5.4:
     window-size "0.1.0"
     wordwrap "0.0.2"
 
+yarn@^1.5.1:
+  version "1.5.1"
+  resolved "https://repo.t1t.be/repository/npm-group/yarn/-/yarn-1.5.1.tgz#e8680360e832ac89521eb80dad3a7bc27a40bab4"
+
 yauzl@2.4.1:
   version "2.4.1"
   resolved "https://repo.t1t.be/repository/npm-group/yauzl/-/yauzl-2.4.1.tgz#9528f442dab1b2284e58b4379bb194e22e0c4005"
