@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8a87391fd19d4c26bd8a31b71303d28c)](https://www.codacy.com/app/Trust1Team/api-market?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/api-market&amp;utm_campaign=Badge_Grade)
+
 Trust1Gateway - Marketplace: API Marketplace for the Trust1Gateway
 ==================================================================
 [![][t1g-logo]][Trust1Gateway-url]
