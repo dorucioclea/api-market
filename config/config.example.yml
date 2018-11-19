@@ -21,6 +21,7 @@ default:
     session: "t1g-session-"
   kong:
     host: "< t1g base uri >"
+  idp_lib: "https://keycloak.t1t.be/auth/js/keycloak.js"
 
 test:
   appName: "api-market"
