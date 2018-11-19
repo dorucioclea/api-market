@@ -1,6 +1,6 @@
 {
   "name": "api-market",
-  "version": "0.10.0",
+  "version": "0.10.1-SNAPSHOT",
   "description": "AngularJS API Market",
   "author": "Trust1Team",
   "private": true,
