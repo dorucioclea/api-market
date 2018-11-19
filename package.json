@@ -1,6 +1,6 @@
 {
   "name": "api-market",
-  "version": "0.9.9",
+  "version": "0.10.0",
   "description": "AngularJS API Market",
   "author": "Trust1Team",
   "private": true,
@@ -124,7 +124,6 @@
     "http-server": "^0.8.0",
     "ionicons": "2.0.1",
     "jquery": "2.2.4",
-    "keycloak-js": "2.5.1",
     "ladda": "0.9.8",
     "less": "2.5.1",
     "lodash": "4.17.4",
