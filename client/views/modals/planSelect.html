@@ -63,12 +63,7 @@
     <div class="well" ng-show="servicePolicies.length == 0">
         No policies have been defined for this service.
     </div>
-    <div ng-repeat="policy in servicePolicies">
-        <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}:
-        <div ng-repeat="config in policyConfig[policy.id]">
-            <p class="ml30 text-bold">{{config.key}}: {{config.value}}</p>
-        </div>
-    </div>
+    <api-policy-list policies="servicePoliciesWithDetails"></api-policy-list>
 </div>
 
 <div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode">
@@ -88,12 +83,7 @@
     <div class="well" ng-show="selectedPlanPolicies.length == 0">
         No policies have been defined for this plan.
     </div>
-    <div ng-repeat="policy in selectedPlanPolicies">
-        <span class="fa {{policy.icon}}">&nbsp;&nbsp;</span>{{policy.name}}:
-        <div ng-repeat="config in policyConfig[policy.id]">
-            <p class="ml30 text-bold">{{config.key}}: {{config.value}}</p>
-        </div>
-    </div>
+    <api-policy-list policies="selectedPlanPolicies"></api-policy-list>
 </div>
 
 <div class="modal-body" ng-show="hasOrgContext && !termsAgreementMode && !service.autoAcceptContracts">

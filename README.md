@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Trust1Team/api-market.svg?branch=develop)](https://travis-ci.org/Trust1Team/api-market) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8a87391fd19d4c26bd8a31b71303d28c)](https://www.codacy.com/app/Trust1Team/api-market?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/api-market&amp;utm_campaign=Badge_Grade)
+
 Trust1Gateway - Marketplace: API Marketplace for the Trust1Gateway
 ==================================================================
 [![][t1g-logo]][Trust1Gateway-url]
@@ -26,6 +28,10 @@ We are working on the Trust1Gateway documentation:
 
 ## Running development server
 
+### Installing dependencies
+Run `yarn install` to install all dependencies. Use of Yarn is recommended, but `npm install` will work too if you don't have Yarn installed.
+
+### Running
 For development purposes, make sure your `config.yaml` file is up to date and the environment is set to "local" or "development".
 You can then run `nodemon app.js` to start a nodemon process which watches for changes in the BFF (this assumes you have nodemon installed);
  Then run `grunt serve` to start a livereload server which watches for changes in the client.

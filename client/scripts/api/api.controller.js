@@ -58,19 +58,13 @@
                 controller: 'PlanSelectCtrl as ctrl',
                 resolve: {
                     serviceVersion: $scope.serviceVersion,
-                    ServiceVersionPolicy: 'ServiceVersionPolicy',
-                    svcPolicies: function (ServiceVersionPolicy) {
-                        return ServiceVersionPolicy.query(
-                            {orgId: $scope.serviceVersion.service.organization.id,
-                                svcId: $scope.serviceVersion.service.id,
-                                versionId: $scope.serviceVersion.version}).$promise.then(
-                            function (data) {
-                                return data;
-                            },
-                            function (error) {
-                                toastService.warning(error.data.message);
-                                throw new Error('<b>Service does not exist anymore!</b><br><span class="small">This error occurs when the service was available when loading the page, but in meantime has been retired, or otherwise deleted from the publisher.</span>');
-                            });
+                    svcPoliciesWithDetails: function(policyService) {
+                        return policyService.getServicePoliciesWithDetailsForMarket($scope.serviceVersion.service.organization.id, $scope.serviceVersion.service.id, $scope.serviceVersion.version).then(function(data) {
+                            return data;
+                        }, function(error) {
+                            toastService.warning(error.data.message);
+                            throw new Error('<b>Service does not exist anymore!</b><br><span class="small">This error occurs when the service was available when loading the page, but in meantime has been retired, or otherwise deleted from the publisher.</span>');
+                        })
                     }
                 },
                 backdrop : 'static',
@@ -273,7 +267,7 @@
 
     /// ==== Service Plans Controller
     function svcPlanCtrl($scope, $stateParams, svcTab, svcPolicies,
-                         planData, policyConfig, PlanVersionPolicy) {
+                         planData, policyConfig, policyService, PlanVersionPolicy) {
         $scope.svcPolicies = svcPolicies;
         $scope.plans = planData;
         $scope.policies = [];
@@ -288,24 +282,10 @@
             });
         }
 
-        function getPolicyDetails(policy, plan) {
-            PlanVersionPolicy.get(
-                {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version, policyId: policy.id},
-                function (policyDetails) {
-                    $scope.policyConfiguration[policyDetails.id] =
-                        policyConfig.createConfigObject(policyDetails);
-                });
-        }
-
         function getPlanPolicies(plan) {
-            PlanVersionPolicy.query(
-                {orgId: $stateParams.orgId, planId: plan.planId, versionId: plan.version},
-                function (policies) {
-                    $scope.policies[plan.planId] = policies;
-                    angular.forEach(policies, function (policy) {
-                        getPolicyDetails(policy, plan);
-                    });
-                });
+            policyService.getPlanPoliciesWithDetails($stateParams.orgId, plan.planId, plan.version).then(function(policies) {
+                $scope.policies[plan.planId] = policies;
+            });
         }
     }
 
