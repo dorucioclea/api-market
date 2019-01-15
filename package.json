@@ -70,8 +70,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "grunt": "./node_modules/grunt-cli/bin/grunt build",
-    "deploy": "yarn && npm run grunt",
+    "grunt-t1t": "./node_modules/grunt-cli/bin/grunt build-t1t",
+    "deploy-t1t": "yarn && npm run grunt-t1t",
+    "grunt-optipost": "./node_modules/grunt-cli/bin/grunt build-optipost",
+    "deploy-optipost": "yarn && npm run grunt-optipost",
     "localTest": "NODE_ENV=test ./node_modules/.bin/_mocha 'server/**/*.spec.js'",
     "test": "npm run grunt && NODE_ENV=test ./node_modules/.bin/_mocha 'server/**/*.spec.js' --reporter mocha-teamcity-reporter"
   },
