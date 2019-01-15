@@ -92,12 +92,12 @@ module.exports = function(grunt) {
         rename: {
             t1t: {
                 files: [
-                    {src: ['<%= dir.src %>/favicon-t1t.ico'], dest: '<%= dir.src %>/favicon.ico'}
+                    {src: ['<%= dir.src %>/favicon-t1t.ico'], dest: '<%= dir.dist %>/favicon.ico'}
                 ]
             },
             optipost: {
                 files: [
-                    {src: ['<%= dir.src %>/favicon-optipost.ico'], dest: '<%= dir.src %>/favicon.ico'}
+                    {src: ['<%= dir.src %>/favicon-optipost.ico'], dest: '<%= dir.dist %>/favicon.ico'}
                 ]
             }
         },

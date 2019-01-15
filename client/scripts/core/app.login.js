@@ -52,7 +52,6 @@
         }
 
         function checkLoginRequiredForState(currentState) {
-            $scope.requireLogin = CONFIG.APP.REQUIRE_LOGIN;
             if (CONFIG.APP.REQUIRE_LOGIN) {
                 return true;
             } else {
