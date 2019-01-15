@@ -22,7 +22,7 @@
         }
 
         function checkIsFirstVisit() {
-            return !!$localStorage.hasVisited;
+            return CONFIG.APP.SHOW_FIRST_VISIT_MODAL && !!$localStorage.hasVisited;
         }
 
         function checkLoginError() {
@@ -52,26 +52,31 @@
         }
 
         function checkLoginRequiredForState(currentState) {
-            switch (currentState.name) {
-                case '':
-                case 'accessdenied':
-                case 'root.error':
-                case 'root.maintenance':
-                case 'oauth':
-                case 'logout':
-                case 'root.apis.grid':
-                case 'root.apis.list':
-                case 'root.api':
-                case 'root.api.announcements':
-                case 'root.api.documentation':
-                case 'root.api.plans':
-                case 'root.api.scopes':
-                case 'root.api.support':
-                case 'root.api.terms':
-                case 'root.search':
-                    return false;
-                default:
-                    return true;
+            $scope.requireLogin = CONFIG.APP.REQUIRE_LOGIN;
+            if (CONFIG.APP.REQUIRE_LOGIN) {
+                return true;
+            } else {
+                switch (currentState.name) {
+                    case '':
+                    case 'accessdenied':
+                    case 'root.error':
+                    case 'root.maintenance':
+                    case 'oauth':
+                    case 'logout':
+                    case 'root.apis.grid':
+                    case 'root.apis.list':
+                    case 'root.api':
+                    case 'root.api.announcements':
+                    case 'root.api.documentation':
+                    case 'root.api.plans':
+                    case 'root.api.scopes':
+                    case 'root.api.support':
+                    case 'root.api.terms':
+                    case 'root.search':
+                        return false;
+                    default:
+                        return true;
+                }
             }
         }
 

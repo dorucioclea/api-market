@@ -25,7 +25,6 @@ Documentation
 We are working on the Trust1Gateway documentation:
 [Trust1Gateway - Documentation](https://www.gitbook.com/book/t1t/trust1gateway-marketplace-guide/details)
 
-
 ## Running development server
 
 ### Installing dependencies
@@ -36,18 +35,22 @@ For development purposes, make sure your `config.yaml` file is up to date and th
 You can then run `nodemon app.js` to start a nodemon process which watches for changes in the BFF (this assumes you have nodemon installed);
  Then run `grunt serve` to start a livereload server which watches for changes in the client.
 
-
 ## Building for deployment
 
-Please see the [deployment guide](https://t1t.gitbooks.io/trust1gateway-architecture-deployment/content/deployment/t1g-marketplace.html):.
+!!!IMPORTANT!!!
+**The api-marketplace will only build with node 6.x**
 
+Please see the [deployment guide](https://t1t.gitbooks.io/trust1gateway-architecture-deployment/content/deployment/t1g-marketplace.html)
 
+Or run one of the following build profiles depending on the desired branding: `deploy-t1t` or `deploy-optipost`
+
+```bash
+yarn deploy-t1t
+```
 
 ## Testing
 
 Running `grunt test` will run the unit tests with karma.
-
-
 
 [Trust1Team-url]: https://trust1team.com
 [Trust1Gateway-url]: https://www.trust1gateway.com
