@@ -58,7 +58,7 @@
 
                 $scope.toasts = toastService.toasts;
 
-                $scope.header = CONFIG.APP.STORE_NAME + 'Trust1Gateway API Store';
+                $scope.header = CONFIG.APP.STORE_NAME + ' API Store';
 
                 $scope.navFull = false;
 
