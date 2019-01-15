@@ -57,8 +57,8 @@
                 $scope.User = currentUserModel;
 
                 $scope.toasts = toastService.toasts;
-                $
-                $scope.header = CONFIG.APP.'Trust1Gateway API Store';
+
+                $scope.header = CONFIG.APP.STORE_NAME + 'Trust1Gateway API Store';
 
                 $scope.navFull = false;
 
