@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: "<%= dir.src %>",
                 dest: "<%= dir.dist %>",
-                src: ["index.html", "favicon.ico", "apublicfile.txt", "images/**/*", "views/**/*", "fonts/**/*"]
+                src: ["index.html", "apublicfile.txt", "images/**/*", "views/**/*", "fonts/**/*"]
             },
             local: {
                 expand: true,
@@ -87,6 +87,18 @@ module.exports = function(grunt) {
             indexDev: {
                 src: '<%= dir.src %>/index.html',
                 dest: '<%= dir.index %>/index-dev.ejs'
+            }
+        },
+        rename: {
+            t1t: {
+                files: [
+                    {src: ['<%= dir.src %>/favicon-t1t.ico'], dest: '<%= dir.src %>/favicon.ico'}
+                ]
+            },
+            optipost: {
+                files: [
+                    {src: ['<%= dir.src %>/favicon-optipost.ico'], dest: '<%= dir.src %>/favicon.ico'}
+                ]
             }
         },
         /**
@@ -362,10 +374,11 @@ module.exports = function(grunt) {
         }, // End HtmlMin
     });
     // Default Task (that can be run by typing only "grunt" in cmd)
+    grunt.loadNpmTasks('grunt-contrib-rename');
     grunt.registerTask("default", 'build');
     grunt.registerTask("cleanBuild", ["clean:dist"]);
-    grunt.registerTask("build-t1t", ['clean:dist', 'copy:dist', 'copy:fa', 'copy:ion', 'replace:t1t', 'less:dist', 'useminPrepare', 'cssmin', 'postcss:dist', 'concat', 'ngAnnotate', 'babel:dist', 'uglify', 'filerev', 'usemin', 'htmlmin', 'copy:index']);
-    grunt.registerTask("build-optipost", ['clean:dist', 'copy:dist', 'copy:fa', 'copy:ion', 'replace:optipost', 'less:dist', 'useminPrepare', 'cssmin', 'postcss:dist', 'concat', 'ngAnnotate', 'babel:dist', 'uglify', 'filerev', 'usemin', 'htmlmin', 'copy:index']);
+    grunt.registerTask("build-t1t", ['clean:dist', 'copy:dist', 'rename:t1t', 'copy:fa', 'copy:ion', 'replace:t1t', 'less:dist', 'useminPrepare', 'cssmin', 'postcss:dist', 'concat', 'ngAnnotate', 'babel:dist', 'uglify', 'filerev', 'usemin', 'htmlmin', 'copy:index']);
+    grunt.registerTask("build-optipost", ['clean:dist', 'copy:dist', 'rename:optipost', 'copy:fa', 'copy:ion', 'replace:optipost', 'less:dist', 'useminPrepare', 'cssmin', 'postcss:dist', 'concat', 'ngAnnotate', 'babel:dist', 'uglify', 'filerev', 'usemin', 'htmlmin', 'copy:index']);
     grunt.registerTask("dev", ["less:dev"]);
     grunt.registerTask("html", ["processhtml"]);
     grunt.registerTask('serve-t1t', 'Compile then watch for changes to files', function() {
